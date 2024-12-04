@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 
 from django.urls import include # for include('app.urls')
-from django.views.generic import RedirectView 
+from django.views.generic import RedirectView
 from django.conf import settings # for static method
 from django.conf.urls.static import static # ""
 
