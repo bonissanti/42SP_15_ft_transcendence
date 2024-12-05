@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 
-from .models import Book, Author, BookInstance, Genre
+from .models import Book, Author, BookInstance
 
 def index(request):
   """View function for home page of site"""
@@ -13,7 +13,7 @@ def index(request):
   print(f"Num books: {num_books}")
 
   # Available books (status = 'a)
-  num_instances_available = BookInstance.objects.filter(status_exact='a').count()
+  num_instances_available = BookInstance.objects.filter(status='a').count()
 
   #The 'all()' is implied by default
   num_authors = Author.objects.count()
@@ -26,4 +26,4 @@ def index(request):
   }
 
   # render the HTML template index.html with the data in the context variable
-  return render(request, 'index.html', context=context)
+  return (render(request, 'index.html', context=context))
