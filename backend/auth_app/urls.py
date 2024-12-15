@@ -16,10 +16,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from loginLogic import views
+from django.conf import settings
+from django.conf.urls.static import static
+
+from user_auth import views, logout, home
+
 
 urlpatterns = [
+    path('', home.home, name='home'),
     path('admin/', admin.site.urls),
     path('auth/42/', views.requestAuth42, name='requestAuth42'),
-    path('auth/42/callback/', views.callbackAuth, name='callbackAuth')
-]
+    path('auth/42/callback/', views.callbackAuth, name='callbackAuth'),
+    path('logout/', logout.logout, name='logout')
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

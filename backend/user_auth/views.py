@@ -1,15 +1,17 @@
 # Create your views here.
 import requests, os
+import logging
 import sys
 
 from django.shortcuts import redirect, render   #to use render() and requests()
 from django.conf import settings
 from django.http import JsonResponse
 from dotenv import load_dotenv
-
-# test
 from urllib.parse import urlencode, quote_plus
 
+from user_auth.dashboard import dashboard
+
+logger = logging.getLogger(__name__)
 
 load_dotenv()
 def eprint(*args, **kwargs):
@@ -27,8 +29,6 @@ OAUTH_URL = "https://api.intra.42.fr/oauth/authorize?" + urlencode({
 	quote_via=quote_plus
 )
 
-eprint(f"{OAUTH_URL}")
-
 def requestAuth42(request):
     return redirect(OAUTH_URL)
 
@@ -36,10 +36,10 @@ def callbackAuth(request):
     code = request.GET.get('code')
     if not code:
         return JsonResponse({'Error': 'Authorization failed'}, status=400)
-    response = fetchAccessToken(code)
-    return response
+    fetchAccessToken(code, request)
+    return dashboard(request)
 
-def fetchAccessToken(code):
+def fetchAccessToken(code, request):
     token_url = "https://api.intra.42.fr/oauth/token"
     data = {
         'grant_type': 'authorization_code',
@@ -59,22 +59,13 @@ def fetchAccessToken(code):
     urlInfoMe = "https://api.intra.42.fr/v2/me"
     headers = {'Authorization': f'Bearer {access_token}'}
 
-    responseResouces = requests.get(urlInfoMe, headers=headers).json()
+    userInfo = requests.get(urlInfoMe, headers=headers).json()
 
-    username = responseResouces.get('login')
+    #add Log the user in (Django session management), because it has more advanced methods
+
+    username = userInfo.get('login')
     if not username:
         return JsonResponse({'Error': 'Invalid user data'}, status=400)
-    return JsonResponse({'Success': 'User authenticated', 'username': username})
 
-def logout(request):
-    request.session.flush()
-    return redirect(settings.LOGOUT_REDIRECT_URL)
-
-
-# def dashboard(request):
-#     user = requests.session.get('user')
-#     if not user:
-#         return redirect('/')
-#     return render(request, 'dashboard.html', {'user': user})
-
-
+    request.session['user'] = userInfo
+    return redirect(settings.LOGIN_REDIRECT_URL)

@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # 'auth_app',
+    'auth_app',
+    # 'auth_app.middleware.updateLastActivity',
 ]
 
 MIDDLEWARE = [
@@ -50,6 +51,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+LOGIN_REDIRECT_URL = 'dashboard/'
+LOGOUT_REDIRECT_URL = '/'
+
+SESSION_EXPIRE_AT_BROWSER = True
+SESSION_COOKIE_AGE = 300 # 5 minutes
 
 ROOT_URLCONF = 'auth_app.urls'
 

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dashboard</title>
+</head>
+<body>
+	{% if user %}
+		<h1>Welcome, {{ user.login }}</h1>
+		<p>Name: {{ user.usual_full_name }}</p>
+		<p>Email: {{ user.email }}</p>
+		<a href="/logout/">Logout</a>
+	{% endif %}
+</body>
+</html>
+
+		<p>Last activity: {{ user.last_activity }}</p>
+
