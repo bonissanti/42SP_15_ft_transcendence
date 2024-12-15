@@ -1,5 +1,5 @@
 """
-URL configuration for game project.
+URL configuration for auth_app project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.1/topics/http/urls/
@@ -16,14 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
-from django.urls import include # for include('app.urls')
-from django.views.generic import RedirectView
-from django.conf import settings # for static method
-from django.conf.urls.static import static # ""
+from loginLogic import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('app/', include('app.urls')),
-    path('', RedirectView.as_view(url='app/', permanent=True)),
-]   + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    path('auth/42/', views.requestAuth42, name='requestAuth42'),
+    path('auth/42/callback/', views.callbackAuth, name='callbackAuth')
+]
