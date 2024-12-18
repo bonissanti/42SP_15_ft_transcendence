@@ -19,13 +19,13 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
-from user_auth import views, logout, home
+from user_auth import requestAuth, logout, home
 
 
 urlpatterns = [
     path('', home.home, name='home'),
     path('admin/', admin.site.urls),
-    path('auth/42/', views.requestAuth42, name='requestAuth42'),
-    path('auth/42/callback/', views.callbackAuth, name='callbackAuth'),
+    path('auth/42/', requestAuth.requestAuth42, name='requestAuth42'),
+    path('auth/42/callback/', requestAuth.callbackAuth, name='callbackAuth'),
     path('logout/', logout.logout, name='logout')
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

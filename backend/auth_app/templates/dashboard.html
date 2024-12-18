@@ -9,9 +9,9 @@
 		<p>Name: {{ user.usual_full_name }}</p>
 		<p>Email: {{ user.email }}</p>
 		<a href="/logout/">Logout</a>
+		{% comment %} <p>Last {% endcomment %}
 	{% endif %}
 </body>
 </html>
 
-		<p>Last activity: {{ user.last_activity }}</p>
 
