@@ -1,8 +1,7 @@
 import requests, os
 import logging
 import sys
-
-from django.shortcuts import redirect, render   #to use render() and requests()
+from django.shortcuts import redirect, render
 from django.conf import settings
 from django.http import JsonResponse
 from django.contrib.auth import authenticate, login, get_user_model
@@ -10,19 +9,17 @@ from django.contrib.auth.models import User
 from django.db import IntegrityError
 from dotenv import load_dotenv
 from urllib.parse import urlencode, quote_plus
-
 from user_auth.dashboard import dashboard
 
 logger = logging.getLogger(__name__)
-
 load_dotenv()
+
 def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
 
 CLIENT_ID = os.environ.get('CLIENT_ID')
 CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
 REDIRECT_URI = os.environ.get('REDIRECT_URI')
-
 OAUTH_URL = "https://api.intra.42.fr/oauth/authorize?" + urlencode({
 	'client_id': os.environ.get('CLIENT_ID'),
 	'redirect_uri': os.environ.get('REDIRECT_URI'),
@@ -60,19 +57,15 @@ def fetchAccessToken(code, request):
 
     urlInfoMe = "https://api.intra.42.fr/v2/me"
     headers = {'Authorization': f'Bearer {access_token}'}
-
     userInfo = requests.get(urlInfoMe, headers=headers).json()
-
-    #add Log the user in (Django session management), because it has more advanced methods
-
     username = userInfo.get('login')
+
     if not username:
         return JsonResponse({'Error': 'Invalid user data'}, status=400)
 
     User = get_user_model()
     user, created = User.objects.get_or_create(username=username)
     login(request, user)
-
     request.session['user'] = userInfo
     return redirect(settings.LOGIN_REDIRECT_URL)
 

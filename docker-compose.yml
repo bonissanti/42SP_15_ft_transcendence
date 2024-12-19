@@ -1,0 +1,38 @@
+services:
+  backend:
+    container_name: backend
+    build:
+      context: backend/
+    command: python3 backend/manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  db:
+    container_name: db
+    image: postgres
+    env_file:
+      - .env
+    environment:
+      - "POSTGRES_DB=postgres"
+      - "POSTGRES_USER=postgres"
+      - "POSTGRES_PASSWORD=postgres"
+    volumes:
+      - db-volume:/var/lib/postgresql/data/
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+
+networks:
+  transcendence:
+    driver: bridge
+
+volumes:
+  db-volume:
