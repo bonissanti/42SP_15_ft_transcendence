@@ -5,7 +5,7 @@ import sys
 from django.shortcuts import redirect, render   #to use render() and requests()
 from django.conf import settings
 from django.http import JsonResponse
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from dotenv import load_dotenv
@@ -69,6 +69,7 @@ def fetchAccessToken(code, request):
     if not username:
         return JsonResponse({'Error': 'Invalid user data'}, status=400)
 
+    User = get_user_model()
     user, created = User.objects.get_or_create(username=username)
     login(request, user)
 
