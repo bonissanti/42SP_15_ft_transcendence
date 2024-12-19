@@ -31,7 +31,7 @@ services:
       start_period: 30s
 
 networks:
-  transcendence:
+  network:
     driver: bridge
 
 volumes:
