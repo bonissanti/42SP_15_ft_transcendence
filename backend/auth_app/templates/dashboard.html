@@ -1,17 +1,32 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title>Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>~ Colocar algum nome aqui, provisoriamente é cyberpong ~</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+    </style>
 </head>
 <body>
-	{% if user %}
-		<h1>Welcome, {{ user.login }}</h1>
-		<p>Name: {{ user.usual_full_name }}</p>
-		<p>Email: {{ user.email }}</p>
-		<a href="/logout/">Logout</a>
-		{% comment %} <p>Last {% endcomment %}
-	{% endif %}
+    <div class="crt-overlay"></div> <!-- CRT Effect Overlay -->
+
+    <!-- Welcome Section -->
+    <div class="container">
+        <h1 class="title">Welcome, <span id="username">{{ user.login }}</span>!</h1>
+        <div class="menu">
+            <button onclick="startSinglePlayer()">Single Player</button>
+            <button onclick="startMultiplayer()">Multiplayer</button>
+            <button onclick="showOptions()">Options</button>
+			<button onclick="window.location.href='{% url 'logout' %}'">Logout</button>
+            <a href="https://github.com/your-repo-link" target="_blank" class="star-us">
+                ⭐ Star Us on GitHub ⭐
+            </a>
+        </div>
+    </div>
+
+    <script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>
-
-

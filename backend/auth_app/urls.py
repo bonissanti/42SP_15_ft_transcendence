@@ -19,7 +19,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
-from user_auth import requestAuth, logout, home
+from user_auth import requestAuth, logout, home, dashboard
 
 
 urlpatterns = [
@@ -27,5 +27,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/42/', requestAuth.requestAuth42, name='requestAuth42'),
     path('auth/42/callback/', requestAuth.callbackAuth, name='callbackAuth'),
-    path('logout/', logout.logout, name='logout')
+    path('logout/', logout.logout, name='logout'),
+    path('dashboard/', dashboard.dashboard, name='dashboard')
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
