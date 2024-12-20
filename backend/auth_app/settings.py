@@ -55,6 +55,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.cache.UpdateCacheMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
     'auth_app.middleware.UpdateLastActivityMiddleware',
 ]
 
@@ -63,6 +65,8 @@ LOGOUT_REDIRECT_URL = '/'
 
 SESSION_EXPIRE_AT_BROWSER = True
 SESSION_COOKIE_AGE = 300 # 5 minutes
+CACHE_MIDDLEWARE_SECONDS = 0
+CACHE_MIDDLEWARE_KEY_PREFIFX = ''
 
 ROOT_URLCONF = 'auth_app.urls'
 
