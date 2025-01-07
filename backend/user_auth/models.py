@@ -1,9 +1,9 @@
-# from django.db import models
-# from django.contrib.auth.models import AbstractUser
-# from django.utils import timezone
+from django.db import models
+from django.contrib.auth.models import AbstractUser
+from django.utils.timezone import now
 
 # Create your models here.
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.base_user import BaseUserManager
 from django.db import models
 
@@ -18,7 +18,7 @@ class CustomUserManager(BaseUserManager):
         user.save()
         return user
 
-    def create_super_user(self, username, password=None, **extra_fields):
+    def create_superuser(self, username, password=None, **extra_fields):
         # extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
         extra_fields.setdefault("is_active", True)
@@ -26,7 +26,7 @@ class CustomUserManager(BaseUserManager):
 
 class CustomUser(AbstractBaseUser):
     username = models.CharField(max_length=150, unique=True)
-    last_activity = models.DateField(default=timezone.now())
+    last_activity = models.DateField(default=timezone.now)
     is_online = models.BooleanField(default=True)
     # is_staff = models.BooleanField(default=True)
 
