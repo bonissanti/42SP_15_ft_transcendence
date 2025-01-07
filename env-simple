@@ -1,0 +1,3 @@
+CLIENT_ID=uid from 42api
+CLIENT_SECRET=secret from api
+REDIRECT_URI=http://127.0.0.1:8000/auth/42/callback/
