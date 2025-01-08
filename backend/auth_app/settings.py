@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-d!4fv1!0#+ip%3)kj=eq!)4snknil5dk%7!p*ewkt0$c$$q5wl
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'backend', 'frontend']
 
 
 # Application definition
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     'auth_app',
     'user_auth',
+    'corseheaders',
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -58,6 +59,13 @@ MIDDLEWARE = [
     'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
     'auth_app.middleware.UpdateLastActivityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'http://frontend',
 ]
 
 LOGIN_REDIRECT_URL = 'dashboard/'
