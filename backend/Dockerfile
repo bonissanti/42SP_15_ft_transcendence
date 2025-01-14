@@ -8,13 +8,13 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 RUN apt-get update && apt-get install -y \
-    libpq-dev gcc libffi-dev && apt-get clean
+    libpq-dev gcc libffi-dev curl && apt-get clean
 
 RUN mkdir code
 RUN pip install --upgrade pip
-# ENV PATH="/code/game-env/bin:$PATH"
+RUN pip install django-cors-headers
 COPY ./utils/requirements.txt ./code
 RUN pip install -r ./code/requirements.txt
+HEALTHCHECK --interval=30s --timeout=10s --retries=3 CMD curl --fail http://localhost:8000 || exit 1
 
 COPY . ./code/
-# ENTRYPOINT ["tail", "-f", "/dev/null"]

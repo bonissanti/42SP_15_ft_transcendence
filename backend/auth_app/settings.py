@@ -40,7 +40,7 @@ INSTALLED_APPS = [
 
     'auth_app',
     'user_auth',
-    'corseheaders',
+    'corsheaders',
 ]
 
 AUTHENTICATION_BACKENDS = [
