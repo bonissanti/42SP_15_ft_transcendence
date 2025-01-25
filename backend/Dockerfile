@@ -15,6 +15,6 @@ RUN pip install --upgrade pip
 RUN pip install django-cors-headers
 COPY ./utils/requirements.txt ./code
 RUN pip install -r ./code/requirements.txt
-HEALTHCHECK --interval=30s --timeout=10s --retries=3 CMD curl --fail http://localhost:8000 || exit 1
+# HEALTHCHECK --interval=30s --timeout=10s --retries=3 CMD curl --fail http://localhost:8000 || exit 1
 
 COPY . ./code/
