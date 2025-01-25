@@ -1,15 +1,13 @@
 import requests, os
 import logging
 import sys
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
 from django.conf import settings
 from django.http import JsonResponse
-from django.contrib.auth import authenticate, login, get_user_model
-from django.contrib.auth.models import User
-from django.db import IntegrityError
+from django.contrib.auth import login, get_user_model
 from dotenv import load_dotenv
 from urllib.parse import urlencode, quote_plus
-from user_auth.dashboard import dashboard
+from .views import dashboard
 
 logger = logging.getLogger(__name__)
 load_dotenv()
@@ -28,7 +26,7 @@ OAUTH_URL = "https://api.intra.42.fr/oauth/authorize?" + urlencode({
 	quote_via=quote_plus
 )
 
-def requestAuth42(request):
+def oauth42(request):
     return redirect(OAUTH_URL)
 
 def callbackAuth(request):
