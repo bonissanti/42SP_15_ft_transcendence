@@ -1,1 +1,28 @@
-<p>fucker</p>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>~ Colocar algum nome aqui, provisoriamente é cyberpong ~</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+    </style>
+</head>
+<body>
+    <div class="crt-overlay"></div>
+
+    <!-- Welcome Section -->
+    <div class="container">
+        <h1 class="titleWithoutLogin">Welcome, strange</span>!</h1>
+		<div class="WelcomeContainer">
+			<h6 class="loginMessage">Sign in with your 42 account to unlock the full experience </h6> 
+			<button onclick="oauth42()" class="loginButton">Log in with <img src="{% static 'img/42_Logo.png' %}" width="20" class="logo"></button> 
+		</div>
+    </div>
+
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

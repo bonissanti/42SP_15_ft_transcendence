@@ -15,6 +15,7 @@ def dashboard(request):
         return redirect('/')
     return render(request, 'dashboard.html', {'user': user})
 
+
 def logout(request):
     if request.user.is_authenticated:
         request.user.is_online = False

@@ -12,12 +12,13 @@ from .views import dashboard
 logger = logging.getLogger(__name__)
 load_dotenv()
 
-def eprint(*args, **kwargs):
-    print(*args, file=sys.stderr, **kwargs)
 
 CLIENT_ID = os.environ.get('CLIENT_ID')
+
 CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
+
 REDIRECT_URI = os.environ.get('REDIRECT_URI')
+
 OAUTH_URL = "https://api.intra.42.fr/oauth/authorize?" + urlencode({
 	'client_id': os.environ.get('CLIENT_ID'),
 	'redirect_uri': os.environ.get('REDIRECT_URI'),
@@ -26,18 +27,29 @@ OAUTH_URL = "https://api.intra.42.fr/oauth/authorize?" + urlencode({
 	quote_via=quote_plus
 )
 
+# log: To print log messages and/or debug
+
+def log(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)
+
+
 def oauth42(request):
     return redirect(OAUTH_URL)
 
+
 def callbackAuth(request):
     code = request.GET.get('code')
+
     if not code:
         return JsonResponse({'Error': 'Authorization failed'}, status=400)
+
     fetchAccessToken(code, request)
     return dashboard(request)
 
+
 def fetchAccessToken(code, request):
     token_url = "https://api.intra.42.fr/oauth/token"
+
     data = {
         'grant_type': 'authorization_code',
         'client_id': CLIENT_ID,
