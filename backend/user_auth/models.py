@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils import timezone
+from datetime import timedelta
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, username, password=None, **extra_fields):
@@ -18,7 +19,7 @@ class CustomUserManager(BaseUserManager):
         # extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
         extra_fields.setdefault("is_active", True)
-        return self.create_user(username, password, extra_fields)
+        return self.create_user(username, password)
 
 class CustomUser(AbstractBaseUser):
     username = models.CharField(max_length=150, unique=True)
@@ -37,14 +38,5 @@ class CustomUser(AbstractBaseUser):
     def isOnline(self):
         if self.last_activity:
             now = timezone.now()
-            return now < self.last_activity + timezone.timedelta(minutes=5)
+            return now < self.last_activity + timedelta(minutes=5)
         return False
-
-# class CustomUser(AbstractUser):
-#     last_activity = models.DateTimeField(null=True, blank=True)
-
-#     @property
-#     def is_online(self):
-#         if self.last_activity:
-#             return (timezone.now() - self.last_activity).second < 300
-#         return False

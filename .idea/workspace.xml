@@ -5,24 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eaa00b82-56c5-42ca-aa15-f2cc22ceebb9" name="Changes" comment="feat: added healthcheck to containers. Frontend doesn't work properly">
-      <change beforePath="$PROJECT_DIR$/backend/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/auth_app/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/auth_app/asgi.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/auth_app/middleware.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/auth_app/settings.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/auth_app/static/css/base.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/auth_app/static/css/component.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/auth_app/static/css/layout.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/auth_app/static/css/styles.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/auth_app/templates/dashboard.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/auth_app/templates/home.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/auth_app/templates/login.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/auth_app/templates/logout.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/auth_app/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/auth_app/wsgi.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/manage.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/manage.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/13.Ft_transcendence.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/13.Ft_transcendence.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/transcendence/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/transcendence/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/user_auth/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/user_auth/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/Dockerfile" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,8 +59,9 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Django Server.13.Ft_transcendence.executor": "Debug",
+    "Django Server.13.Ft_transcendence.executor": "Run",
     "Docker.Docker-compose.executor": "Run",
+    "Docker.docker-compose.yml.db: Compose Deployment.executor": "Run",
     "Python.main.executor": "Run",
     "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -87,7 +76,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "com.intellij.python.django.customization.DjangoModulesConfigurable",
+    "settings.editor.selected.configurable": "database.query.execution",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -101,7 +90,7 @@
       <recent name="$PROJECT_DIR$/frontend" />
     </key>
   </component>
-  <component name="RunManager" selected="Django Server.13.Ft_transcendence">
+  <component name="RunManager" selected="Docker.Docker-compose">
     <configuration name="13.Ft_transcendence" type="Python.DjangoServer" factoryName="Django server">
       <module name="13.Ft_transcendence" />
       <option name="ENV_FILES" value="$PROJECT_DIR$/.env" />
@@ -139,10 +128,33 @@
         <option name="LaunchBrowser.Before.Run" browser="37cae5b9-e8b2-4949-9172-aafa37fbc09c" url="http://localhost:8000" />
       </method>
     </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
+      <deployment type="docker-compose.yml" />
+      <method v="2" />
+    </configuration>
+    <configuration name="docker-compose.yml.db: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="services">
+            <list>
+              <option value="db" />
+            </list>
+          </option>
+          <option name="sourceFilePath" value="docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Django Server.13.Ft_transcendence" />
       <item itemvalue="Docker.Docker-compose" />
+      <item itemvalue="Docker.docker-compose.yml.db: Compose Deployment" />
     </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Docker.docker-compose.yml.db: Compose Deployment" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -172,6 +184,8 @@
       <workItem from="1736810190505" duration="4305000" />
       <workItem from="1736814710892" duration="18000" />
       <workItem from="1737837012955" duration="189000" />
+      <workItem from="1738275164767" duration="45000" />
+      <workItem from="1738275216235" duration="4511000" />
     </task>
     <task id="LOCAL-00001" summary="feat: add env-simple file">
       <option name="closed" value="true" />
