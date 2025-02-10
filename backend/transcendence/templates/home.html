@@ -14,15 +14,13 @@
 <body>
     <div class="crt-overlay"></div>
 
-    <!-- Welcome Section -->
+    <!-- Welcome, Section -->
     <div class="container">
-        <h1 class="titleWithoutLogin">Welcome, strange</span>!</h1>
+        <h1 class="titleWithoutLogin">Welcome, strange!</h1>
 		<div class="WelcomeContainer">
-			<h6 class="loginMessage">Sign in with your 42 account to unlock the full experience </h6> 
-			<button onclick="oauth42()" class="loginButton">Log in with <img src="{% static 'img/42_Logo.png' %}" width="20" class="logo"></button> 
+			<h6 class="loginMessage">Sign in with your 42 account to unlock the full experience </h6>
+			<button onclick="window.location.href='{% url 'oauth42' %}'" class="loginButton">Log in with <img src="{% static 'img/42_Logo.png' %}" width="20" class="logo"></button>
 		</div>
     </div>
-
-    <script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>

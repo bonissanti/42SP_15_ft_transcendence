@@ -17,7 +17,7 @@
       <excludeFolder url="file://$MODULE_DIR$/.venv" />
       <excludeFolder url="file://$MODULE_DIR$/game-env" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.12 (13.Ft_transcendence)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.12 (PyCharmMiscProject)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="PyDocumentationSettings">
