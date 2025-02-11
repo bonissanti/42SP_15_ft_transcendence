@@ -1,0 +1,32 @@
+.WelcomeContainer{
+	max-width: 400px;
+	margin: 0 auto;
+	/*padding: 0.5px;*/
+	text-align: center;
+}
+
+
+.titleWithoutLogin {
+    margin-top: 10%;
+    font-size: 2.0rem;
+    text-shadow: 0 0 3px #00ff99, 0 0 10px #00ff99;
+}
+
+.loginMessage{
+	font-size: 0.7rem;
+	line-height: 1.5;
+	margin-bottom: 15px;
+}
+
+.loginButton{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+    background-color: #d5f2dc;
+    color: #000808;
+
+}
+
+.logo{
+	margin-left: 6px;
+}
