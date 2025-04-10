@@ -58,6 +58,9 @@ function moveBall() {
 			intleftBarPoint++;
 			leftBarPoint.textContent = `${intleftBarPoint}`;
 		}
+		if(intrightBarPoint == 1 || intleftBarPoint == 1){
+			window.location.replace("src/pong/perdeu.html");
+		} 
         ballX = window.innerWidth / 2;
         ballY = window.innerHeight / 2;
         ballSpeedX = (Math.random() > 0.5 ? 5 : -5);
