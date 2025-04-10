@@ -6,8 +6,8 @@ const PORT = 3000;
 
 app.use(express.static(path.join(__dirname)));
 
-app.get('/mandatory', (req, res) => {
-    res.sendFile(path.join(__dirname, 'mandatory.html'));
+app.get('/pong', (req, res) => {
+    res.sendFile(path.join(__dirname, 'src/pong/pong.html'));
 });
 
 app.listen(PORT, () => {
