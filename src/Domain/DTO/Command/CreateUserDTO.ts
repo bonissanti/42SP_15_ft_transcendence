@@ -1,6 +1,6 @@
-import {UserCommand} from "../../../Application/Command/CommandObject/UserCommand";
+import {CreateUserCommand} from "../../../Application/Command/CommandObject/CreateUserCommand";
 
-export class UserDTO
+export class CreateUserDTO
 {
     public readonly Email: string;
     public readonly Password: string;

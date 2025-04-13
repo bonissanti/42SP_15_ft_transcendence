@@ -1,6 +1,6 @@
-import {UserDTO} from "../../../Domain/DTO/Command/UserDTO";
+import {CreateUserDTO} from "../../../Domain/DTO/Command/CreateUserDTO";
 
-export class UserCommand
+export class CreateUserCommand
 {
     public readonly Email: string;
     public readonly Password: string;
@@ -13,8 +13,8 @@ export class UserCommand
         this.Username = username;
     }
 
-    public static FromDTO(dto: UserDTO): UserCommand
+    public static FromDTO(dto: CreateUserDTO): CreateUserCommand
     {
-        return new UserCommand(dto.Email, dto.Password, dto.Username);
+        return new CreateUserCommand(dto.Email, dto.Password, dto.Username);
     }
 }

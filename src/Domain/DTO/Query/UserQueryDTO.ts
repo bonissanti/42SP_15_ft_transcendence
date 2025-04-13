@@ -1,4 +1,4 @@
-import {UserCommand} from "../../../Application/Command/CommandObject/UserCommand";
+import {CreateUserCommand} from "../../../Application/Command/CommandObject/CreateUserCommand";
 
 export class UserQueryDTO
 {
