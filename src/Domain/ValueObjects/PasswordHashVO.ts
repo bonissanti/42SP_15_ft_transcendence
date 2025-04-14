@@ -1,11 +1,30 @@
+import * as bcrypt from "bcrypt";
+
 export class PasswordHashVO
 {
-    public readonly passwordHash: string;
+    private static readonly Salt: number = 10;
+    private readonly PasswordHash: string;
 
-    constructor (rawPassword: string)
-    {
-        this.passwordHash = rawPassword;
+    private constructor(passwordHash: string) {
+        this.PasswordHash = passwordHash;
     }
 
-    //Todo: converter password para hash
+    public static async create(rawPassword: string): Promise<PasswordHashVO>
+    {
+        const salt: string = await bcrypt.genSalt(this.Salt);
+
+        const hashedPassword = await bcrypt.hash(rawPassword, salt);
+
+        return new PasswordHashVO(hashedPassword)
+    }
+
+    public static async validate(rawPassword: string, passwordHash: string) : Promise<boolean>
+    {
+        return await bcrypt.compare(rawPassword, passwordHash);
+    }
+
+    public getPasswordHash(): string
+    {
+        return this.PasswordHash;
+    }
 }
