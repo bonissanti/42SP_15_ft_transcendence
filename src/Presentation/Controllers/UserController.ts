@@ -1,24 +1,20 @@
 import { CreateUserDTO } from "../../Domain/DTO/Command/CreateUserDTO";
 import { Result } from "../../Shared/Utils/Result";
 import { FastifyReply, FastifyRequest } from "fastify";
+import {BaseController} from "./BaseController";
 
-export const createUser = async (request: FastifyRequest<{ Body: CreateUserDTO }>, reply: FastifyReply) => {
-    const userDTO: CreateUserDTO = request.body;
-
-    console.log("Received data: ", userDTO);
-
-    const result: Result = Result.Sucess();
-
-    if (result.isSucess)
-        return reply.status(200).send("User created sucessfully");
-    else
+export class UserController extends BaseController
+{
+    constructor()
     {
-        const statusCode: number = result.Error?.Code!;
-        const message: string = result.Error?.Message!;
-        return reply.status(statusCode).send({
-            code: statusCode,
-            message: message,
-        })
+        super();
+    }
+
+    protected async CreateUser(request: FastifyRequest<{ Body: CreateUserDTO }>, reply: FastifyReply) : Promise<void>
+    {
+        const userDTO: CreateUserDTO = request.body;
+        const result: Result = Result.Sucess();
+
+        this.handleResult(result, reply);
     }
 }
-

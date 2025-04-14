@@ -1,6 +1,7 @@
+import {BaseEntity} from "../Interface/BaseEntity";
 import {IUser} from "../Interface/IUser";
 
-export class User implements IUser
+export class User implements BaseEntity, IUser
 {
     public readonly Uuid: string;
     public readonly Email: string;
