@@ -1,4 +1,4 @@
 export interface BaseHandler<T>
 {
-    handle(command: T): Promise<void>;
+    Handle(command: T): Promise<void>;
 }

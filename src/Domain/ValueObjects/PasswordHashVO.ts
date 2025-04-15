@@ -23,6 +23,13 @@ export class PasswordHashVO
         return await bcrypt.compare(rawPassword, passwordHash);
     }
 
+    public static ValidPassword(rawPassword: string) : boolean
+    {
+        if (rawPassword.length < 8 || rawPassword.length > 30)
+            return false;
+        return true;
+    }
+
     public getPasswordHash(): string
     {
         return this.PasswordHash;

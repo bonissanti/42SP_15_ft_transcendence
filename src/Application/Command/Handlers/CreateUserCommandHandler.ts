@@ -8,15 +8,17 @@ export class CreateUserCommandHandler implements BaseHandler<CreateUserCommand>
 {
     private UserRepository: UserRepository;
 
-    constructor ()
+    constructor (userRepository: UserRepository)
     {
-        this.UserRepository = new UserRepository();
+        this.UserRepository = userRepository;
     }
 
-    async handle(command: CreateUserCommand) : Promise<void>
+    async Handle(command: CreateUserCommand) : Promise<void>
     {
         const passwordHashVO = await PasswordHashVO.create(command.Password);
 
         const userEntity: User = new User(command.Email, passwordHashVO, command.Username);
+
+        // await this.UserRepository.Create(userEntity);
     }
 }

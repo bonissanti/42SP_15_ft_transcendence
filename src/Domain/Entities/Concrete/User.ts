@@ -1,6 +1,7 @@
 import {BaseEntity} from "../Interface/BaseEntity";
 import {IUser} from "../Interface/IUser";
 import {PasswordHashVO} from "../../ValueObjects/PasswordHashVO";
+import {EmailVO} from "../../ValueObjects/EmailVO";
 
 export class User implements BaseEntity, IUser
 {
