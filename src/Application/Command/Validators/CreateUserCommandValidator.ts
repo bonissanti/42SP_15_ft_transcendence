@@ -2,20 +2,38 @@ import {CreateUserCommand} from "../CommandObject/CreateUserCommand";
 import {UserRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/UserRepository";
 import {EmailVO} from "../../../Domain/ValueObjects/EmailVO";
 import {PasswordHashVO} from "../../../Domain/ValueObjects/PasswordHashVO";
+import {NotificationError} from "../../../Shared/Errors/NotificationError";
+import {BaseValidator} from "./BaseValidator";
+import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog";
+import {ValidationException} from "../../../Shared/Errors/ValidationException";
 
-export class CreateUserCommandValidator
+export class CreateUserCommandValidator implements BaseValidator<CreateUserCommand>
 {
     private UserRepository: UserRepository;
+    private NotificationError: NotificationError;
 
-    constructor(userRepository: UserRepository)
+    constructor(userRepository: UserRepository, notificationError: NotificationError)
     {
         this.UserRepository = userRepository;
+        this.NotificationError = notificationError;
     }
 
-    public ValidUser(command: CreateUserCommand)
+    public Validator(command: CreateUserCommand): void
     {
-        // const userExists: boolean = this.UserRepository.findByUserName(command.Username);
-        const emailIsValid: boolean = EmailVO.ValidEmail(command.Email);
-        const passwordIsValid: boolean = PasswordHashVO.ValidPassword(command.Password);
+        if (!EmailVO.ValidEmail(command.Email)) {
+            this.NotificationError.AddError(ErrorCatalog.InvalidEmail);
+        }
+
+        if (!PasswordHashVO.ValidPassword(command.Password)) {
+            this.NotificationError.AddError(ErrorCatalog.InvalidPassword);
+        }
+
+        // if (!this.UserRepository.FindByUsername(command.Username)) {
+        //     notificationError.AddError(ErrorCatalog.UsernameAlreadyExists);
+        // }
+
+        if (this.NotificationError.NumberOfErrors() > 0){
+            throw new Error("Error at validation");
+        }
     }
 }

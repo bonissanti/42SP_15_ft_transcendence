@@ -1,4 +1,4 @@
-export class Error
+export class CustomError
 {
     public readonly Code: number;
     public readonly Message: string;

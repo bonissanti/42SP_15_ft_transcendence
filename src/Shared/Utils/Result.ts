@@ -1,31 +1,22 @@
-import { Error } from "../Errors/Error";
+import { CustomError } from "../Errors/CustomError";
 
 export class Result
 {
     public readonly isSucess: boolean;
-    public readonly Error: Error | null;
+    public static CustomErrors: CustomError[];
 
-    private constructor(isSucess: boolean, error: Error | null)
+    private constructor(isSucess: boolean)
     {
-        if (isSucess && error != null || !isSucess && error == null)
-            throw new TypeError("Error: isSucess and error must be different");
-
         this.isSucess = isSucess;
-        this.Error = error;
     }
 
     public static Sucess() : Result
     {
-        return new Result(true, null);
+        return new Result(true);
     }
 
-    public static Failure(error: Error): Result
+    public static Failure(): Result
     {
-        return new Result(false, error);
-    }
-
-    public GetFailure()
-    {
-        return this.Error;
+        return new Result(false);
     }
 }
