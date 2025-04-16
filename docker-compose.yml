@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: backend
+    networks:
+      - app-net
+    expose:
+      - '3000'
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend
+    networks:
+      - app-net
+    ports:
+      - '8080:8080'
+    depends_on:
+      - backend
+
+networks:
+  app-net:
+    driver: bridge
