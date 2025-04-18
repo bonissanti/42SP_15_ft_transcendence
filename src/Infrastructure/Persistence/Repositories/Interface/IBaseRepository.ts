@@ -1,10 +1,10 @@
-export interface IBaseRepository
+import {NotificationError} from "../../../../Shared/Errors/NotificationError";
+
+export interface IBaseRepository<T>
 {
-    Save(): Promise<void>;
-    Reset(): Promise<void>;
-    Clean(): Promise<void>;
-    Create<T>(entity: T): Promise<void>;
-    Update<T>(entity: T): Promise<void>;
-    Delete<T>(entity: T): Promise<void>;
-    FindByUuid(uuid: string): Promise<any>;
+    Create(entity: T, notification: NotificationError): Promise<void>;
+    Update(_username: string, entity: T, notification: NotificationError): Promise<void>;
+    Delete(_username: string, notification: NotificationError): Promise<void>;
+    GetByUsername(uuid: string, notification: NotificationError): Promise<T>;
+    GetAll(): Promise<T[]>;
 }

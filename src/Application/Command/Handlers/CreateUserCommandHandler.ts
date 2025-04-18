@@ -9,12 +9,9 @@ import {NotificationError} from "../../../Shared/Errors/NotificationError";
 export class CreateUserCommandHandler implements BaseHandler<CreateUserCommand>
 {
     private UserRepository: UserRepository;
-    private Notification: NotificationError
 
-    constructor (userRepository: UserRepository, notification: NotificationError)
-    {
+    constructor(userRepository: UserRepository, notification: NotificationError) {
         this.UserRepository = userRepository;
-        this.Notification = notification;
     }
 
     async Handle(command: CreateUserCommand) : Promise<void>
@@ -24,6 +21,6 @@ export class CreateUserCommandHandler implements BaseHandler<CreateUserCommand>
 
         const userEntity: User = new User(emailVO, passwordHashVO, command.Username);
 
-        // await this.UserRepository.Create(userEntity, this.NotificationError);
+        await this.UserRepository.Create(userEntity);
     }
 }

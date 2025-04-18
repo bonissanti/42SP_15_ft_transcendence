@@ -9,20 +9,20 @@ import {CreateUserCommandHandler} from "../../Command/Handlers/CreateUserCommand
 import {CreateUserCommandValidator} from "../../Command/Validators/CreateUserCommandValidator";
 import {NotificationError} from "../../../Shared/Errors/NotificationError";
 import {ValidationException} from "../../../Shared/Errors/ValidationException";
+import prisma from "../../../Infrastructure/Client/PrismaClient";
+import {CustomError} from "../../../Shared/Errors/CustomError";
 
 export class CreateUserService implements BaseService<CreateUserDTO>
 {
     private UserRepository: UserRepository;
     private CreateUserHandler: CreateUserCommandHandler;
     private CreateUserValidator: CreateUserCommandValidator;
-    private NotificationError: NotificationError;
 
     constructor(notificationError: NotificationError)
     {
         this.UserRepository = new UserRepository();
-        this.NotificationError = notificationError;
-        this.CreateUserHandler = new CreateUserCommandHandler(this.UserRepository, notificationError);
         this.CreateUserValidator = new CreateUserCommandValidator(this.UserRepository, notificationError);
+        this.CreateUserHandler = new CreateUserCommandHandler(this.UserRepository, notificationError);
     }
 
     public async Execute(dto: CreateUserDTO, reply: FastifyReply) : Promise<Result>
@@ -41,6 +41,13 @@ export class CreateUserService implements BaseService<CreateUserDTO>
             {
                 const message: string = error.SetErrors();
                 return Result.Failure(message);
+            }
+            else if (error instanceof prisma.PrismaClientKnownRequestError.Code)
+            {
+                if (prisma.PrismaClientKnownRequestError.code == 'P2002')
+                    return Result.Failure(ErrorCatalog.UsernameAlreadyExists.SetError());
+
+                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError());
             }
             return Result.Failure(ErrorCatalog.InternalServerError.SetError());
         }
