@@ -1,5 +1,5 @@
 import fastify from 'fastify'
-import prisma from "./Infrastructure/Persistence/PrismaConfig/PrismaConfig";
+import prisma from "./Infrastructure/Client/PrismaClient";
 
 const server = fastify()
 
