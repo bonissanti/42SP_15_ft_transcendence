@@ -1,4 +1,5 @@
 import fastify from 'fastify'
+import prisma from "./Infrastructure/Persistence/PrismaConfig/PrismaConfig";
 
 const server = fastify()
 
@@ -10,10 +11,19 @@ server.get('/ping', async (request, reply) => {
     return 'pong\n';
 });
 
-server.listen({ port: 8080 }, (err, address) => {
-    if (err) {
-        console.error(err)
-        process.exit(1)
+const runServer = async () => {
+    try
+    {
+        await server.listen({port: 8080})
+        console.log('Server listening at port 8080')
+        await server.ready()
     }
-    console.log(`Server listening at ${address}`)
-})
+    catch (err)
+    {
+        console.error('Error starting server:', err);
+        await prisma.$disconnect();
+        process.exit(1);
+    }
+}
+
+runServer();
