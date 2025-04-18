@@ -9,8 +9,8 @@ import {CreateUserCommandHandler} from "../../Command/Handlers/CreateUserCommand
 import {CreateUserCommandValidator} from "../../Command/Validators/CreateUserCommandValidator";
 import {NotificationError} from "../../../Shared/Errors/NotificationError";
 import {ValidationException} from "../../../Shared/Errors/ValidationException";
-import prisma from "../../../Infrastructure/Client/PrismaClient";
 import {CustomError} from "../../../Shared/Errors/CustomError";
+import prisma from "../../../Infrastructure/Client/PrismaClient";
 
 export class CreateUserService implements BaseService<CreateUserDTO>
 {

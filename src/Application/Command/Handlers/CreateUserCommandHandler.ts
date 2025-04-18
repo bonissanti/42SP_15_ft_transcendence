@@ -21,6 +21,6 @@ export class CreateUserCommandHandler implements BaseHandler<CreateUserCommand>
 
         const userEntity: User = new User(emailVO, passwordHashVO, command.Username);
 
-        await this.UserRepository.Create(userEntity);
+        // await this.UserRepository.Create(userEntity);
     }
 }

@@ -1,10 +1,10 @@
 import {IBaseRepository} from "../Interface/IBaseRepository";
 import {User} from "../../../../Domain/Entities/Concrete/User";
-import prisma from "../../../Client/PrismaClient";
 import {NotificationError} from "../../../../Shared/Errors/NotificationError";
 import {ErrorCatalog} from "../../../../Shared/Errors/ErrorCatalog";
+import prisma from "../../../Client/PrismaClient";
 
-export class UserRepository implements IBaseRepository<User>
+export class UserRepository
 {
    public async Create(userEntity: User): Promise<void>
    {

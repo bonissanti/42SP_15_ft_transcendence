@@ -17,7 +17,7 @@ export class UserController extends BaseController
         this.CreateUserService = new CreateUserService(this.NotificationError);
     }
 
-    protected async CreateUser(request: FastifyRequest<{ Body: CreateUserDTO }>, reply: FastifyReply) : Promise<void>
+    public async CreateUser(request: FastifyRequest<{ Body: CreateUserDTO }>, reply: FastifyReply) : Promise<FastifyReply>
     {
         const userDTO: CreateUserDTO = request.body;
         const result: Result = await this.CreateUserService.Execute(userDTO, reply);

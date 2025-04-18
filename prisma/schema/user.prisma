@@ -1,9 +1,0 @@
-model User{
-  id Int @id @default(autoincrement())
-  uuid String @unique
-  email String @unique
-  password String
-  username String @unique
-  profilePic String?
-  createdAt DateTime @default(now())
-}

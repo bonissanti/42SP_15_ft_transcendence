@@ -9,9 +9,6 @@
     "dev": "nodemon dist/index.js",
     "clean:dist": "node dist/Shared/Utils/fs.rmdir.js"
   },
-  "prisma": {
-    "schema": "prisma/schema"
-  },
   "dependencies": {
     "@prisma/client": "^6.6.0",
     "bcrypt": "^5.1.1",
