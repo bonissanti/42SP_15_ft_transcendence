@@ -16,7 +16,7 @@ export abstract class BaseController
             console.error(errors);
         }
         const statusCode: number = result.Error?.Code!;
-        const message: string = result.Error?.Message!;
+        const message: string = result.?.Message!;
 
         return reply.status(statusCode).send({
             code: statusCode,

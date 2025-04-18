@@ -1,16 +1,15 @@
 import {BaseEntity} from "../Interface/BaseEntity";
-import {IUser} from "../Interface/IUser";
 import {PasswordHashVO} from "../../ValueObjects/PasswordHashVO";
 import {EmailVO} from "../../ValueObjects/EmailVO";
 
-export class User implements BaseEntity, IUser
+export class User implements BaseEntity
 {
     public readonly Uuid: string;
-    public readonly Email: string;
+    public readonly Email: EmailVO;
     public readonly PasswordHash: PasswordHashVO;
     public readonly Username: string;
 
-    constructor(email: string, passwordHash: PasswordHashVO, username: string)
+    constructor(email: EmailVO, passwordHash: PasswordHashVO, username: string)
     {
         this.Uuid = crypto.randomUUID();
         this.Email = email;
