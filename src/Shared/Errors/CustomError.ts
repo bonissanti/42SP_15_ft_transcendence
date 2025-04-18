@@ -18,4 +18,9 @@ export class CustomError
     {
         return this.Message;
     }
+
+    public SetError(): string
+    {
+        return 'Code:' + this.Code + ' Message:' + this.Message;
+    }
 }

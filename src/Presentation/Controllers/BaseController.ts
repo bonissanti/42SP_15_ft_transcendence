@@ -10,17 +10,8 @@ export abstract class BaseController
             return reply.status(200).send("User created sucessfully");
 
         if (notificationError.NumberOfErrors() > 0 && !result.isSucess)
-        {
-            const errors = notificationError.GetAllErrors();
-            console.error("Errors found :(")
-            console.error(errors);
-        }
-        const statusCode: number = result.Error?.Code!;
-        const message: string = result.?.Message!;
-
-        return reply.status(statusCode).send({
-            code: statusCode,
-            message: message,
-        })
+            return reply.status(400).send(result.getMessage())
+        else
+            return reply.status(500).send(result.getMessage())
     }
 }

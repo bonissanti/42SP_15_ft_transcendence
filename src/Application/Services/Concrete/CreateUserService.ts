@@ -8,13 +8,14 @@ import {UserRepository} from "../../../Infrastructure/Persistence/Repositories/C
 import {CreateUserCommandHandler} from "../../Command/Handlers/CreateUserCommandHandler";
 import {CreateUserCommandValidator} from "../../Command/Validators/CreateUserCommandValidator";
 import {NotificationError} from "../../../Shared/Errors/NotificationError";
+import {ValidationException} from "../../../Shared/Errors/ValidationException";
 
 export class CreateUserService implements BaseService<CreateUserDTO>
 {
     private UserRepository: UserRepository;
-    private NotificationError: NotificationError;
     private CreateUserHandler: CreateUserCommandHandler;
     private CreateUserValidator: CreateUserCommandValidator;
+    private NotificationError: NotificationError;
 
     constructor(notificationError: NotificationError)
     {
@@ -32,10 +33,16 @@ export class CreateUserService implements BaseService<CreateUserDTO>
             this.CreateUserValidator.Validator(command);
             await this.CreateUserHandler.Handle(command);
 
-            return Result.Sucess();
+            return Result.Sucess("User created successfully");
         }
-        catch (error){
-            return Result.Failure(ErrorCatalog.InternalServerError);
+        catch (error)
+        {
+            if (error instanceof ValidationException)
+            {
+                const message: string = error.SetErrors();
+                return Result.Failure(message);
+            }
+            return Result.Failure(ErrorCatalog.InternalServerError.SetError());
         }
     }
 }

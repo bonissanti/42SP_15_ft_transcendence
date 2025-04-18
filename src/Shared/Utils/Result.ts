@@ -3,20 +3,26 @@ import { CustomError } from "../Errors/CustomError";
 export class Result
 {
     public readonly isSucess: boolean;
-    public static CustomErrors: CustomError[];
+    private readonly Message: string = "";
 
-    private constructor(isSucess: boolean)
+    private constructor(isSucess: boolean, message: string)
     {
         this.isSucess = isSucess;
+        this.Message = message;
     }
 
-    public static Sucess() : Result
+    public static Sucess(message: string) : Result
     {
-        return new Result(true);
+        return new Result(true, message);
     }
 
-    public static Failure(): Result
+    public static Failure(message: string): Result
     {
-        return new Result(false);
+        return new Result(false, message);
+    }
+
+    public getMessage(): string
+    {
+        return this.Message;
     }
 }

@@ -6,6 +6,7 @@ import {NotificationError} from "../../../Shared/Errors/NotificationError";
 import {BaseValidator} from "./BaseValidator";
 import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog";
 import {ValidationException} from "../../../Shared/Errors/ValidationException";
+import {CustomError} from "../../../Shared/Errors/CustomError";
 
 export class CreateUserCommandValidator implements BaseValidator<CreateUserCommand>
 {
@@ -33,7 +34,8 @@ export class CreateUserCommandValidator implements BaseValidator<CreateUserComma
         // }
 
         if (this.NotificationError.NumberOfErrors() > 0){
-            throw new Error("Error at validation");
+            const allErrors : CustomError[] = this.NotificationError.GetAllErrors();
+            throw new ValidationException(allErrors);
         }
     }
 }
