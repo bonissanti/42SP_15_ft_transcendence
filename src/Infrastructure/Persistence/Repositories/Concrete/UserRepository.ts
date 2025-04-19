@@ -2,9 +2,12 @@ import {IBaseRepository} from "../Interface/IBaseRepository";
 import {User} from "../../../../Domain/Entities/Concrete/User";
 import {NotificationError} from "../../../../Shared/Errors/NotificationError";
 import {ErrorCatalog} from "../../../../Shared/Errors/ErrorCatalog";
-import prisma from "../../../Client/PrismaClient";
+import { PrismaClient, Prisma } from '../../../../../prisma/generated/prisma';
 
-export class UserRepository
+const prisma = new PrismaClient();
+
+
+export class UserRepository implements IBaseRepository<User>
 {
    public async Create(userEntity: User): Promise<void>
    {
@@ -41,17 +44,17 @@ export class UserRepository
        })
    }
 
-   public async GetByUsername(_username: string): Promise<User>
-   {
-       return await prisma.user.findUnique({
-           where: {
-               username: _username,
-           }
-       });
-   }
-
-   public async GetAll(): Promise<User[]>
-   {
-       return await prisma.user.findMany()
-   }
+   // public async GetByUsername(_username: string): Promise<User>
+   // {
+   //     return await prisma.user.findUnique({
+   //         where: {
+   //             username: _username,
+   //         }
+   //     });
+   // }
+   //
+   // public async GetAll(): Promise<User[]>
+   // {
+   //     return await prisma.user.findMany()
+   // }
 }

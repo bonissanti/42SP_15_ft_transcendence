@@ -10,7 +10,9 @@ import {CreateUserCommandValidator} from "../../Command/Validators/CreateUserCom
 import {NotificationError} from "../../../Shared/Errors/NotificationError";
 import {ValidationException} from "../../../Shared/Errors/ValidationException";
 import {CustomError} from "../../../Shared/Errors/CustomError";
-import prisma from "../../../Infrastructure/Client/PrismaClient";
+import { PrismaClient, Prisma } from '../../../../prisma/generated/prisma';
+
+const prisma = new PrismaClient();
 
 export class CreateUserService implements BaseService<CreateUserDTO>
 {
@@ -42,13 +44,13 @@ export class CreateUserService implements BaseService<CreateUserDTO>
                 const message: string = error.SetErrors();
                 return Result.Failure(message);
             }
-            else if (error instanceof prisma.PrismaClientKnownRequestError.Code)
-            {
-                if (prisma.PrismaClientKnownRequestError.code == 'P2002')
-                    return Result.Failure(ErrorCatalog.UsernameAlreadyExists.SetError());
-
-                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError());
-            }
+            // else if (error instanceof prisma.PrismaClientKnownRequestError.Code)
+            // {
+            //     if (prisma.PrismaClientKnownRequestError.code == 'P2002')
+            //         return Result.Failure(ErrorCatalog.UsernameAlreadyExists.SetError());
+            //
+            //     return Result.Failure(ErrorCatalog.DatabaseViolated.SetError());
+            // }
             return Result.Failure(ErrorCatalog.InternalServerError.SetError());
         }
     }

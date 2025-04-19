@@ -19,7 +19,7 @@ export class CreateUserCommandHandler implements BaseHandler<CreateUserCommand>
         const passwordHashVO = await PasswordHashVO.create(command.Password);
         const emailVO = EmailVO.AddEmail(command.Email);
 
-        const userEntity: User = new User(emailVO, passwordHashVO, command.Username);
+        const userEntity: User = new User(emailVO, passwordHashVO, command.Username, command.ProfilePic);
 
         // await this.UserRepository.Create(userEntity);
     }

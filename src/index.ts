@@ -1,6 +1,7 @@
-import fastify from 'fastify'
-import { PrismaClient } from '../prisma/generated/prisma'
-import {userRoutes} from "./setupRoutes";
+import fastify, {FastifyRequest} from 'fastify'
+import { PrismaClient, Prisma } from '../prisma/generated/prisma'
+import {UserController} from "./Presentation/Controllers/UserController";
+import {CreateUserDTO} from "./Domain/DTO/Command/CreateUserDTO";
 
 const server = fastify()
 const prisma = new PrismaClient()
@@ -13,17 +14,33 @@ server.get('/ping', async (request, reply) => {
     return 'pong\n';
 });
 
-server.post('/user', async (request, reply) => {
-    return 'creating a new user\n';
-})
+const opts = {
+    schema: {
+        body: {
+            type: 'object',
+            properties: {
+                email: { type: 'string' },
+                password: { type: 'string' },
+                username: { type: 'string' },
+                profilePic: { type: ['string', 'null'] },
+            },
+            required: ['email', 'password', 'username'],
+            additionalProperties: false,
+        }
+    }
+}
 
-// userRoutes(server);
 
 
 async function main()
 {
     try
     {
+        const userController = new UserController();
+
+        server.post('/user', opts, (request: FastifyRequest<{ Body: CreateUserDTO }>, reply) =>
+            userController.CreateUser(request, reply))
+
         const address = await server.listen({port : 8080});
         console.log(`Server listening at ${address}`)
     }
