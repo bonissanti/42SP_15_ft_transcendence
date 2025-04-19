@@ -1,5 +1,5 @@
 import {FastifyReply} from "fastify";
-import {Result} from "../../../Shared/Utils/Result";
+import {Result} from "../../../Shared/Utils/Result.js";
 
 export interface BaseService<T>
 {

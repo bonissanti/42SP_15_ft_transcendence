@@ -1,18 +1,15 @@
-import {CreateUserDTO} from "../../../Domain/DTO/Command/CreateUserDTO";
-import {BaseService} from "../Interfaces/BaseService";
+import {CreateUserDTO} from "../../../Domain/DTO/Command/CreateUserDTO.js";
+import {BaseService} from "../Interfaces/BaseService.js";
 import {FastifyReply} from "fastify";
-import {Result} from "../../../Shared/Utils/Result";
-import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog";
-import {CreateUserCommand} from "../../Command/CommandObject/CreateUserCommand";
-import {UserRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/UserRepository";
-import {CreateUserCommandHandler} from "../../Command/Handlers/CreateUserCommandHandler";
-import {CreateUserCommandValidator} from "../../Command/Validators/CreateUserCommandValidator";
-import {NotificationError} from "../../../Shared/Errors/NotificationError";
-import {ValidationException} from "../../../Shared/Errors/ValidationException";
-import {CustomError} from "../../../Shared/Errors/CustomError";
-import { PrismaClient, Prisma } from '../../../../prisma/generated/prisma';
-
-const prisma = new PrismaClient();
+import {Result} from "../../../Shared/Utils/Result.js";
+import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog.js";
+import {CreateUserCommand} from "../../Command/CommandObject/CreateUserCommand.js";
+import {UserRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/UserRepository.js";
+import {CreateUserCommandHandler} from "../../Command/Handlers/CreateUserCommandHandler.js";
+import {CreateUserCommandValidator} from "../../Command/Validators/CreateUserCommandValidator.js";
+import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
+import {ValidationException} from "../../../Shared/Errors/ValidationException.js";
+import {CustomError} from "../../../Shared/Errors/CustomError.js";
 
 export class CreateUserService implements BaseService<CreateUserDTO>
 {

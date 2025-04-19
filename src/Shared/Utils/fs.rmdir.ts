@@ -1,11 +1,11 @@
-const fs = require('fs');
-const path = require('path');
+import * as fs from "node:fs";
+import * as path from "node:path";
 
 const distPath = path.resolve(__dirname, '../../../dist');
 
 if (fs.existsSync(distPath))
 {
-    fs.rm(distPath, { recursive: true }, (err: null) => {
+    fs.rm(distPath, { recursive: true }, (err) => {
         if (err)
             console.error('Error while deleting directory ${distPath}', err)
         else

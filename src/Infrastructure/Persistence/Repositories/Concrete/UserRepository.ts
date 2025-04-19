@@ -1,11 +1,6 @@
-import {IBaseRepository} from "../Interface/IBaseRepository";
-import {User} from "../../../../Domain/Entities/Concrete/User";
-import {NotificationError} from "../../../../Shared/Errors/NotificationError";
-import {ErrorCatalog} from "../../../../Shared/Errors/ErrorCatalog";
-import { PrismaClient, Prisma } from '../../../../../prisma/generated/prisma';
-
-const prisma = new PrismaClient();
-
+import {IBaseRepository} from "../Interface/IBaseRepository.js";
+import {User} from "../../../../Domain/Entities/Concrete/User.js";
+import prisma from "@prisma";
 
 export class UserRepository implements IBaseRepository<User>
 {

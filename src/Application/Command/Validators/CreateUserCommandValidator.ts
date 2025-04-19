@@ -1,12 +1,12 @@
-import {CreateUserCommand} from "../CommandObject/CreateUserCommand";
-import {UserRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/UserRepository";
-import {EmailVO} from "../../../Domain/ValueObjects/EmailVO";
-import {PasswordHashVO} from "../../../Domain/ValueObjects/PasswordHashVO";
-import {NotificationError} from "../../../Shared/Errors/NotificationError";
-import {BaseValidator} from "./BaseValidator";
-import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog";
-import {ValidationException} from "../../../Shared/Errors/ValidationException";
-import {CustomError} from "../../../Shared/Errors/CustomError";
+import {CreateUserCommand} from "../CommandObject/CreateUserCommand.js";
+import {UserRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/UserRepository.js";
+import {EmailVO} from "../../../Domain/ValueObjects/EmailVO.js";
+import {PasswordHashVO} from "../../../Domain/ValueObjects/PasswordHashVO.js";
+import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
+import {BaseValidator} from "./BaseValidator.js";
+import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog.js";
+import {ValidationException} from "../../../Shared/Errors/ValidationException.js";
+import {CustomError} from "../../../Shared/Errors/CustomError.js";
 
 export class CreateUserCommandValidator implements BaseValidator<CreateUserCommand>
 {

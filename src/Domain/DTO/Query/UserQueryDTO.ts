@@ -1,4 +1,4 @@
-import {CreateUserCommand} from "../../../Application/Command/CommandObject/CreateUserCommand";
+import {CreateUserCommand} from "../../../Application/Command/CommandObject/CreateUserCommand.js";
 
 export class UserQueryDTO
 {

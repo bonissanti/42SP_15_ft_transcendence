@@ -1,4 +1,4 @@
-import {NotificationError} from "../../../Shared/Errors/NotificationError";
+import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
 
 export interface BaseValidator<T>
 {

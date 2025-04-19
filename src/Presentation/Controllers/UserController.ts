@@ -1,9 +1,9 @@
-import { CreateUserDTO } from "../../Domain/DTO/Command/CreateUserDTO";
-import { Result } from "../../Shared/Utils/Result";
+import { CreateUserDTO } from "../../Domain/DTO/Command/CreateUserDTO.js";
+import { Result } from "../../Shared/Utils/Result.js";
 import { FastifyReply, FastifyRequest } from "fastify";
-import {BaseController} from "./BaseController";
-import {CreateUserService} from "../../Application/Services/Concrete/CreateUserService";
-import {NotificationError} from "../../Shared/Errors/NotificationError";
+import {BaseController} from "./BaseController.js";
+import {CreateUserService} from "../../Application/Services/Concrete/CreateUserService.js";
+import {NotificationError} from "../../Shared/Errors/NotificationError.js";
 
 export class UserController extends BaseController
 {
@@ -19,7 +19,8 @@ export class UserController extends BaseController
 
     public async CreateUser(request: FastifyRequest<{ Body: CreateUserDTO }>, reply: FastifyReply) : Promise<FastifyReply>
     {
-        const userDTO: CreateUserDTO = request.body;
+        const body = request.body;
+        const userDTO: CreateUserDTO = new CreateUserDTO(body.email, body.password, body.username, body.profilePic);
         const result: Result = await this.CreateUserService.Execute(userDTO, reply);
 
         return(this.handleResult(result, reply, this.NotificationError));

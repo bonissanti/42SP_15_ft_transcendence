@@ -1,10 +1,10 @@
-import {BaseHandler} from "./BaseHandler";
-import {CreateUserCommand} from "../CommandObject/CreateUserCommand";
-import {PasswordHashVO} from "../../../Domain/ValueObjects/PasswordHashVO";
-import {EmailVO} from "../../../Domain/ValueObjects/EmailVO";
-import {UserRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/UserRepository";
-import {User} from "../../../Domain/Entities/Concrete/User";
-import {NotificationError} from "../../../Shared/Errors/NotificationError";
+import {BaseHandler} from "./BaseHandler.js";
+import {CreateUserCommand} from "../CommandObject/CreateUserCommand.js";
+import {PasswordHashVO} from "../../../Domain/ValueObjects/PasswordHashVO.js";
+import {EmailVO} from "../../../Domain/ValueObjects/EmailVO.js";
+import {UserRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/UserRepository.js";
+import {User} from "../../../Domain/Entities/Concrete/User.js";
+import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
 
 export class CreateUserCommandHandler implements BaseHandler<CreateUserCommand>
 {

@@ -1,5 +1,5 @@
-import {CustomError} from "./CustomError";
-import {Result} from "../Utils/Result";
+import {CustomError} from "./CustomError.js";
+import {Result} from "../Utils/Result.js";
 
 export class NotificationError
 {

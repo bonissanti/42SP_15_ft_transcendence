@@ -1,6 +1,6 @@
-import {BaseEntity} from "../Interface/BaseEntity";
-import {PasswordHashVO} from "../../ValueObjects/PasswordHashVO";
-import {EmailVO} from "../../ValueObjects/EmailVO";
+import {BaseEntity} from "../Interface/BaseEntity.js";
+import {PasswordHashVO} from "../../ValueObjects/PasswordHashVO.js";
+import {EmailVO} from "../../ValueObjects/EmailVO.js";
 
 export class User implements BaseEntity
 {

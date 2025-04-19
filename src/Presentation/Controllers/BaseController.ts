@@ -1,6 +1,6 @@
-import {Result} from "../../Shared/Utils/Result";
+import {Result} from "../../Shared/Utils/Result.js";
 import {FastifyReply} from "fastify";
-import {NotificationError} from "../../Shared/Errors/NotificationError";
+import {NotificationError} from "../../Shared/Errors/NotificationError.js";
 
 export abstract class BaseController
 {

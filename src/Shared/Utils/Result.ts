@@ -1,4 +1,4 @@
-import { CustomError } from "../Errors/CustomError";
+import { CustomError } from "../Errors/CustomError.js";
 
 export class Result
 {

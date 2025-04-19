@@ -1,4 +1,4 @@
-import {CreateUserDTO} from "../../../Domain/DTO/Command/CreateUserDTO";
+import {CreateUserDTO} from "../../../Domain/DTO/Command/CreateUserDTO.js";
 
 export class CreateUserCommand
 {
@@ -18,6 +18,11 @@ export class CreateUserCommand
 
     public static FromDTO(dto: CreateUserDTO): CreateUserCommand
     {
-        return new CreateUserCommand(dto.Email, dto.Password, dto.Username, dto.ProfilePic);
+        const email: string = dto.email;
+        const password: string = dto.password;
+        const username: string = dto.username;
+        const profilepic: string | null = dto.profilePic;
+
+        return new CreateUserCommand(email, password, username, profilepic);
     }
 }

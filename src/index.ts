@@ -1,10 +1,10 @@
 import fastify, {FastifyRequest} from 'fastify'
-import { PrismaClient, Prisma } from '../prisma/generated/prisma'
-import {UserController} from "./Presentation/Controllers/UserController";
-import {CreateUserDTO} from "./Domain/DTO/Command/CreateUserDTO";
+import {UserController} from "./Presentation/Controllers/UserController.js";
+import {CreateUserDTO} from "./Domain/DTO/Command/CreateUserDTO.js";
+import prisma from "@prisma";
+
 
 const server = fastify()
-const prisma = new PrismaClient()
 
 server.get('/', async (request, reply) => {
     return { message: "Fucker"}

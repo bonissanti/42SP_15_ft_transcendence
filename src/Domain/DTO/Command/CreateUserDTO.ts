@@ -1,17 +1,17 @@
-import {CreateUserCommand} from "../../../Application/Command/CommandObject/CreateUserCommand";
+import {CreateUserCommand} from "../../../Application/Command/CommandObject/CreateUserCommand.js";
 
 export class CreateUserDTO
 {
-    public readonly Email: string;
-    public readonly Password: string;
-    public readonly Username: string;
-    public readonly ProfilePic: string | null;
+    public readonly email: string;
+    public readonly password: string;
+    public readonly username: string;
+    public readonly profilePic: string | null;
 
-    constructor(email: string, password: string, username: string, profilepic: string | null = null)
+    constructor(_email: string, _password: string, _username: string, _profilepic: string | null = null)
     {
-        this.Email = email;
-        this.Password = password;
-        this.Username = username;
-        this.ProfilePic = profilepic;
+        this.email = _email;
+        this.password = _password;
+        this.username = _username;
+        this.profilePic = _profilepic;
     }
 }
