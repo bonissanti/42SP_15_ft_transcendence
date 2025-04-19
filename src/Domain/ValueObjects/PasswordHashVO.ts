@@ -5,7 +5,7 @@ export class PasswordHashVO
     private static readonly Salt: number = 10;
     private readonly PasswordHash: string;
 
-    private constructor(passwordHash: string) {
+    public constructor(passwordHash: string) {
         this.PasswordHash = passwordHash;
     }
 

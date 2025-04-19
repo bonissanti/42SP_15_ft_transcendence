@@ -1,6 +1,10 @@
 import {IBaseRepository} from "../Interface/IBaseRepository.js";
 import {User} from "../../../../Domain/Entities/Concrete/User.js";
 import prisma from "@prisma";
+import {ErrorCatalog} from "../../../../Shared/Errors/ErrorCatalog.js";
+import {EmailVO} from "../../../../Domain/ValueObjects/EmailVO.js";
+import {PasswordHashVO} from "../../../../Domain/ValueObjects/PasswordHashVO.js";
+import {UserViewModel} from "../../../../Presentation/ViewModels/UserViewModel.js";
 
 export class UserRepository implements IBaseRepository<User>
 {
@@ -12,6 +16,7 @@ export class UserRepository implements IBaseRepository<User>
                    email: userEntity.Email.getEmail(),
                    password: userEntity.PasswordHash.getPasswordHash(),
                    username: userEntity.Username,
+                   profilePic: userEntity.ProfilePic,
                },
            });
    }
@@ -26,6 +31,7 @@ export class UserRepository implements IBaseRepository<User>
                email: userEntity.Email.getEmail(),
               password: userEntity.PasswordHash.getPasswordHash(),
               username: userEntity.Username,
+              profilePic: userEntity.ProfilePic,
           },
        });
    }
@@ -39,17 +45,61 @@ export class UserRepository implements IBaseRepository<User>
        })
    }
 
-   // public async GetByUsername(_username: string): Promise<User>
-   // {
-   //     return await prisma.user.findUnique({
-   //         where: {
-   //             username: _username,
-   //         }
-   //     });
-   // }
-   //
-   // public async GetAll(): Promise<User[]>
-   // {
-   //     return await prisma.user.findMany()
-   // }
+   public async GetByUsername(_username: string): Promise<User>
+   {
+       const user = await prisma.user.findUnique({
+           where: {
+               username: _username,
+           }
+       });
+       if (!user)
+           throw new Error(ErrorCatalog.UserNotFound.SetError());
+
+       return new User(
+           EmailVO.AddEmail(user.email),
+           new PasswordHashVO(user.password),
+           user.username,
+           user.profilePic ?? ""
+       );
+   }
+
+   public async GetAll(): Promise<User[]>
+   {
+       const users = await prisma.user.findMany();
+
+       if (!users)
+           throw new Error(ErrorCatalog.UserNotFound.SetError());
+
+       return users.map(user => new User(
+           EmailVO.AddEmail(user.email),
+           new PasswordHashVO(user.password),
+           user.username,
+           user.profilePic ?? ""
+       ));
+   }
+
+   public async GetFullUser(_username: string): Promise<UserViewModel>
+   {
+       const userEntities: User = await this.GetByUsername(_username);
+
+       return this.mapToViewModel(userEntities);
+   }
+
+   public async GetFullUsers(): Promise<UserViewModel[]>
+   {
+       const userEntities: User[] = await this.GetAll();
+
+       return userEntities.map(user => this.mapToViewModel(user));
+   }
+
+   private mapToViewModel(userEntity: User): UserViewModel
+   {
+        return new UserViewModel(
+            userEntity.Uuid,
+            userEntity.Email.getEmail(),
+            userEntity.PasswordHash.getPasswordHash(),
+            userEntity.Username,
+            userEntity.ProfilePic ?? "",
+        )
+   }
 }
