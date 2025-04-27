@@ -4,45 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SPA Pong</title>
+  <link rel="stylesheet" href="/pong/style.css">
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    body { margin: 0; overflow: hidden; }
-    .bar { width: 10px; height: 100px; background: black; position: absolute; }
-    .ball { width: 15px; height: 15px; background: red; position: absolute; border-radius: 50%; }
-    .round-display {
-      position: absolute;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 30px;
-      font-weight: bold;
-      color: black;
-    }
-    .left-bar-point {
-      position: absolute;
-      top: 20px;
-      left: 10%;
-      color: black;
-    }
-    .right-bar-point {
-      position: absolute;
-      top: 20px;
-      right: 10%;
-      color: black;
-    }
-  </style>
 </head>
 <body class="bg-white">
 
-  <!-- 🏠 Tela Inicial -->
   <div id="home-screen" class="flex flex-col justify-center items-center h-screen gap-4">
     <h1 class="text-3xl font-bold">Bem-vindo!</h1>
     <button onclick="startGame()" class="bg-black text-white px-6 py-2 rounded-xl hover:scale-105 duration-300">
-      Mandatory
+      mandatory
     </button>
   </div>
 
-  <!-- 🕹 Tela do Jogo -->
   <div id="game-screen" class="hidden">
     <div id="round-display" class="round-display">ROUND 1</div>
     <div id="left-bar-point" class="left-bar-point">0</div>
@@ -52,7 +25,6 @@
     <div id="ball" class="ball"></div>
   </div>
 
-  <!-- ✅ Tela de Vitória -->
   <div id="win-screen" class="hidden flex flex-col justify-center items-center h-screen gap-4">
     <h1 class="text-3xl font-bold text-green-600">Você Ganhou!</h1>
     <button onclick="goHome()" class="bg-black text-white px-6 py-2 rounded-xl hover:scale-105 duration-300">
@@ -60,136 +32,12 @@
     </button>
   </div>
 
-  <!-- ❌ Tela de Derrota -->
   <div id="lose-screen" class="hidden flex flex-col justify-center items-center h-screen gap-4">
     <h1 class="text-3xl font-bold text-red-600">Você Perdeu!</h1>
     <button onclick="goHome()" class="bg-black text-white px-6 py-2 rounded-xl hover:scale-105 duration-300">
       Tentar Novamente
     </button>
   </div>
-
-  <script>
-    const leftBar = document.getElementById("left-bar");
-    const rightBar = document.getElementById("right-bar");
-    const ball = document.getElementById("ball");
-    const roundDisplay = document.getElementById("round-display");
-    const leftBarPoint = document.getElementById("left-bar-point");
-    const rightBarPoint = document.getElementById("right-bar-point");
-
-    let leftY = window.innerHeight / 2 - 50;
-    let rightY = window.innerHeight / 2 - 50;
-    let ballX = window.innerWidth / 2;
-    let ballY = window.innerHeight / 2;
-    let ballSpeedX = 5;
-    let ballSpeedY = 5;
-    const barSpeed = 8;
-    let round = 1;
-    let leftScore = 0;
-    let rightScore = 0;
-    const keys = {};
-    let running = false;
-
-    document.addEventListener("keydown", (e) => keys[e.key] = true);
-    document.addEventListener("keyup", (e) => keys[e.key] = false);
-
-    function startGame() {
-      showScreen("game-screen");
-      resetGame();
-      running = true;
-      requestAnimationFrame(gameLoop);
-    }
-
-    function goHome() {
-      showScreen("home-screen");
-      running = false;
-    }
-
-    function showScreen(id) {
-      ["home-screen", "game-screen", "win-screen", "lose-screen"].forEach(screen =>
-        document.getElementById(screen).classList.add("hidden")
-      );
-      document.getElementById(id).classList.remove("hidden");
-    }
-
-    function resetGame() {
-      leftScore = 0;
-      rightScore = 0;
-      round = 1;
-      leftBarPoint.textContent = "0";
-      rightBarPoint.textContent = "0";
-      roundDisplay.textContent = "ROUND 1";
-      leftY = window.innerHeight / 2 - 50;
-      rightY = window.innerHeight / 2 - 50;
-      resetBall();
-    }
-
-    function resetBall() {
-      ballX = window.innerWidth / 2;
-      ballY = window.innerHeight / 2;
-      ballSpeedX = Math.random() > 0.5 ? 5 : -5;
-      ballSpeedY = Math.random() > 0.5 ? 5 : -5;
-    }
-
-    function moveBars() {
-      if (keys["w"]) leftY = Math.max(0, leftY - barSpeed);
-      if (keys["s"]) leftY = Math.min(window.innerHeight - 100, leftY + barSpeed);
-      if (keys["ArrowUp"]) rightY = Math.max(0, rightY - barSpeed);
-      if (keys["ArrowDown"]) rightY = Math.min(window.innerHeight - 100, rightY + barSpeed);
-      leftBar.style.top = `${leftY}px`;
-      rightBar.style.top = `${rightY}px`;
-    }
-
-    function moveBall() {
-      ballX += ballSpeedX;
-      ballY += ballSpeedY;
-
-      if (ballY <= 0 || ballY >= window.innerHeight - 15) {
-        ballSpeedY = -ballSpeedY;
-      }
-
-      if (ballX <= 50 && ballY + 15 >= leftY && ballY <= leftY + 100) {
-        ballSpeedX = -ballSpeedX;
-      }
-
-      if (ballX >= window.innerWidth - 60 && ballY + 15 >= rightY && ballY <= rightY + 100) {
-        ballSpeedX = -ballSpeedX;
-      }
-
-      if (ballX <= 0 || ballX >= window.innerWidth) {
-        updateScore();
-        resetBall();
-      }
-
-      ball.style.left = `${ballX}px`;
-      ball.style.top = `${ballY}px`;
-    }
-
-    function updateScore() {
-      roundDisplay.textContent = `ROUND ${round++}`;
-
-      if (ballX <= 0) {
-        rightScore++;
-        rightBarPoint.textContent = rightScore;
-        if (rightScore === 1) {
-          showScreen("lose-screen");
-          running = false;
-        }
-      } else {
-        leftScore++;
-        leftBarPoint.textContent = leftScore;
-        if (leftScore === 1) {
-          showScreen("win-screen");
-          running = false;
-        }
-      }
-    }
-
-    function gameLoop() {
-      if (!running) return;
-      moveBars();
-      moveBall();
-      requestAnimationFrame(gameLoop);
-    }
-  </script>
+  <script src="/pong/game.js"></script>
 </body>
 </html>

@@ -1,11 +1,15 @@
-FROM node:16
+FROM node:23-slim
 
 WORKDIR /app
 
-COPY . .
+COPY package*.json .
 
-COPY package*.json ./
+RUN npm install
+
+RUN npm install -g nodemon
+
+COPY . .
 
 EXPOSE 8080
 
-CMD ["node", "src/server.js"]
+CMD ["nodemon", "src/server.js"]

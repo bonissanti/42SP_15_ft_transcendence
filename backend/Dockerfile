@@ -10,4 +10,4 @@ COPY . .
 
 EXPOSE 3000
 
-CMD ["node", "node.js"]
+CMD ["nodemon", "node.js"]

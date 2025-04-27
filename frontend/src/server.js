@@ -1,15 +1,25 @@
-const express = require('express');
+const fastify = require('fastify')({ logger: true });
 const path = require('path');
+const fastifyStatic = require('@fastify/static');
 
-const app = express();
 const PORT = 8080;
 
-app.use(express.static(path.join(__dirname)));
-
-app.get('/pong', (req, res) => {
-    res.sendFile(path.join(__dirname, 'src/pong/pong.html'));
+fastify.register(fastifyStatic, {
+  root: path.join(__dirname),
 });
 
-app.listen(PORT, () => {
-    console.log(`Servidor rodando em http://localhost:${PORT}`);
+fastify.get('/pong', async (request, reply) => {
+  return reply.sendFile('src/pong/pong.html');
 });
+
+const start = async () => {
+  try {
+    await fastify.listen({ port: PORT, host: '0.0.0.0' });
+    console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
+  } catch (err) {
+    fastify.log.error(err);
+    process.exit(1);
+  }
+};
+
+start();
