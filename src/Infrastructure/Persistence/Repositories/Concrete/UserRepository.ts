@@ -21,17 +21,17 @@ export class UserRepository implements IBaseRepository<User>
            });
    }
 
-   public async Update(_username: string, userEntity: User): Promise<void>
+   public async Update(_uuid: string, userEntity: User | null): Promise<void>
    {
        await prisma.user.update({
            where: {
-               username: _username,
+               uuid: _uuid,
            },
           data: {
-               email: userEntity.Email.getEmail(),
-              password: userEntity.PasswordHash.getPasswordHash(),
-              username: userEntity.Username,
-              profilePic: userEntity.ProfilePic,
+               email: userEntity?.Email.getEmail(),
+              password: userEntity?.PasswordHash.getPasswordHash(),
+              username: userEntity?.Username,
+              profilePic: userEntity?.ProfilePic,
           },
        });
    }
@@ -62,6 +62,24 @@ export class UserRepository implements IBaseRepository<User>
            user.profilePic ?? ""
        );
    }
+
+    public async GetByUUID(_uuid: string): Promise<User | null>
+    {
+        const user = await prisma.user.findUnique({
+            where: {
+                uuid: _uuid,
+            }
+        });
+        if (!user)
+            return null;
+
+        return new User(
+            EmailVO.AddEmail(user.email),
+            new PasswordHashVO(user.password),
+            user.username,
+            user.profilePic ?? ""
+        );
+    }
 
    public async GetAll(): Promise<User[]>
    {

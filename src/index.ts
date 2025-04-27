@@ -43,6 +43,14 @@ async function main()
     server.put('/user/:username', opts, (request: FastifyRequest<{ Body: EditUserDTO }>, reply) =>
         userController.EditUser(request, reply))
 
+    //TODO: Criar login
+    // server.post('/login', opts, (request: FastifyRequest<{ Body: CreateUserDTO }>, reply) =>
+    //     userController.CreateUser(request, reply))
+
+    //TODO: criar logout
+
+    //Todo: Criar endpoints de criar, editar e deletar para auth0
+
     server.setErrorHandler(async (error, request, reply) => {
         console.log("Internal server error: ", error.message, "")
         reply.status(500).send(error.message)

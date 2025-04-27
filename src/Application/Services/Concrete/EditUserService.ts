@@ -1,12 +1,15 @@
+import {FastifyReply} from "fastify";
+import { Result } from "src/Shared/Utils/Result.js";
 import {BaseService} from "../Interfaces/BaseService.js";
 import {EditUserDTO} from "../../../Domain/DTO/Command/EditUserDTO.js";
 import {UserRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/UserRepository.js";
-import {FastifyReply} from "fastify";
 import {EditUserCommand} from "../../Command/CommandObject/EditUserCommand.js";
-import { Result } from "src/Shared/Utils/Result.js";
 import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog.js";
 import { ValidationException } from "src/Shared/Errors/ValidationException.js";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import {EditUserCommandHandler} from "../../Command/Handlers/EditUserCommandHandler.js";
+import {EditUserCommandValidator} from "../../Command/Validators/EditUserCommandValidator.js";
+import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
 
 export class EditUserService implements BaseService<EditUserDTO>
 {

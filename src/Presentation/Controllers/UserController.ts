@@ -5,17 +5,20 @@ import {BaseController} from "./BaseController.js";
 import {CreateUserService} from "../../Application/Services/Concrete/CreateUserService.js";
 import {NotificationError} from "../../Shared/Errors/NotificationError.js";
 import {EditUserDTO} from "../../Domain/DTO/Command/EditUserDTO.js";
+import {EditUserService} from "../../Application/Services/Concrete/EditUserService.js";
 
 export class UserController extends BaseController
 {
     private readonly NotificationError: NotificationError;
     private readonly CreateUserService: CreateUserService;
+    private readonly EditUserService: EditUserService;
 
     constructor()
     {
         super();
         this.NotificationError = new NotificationError();
         this.CreateUserService = new CreateUserService(this.NotificationError);
+        this.EditUserService = new EditUserService(this.NotificationError);
     }
 
     public async CreateUser(request: FastifyRequest<{ Body: CreateUserDTO }>, reply: FastifyReply) : Promise<FastifyReply>
@@ -30,7 +33,7 @@ export class UserController extends BaseController
     public async EditUser(request: FastifyRequest<{ Body: EditUserDTO }>, reply: FastifyReply) : Promise<FastifyReply>
     {
         const body = request.body;
-        const userDTO: EditUserDTO = new EditUserDTO(body.email, body.password, body.username, body.profilePic);
+        const userDTO: EditUserDTO = new EditUserDTO(body.uuid, body.email, body.password, body.username, body.profilePic);
         const result: Result = await this.EditUserService.Execute(userDTO, reply);
 
         return(this.handleResult(result, reply, this.NotificationError));

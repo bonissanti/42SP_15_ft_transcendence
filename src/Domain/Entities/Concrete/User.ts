@@ -5,10 +5,10 @@ import {EmailVO} from "../../ValueObjects/EmailVO.js";
 export class User implements BaseEntity
 {
     public readonly Uuid: string;
-    public readonly Email: EmailVO;
-    public readonly PasswordHash: PasswordHashVO;
-    public readonly Username: string;
-    public readonly ProfilePic: string | null;
+    Email: EmailVO;
+    public PasswordHash: PasswordHashVO;
+    public Username: string;
+    public ProfilePic: string | null;
 
     constructor(email: EmailVO, passwordHash: PasswordHashVO, username: string, profilepic: string | null = null)
     {
@@ -17,5 +17,29 @@ export class User implements BaseEntity
         this.PasswordHash = passwordHash;
         this.Username = username;
         this.ProfilePic = profilepic;
+    }
+
+    public ChangeEmail(email: EmailVO): void
+    {
+        if (email.getEmail() != this.Email.getEmail())
+            this.Email = email;
+    }
+
+    public ChangePassword(passwordHash: PasswordHashVO): void
+    {
+        if (passwordHash.getPasswordHash() != this.PasswordHash.getPasswordHash())
+            this.PasswordHash = passwordHash;
+    }
+
+    public ChangeUsername(username: string): void
+    {
+        if (username != this.Username)
+            this.Username = username;
+    }
+
+    public ChangePhoto(profilepic: string | null): void
+    {
+        if (profilepic != this.ProfilePic)
+            this.ProfilePic = profilepic;
     }
 }

@@ -1,25 +1,20 @@
-import {CreateUserCommand} from "../CommandObject/CreateUserCommand.js";
-import {UserRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/UserRepository.js";
-import {EmailVO} from "../../../Domain/ValueObjects/EmailVO.js";
-import {PasswordHashVO} from "../../../Domain/ValueObjects/PasswordHashVO.js";
-import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
 import {BaseValidator} from "./BaseValidator.js";
+import {EditUserCommand} from "../CommandObject/EditUserCommand.js";
+import {UserRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/UserRepository.js";
+import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
+import {EmailVO} from "../../../Domain/ValueObjects/EmailVO.js";
 import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog.js";
-import {ValidationException} from "../../../Shared/Errors/ValidationException.js";
+import {PasswordHashVO} from "../../../Domain/ValueObjects/PasswordHashVO.js";
 import {CustomError} from "../../../Shared/Errors/CustomError.js";
+import {ValidationException} from "../../../Shared/Errors/ValidationException.js";
 
-export class CreateUserCommandValidator implements BaseValidator<CreateUserCommand>
+export class EditUserCommandValidator implements BaseValidator<EditUserCommand>
 {
-    private UserRepository: UserRepository;
-    private NotificationError: NotificationError;
-
-    constructor(userRepository: UserRepository, notificationError: NotificationError)
+    constructor(private UserRepository: UserRepository, private NotificationError: NotificationError)
     {
-        this.UserRepository = userRepository;
-        this.NotificationError = notificationError;
     }
 
-    public Validator(command: CreateUserCommand): void
+    public Validator(command: EditUserCommand): void
     {
         if (!EmailVO.ValidEmail(command.Email)) {
             this.NotificationError.AddError(ErrorCatalog.InvalidEmail);
@@ -29,9 +24,8 @@ export class CreateUserCommandValidator implements BaseValidator<CreateUserComma
             this.NotificationError.AddError(ErrorCatalog.InvalidPassword);
         }
 
-        if (!this.UserRepository.GetByUsername(command.Username)) {
-            this.NotificationError.AddError(ErrorCatalog.UsernameAlreadyExists);
-        }
+        if (!this.UserRepository.GetByUUID(command.Uuid))
+            this.NotificationError.AddError(ErrorCatalog.UserNotFound);
 
         if (!this.CheckExtension(command.ProfilePic) && command.ProfilePic != null)
             this.NotificationError.AddError(ErrorCatalog.InvalidEmail);
