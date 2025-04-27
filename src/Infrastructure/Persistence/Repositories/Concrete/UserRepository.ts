@@ -45,7 +45,7 @@ export class UserRepository implements IBaseRepository<User>
        })
    }
 
-   public async GetByUsername(_username: string): Promise<User>
+   public async GetByUsername(_username: string): Promise<User | null>
    {
        const user = await prisma.user.findUnique({
            where: {
@@ -53,7 +53,7 @@ export class UserRepository implements IBaseRepository<User>
            }
        });
        if (!user)
-           throw new Error(ErrorCatalog.UserNotFound.SetError());
+           return null;
 
        return new User(
            EmailVO.AddEmail(user.email),
@@ -78,9 +78,12 @@ export class UserRepository implements IBaseRepository<User>
        ));
    }
 
-   public async GetFullUser(_username: string): Promise<UserViewModel>
+   public async GetFullUser(_username: string): Promise<UserViewModel | null>
    {
-       const userEntities: User = await this.GetByUsername(_username);
+       const userEntities: User | null = await this.GetByUsername(_username);
+
+       if (!userEntities)
+           return null;
 
        return this.mapToViewModel(userEntities);
    }
