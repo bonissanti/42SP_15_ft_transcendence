@@ -2,6 +2,7 @@ import fastify, {FastifyRequest} from 'fastify'
 import {UserController} from "./Presentation/Controllers/UserController.js";
 import {CreateUserDTO} from "./Domain/DTO/Command/CreateUserDTO.js";
 import prisma from "@prisma";
+import {EditUserDTO} from "./Domain/DTO/Command/EditUserDTO.js";
 
 
 const server = fastify()
@@ -34,19 +35,27 @@ const opts = {
 
 async function main()
 {
+    const userController = new UserController();
+
+    server.post('/user', opts, (request: FastifyRequest<{ Body: CreateUserDTO }>, reply) =>
+        userController.CreateUser(request, reply))
+
+    server.put('/user/:username', opts, (request: FastifyRequest<{ Body: EditUserDTO }>, reply) =>
+        userController.EditUser(request, reply))
+
+    server.setErrorHandler(async (error, request, reply) => {
+        console.log("Internal server error: ", error.message, "")
+        reply.status(500).send(error.message)
+    })
+
     try
     {
-        const userController = new UserController();
-
-        server.post('/user', opts, (request: FastifyRequest<{ Body: CreateUserDTO }>, reply) =>
-            userController.CreateUser(request, reply))
-
         const address = await server.listen({port : 8080});
         console.log(`Server listening at ${address}`)
     }
     catch (err)
     {
-        console.error(err)
+        console.error("Failed to start server: ", err, "")
         await prisma.$disconnect();
         process.exit(1)
     }

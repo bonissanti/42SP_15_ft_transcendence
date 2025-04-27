@@ -9,7 +9,6 @@ import {CreateUserCommandHandler} from "../../Command/Handlers/CreateUserCommand
 import {CreateUserCommandValidator} from "../../Command/Validators/CreateUserCommandValidator.js";
 import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
 import {ValidationException} from "../../../Shared/Errors/ValidationException.js";
-import prisma from "@prisma";
 import {PrismaClientKnownRequestError} from "@prisma/client/runtime/edge";
 
 export class CreateUserService implements BaseService<CreateUserDTO>
