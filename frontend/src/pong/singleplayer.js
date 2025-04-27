@@ -11,31 +11,23 @@ let ballX = window.innerWidth / 2;
 let ballY = window.innerHeight / 2;
 let ballSpeedX = 5;
 let ballSpeedY = 5;
-const barSpeed = 15;
+const barSpeed = 8;
 let round = 1;
 let leftScore = 0;
 let rightScore = 0;
 const keys = {};
 let running = false;
-let maxPoints = 30;
+let maxPoints = 1;
 
 document.addEventListener("keydown", (e) => keys[e.key] = true);
 document.addEventListener("keyup", (e) => keys[e.key] = false);
 
-function startMultiplayerGame() {
+function singlePlayerStartGame() {
   showScreen("game-screen");
   resetGame();
   running = true;
   requestAnimationFrame(gameLoop);
 }
-
-function startSinglePlayerStartGame() {
-	showScreen("game-screen");
-	resetGame();
-	running = true;
-	setInterval(increaseBallSpeed, 2000); // 2 segundos
-	requestAnimationFrame(gameLoopAI);
-  }
 
 function goHome() {
   showScreen("home-screen");
@@ -66,37 +58,22 @@ function resetBall() {
   ballY = window.innerHeight / 2;
   ballSpeedX = Math.random() > 0.5 ? 5 : -5;
   ballSpeedY = Math.random() > 0.5 ? 5 : -5;
-  aiError = Math.random() < 0.05 ? (Math.random() * 100 - 50) : 0;
 }
-
-let aiError = 0;
 
 function moveBars() {
   if (keys["w"] || keys["W"]) leftY = Math.max(0, leftY - barSpeed);
   if (keys["s"] || keys["S"]) leftY = Math.min(window.innerHeight - 100, leftY + barSpeed);
-  if (keys["ArrowUp"]) rightY = Math.max(0, rightY - barSpeed);
-  if (keys["ArrowDown"]) rightY = Math.min(window.innerHeight - 100, rightY + barSpeed);
   leftBar.style.top = `${leftY}px`;
-  rightBar.style.top = `${rightY}px`;
 }
 
-function moveBarsAI() {
-	if (keys["w"] || keys["W"]) leftY = Math.max(0, leftY - barSpeed);
-	if (keys["s"] || keys["S"]) leftY = Math.min(window.innerHeight - 100, leftY + barSpeed);
-	if (ballX > window.innerWidth / 2 && ballSpeedX > 0) {
-	  const targetY = ballY + aiError;
-	  const distanceToTarget = targetY - rightY;
-	  const moveSpeed = Math.min(Math.abs(distanceToTarget), barSpeed);
-	  if (distanceToTarget > 0) {
-		rightY = Math.min(window.innerHeight - 100, rightY + moveSpeed); 
-	  } else if (distanceToTarget < 0) {
-		rightY = Math.max(0, rightY - moveSpeed); 
-	  }
-	}
-	leftBar.style.top = `${leftY}px`;
-	rightBar.style.top = `${rightY}px`;
+function aiMove(){
+	  if (ballY < rightY) {
+	rightY = Math.max(0, rightY - barSpeed);
+  } else if (ballY > rightY + 100) {
+	rightY = Math.min(window.innerHeight - 100, rightY + barSpeed);
+  }
+  rightBar.style.top = `${rightY}px`;
 }
-  
 
 function moveBall() {
   ballX += ballSpeedX;
@@ -143,24 +120,11 @@ function updateScore() {
   }
 }
 
-function increaseBallSpeed() {
-    const speedFactor = 1.1;
-    ballSpeedX *= speedFactor;
-    ballSpeedY *= speedFactor;
-}
-  
-
 function gameLoop() {
   if (!running) return;
   moveBars();
+  aiMove();
   moveBall();
   requestAnimationFrame(gameLoop);
 }
 
-
-function gameLoopAI() {
-	if (!running) return;
-	moveBarsAI();
-	moveBall();
-	requestAnimationFrame(gameLoopAI);
-}

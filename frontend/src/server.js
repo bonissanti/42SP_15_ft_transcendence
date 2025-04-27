@@ -8,9 +8,9 @@ fastify.register(fastifyStatic, {
   root: path.join(__dirname),
 });
 
-fastify.get('/pong', async (request, reply) => {
+/* fastify.get('/pong', async (request, reply) => {
   return reply.sendFile('src/pong/pong.html');
-});
+}); */
 
 const start = async () => {
   try {
