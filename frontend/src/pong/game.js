@@ -43,10 +43,10 @@ function goHome() {
 }
 
 function showScreen(id) {
-  ["home-screen", "game-screen", "win-screen", "lose-screen"].forEach(screen =>
-    document.getElementById(screen).classList.add("hidden")
-  );
-  document.getElementById(id).classList.remove("hidden");
+	["home-screen", "game-screen", "win-screen", "lose-screen", "rps-screen"].forEach(screen =>
+	  document.getElementById(screen).classList.add("hidden")
+	);
+	document.getElementById(id).classList.remove("hidden");
 }
 
 function resetGame() {
@@ -157,6 +157,9 @@ function gameLoop() {
   requestAnimationFrame(gameLoop);
 }
 
+function startRPSGame() {
+	showScreen("rps-screen");
+  }  
 
 function gameLoopAI() {
 	if (!running) return;
@@ -164,3 +167,25 @@ function gameLoopAI() {
 	moveBall();
 	requestAnimationFrame(gameLoopAI);
 }
+
+function playRPS(playerChoice) {
+	const choices = ["pedra", "papel", "tesoura"];
+	const botChoice = choices[Math.floor(Math.random() * choices.length)];
+	
+	let result = "";
+  
+	if (playerChoice === botChoice) {
+	  result = "Empate!";
+	} else if (
+	  (playerChoice === "pedra" && botChoice === "tesoura") ||
+	  (playerChoice === "papel" && botChoice === "pedra") ||
+	  (playerChoice === "tesoura" && botChoice === "papel")
+	) {
+	  result = "Você ganhou!";
+	} else {
+	  result = "Você perdeu!";
+	}
+  
+	document.getElementById("rps-result").textContent = `Você escolheu ${playerChoice}. O diabo escolheu ${botChoice}.${result}`;
+  }
+  

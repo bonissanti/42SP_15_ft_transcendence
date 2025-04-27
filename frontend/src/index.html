@@ -11,11 +11,18 @@
 
   <div id="home-screen" class="flex flex-col justify-center items-center h-screen gap-4">
     <h1 class="text-3xl font-bold">Bem-vindo!</h1>
-    <button onclick="startMultiplayerGame()" class="bg-black text-white px-6 py-2 rounded-xl hover:scale-105 duration-300">
-      Multiplayer
-    </button>
-	<button onclick="startSinglePlayerStartGame()" class="bg-black text-white px-6 py-2 rounded-xl hover:scale-105 duration-300">
-	  Singleplayer
+	<button onclick="startMultiplayerGame()" class="bg-black text-white px-6 py-2 rounded-xl hover:scale-105 duration-300">
+		Multiplayer
+	  </button>
+	  
+	  <button onclick="startSinglePlayerStartGame()" class="bg-black text-white px-6 py-2 rounded-xl hover:scale-105 duration-300">
+		Singleplayer
+	  </button>
+	  
+	  <button onclick="startRPSGame()" class="bg-black text-white px-6 py-2 rounded-xl hover:scale-105 duration-300">
+		Pedra, Papel e Tesoura
+	  </button>
+	  
   </div>
 
   <div id="game-screen" class="hidden">
@@ -39,6 +46,18 @@
     <button onclick="goHome()" class="bg-black text-white px-6 py-2 rounded-xl hover:scale-105 duration-300">
       Tentar Novamente
     </button>
+  </div>
+  <div id="rps-screen" class="hidden flex flex-col justify-center items-center h-screen gap-4">
+	<h1 class="text-3xl font-bold">Pedra, Papel ou Tesoura</h1>
+	<div class="flex gap-8">
+	  <img src="/RPS/images/pedra.png" onclick="playRPS('pedra')" class="w-24 h-24 cursor-pointer hover:scale-110 duration-300" alt="Pedra">
+	  <img src="/RPS/images/papel.png" onclick="playRPS('papel')" class="w-24 h-24 cursor-pointer hover:scale-110 duration-300" alt="Papel">
+	  <img src="/RPS/images/tesoura.jpg" onclick="playRPS('tesoura')" class="w-24 h-24 cursor-pointer hover:scale-110 duration-300" alt="Tesoura">
+	</div>
+	<div id="rps-result" class="mt-6 text-xl font-bold"></div>
+	<button onclick="goHome()" class="mt-4 bg-black text-white px-6 py-2 rounded-xl hover:scale-105 duration-300">
+	  Voltar ao Início
+	</button>
   </div>
   <script src="/pong/game.js"></script>
 </body>
