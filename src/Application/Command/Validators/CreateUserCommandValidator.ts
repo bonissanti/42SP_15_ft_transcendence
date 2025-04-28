@@ -29,7 +29,7 @@ export class CreateUserCommandValidator implements BaseValidator<CreateUserComma
             this.NotificationError.AddError(ErrorCatalog.InvalidPassword);
         }
 
-        if (!this.UserRepository.GetByUsername(command.Username)) {
+        if (!this.UserRepository.GetUserByIdentifier(undefined, command.Username)) {
             this.NotificationError.AddError(ErrorCatalog.UsernameAlreadyExists);
         }
 

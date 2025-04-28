@@ -1,12 +1,13 @@
 import {NotificationError} from "../../../../Shared/Errors/NotificationError.js";
+import {UserQueryDTO} from "../../../../Domain/DTO/Query/UserQueryDTO.js";
 
 export interface IBaseRepository<T>
 {
     Create(entity: T, notification: NotificationError): Promise<void>;
     Update(_uuid: string, entity: T, notification: NotificationError): Promise<void>;
     Delete(_uuid: string, notification: NotificationError): Promise<void>;
-    GetByUsername(_username: string, notification: NotificationError): Promise<T | null>;
-    GetByUUID(uuid: string, notification: NotificationError): Promise<T | null>;
     GetAll(): Promise<T[] | null>;
+    GetFullUsers(): Promise<UserQueryDTO[]>
+    GetUserByIdentifier(Uuid?: string, Username?: string): Promise<UserQueryDTO | null>;
     VerifyIfUserExistsByUUID(uuid: string): Promise<boolean>;
 }

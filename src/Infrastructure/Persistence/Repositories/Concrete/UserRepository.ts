@@ -4,7 +4,6 @@ import prisma from "@prisma";
 import {ErrorCatalog} from "../../../../Shared/Errors/ErrorCatalog.js";
 import {EmailVO} from "../../../../Domain/ValueObjects/EmailVO.js";
 import {PasswordHashVO} from "../../../../Domain/ValueObjects/PasswordHashVO.js";
-import {UserViewModel} from "../../../../Presentation/ViewModels/UserViewModel.js";
 import {UserQueryDTO} from "../../../../Domain/DTO/Query/UserQueryDTO.js";
 
 export class UserRepository implements IBaseRepository<User>
@@ -46,42 +45,6 @@ export class UserRepository implements IBaseRepository<User>
        })
    }
 
-   public async GetByUsername(_username: string): Promise<User | null>
-   {
-       const user = await prisma.user.findUnique({
-           where: {
-               username: _username,
-           }
-       });
-       if (!user)
-           return null;
-
-       return new User(
-           EmailVO.AddEmail(user.email),
-           new PasswordHashVO(user.password),
-           user.username,
-           user.profilePic ?? ""
-       );
-   }
-
-    public async GetByUUID(_uuid: string): Promise<User | null>
-    {
-        const user = await prisma.user.findUnique({
-            where: {
-                uuid: _uuid,
-            }
-        });
-        if (!user)
-            return null;
-
-        return new User(
-            EmailVO.AddEmail(user.email),
-            new PasswordHashVO(user.password),
-            user.username,
-            user.profilePic ?? ""
-        );
-    }
-
    public async GetAll(): Promise<User[]>
    {
        const users = await prisma.user.findMany();
@@ -97,14 +60,24 @@ export class UserRepository implements IBaseRepository<User>
        ));
    }
 
-   public async GetFullUserByUsername(_username: string): Promise<UserQueryDTO | null>
+   public async GetUserByIdentifier(Uuid?: string, Username?: string): Promise<UserQueryDTO | null>
    {
-       const userEntities: User | null = await this.GetByUsername(_username);
-
-       if (!userEntities)
+       if (!Uuid && !Username)
            return null;
 
-       return this.mapToQueryDTO(userEntities);
+       const user = await prisma.user.findFirst({
+           where: {
+               uuid: Uuid,
+               username: Username,
+           }
+       });
+
+       if (!user)
+           return null;
+
+       const userEntity =  this.RecoverEntity(user)
+
+       return this.mapToQueryDTO(userEntity);
    }
 
    public async GetFullUsers(): Promise<UserQueryDTO[]>
@@ -113,6 +86,17 @@ export class UserRepository implements IBaseRepository<User>
 
        return userEntities.map(user => this.mapToQueryDTO(user));
    }
+
+    public async VerifyIfUserExistsByUUID(uuid: string): Promise<boolean>
+    {
+        const user = await prisma.user.findUnique({
+            where: {
+                uuid: uuid,
+            }
+        });
+
+        return user !== null;
+    }
 
    private mapToQueryDTO(userEntity: User): UserQueryDTO
    {
@@ -124,14 +108,13 @@ export class UserRepository implements IBaseRepository<User>
         )
    }
 
-   public async VerifyIfUserExistsByUUID(uuid: string): Promise<boolean>
+   private RecoverEntity(user: any):User
    {
-       const user = await prisma.user.findUnique({
-           where: {
-               uuid: uuid,
-           }
-       });
-
-       return user !== null;
+       return new User(
+           EmailVO.AddEmail(user.email),
+           new PasswordHashVO(user.password),
+           user.username,
+           user.profilePic ?? ""
+       );
    }
 }
