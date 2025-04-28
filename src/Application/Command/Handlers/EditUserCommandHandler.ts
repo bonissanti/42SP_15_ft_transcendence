@@ -1,4 +1,4 @@
-import {BaseHandler} from "./BaseHandler.js";
+import {BaseHandlerCommand} from "./BaseHandlerCommand.js";
 import {EditUserCommand} from "../CommandObject/EditUserCommand.js";
 import {UserRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/UserRepository.js";
 import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
@@ -6,7 +6,7 @@ import {PasswordHashVO} from "../../../Domain/ValueObjects/PasswordHashVO.js";
 import {EmailVO} from "../../../Domain/ValueObjects/EmailVO.js";
 import {User} from "../../../Domain/Entities/Concrete/User.js";
 
-export class EditUserCommandHandler implements BaseHandler<EditUserCommand>
+export class EditUserCommandHandler implements BaseHandlerCommand<EditUserCommand>
 {
     constructor(private UserRepository: UserRepository, Notifcation: NotificationError)
     {

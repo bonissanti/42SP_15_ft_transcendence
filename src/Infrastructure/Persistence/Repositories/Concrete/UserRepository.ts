@@ -5,6 +5,7 @@ import {ErrorCatalog} from "../../../../Shared/Errors/ErrorCatalog.js";
 import {EmailVO} from "../../../../Domain/ValueObjects/EmailVO.js";
 import {PasswordHashVO} from "../../../../Domain/ValueObjects/PasswordHashVO.js";
 import {UserViewModel} from "../../../../Presentation/ViewModels/UserViewModel.js";
+import {UserQueryDTO} from "../../../../Domain/DTO/Query/UserQueryDTO.js";
 
 export class UserRepository implements IBaseRepository<User>
 {
@@ -96,31 +97,41 @@ export class UserRepository implements IBaseRepository<User>
        ));
    }
 
-   public async GetFullUser(_username: string): Promise<UserViewModel | null>
+   public async GetFullUserByUsername(_username: string): Promise<UserQueryDTO | null>
    {
        const userEntities: User | null = await this.GetByUsername(_username);
 
        if (!userEntities)
            return null;
 
-       return this.mapToViewModel(userEntities);
+       return this.mapToQueryDTO(userEntities);
    }
 
-   public async GetFullUsers(): Promise<UserViewModel[]>
+   public async GetFullUsers(): Promise<UserQueryDTO[]>
    {
        const userEntities: User[] = await this.GetAll();
 
-       return userEntities.map(user => this.mapToViewModel(user));
+       return userEntities.map(user => this.mapToQueryDTO(user));
    }
 
-   private mapToViewModel(userEntity: User): UserViewModel
+   private mapToQueryDTO(userEntity: User): UserQueryDTO
    {
-        return new UserViewModel(
+        return new UserQueryDTO(
             userEntity.Uuid,
             userEntity.Email.getEmail(),
-            userEntity.PasswordHash.getPasswordHash(),
             userEntity.Username,
             userEntity.ProfilePic ?? "",
         )
+   }
+
+   public async VerifyIfUserExistsByUUID(uuid: string): Promise<boolean>
+   {
+       const user = await prisma.user.findUnique({
+           where: {
+               uuid: uuid,
+           }
+       });
+
+       return user !== null;
    }
 }

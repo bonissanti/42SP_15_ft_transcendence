@@ -3,6 +3,8 @@ import {UserController} from "./Presentation/Controllers/UserController.js";
 import {CreateUserDTO} from "./Domain/DTO/Command/CreateUserDTO.js";
 import prisma from "@prisma";
 import {EditUserDTO} from "./Domain/DTO/Command/EditUserDTO.js";
+import {DeleteUserDTO} from "./Domain/DTO/Command/DeleteUserDTO.js";
+import {GetUserQuery} from "./Application/Queries/QueryObject/GetUserQuery.js";
 
 
 const server = fastify()
@@ -43,8 +45,11 @@ async function main()
     server.put('/user/:username', opts, (request: FastifyRequest<{ Body: EditUserDTO }>, reply) =>
         userController.EditUser(request, reply))
 
-    server.delete('/user/:username', (request: FastifyRequest<{ Body: string }>, reply) =>
+    server.delete('/user/:username', (request: FastifyRequest<{ Body: DeleteUserDTO }>, reply) =>
         userController.DeleteUser(request, reply))
+
+    // server.get('/user/:username', (request: FastifyRequest<{ Body: GetUserQuery }>, reply) =>
+    //     userController.GetUser(request, reply))
 
     //TODO: Criar login
     // server.post('/login', opts, (request: FastifyRequest<{ Body: CreateUserDTO }>, reply) =>

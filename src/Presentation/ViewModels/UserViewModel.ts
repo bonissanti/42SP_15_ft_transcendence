@@ -1,17 +1,22 @@
+import {UserQueryDTO} from "../../Domain/DTO/Query/UserQueryDTO.js";
+
 export class UserViewModel
 {
-    public readonly Uuid: string;
-    public readonly Username: string;
-    public readonly Email: string;
-    public readonly PasswordHash: string;
+    public readonly Uuid: string | null;
+    public readonly Username: string | null;
+    public readonly Email: string | null;
     public readonly ProfilePic: string | null;
 
-    constructor(Uuid: string, Username: string, Email: string, PasswordHash: string, ProfilePic: string | null = null)
+    constructor(uuid?: string, username?: string, email?: string, profilepic: string | null = null)
     {
-        this.Uuid = Uuid;
-        this.Username = Username;
-        this.Email = Email;
-        this.PasswordHash = PasswordHash;
-        this.ProfilePic = ProfilePic;
+        this.Uuid = uuid ?? null;
+        this.Username = username ?? null;
+        this.Email = email ?? null;
+        this.ProfilePic = profilepic;
+    }
+
+    public static FromQueryDTO(query: UserQueryDTO | null): UserViewModel
+    {
+        return new UserViewModel(query?.Uuid, query?.Username, query?.Email, query?.ProfilePic);
     }
 }

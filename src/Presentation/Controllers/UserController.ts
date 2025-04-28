@@ -7,12 +7,14 @@ import {NotificationError} from "../../Shared/Errors/NotificationError.js";
 import {EditUserDTO} from "../../Domain/DTO/Command/EditUserDTO.js";
 import {EditUserService} from "../../Application/Services/Concrete/EditUserService.js";
 import {DeleteUserDTO} from "../../Domain/DTO/Command/DeleteUserDTO.js";
+import {DeleteUserService} from "../../Application/Services/Concrete/DeleteUserService.js";
 
 export class UserController extends BaseController
 {
     private readonly NotificationError: NotificationError;
     private readonly CreateUserService: CreateUserService;
     private readonly EditUserService: EditUserService;
+    private readonly DeleteUserService: DeleteUserService;
 
     constructor()
     {
@@ -20,6 +22,7 @@ export class UserController extends BaseController
         this.NotificationError = new NotificationError();
         this.CreateUserService = new CreateUserService(this.NotificationError);
         this.EditUserService = new EditUserService(this.NotificationError);
+        this.DeleteUserService = new DeleteUserService(this.NotificationError);
     }
 
     public async CreateUser(request: FastifyRequest<{ Body: CreateUserDTO }>, reply: FastifyReply) : Promise<FastifyReply>
@@ -40,10 +43,12 @@ export class UserController extends BaseController
         return(this.handleResult(result, reply, this.NotificationError));
     }
 
-    public async DeleteUser(request: FastifyRequest<{ Body: { uuid: string } }>, reply: FastifyReply) : Promise<FastifyReply>
+    public async DeleteUser(request: FastifyRequest<{ Body: DeleteUserDTO }>, reply: FastifyReply) : Promise<FastifyReply>
     {
-        const body: { uuid: string } = request.body;
-        const usetDTO: DeleteUserDTO = new DeleteUserDTO(body.uuid);
+        const body = request.body;
+        const usetDTO: DeleteUserDTO = new DeleteUserDTO(body.Uuid);
         const result: Result = await this.DeleteUserService.Execute(usetDTO, reply);
+
+        return(this.handleResult(result, reply, this.NotificationError));
     }
 }

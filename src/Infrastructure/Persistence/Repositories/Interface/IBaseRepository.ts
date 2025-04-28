@@ -8,4 +8,5 @@ export interface IBaseRepository<T>
     GetByUsername(_username: string, notification: NotificationError): Promise<T | null>;
     GetByUUID(uuid: string, notification: NotificationError): Promise<T | null>;
     GetAll(): Promise<T[] | null>;
+    VerifyIfUserExistsByUUID(uuid: string): Promise<boolean>;
 }

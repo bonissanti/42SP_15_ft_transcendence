@@ -1,4 +1,4 @@
-import {BaseHandler} from "./BaseHandler.js";
+import {BaseHandlerCommand} from "./BaseHandlerCommand.js";
 import {CreateUserCommand} from "../CommandObject/CreateUserCommand.js";
 import {PasswordHashVO} from "../../../Domain/ValueObjects/PasswordHashVO.js";
 import {EmailVO} from "../../../Domain/ValueObjects/EmailVO.js";
@@ -6,7 +6,7 @@ import {UserRepository} from "../../../Infrastructure/Persistence/Repositories/C
 import {User} from "../../../Domain/Entities/Concrete/User.js";
 import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
 
-export class CreateUserCommandHandler implements BaseHandler<CreateUserCommand>
+export class CreateUserCommandHandler implements BaseHandlerCommand<CreateUserCommand>
 {
     private UserRepository: UserRepository;
 

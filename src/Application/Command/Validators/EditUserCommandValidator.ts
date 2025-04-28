@@ -24,7 +24,7 @@ export class EditUserCommandValidator implements BaseValidator<EditUserCommand>
             this.NotificationError.AddError(ErrorCatalog.InvalidPassword);
         }
 
-        if (!this.UserRepository.GetByUUID(command.Uuid))
+        if (!this.UserRepository.VerifyIfUserExistsByUUID(command.Uuid))
             this.NotificationError.AddError(ErrorCatalog.UserNotFound);
 
         if (!this.CheckExtension(command.ProfilePic) && command.ProfilePic != null)

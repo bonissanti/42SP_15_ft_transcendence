@@ -16,6 +16,7 @@ export class Result
         return new Result(true, message);
     }
 
+
     public static Failure(message: string): Result
     {
         return new Result(false, message);
