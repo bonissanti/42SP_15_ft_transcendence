@@ -43,6 +43,9 @@ async function main()
     server.put('/user/:username', opts, (request: FastifyRequest<{ Body: EditUserDTO }>, reply) =>
         userController.EditUser(request, reply))
 
+    server.delete('/user/:username', (request: FastifyRequest<{ Body: string }>, reply) =>
+        userController.DeleteUser(request, reply))
+
     //TODO: Criar login
     // server.post('/login', opts, (request: FastifyRequest<{ Body: CreateUserDTO }>, reply) =>
     //     userController.CreateUser(request, reply))

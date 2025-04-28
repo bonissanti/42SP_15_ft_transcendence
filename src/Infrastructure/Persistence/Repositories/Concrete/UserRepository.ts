@@ -36,11 +36,11 @@ export class UserRepository implements IBaseRepository<User>
        });
    }
 
-   public async Delete(_username: string): Promise<void>
+   public async Delete(_uuid: string): Promise<void>
    {
        await prisma.user.delete({
            where: {
-               username: _username,
+               uuid: _uuid,
            },
        })
    }

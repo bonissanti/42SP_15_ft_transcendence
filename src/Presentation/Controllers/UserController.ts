@@ -6,6 +6,7 @@ import {CreateUserService} from "../../Application/Services/Concrete/CreateUserS
 import {NotificationError} from "../../Shared/Errors/NotificationError.js";
 import {EditUserDTO} from "../../Domain/DTO/Command/EditUserDTO.js";
 import {EditUserService} from "../../Application/Services/Concrete/EditUserService.js";
+import {DeleteUserDTO} from "../../Domain/DTO/Command/DeleteUserDTO.js";
 
 export class UserController extends BaseController
 {
@@ -37,5 +38,12 @@ export class UserController extends BaseController
         const result: Result = await this.EditUserService.Execute(userDTO, reply);
 
         return(this.handleResult(result, reply, this.NotificationError));
+    }
+
+    public async DeleteUser(request: FastifyRequest<{ Body: { uuid: string } }>, reply: FastifyReply) : Promise<FastifyReply>
+    {
+        const body: { uuid: string } = request.body;
+        const usetDTO: DeleteUserDTO = new DeleteUserDTO(body.uuid);
+        const result: Result = await this.DeleteUserService.Execute(usetDTO, reply);
     }
 }
