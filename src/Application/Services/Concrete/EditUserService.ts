@@ -24,7 +24,7 @@ export class EditUserService implements BaseService<EditUserDTO>
         this.EditUserHandler = new EditUserCommandHandler(this.UserRepository, notificationError);
     }
 
-    public async Execute(dto: EditUserDTO, reply: FastifyReply) : Promise<Result>
+    public async Execute(dto: EditUserDTO, reply: FastifyReply) : Promise<Result<void>>
     {
         try
         {

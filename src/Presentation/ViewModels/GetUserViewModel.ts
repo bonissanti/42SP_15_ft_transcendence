@@ -1,6 +1,6 @@
-import {UserQueryDTO} from "../../Domain/DTO/Query/UserQueryDTO.js";
+import {GetUserQueryDTO} from "../../Domain/QueryDTO/GetUserQueryDTO.js";
 
-export class UserViewModel
+export class GetUserViewModel
 {
     public readonly Uuid: string | null;
     public readonly Username: string | null;
@@ -15,8 +15,8 @@ export class UserViewModel
         this.ProfilePic = profilepic;
     }
 
-    public static FromQueryDTO(query: UserQueryDTO | null): UserViewModel
+    public static FromQueryDTO(query: GetUserQueryDTO | null): GetUserViewModel
     {
-        return new UserViewModel(query?.Uuid, query?.Username, query?.Email, query?.ProfilePic);
+        return new GetUserViewModel(query?.Uuid, query?.Username, query?.Email, query?.ProfilePic);
     }
 }

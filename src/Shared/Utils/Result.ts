@@ -1,25 +1,31 @@
 import { CustomError } from "../Errors/CustomError.js";
 
-export class Result
+export class Result<T = void>
 {
     public readonly isSucess: boolean;
     private readonly Message: string = "";
+    private readonly Data?: T;
 
-    private constructor(isSucess: boolean, message: string)
+    private constructor(isSucess: boolean, message: string, data?: T)
     {
         this.isSucess = isSucess;
         this.Message = message;
+        this.Data = data;
     }
 
-    public static Sucess(message: string) : Result
+    public static Sucess(message: string) : Result<void>
     {
-        return new Result(true, message);
+        return new Result(true, message, undefined);
     }
 
-
-    public static Failure(message: string): Result
+    public static SucessWithData<T>(message: string, data: T) : Result<T>
     {
-        return new Result(false, message);
+        return new Result(true, message, data);
+    }
+
+    public static Failure<T = void>(message: string): Result<T>
+    {
+        return new Result<T>(false, message, undefined);
     }
 
     public getMessage(): string

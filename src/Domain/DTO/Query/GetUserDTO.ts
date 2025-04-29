@@ -1,6 +1,6 @@
-import {GetUserQueryDTO} from "../../../Domain/QueryDTO/GetUserQueryDTO.js";
+import {GetUserViewModel} from "../../../Presentation/ViewModels/GetUserViewModel.js";
 
-export class GetUserQuery
+export class GetUserDTO
 {
     public readonly Uuid: string;
     public readonly Email: string;
@@ -14,10 +14,4 @@ export class GetUserQuery
         this.Username = username;
         this.ProfilePic = profilepic;
     }
-
-    public static FromDTO(dto: GetUserQueryDTO): GetUserQuery
-    {
-        return new GetUserQuery(dto.Uuid, dto.Email, dto.Username, dto.ProfilePic);
-    }
-
 }

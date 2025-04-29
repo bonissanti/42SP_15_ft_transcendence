@@ -1,13 +1,17 @@
 import {NotificationError} from "../../../../Shared/Errors/NotificationError.js";
-import {UserQueryDTO} from "../../../../Domain/DTO/Query/UserQueryDTO.js";
+import {GetUserDTO} from "../../../../Domain/DTO/Query/GetUserDTO.js";
+import {GetUserQueryDTO} from "../../../../Domain/QueryDTO/GetUserQueryDTO.js";
+import {User} from "../../../../Domain/Entities/Concrete/User.js";
 
-export interface IBaseRepository<T>
+export interface IBaseRepository<TQueryDTO, TEntity>
 {
-    Create(entity: T, notification: NotificationError): Promise<void>;
-    Update(_uuid: string, entity: T, notification: NotificationError): Promise<void>;
+    Create(entity: TEntity, notification: NotificationError): Promise<void>;
+    Update(_uuid: string, entity: TEntity, notification: NotificationError): Promise<void>;
     Delete(_uuid: string, notification: NotificationError): Promise<void>;
-    GetAll(): Promise<T[] | null>;
-    GetFullUsers(): Promise<UserQueryDTO[]>
-    GetUserByIdentifier(Uuid?: string, Username?: string): Promise<UserQueryDTO | null>;
+    GetAll(): Promise<TEntity[] | null>;
+    GetUserQueryDTOByUuid(uuid: string): Promise<TQueryDTO | null>;
+    GetUserEntityByUuid(uuid: string): Promise<TEntity | null>;
+    GetFullUsers(): Promise<TQueryDTO[]>
     VerifyIfUserExistsByUUID(uuid: string): Promise<boolean>;
+    VerifyIfUserExistsByUsername(username: string): Promise<boolean>;
 }

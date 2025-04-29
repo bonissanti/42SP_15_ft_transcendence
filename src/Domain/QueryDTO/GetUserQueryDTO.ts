@@ -1,6 +1,4 @@
-import {UserViewModel} from "../../../Presentation/ViewModels/UserViewModel.js";
-
-export class UserQueryDTO
+export class GetUserQueryDTO
 {
     public readonly Uuid: string;
     public readonly Email: string;

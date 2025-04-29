@@ -14,7 +14,7 @@ export class EditUserCommandHandler implements BaseHandlerCommand<EditUserComman
 
     async Handle(command: EditUserCommand): Promise<void>
     {
-        const user: User | null = await this.UserRepository.GetByUUID(command.Uuid);
+        const user: User | null = await this.UserRepository.GetUserEntityByUuid(command.Uuid);
 
         await this.ChangeFields(user, command);
 

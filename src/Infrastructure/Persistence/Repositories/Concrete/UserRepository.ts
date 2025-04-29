@@ -4,9 +4,9 @@ import prisma from "@prisma";
 import {ErrorCatalog} from "../../../../Shared/Errors/ErrorCatalog.js";
 import {EmailVO} from "../../../../Domain/ValueObjects/EmailVO.js";
 import {PasswordHashVO} from "../../../../Domain/ValueObjects/PasswordHashVO.js";
-import {UserQueryDTO} from "../../../../Domain/DTO/Query/UserQueryDTO.js";
+import {GetUserQueryDTO} from "../../../../Domain/QueryDTO/GetUserQueryDTO.js";
 
-export class UserRepository implements IBaseRepository<User>
+export class UserRepository implements IBaseRepository<GetUserQueryDTO, User>
 {
    public async Create(userEntity: User): Promise<void>
    {
@@ -60,27 +60,36 @@ export class UserRepository implements IBaseRepository<User>
        ));
    }
 
-   public async GetUserByIdentifier(Uuid?: string, Username?: string): Promise<UserQueryDTO | null>
+   public async GetUserQueryDTOByUuid(uuid: string): Promise<GetUserQueryDTO | null>
    {
-       if (!Uuid && !Username)
-           return null;
-
-       const user = await prisma.user.findFirst({
+       const user = await prisma.user.findUnique({
            where: {
-               uuid: Uuid,
-               username: Username,
+               uuid: uuid,
            }
        });
 
        if (!user)
            return null;
 
-       const userEntity =  this.RecoverEntity(user)
-
-       return this.mapToQueryDTO(userEntity);
+       const entity = this.RecoverEntity(user);
+       return this.mapToQueryDTO(entity);
    }
 
-   public async GetFullUsers(): Promise<UserQueryDTO[]>
+    public async GetUserEntityByUuid(uuid: string): Promise<User | null>
+    {
+        const user = await prisma.user.findUnique({
+            where: {
+                uuid: uuid,
+            }
+        });
+
+        if (!user)
+            return null;
+
+        return this.RecoverEntity(user);
+    }
+
+   public async GetFullUsers(): Promise<GetUserQueryDTO[]>
    {
        const userEntities: User[] = await this.GetAll();
 
@@ -98,9 +107,20 @@ export class UserRepository implements IBaseRepository<User>
         return user !== null;
     }
 
-   private mapToQueryDTO(userEntity: User): UserQueryDTO
+    public async VerifyIfUserExistsByUsername(username: string): Promise<boolean>
+    {
+        const user = await prisma.user.findUnique({
+            where: {
+                username: username,
+            }
+        });
+
+        return user !== null;
+    }
+
+   private mapToQueryDTO(userEntity: User): GetUserQueryDTO
    {
-        return new UserQueryDTO(
+        return new GetUserQueryDTO(
             userEntity.Uuid,
             userEntity.Email.getEmail(),
             userEntity.Username,
