@@ -14,7 +14,7 @@ export class EditUserCommandValidator implements BaseValidator<EditUserCommand>
     {
     }
 
-    public Validator(command: EditUserCommand): void
+    public async Validator(command: EditUserCommand): Promise<void>
     {
         if (!EmailVO.ValidEmail(command.Email)) {
             this.NotificationError.AddError(ErrorCatalog.InvalidEmail);
@@ -24,7 +24,7 @@ export class EditUserCommandValidator implements BaseValidator<EditUserCommand>
             this.NotificationError.AddError(ErrorCatalog.InvalidPassword);
         }
 
-        if (!this.UserRepository.VerifyIfUserExistsByUUID(command.Uuid))
+        if (!await this.UserRepository.VerifyIfUserExistsByUUID(command.Uuid))
             this.NotificationError.AddError(ErrorCatalog.UserNotFound);
 
         if (!this.CheckExtension(command.ProfilePic) && command.ProfilePic != null)

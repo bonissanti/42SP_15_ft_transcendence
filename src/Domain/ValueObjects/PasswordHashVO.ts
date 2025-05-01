@@ -9,7 +9,7 @@ export class PasswordHashVO
         this.PasswordHash = passwordHash;
     }
 
-    public static async create(rawPassword: string): Promise<PasswordHashVO>
+    public static async Create(rawPassword: string): Promise<PasswordHashVO>
     {
         const salt: string = await bcrypt.genSalt(this.Salt);
 
@@ -18,7 +18,7 @@ export class PasswordHashVO
         return new PasswordHashVO(hashedPassword)
     }
 
-    public static async validate(rawPassword: string, passwordHash: string) : Promise<boolean>
+    public static async Validate(rawPassword: string, passwordHash: string) : Promise<boolean>
     {
         return await bcrypt.compare(rawPassword, passwordHash);
     }

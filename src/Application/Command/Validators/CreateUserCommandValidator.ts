@@ -19,7 +19,7 @@ export class CreateUserCommandValidator implements BaseValidator<CreateUserComma
         this.NotificationError = notificationError;
     }
 
-    public Validator(command: CreateUserCommand): void
+    public async Validator(command: CreateUserCommand): Promise<void>
     {
         if (!EmailVO.ValidEmail(command.Email)) {
             this.NotificationError.AddError(ErrorCatalog.InvalidEmail);
@@ -29,7 +29,7 @@ export class CreateUserCommandValidator implements BaseValidator<CreateUserComma
             this.NotificationError.AddError(ErrorCatalog.InvalidPassword);
         }
 
-        if (!this.UserRepository.VerifyIfUserExistsByUsername(command.Username)) {
+        if (!await this.UserRepository.VerifyIfUserExistsByUsername(command.Username)) {
             this.NotificationError.AddError(ErrorCatalog.UsernameAlreadyExists);
         }
 
