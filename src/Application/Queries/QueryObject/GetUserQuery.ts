@@ -1,4 +1,4 @@
-import {GetUserQueryDTO} from "../../../Domain/QueryDTO/GetUserQueryDTO.js";
+import {GetUserDTO} from "../../../Domain/DTO/Query/GetUserDTO.js";
 
 export class GetUserQuery
 {
@@ -15,9 +15,9 @@ export class GetUserQuery
         this.ProfilePic = profilepic;
     }
 
-    public static FromDTO(dto: GetUserQueryDTO): GetUserQuery
+    public static FromDTO(dto: GetUserDTO): GetUserQuery
     {
-        return new GetUserQuery(dto.Uuid, dto.Email, dto.Username, dto.ProfilePic);
+        return new GetUserQuery(dto.uuid, dto.email, dto.username, dto.profilePic);
     }
 
 }

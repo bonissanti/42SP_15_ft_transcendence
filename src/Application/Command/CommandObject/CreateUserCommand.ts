@@ -13,7 +13,6 @@ export class CreateUserCommand
         this.Password = password;
         this.Username = username;
         this.ProfilePic = profilepic;
-
     }
 
     public static FromDTO(dto: CreateUserDTO): CreateUserCommand

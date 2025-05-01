@@ -13,7 +13,7 @@ import {PrismaClientKnownRequestError} from "@prisma/client/runtime/edge";
 
 export class CreateUserService implements BaseService<CreateUserDTO>
 {
-    private UserRepository: UserRepository;
+    private readonly UserRepository: UserRepository;
     private CreateUserHandler: CreateUserCommandHandler;
     private CreateUserValidator: CreateUserCommandValidator;
 

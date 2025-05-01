@@ -4,7 +4,7 @@ import {NotificationError} from "../../Shared/Errors/NotificationError.js";
 
 export abstract class BaseController
 {
-    protected handleResult<T>(result: Result, reply: FastifyReply, notificationError: NotificationError)
+    protected handleResult<T>(result: Result<T>, reply: FastifyReply, notificationError: NotificationError)
     {
         if (result.isSucess)
             return reply.status(200).send("User created sucessfully");
