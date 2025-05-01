@@ -29,7 +29,7 @@ export class CreateUserService implements BaseService<CreateUserDTO>
         try
         {
             const command: CreateUserCommand = CreateUserCommand.FromDTO(dto);
-            this.CreateUserValidator.Validator(command);
+            await this.CreateUserValidator.Validator(command);
             await this.CreateUserHandler.Handle(command);
 
             return Result.Sucess("User created successfully");

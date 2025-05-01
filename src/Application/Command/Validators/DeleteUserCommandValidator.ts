@@ -10,9 +10,9 @@ export class DeleteUserCommandValidator implements BaseValidator<DeleteUserComma
     {
     }
 
-    public Validator(command: DeleteUserCommand)
+    public async Validator(command: DeleteUserCommand)
     {
-        if (!this.UserRepository.VerifyIfUserExistsByUUID(command.Uuid))
+        if (!await this.UserRepository.VerifyIfUserExistsByUUID(command.Uuid))
             this.NotificationError.AddError(ErrorCatalog.UserNotFound);
     }
 }
