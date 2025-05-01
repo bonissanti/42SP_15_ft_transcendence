@@ -4,18 +4,10 @@ import {CreateUserDTO} from "./Domain/DTO/Command/CreateUserDTO.js";
 import prisma from "@prisma";
 import {EditUserDTO} from "./Domain/DTO/Command/EditUserDTO.js";
 import {DeleteUserDTO} from "./Domain/DTO/Command/DeleteUserDTO.js";
-import {GetUserQuery} from "./Application/Queries/QueryObject/GetUserQuery.js";
+import {GetUserDTO} from "./Domain/DTO/Query/GetUserDTO.js";
 
 
 const server = fastify()
-
-server.get('/', async (request, reply) => {
-    return { message: "Fucker"}
-})
-
-server.get('/ping', async (request, reply) => {
-    return 'pong\n';
-});
 
 const opts = {
     schema: {
@@ -39,16 +31,16 @@ async function main()
 {
     const userController = new UserController();
 
-    server.post('/user', opts, (request: FastifyRequest<{ Body: CreateUserDTO }>, reply) =>
+    server.post('/user', opts, async (request: FastifyRequest<{ Body: CreateUserDTO }>, reply) =>
         userController.CreateUser(request, reply))
 
-    server.put('/user/:username', opts, (request: FastifyRequest<{ Body: EditUserDTO }>, reply) =>
+    server.put('/user', opts, async (request: FastifyRequest<{ Body: EditUserDTO }>, reply) =>
         userController.EditUser(request, reply))
 
-    server.delete('/user/:username', (request: FastifyRequest<{ Body: DeleteUserDTO }>, reply) =>
+    server.delete('/user', async (request: FastifyRequest<{ Body: DeleteUserDTO }>, reply) =>
         userController.DeleteUser(request, reply))
 
-    server.get('/user/:username', (request: FastifyRequest<{ Body: GetUserQuery }>, reply) =>
+    server.get('/user', async (request: FastifyRequest<{ Querystring: GetUserDTO }>, reply) =>
         userController.GetUser(request, reply))
 
     //TODO: Criar login

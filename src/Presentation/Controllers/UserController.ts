@@ -57,10 +57,10 @@ export class UserController extends BaseController
         return(this.handleResult(result, reply, this.NotificationError));
     }
 
-    public async GetUser(request: FastifyRequest<{ Body: GetUserDTO }>, reply: FastifyReply) : Promise<FastifyReply>
+    public async GetUser(request: FastifyRequest<{ Querystring: GetUserDTO }>, reply: FastifyReply) : Promise<FastifyReply>
     {
-        const body = request.body;
-        const userDTO: GetUserDTO = new GetUserDTO(body.uuid, body.email, body.username, body.profilePic)
+        const query = request.query;
+        const userDTO: GetUserDTO = new GetUserDTO(query.uuid, query.email, query.username, query.profilePic)
         const result: Result<GetUserViewModel> = await this.GetUserService.Execute(userDTO, reply);
 
         return(this.handleResult(result, reply, this.NotificationError));
