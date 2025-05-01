@@ -1,10 +1,10 @@
 import {IBaseRepository} from "../Interface/IBaseRepository.js";
 import {User} from "../../../../Domain/Entities/Concrete/User.js";
-import prisma from "@prisma";
 import {ErrorCatalog} from "../../../../Shared/Errors/ErrorCatalog.js";
 import {EmailVO} from "../../../../Domain/ValueObjects/EmailVO.js";
 import {PasswordHashVO} from "../../../../Domain/ValueObjects/PasswordHashVO.js";
 import {GetUserQueryDTO} from "../../../../Domain/QueryDTO/GetUserQueryDTO.js";
+import prisma from "@prisma";
 
 export class UserRepository implements IBaseRepository<GetUserQueryDTO, User>
 {
@@ -56,7 +56,7 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User>
            EmailVO.AddEmail(user.email),
            new PasswordHashVO(user.password),
            user.username,
-           user.profilePic ?? ""
+           user.profilePic ?? "",
        ));
    }
 
@@ -134,7 +134,7 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User>
            EmailVO.AddEmail(user.email),
            new PasswordHashVO(user.password),
            user.username,
-           user.profilePic ?? ""
+           user.profilePic ?? "",
        );
    }
 }

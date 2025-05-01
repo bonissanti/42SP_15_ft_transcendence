@@ -9,6 +9,7 @@ export class User implements BaseEntity
     public PasswordHash: PasswordHashVO;
     public Username: string;
     public ProfilePic: string | null;
+    public LastLogin: Date | null = null;
 
     constructor(email: EmailVO, passwordHash: PasswordHashVO, username: string, profilepic: string | null = null)
     {

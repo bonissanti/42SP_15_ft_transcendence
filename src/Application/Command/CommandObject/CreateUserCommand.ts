@@ -6,13 +6,15 @@ export class CreateUserCommand
     public readonly Password: string;
     public readonly Username: string;
     public readonly ProfilePic: string | null;
+    public readonly LastLogin: Date | null = null;
 
-    private constructor(email:string, password:string, username:string, profilepic: string | null = null)
+    private constructor(email:string, password:string, username:string, profilepic: string | null = null, lastLogin: Date | null)
     {
         this.Email = email;
         this.Password = password;
         this.Username = username;
         this.ProfilePic = profilepic;
+        this.LastLogin = lastLogin;
     }
 
     public static FromDTO(dto: CreateUserDTO): CreateUserCommand
@@ -21,7 +23,8 @@ export class CreateUserCommand
         const password: string = dto.password;
         const username: string = dto.username;
         const profilepic: string | null = dto.profilePic;
+        const lastLogin: Date | null = dto.lastLogin;
 
-        return new CreateUserCommand(email, password, username, profilepic);
+        return new CreateUserCommand(email, password, username, profilepic, lastLogin);
     }
 }
