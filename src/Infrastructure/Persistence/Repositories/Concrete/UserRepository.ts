@@ -17,6 +17,7 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User>
                    password: userEntity.PasswordHash.getPasswordHash(),
                    username: userEntity.Username,
                    profilePic: userEntity.ProfilePic,
+                   lastLogin: userEntity.LastLogin,
                },
            });
    }
@@ -32,6 +33,7 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User>
               password: userEntity?.PasswordHash.getPasswordHash(),
               username: userEntity?.Username,
               profilePic: userEntity?.ProfilePic,
+              lastLogin: userEntity?.LastLogin,
           },
        });
    }
@@ -57,6 +59,7 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User>
            new PasswordHashVO(user.password),
            user.username,
            user.profilePic ?? "",
+           user.lastLogin
        ));
    }
 
@@ -130,11 +133,13 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User>
 
    private RecoverEntity(user: any):User
    {
-       return new User(
+       const userEntity = new User(
            EmailVO.AddEmail(user.email),
            new PasswordHashVO(user.password),
            user.username,
            user.profilePic ?? "",
+           user.lastLogin
        );
+       return userEntity;
    }
 }

@@ -18,7 +18,12 @@ const opts = {
                 password: { type: 'string' },
                 username: { type: 'string' },
                 profilePic: { type: ['string', 'null'] },
-                lastLogin: { type: ['date', 'null'] },
+                lastLogin: {
+                    anyOf: [
+                        { type: 'string', format: 'date-time' },
+                        { type: 'null' },
+                    ]
+                },
             },
             required: ['email', 'password', 'username'],
             additionalProperties: false,

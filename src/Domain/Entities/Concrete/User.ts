@@ -11,13 +11,14 @@ export class User implements BaseEntity
     public ProfilePic: string | null;
     public LastLogin: Date | null = null;
 
-    constructor(email: EmailVO, passwordHash: PasswordHashVO, username: string, profilepic: string | null = null)
+    constructor(email: EmailVO, passwordHash: PasswordHashVO, username: string, profilepic: string | null = null, lastlogin: Date | null)
     {
         this.Uuid = crypto.randomUUID();
         this.Email = email;
         this.PasswordHash = passwordHash;
         this.Username = username;
         this.ProfilePic = profilepic;
+        this.LastLogin = lastlogin;
     }
 
     public ChangeEmail(email: EmailVO): void
