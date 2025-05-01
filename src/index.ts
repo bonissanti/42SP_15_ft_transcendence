@@ -43,6 +43,12 @@ async function main()
     server.get('/user', async (request: FastifyRequest<{ Querystring: GetUserDTO }>, reply) =>
         userController.GetUser(request, reply))
 
+    // server.post('/login', async (request: FastifyRequest<{ Body: UserSessionDTO }>, reply)=>
+    //     userController.LoginUser(request, reply))
+
+    // server.post('/logout', async (request: FastifyRequest<{ Body: UserSessionDTO }>, reply) =>
+    //     userController.LogoutUser(request, reply))
+
     //TODO: Criar login
     // server.post('/login', opts, (request: FastifyRequest<{ Body: CreateUserDTO }>, reply) =>
     //     userController.CreateUser(request, reply))
