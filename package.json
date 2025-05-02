@@ -9,7 +9,7 @@
     "clean:dist": "node dist/Shared/Utils/fs.rmdir.js"
   },
   "dependencies": {
-    "@fastify/session": "^11.1.0",
+    "@fastify/jwt": "^9.1.0",
     "@prisma/client": "^6.7.0",
     "bcrypt": "^5.1.1",
     "fastify": "^5.2.2",
