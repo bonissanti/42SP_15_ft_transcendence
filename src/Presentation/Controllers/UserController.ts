@@ -31,7 +31,7 @@ export class UserController extends BaseController
         this.GetUserService = new GetUserService(this.NotificationError);
     }
 
-    public async CreateUser(request: FastifyRequest<{ Body: CreateUserDTO }>, reply: FastifyReply) : Promise<FastifyReply>
+    public async CreateUser(request: FastifyRequest<{ Body: CreateUserDTO }>, reply: FastifyReply) : Promise<Result>
     {
         const body = request.body;
         const userDTO: CreateUserDTO = new CreateUserDTO(body.email, body.password, body.username, body.profilePic, body.lastLogin);
@@ -40,7 +40,7 @@ export class UserController extends BaseController
         return(this.handleResult(result, reply, this.NotificationError));
     }
 
-    public async EditUser(request: FastifyRequest<{ Body: EditUserDTO }>, reply: FastifyReply) : Promise<FastifyReply>
+    public async EditUser(request: FastifyRequest<{ Body: EditUserDTO }>, reply: FastifyReply) : Promise<Result>
     {
         const body = request.body;
         const userDTO: EditUserDTO = new EditUserDTO(body.uuid, body.email, body.password, body.username, body.profilePic);
@@ -49,7 +49,7 @@ export class UserController extends BaseController
         return(this.handleResult(result, reply, this.NotificationError));
     }
 
-    public async DeleteUser(request: FastifyRequest<{ Body: DeleteUserDTO }>, reply: FastifyReply) : Promise<FastifyReply>
+    public async DeleteUser(request: FastifyRequest<{ Body: DeleteUserDTO }>, reply: FastifyReply) : Promise<Result>
     {
         const body = request.body;
         const userDTO: DeleteUserDTO = new DeleteUserDTO(body.Uuid);
@@ -58,7 +58,7 @@ export class UserController extends BaseController
         return(this.handleResult(result, reply, this.NotificationError));
     }
 
-    public async GetUser(request: FastifyRequest<{ Querystring: GetUserDTO }>, reply: FastifyReply) : Promise<FastifyReply>
+    public async GetUser(request: FastifyRequest<{ Querystring: GetUserDTO }>, reply: FastifyReply) : Promise<Result>
     {
         const query = request.query;
         const userDTO: GetUserDTO = new GetUserDTO(query.uuid, query.email, query.username, query.profilePic)

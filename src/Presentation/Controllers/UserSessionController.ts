@@ -20,7 +20,7 @@ export class UserSessionController extends BaseController
         this.LogoutUserService = new LogoutUserService(this.NotificationError);
     }
 
-    public async LoginUser(request: FastifyRequest<{ Body: UserSessionDTO }>, reply: FastifyReply) : Promise<FastifyReply>
+    public async LoginUser(request: FastifyRequest<{ Body: UserSessionDTO }>, reply: FastifyReply) : Promise<Result>
     {
         const body = request.body;
         const result: Result = await this.LoginUserService.Execute(body);
@@ -28,7 +28,7 @@ export class UserSessionController extends BaseController
         return(this.handleResult(result, reply, this.NotificationError));
     }
 
-    public async LogoutUser(request: FastifyRequest<{ Body: UserSessionDTO }>, reply: FastifyReply) : Promise<FastifyReply>
+    public async LogoutUser(request: FastifyRequest<{ Body: UserSessionDTO }>, reply: FastifyReply) : Promise<Result>
     {
         const body = request.body;
         const result: Result = await this.LogoutUserService.Execute(body);

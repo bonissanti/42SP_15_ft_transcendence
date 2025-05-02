@@ -1,4 +1,5 @@
 import fastify, {FastifyRequest} from 'fastify'
+import fastifyJwt from "@fastify/jwt";
 import {UserController} from "./Presentation/Controllers/UserController.js";
 import {CreateUserDTO} from "./Domain/DTO/Command/CreateUserDTO.js";
 import prisma from "@prisma";
@@ -8,8 +9,11 @@ import {GetUserDTO} from "./Domain/DTO/Query/GetUserDTO.js";
 import {UserSessionDTO} from "./Domain/DTO/Command/UserSessionDTO.js";
 import {UserSessionController} from "./Presentation/Controllers/UserSessionController.js";
 
-
 const server = fastify()
+
+server.register(fastifyJwt, {
+    secret: 'secret'
+})
 
 const opts = {
     schema: {
@@ -41,31 +45,32 @@ async function main()
     const userSessionController = new UserSessionController();
 
     server.post('/user', opts, async (request: FastifyRequest<{ Body: CreateUserDTO }>, reply) =>
-        userController.CreateUser(request, reply))
+        await userController.CreateUser(request, reply))
 
     server.put('/user', opts, async (request: FastifyRequest<{ Body: EditUserDTO }>, reply) =>
-        userController.EditUser(request, reply))
+        await userController.EditUser(request, reply))
 
     server.delete('/user', async (request: FastifyRequest<{ Body: DeleteUserDTO }>, reply) =>
-        userController.DeleteUser(request, reply))
+        await userController.DeleteUser(request, reply))
 
     server.get('/user', async (request: FastifyRequest<{ Querystring: GetUserDTO }>, reply) =>
-        userController.GetUser(request, reply))
+        await userController.GetUser(request, reply))
 
-    server.post('/login', async (request: FastifyRequest<{ Body: UserSessionDTO }>, reply)=>
-        userSessionController.LoginUser(request, reply))
+    server.post('/login', async (request: FastifyRequest<{ Body: UserSessionDTO }>, reply)=> {
+        const result = await userSessionController.LoginUser(request, reply)
+
+        if (result.isSucess)
+        {
+            const token = server.jwt.sign({ uuid: request.body.uuid, isAuthenticated: true })
+            return reply.send({ token: token })
+        }
+        return result;
+    })
 
     server.post('/logout', async (request: FastifyRequest<{ Body: UserSessionDTO }>, reply)=>
         userSessionController.LogoutUser(request, reply))
 
-    // server.post('/logout', async (request: FastifyRequest<{ Body: UserSessionDTO }>, reply) =>
-    //     userController.LogoutUser(request, reply))
 
-    //TODO: Criar login
-    // server.post('/login', opts, (request: FastifyRequest<{ Body: CreateUserDTO }>, reply) =>
-    //     userController.CreateUser(request, reply))
-
-    //TODO: criar logout
 
     //Todo: Criar endpoints de criar, editar e deletar para auth0
 
