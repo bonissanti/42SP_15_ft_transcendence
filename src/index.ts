@@ -5,6 +5,8 @@ import prisma from "@prisma";
 import {EditUserDTO} from "./Domain/DTO/Command/EditUserDTO.js";
 import {DeleteUserDTO} from "./Domain/DTO/Command/DeleteUserDTO.js";
 import {GetUserDTO} from "./Domain/DTO/Query/GetUserDTO.js";
+import {UserSessionDTO} from "./Domain/DTO/Command/UserSessionDTO.js";
+import {UserSessionController} from "./Presentation/Controllers/UserSessionController.js";
 
 
 const server = fastify()
@@ -36,6 +38,7 @@ const opts = {
 async function main()
 {
     const userController = new UserController();
+    const userSessionController = new UserSessionController();
 
     server.post('/user', opts, async (request: FastifyRequest<{ Body: CreateUserDTO }>, reply) =>
         userController.CreateUser(request, reply))
@@ -49,8 +52,11 @@ async function main()
     server.get('/user', async (request: FastifyRequest<{ Querystring: GetUserDTO }>, reply) =>
         userController.GetUser(request, reply))
 
-    // server.post('/login', async (request: FastifyRequest<{ Body: UserSessionDTO }>, reply)=>
-    //     userController.LoginUser(request, reply))
+    server.post('/login', async (request: FastifyRequest<{ Body: UserSessionDTO }>, reply)=>
+        userSessionController.LoginUser(request, reply))
+
+    server.post('/logout', async (request: FastifyRequest<{ Body: UserSessionDTO }>, reply)=>
+        userSessionController.LogoutUser(request, reply))
 
     // server.post('/logout', async (request: FastifyRequest<{ Body: UserSessionDTO }>, reply) =>
     //     userController.LogoutUser(request, reply))

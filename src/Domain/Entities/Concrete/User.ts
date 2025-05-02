@@ -62,5 +62,7 @@ export class User implements BaseEntity
     {
         if (isOnline != this.isOnline)
             this.isOnline = isOnline;
+
+        this.LastLogin = new Date();
     }
 }

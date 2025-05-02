@@ -11,6 +11,7 @@ import {DeleteUserService} from "../../Application/Services/Concrete/DeleteUserS
 import {GetUserDTO} from "../../Domain/DTO/Query/GetUserDTO.js";
 import {GetUserService} from "../../Application/Services/Concrete/GetUserService.js";
 import {GetUserViewModel} from "../ViewModels/GetUserViewModel.js";
+import {UserSessionDTO} from "../../Domain/DTO/Command/UserSessionDTO.js";
 
 export class UserController extends BaseController
 {
@@ -65,4 +66,6 @@ export class UserController extends BaseController
 
         return(this.handleResult(result, reply, this.NotificationError));
     }
+
+
 }

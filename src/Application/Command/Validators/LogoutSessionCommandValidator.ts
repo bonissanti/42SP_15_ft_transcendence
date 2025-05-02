@@ -8,7 +8,7 @@ import {PasswordHashVO} from "../../../Domain/ValueObjects/PasswordHashVO.js";
 import {CustomError} from "../../../Shared/Errors/CustomError.js";
 import {ValidationException} from "../../../Shared/Errors/ValidationException.js";
 
-export class UserSessionCommandValidator implements BaseValidator<UserSessionCommand>
+export class LogoutSessionCommandValidator implements BaseValidator<UserSessionCommand>
 {
     constructor(private UserRepository: UserRepository, private NotificationError: NotificationError)
     {

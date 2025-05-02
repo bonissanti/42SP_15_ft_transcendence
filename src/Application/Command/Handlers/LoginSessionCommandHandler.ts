@@ -4,7 +4,7 @@ import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
 import {UserSessionCommand} from "../CommandObject/UserSessionCommand.js";
 import {PasswordHashVO} from "../../../Domain/ValueObjects/PasswordHashVO.js";
 
-export class UserSessionCommandHandler implements BaseHandlerCommand<UserSessionCommand>
+export class LoginSessionCommandHandler implements BaseHandlerCommand<UserSessionCommand>
 {
    private UserRepository: UserRepository;
 
@@ -14,7 +14,10 @@ export class UserSessionCommandHandler implements BaseHandlerCommand<UserSession
 
    async Handle(command: UserSessionCommand) : Promise<void>
    {
-       
-   }
+      const user = await this.UserRepository.GetUserEntityByUuid(command.Uuid);
 
+      user?.ChangeStatusOnline(command.isOnline);
+
+      await this.UserRepository.Update(command.Uuid, user);
+   }
 }

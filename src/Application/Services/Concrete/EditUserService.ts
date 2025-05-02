@@ -29,7 +29,7 @@ export class EditUserService implements BaseService<EditUserDTO>
         try
         {
             const command: EditUserCommand = EditUserCommand.FromDTO(dto);
-            this.EditUserValidator.Validator(command);
+            await this.EditUserValidator.Validator(command);
             await this.EditUserHandler.Handle(command);
 
             return Result.Sucess("User edited successfully");
