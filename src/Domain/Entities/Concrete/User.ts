@@ -5,8 +5,9 @@ import {EmailVO} from "../../ValueObjects/EmailVO.js";
 export class User implements BaseEntity
 {
     public readonly Uuid: string;
-    Email: EmailVO;
+    public Email: EmailVO;
     public PasswordHash: PasswordHashVO;
+    public Auth0Id: string | null = null;
     public Username: string;
     public ProfilePic: string | null = null ;
     public LastLogin: Date | null = null;
@@ -50,7 +51,13 @@ export class User implements BaseEntity
             this.ProfilePic = profilepic;
     }
 
-    //TODO: atualizar o model para adicionar isOnline no User
+    public ChangeAuth0Id(auth0id: string): void
+    {
+        if (auth0id != this.Auth0Id)
+            this.Auth0Id = auth0id;
+    }
+
+    //TODO: atualizar o model para adicionar isOnline e Auth0Id no User
     public ChangeStatusOnline(isOnline: boolean): void
     {
         if (isOnline != this.isOnline)
