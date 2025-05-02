@@ -1,4 +1,4 @@
-const authenticateJWT = async (request: any, reply: any): Promise<void> =>
+export const authenticateJWT = async (request: any, reply: any): Promise<void> =>
 {
     try
     {

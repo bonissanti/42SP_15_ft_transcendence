@@ -8,6 +8,7 @@ import {DeleteUserDTO} from "./Domain/DTO/Command/DeleteUserDTO.js";
 import {GetUserDTO} from "./Domain/DTO/Query/GetUserDTO.js";
 import {UserSessionDTO} from "./Domain/DTO/Command/UserSessionDTO.js";
 import {UserSessionController} from "./Presentation/Controllers/UserSessionController.js";
+import {authenticateJWT} from "./Presentation/Middleware/AuthMiddleware.js";
 
 const server = fastify()
 
@@ -47,16 +48,16 @@ async function main()
     server.post('/user', opts, async (request: FastifyRequest<{ Body: CreateUserDTO }>, reply) =>
         await userController.CreateUser(request, reply))
 
-    server.put('/user', opts, async (request: FastifyRequest<{ Body: EditUserDTO }>, reply) =>
+    server.put('/user', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Body: EditUserDTO }>, reply) =>
         await userController.EditUser(request, reply))
 
-    server.delete('/user', async (request: FastifyRequest<{ Body: DeleteUserDTO }>, reply) =>
+    server.delete('/user', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Body: DeleteUserDTO }>, reply) =>
         await userController.DeleteUser(request, reply))
 
-    server.get('/user', async (request: FastifyRequest<{ Querystring: GetUserDTO }>, reply) =>
+    server.get('/user', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Querystring: GetUserDTO }>, reply) =>
         await userController.GetUser(request, reply))
 
-    server.post('/login', async (request: FastifyRequest<{ Body: UserSessionDTO }>, reply)=> {
+    server.post('/login', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Body: UserSessionDTO }>, reply)=> {
         const result = await userSessionController.LoginUser(request, reply)
 
         if (result.isSucess)
@@ -67,7 +68,7 @@ async function main()
         return result;
     })
 
-    server.post('/logout', async (request: FastifyRequest<{ Body: UserSessionDTO }>, reply)=>
+    server.post('/logout', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Body: UserSessionDTO }>, reply)=>
         userSessionController.LogoutUser(request, reply))
 
 
