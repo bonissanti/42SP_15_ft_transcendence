@@ -8,10 +8,15 @@ export class User implements BaseEntity
     Email: EmailVO;
     public PasswordHash: PasswordHashVO;
     public Username: string;
-    public ProfilePic: string | null;
+    public ProfilePic: string | null = null ;
     public LastLogin: Date | null = null;
+    public isOnline: boolean = false;
 
-    constructor(email: EmailVO, passwordHash: PasswordHashVO, username: string, profilepic: string | null = null, lastlogin: Date | null)
+    constructor(email: EmailVO,
+                passwordHash: PasswordHashVO,
+                username: string,
+                profilepic: string | null,
+                lastlogin: Date | null)
     {
         this.Uuid = crypto.randomUUID();
         this.Email = email;
@@ -43,5 +48,12 @@ export class User implements BaseEntity
     {
         if (profilepic != this.ProfilePic)
             this.ProfilePic = profilepic;
+    }
+
+    //TODO: atualizar o model para adicionar isOnline no User
+    public ChangeStatusOnline(isOnline: boolean): void
+    {
+        if (isOnline != this.isOnline)
+            this.isOnline = isOnline;
     }
 }
