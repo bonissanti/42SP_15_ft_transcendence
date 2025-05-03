@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="c5f3ffaf-d499-48f9-98ef-d53ea682bdd0" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/13.Ft_transcendence.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/db-trans.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/db-trans.db-journal" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/generated/prisma/client.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/generated/prisma/client.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/generated/prisma/default.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/generated/prisma/default.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/generated/prisma/edge.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/generated/prisma/edge.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/generated/prisma/index-browser.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/generated/prisma/index.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/generated/prisma/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/generated/prisma/libquery_engine-debian-openssl-3.0.x.so.node" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/generated/prisma/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/generated/prisma/runtime/edge-esm.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/generated/prisma/runtime/edge.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/generated/prisma/runtime/index-browser.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/generated/prisma/runtime/index-browser.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/generated/prisma/runtime/library.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/generated/prisma/runtime/library.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/generated/prisma/runtime/react-native.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/generated/prisma/runtime/wasm.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/generated/prisma/schema.prisma" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/generated/prisma/wasm.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/generated/prisma/wasm.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/migrations/20250418215541_init/migration.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/migrations/20250501220535_feat_add_last_login/migration.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/migrations/migration_lock.toml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/schema.prisma" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/Command/CommandObject/CreateUserCommand.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/Command/CommandObject/DeleteUserCommand.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/Command/CommandObject/EditUserCommand.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/Command/CommandObject/UserSessionCommand.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/Command/Handlers/BaseHandlerCommand.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/Command/Handlers/CreateUserCommandHandler.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/Command/Handlers/DeleteUserCommandHandler.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/Command/Handlers/EditUserCommandHandler.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/Command/Handlers/LoginSessionCommandHandler.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/Command/Handlers/LogoutSessionCommandHandler.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/Command/Validators/BaseValidator.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/Command/Validators/CreateUserCommandValidator.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/Command/Validators/DeleteUserCommandValidator.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/Command/Validators/EditUserCommandValidator.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/Command/Validators/LoginSessionCommandValidator.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/Command/Validators/LogoutSessionCommandValidator.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/Queries/Handlers/BaseHandlerQuery.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/Queries/Handlers/GetUserQueryHandler.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/Queries/QueryObject/GetUserQuery.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/Queries/Validators/GetUserQueryValidator.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/Services/Concrete/CreateUserService.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/Services/Concrete/DeleteUserService.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/Services/Concrete/EditUserService.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/Services/Concrete/GetUserService.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/Services/Concrete/LoginUserService.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/Services/Concrete/LogoutUserService.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/Services/Interfaces/BaseService.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/DTO/Command/CreateUserAuth0DTO.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/DTO/Command/CreateUserDTO.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/DTO/Command/DeleteUserDTO.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/DTO/Command/EditUserDTO.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/DTO/Command/UserSessionDTO.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/DTO/Query/GetUserDTO.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/Entities/Concrete/User.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/Entities/Concrete/UserAuth0.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/Entities/Interface/BaseEntity.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/QueryDTO/GetUserQueryDTO.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/ValueObjects/EmailVO.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/ValueObjects/PasswordHashVO.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Infrastructure/Persistence/Repositories/Concrete/UserRepository.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Infrastructure/Persistence/Repositories/Interface/IBaseRepository.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Infrastructure/Persistence/Repositories/Interface/IUserRepository.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Infrastructure/Service/PrismaService.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Presentation/Controllers/BaseController.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Presentation/Controllers/UserController.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Presentation/Controllers/UserSessionController.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Presentation/Middleware/AuthMiddleware.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Presentation/Routes/UserRoutes/UserRoutes.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Presentation/Routes/UserSessionRoutes/UserSessionRoutes.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Presentation/ViewModels/GetUserViewModel.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Shared/Config/UserMap(futuro-talvez).ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Shared/Errors/CustomError.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Shared/Errors/ErrorCatalog.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Shared/Errors/NotificationError.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Shared/Errors/ValidationException.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Shared/Utils/Result.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Shared/Utils/fs.rmdir.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "bonissanti"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/ArthurSobreira/42_transcendence.git",
+    "accountId": "de286582-ad2a-4790-b6a2-7f4817dd9ce3"
+  }
+}]]></component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 8
+}]]></component>
+  <component name="ProjectId" id="2wZ0zvzPFUKdSNYVwAClfKIgAU4" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "feat/authentication",
+    "junie.onboarding.icon.badge.shown": "true",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "/home/bruno/Documents/42SP/13.Ft_transcendence/backend/node_modules/typescript/lib"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-f27c65a3e318-JavaScript-WS-251.23774.424" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c5f3ffaf-d499-48f9-98ef-d53ea682bdd0" name="Changes" comment="" />
+      <created>1746234055346</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1746234055346</updated>
+      <workItem from="1746234056681" duration="48000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
