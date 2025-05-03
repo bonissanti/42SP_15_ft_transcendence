@@ -1,12 +1,11 @@
-/tmp
-/backend/authentication/tmp
-/backend/authentication/out-tsc
+**/tmp
+**/out-tsc
 
-/backend/authentication/node_modules
+**/node_modules
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-/backend/authentication/.pnp
+**/.pnp
 .pnp.js
 
 .vscode/*
