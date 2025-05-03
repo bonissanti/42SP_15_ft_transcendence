@@ -6,6 +6,6 @@ export const authenticateJWT = async (request: any, reply: any): Promise<void> =
     }
     catch (err)
     {
-        reply.status(401).send({ message: 'Unauthorized' });
+        reply.status(401).send({ message: '' });
     }
 }
