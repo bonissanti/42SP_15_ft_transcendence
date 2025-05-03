@@ -126,7 +126,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/home/bruno/Documents/42SP/13.Ft_transcendence/prisma/generated/prisma",
+      "value": "/home/bruno/Documents/42SP/13.Ft_transcendence/backend/authentication/prisma/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -140,12 +140,11 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/home/bruno/Documents/42SP/13.Ft_transcendence/prisma/schema.prisma",
+    "sourceFilePath": "/home/bruno/Documents/42SP/13.Ft_transcendence/backend/authentication/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null,
-    "schemaEnvPath": "../../../.env"
+    "rootEnvPath": null
   },
   "relativePath": "../..",
   "clientVersion": "6.7.0",
@@ -154,11 +153,12 @@ const config = {
     "db"
   ],
   "activeProvider": "sqlite",
+  "postinstall": true,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "file:./db-trans.db"
+        "value": null
       }
     }
   },
