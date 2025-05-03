@@ -6,7 +6,7 @@ export class CreateUserCommand
     public readonly Password: string;
     public readonly Username: string;
     public readonly ProfilePic: string | null;
-    public readonly LastLogin: Date | null = null;
+    public readonly LastLogin: Date | null;
 
     private constructor(email:string, password:string, username:string, profilepic: string | null = null, lastLogin: Date | null)
     {
@@ -23,7 +23,7 @@ export class CreateUserCommand
         const password: string = dto.password;
         const username: string = dto.username;
         const profilepic: string | null = dto.profilePic;
-        const lastLogin: Date | null = dto.lastLogin;
+        const lastLogin: Date | null = dto.lastLogin ? new Date(dto.lastLogin) : null;
 
         return new CreateUserCommand(email, password, username, profilepic, lastLogin);
     }
