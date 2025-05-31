@@ -3,12 +3,10 @@ import { IMatch } from "../Interface/IMatch";
 export class Match implements IMatch
 {
     public readonly Uuid: string;
-    public readonly PlayerOne: string;
-    public readonly PlayerTwo: string;
-    public readonly ScoreOne: Number;
-    public readonly ScoreTwo: Number;
-    public readonly TournamentID: string | null = null;
-    public readonly PlayerOneWin: boolean = false;
+    public Players: [string, string];
+    public Scores: [Number, Number];
+    public TournamentID: string | null = null;
+    public WhoWin: boolean = false;
 
     constructor(PlayerOne: string,
                 PlayerTwo: string,
@@ -18,13 +16,13 @@ export class Match implements IMatch
     )
     {
         this.Uuid = crypto.randomUUID();
-        this.PlayerOne = PlayerOne;
-        this.PlayerTwo = PlayerTwo;
-        this.ScoreOne = ScoreOne;
-        this.ScoreTwo = ScoreTwo;
+        this.Players[0] = PlayerOne;
+        this.Players[1] = PlayerTwo;
+        this.Scores[0] = ScoreOne;
+        this.Scores[1] = ScoreTwo;
         if (TournamentID != null)
             this.TournamentID = TournamentID;
-        if (ScoreOne > ScoreTwo)
-            this.PlayerOneWin = true;       
+        if (this.Scores[1] > this.Scores[0])
+            this.WhoWin = true;
     }
 }
