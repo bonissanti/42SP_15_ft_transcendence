@@ -1,3 +1,5 @@
+import { t } from '../i18n'; // Importa a função de tradução
+
 type Choice = 'rock' | 'paper' | 'scissors';
 type Outcome = 'win' | 'lose' | 'draw';
 
@@ -19,16 +21,17 @@ function getComputerChoice(): Choice {
 }
 
 function updateScore(outcome: Outcome) {
+  const texts = t(); // Pega os textos do idioma atual
   if (outcome === 'win') {
     playerScore++;
-    resultTextEl.textContent = 'Ganhou!';
+    resultTextEl.textContent = texts.win;
     resultTextEl.className = 'text-2xl font-semibold h-8 mt-2 text-green-400';
   } else if (outcome === 'lose') {
     computerScore++;
-    resultTextEl.textContent = 'Perdeu!';
+    resultTextEl.textContent = texts.lose;
     resultTextEl.className = 'text-2xl font-semibold h-8 mt-2 text-red-400';
   } else {
-    resultTextEl.textContent = 'Empate!';
+    resultTextEl.textContent = texts.draw;
     resultTextEl.className = 'text-2xl font-semibold h-8 mt-2 text-gray-400';
   }
   playerScoreEl.textContent = playerScore.toString();
