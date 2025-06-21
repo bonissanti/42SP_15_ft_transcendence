@@ -1,17 +1,11 @@
 {
-	"name": "testes",
-	"version": "1.0.0",
-	"main": "node.js",
-	"scripts": {
-	  "test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
-	"type": "commonjs",
-	"description": "",
-	"dependencies": {
-	  "fastify": "^4.0.0"
-	}
+  "name": "pong-backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
   }
-  
+}

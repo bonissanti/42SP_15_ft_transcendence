@@ -1,15 +1,14 @@
-FROM node:23-slim
-
+#Buildar
+FROM node:18-alpine AS builder
 WORKDIR /app
-
-COPY package*.json .
-
+COPY frontend/package*.json ./
 RUN npm install
+COPY frontend/ ./
+RUN npm run build
 
-RUN npm install -g nodemon
-
-COPY . .
-
-EXPOSE 8080
-
-CMD ["nodemon", "src/server.js"]
+# Roda a aplicação com NGINX
+FROM nginx:1.27-alpine
+COPY --from=builder /app/dist /usr/share/nginx/html
+COPY frontend/nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

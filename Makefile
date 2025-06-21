@@ -1,13 +1,14 @@
-FRONT_DIR=./frontend
-BACK_DIR=./backend
+FRONT_DIR := ./frontend
+BACK_DIR  := ./backend
+COMPOSE_FILE := docker-compose.yml
 
-COMPOSE_FILE=docker-compose.yml
-
+.PHONY: all build up stop start restart rm rmi rm-all ps
 
 all: build up
 
 build:
 	@docker compose -f $(COMPOSE_FILE) build
+
 up:
 	@docker compose -f $(COMPOSE_FILE) up -d
 
@@ -24,7 +25,7 @@ rm:
 	@docker compose -f $(COMPOSE_FILE) rm -f
 
 rmi:
-	@docker rmi -f $(docker images -q)
+	@docker rmi -f $(shell docker images -q)
 
 rm-all:
 	@read -p "Essa bomba vai apagar TODOS os containers, tem certeza? [y/n] " ans; \

@@ -2,26 +2,25 @@ services:
   backend:
     build:
       context: ./backend
-    container_name: backend
+    container_name: backend-pong
     networks:
-      - app-net
-    expose:
-      - '3000'
+      - pong-net
     volumes:
       - ./backend:/app
+      - /app/node_modules
 
   frontend:
     build:
-      context: ./frontend
-    container_name: frontend
-    networks:
-      - app-net
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: frontend-pong
     ports:
-      - '8080:8080'
+      - "8080:80"
+    networks:
+      - pong-net
     depends_on:
       - backend
-    volumes:
-      - ./frontend:/app
+
 networks:
-  app-net:
+  pong-net:
     driver: bridge
