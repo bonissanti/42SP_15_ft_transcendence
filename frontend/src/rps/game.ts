@@ -1,4 +1,4 @@
-import { t } from '../i18n'; // Importa a função de tradução
+import { t } from '../i18n';
 
 type Choice = 'rock' | 'paper' | 'scissors';
 type Outcome = 'win' | 'lose' | 'draw';
@@ -21,7 +21,7 @@ function getComputerChoice(): Choice {
 }
 
 function updateScore(outcome: Outcome) {
-  const texts = t(); // Pega os textos do idioma atual
+  const texts = t();
   if (outcome === 'win') {
     playerScore++;
     resultTextEl.textContent = texts.win;

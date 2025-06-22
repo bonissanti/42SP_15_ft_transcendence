@@ -1,0 +1,21 @@
+export class GetUserQueryDTO
+{
+    public readonly Uuid: string;
+    public readonly Email: string;
+    public readonly Username: string;
+    public readonly ProfilePic: string | null;
+    public readonly matchesPlayed: number | null;
+    public readonly wins: number | null;
+    public readonly loses: number | null;
+
+    constructor(uuid: string, email: string, username: string, profilepic: string | null = null, matchesPlayed: number, wins: number, loses: number)
+    {
+        this.Uuid = uuid;
+        this.Email = email;
+        this.Username = username;
+        this.ProfilePic = profilepic;
+        this.matchesPlayed = matchesPlayed;
+        this.wins = wins;
+        this.loses = loses;
+    }
+}

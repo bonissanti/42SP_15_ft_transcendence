@@ -66,6 +66,8 @@ const translations = {
     // Profile Page
     profileTitle: 'Profile',
     profileText: 'Basic user information.',
+
+    // Creators Page
     creatorsTitle: 'Creators',
     creatorsText: 'This project was created by...',
   }

@@ -11,9 +11,6 @@ function getViews() {
   return {
     mainMenuView: `
       <div class="w-full relative">
-        <div class="absolute top-0 right-0 p-4">
-          <a href="/profile" class="text-white hover:text-indigo-400 transition-colors" data-navigate="/profile">${texts.profileLink}</a>
-        </div>
         <h1 class="text-5xl mb-8 text-glow">${texts.mainMenuTitle}</h1>
         <div class="flex flex-col items-center">
           <button class="menu-button" data-navigate="/pong">${texts.playPongButton}</button>
@@ -74,9 +71,9 @@ function getViews() {
   };
 }
 
-function router(path: string) {
+async function router(path: string) {
   stopPongGame();
-  
+
   const views = getViews();
   const routes: { [key: string]: string } = {
     '/': views.mainMenuView,
@@ -84,15 +81,57 @@ function router(path: string) {
     '/pong/singleplayer': views.pongGameView,
     '/pong/multiplayer': views.pongGameView,
     '/rps': views.rpsView,
-    '/profile': views.profileView,
     '/creators': views.creatorsView,
   };
 
-  appContainer.innerHTML = routes[path] || `<h1>404 Not Found</h1><button class="menu-button" data-navigate="/">Voltar</button>`;
+  if (path === '/profile') {
+    appContainer.innerHTML = `<h1>Carregando Perfil...</h1>`;
 
-  if (path === '/pong/singleplayer') initPongGame('singleplayer');
-  else if (path === '/pong/multiplayer') initPongGame('multiplayer');
-  else if (path === '/rps') initRpsGame();
+    try {
+      const userId = '2470fddb-9e2e-479e-9775-2462d3ce8661';
+      const response = await fetch(`http://localhost:8080/api/users/${userId}`);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Falha ao buscar dados do usuário.');
+      }
+
+      const user = await response.json();
+      const texts = t();
+
+      appContainer.innerHTML = `
+        <div>
+          <h1 class="text-4xl text-glow mb-8">${texts.profileTitle}: ${user.Username}</h1>
+          <img src="${user.ProfilePic || 'caminho/para/imagem/default.png'}" alt="Foto de Perfil" class="w-32 h-32 rounded-full mx-auto border-4 border-white shadow-retro mb-4">
+          <div class="text-left max-w-sm mx-auto bg-slate-800 p-4 rounded-lg">
+            <p class="mb-2"><strong class="text-indigo-400">Email:</strong> ${user.Email}</p>
+            <p class="mb-2"><strong class="text-indigo-400">Status:</strong> ${user.isOnline ? 'Online' : 'Offline'}</p>
+            <p class="mb-2"><strong class="text-indigo-400">Partidas Jogadas:</strong> ${user.matchesPlayed}</p>
+            <p class="mb-2"><strong class="text-indigo-400">Vitórias:</strong> ${user.wins}</p>
+            <p class="mb-2"><strong class="text-indigo-400">Derrotas:</strong> ${user.loses}</p>
+          </div>
+          <button class="menu-button mt-8" data-navigate="/">${texts.backToMenu}</button>
+        </div>
+      `;
+    } catch (error) {
+      console.error("Erro ao carregar perfil:", error);
+      let errorMessage = 'An unexpected error occurred.';
+      if (error instanceof Error) errorMessage = error.message;
+      else if (typeof error === 'string') errorMessage = error;
+      appContainer.innerHTML = `
+        <h1>Erro ao carregar perfil</h1>
+        <p>${errorMessage}</p>
+        <button class="menu-button" data-navigate="/">Voltar</button>
+      `;
+    }
+
+  } else {
+    appContainer.innerHTML = routes[path] || `<h1>404 Not Found</h1><button class="menu-button" data-navigate="/">Voltar</button>`;
+
+    if (path === '/pong/singleplayer') initPongGame('singleplayer');
+    else if (path === '/pong/multiplayer') initPongGame('multiplayer');
+    else if (path === '/rps') initRpsGame();
+  }
 }
 
 function updateLangButton() {
@@ -100,16 +139,22 @@ function updateLangButton() {
   langContainer.innerHTML = `<button class="bg-gray-700 p-2 rounded-md border-2 border-white text-sm hover:bg-indigo-600 transition-colors">${lang === 'pt-BR' ? 'PT-BR' : 'EN'}</button>`;
 }
 
+function updateProfileLink() {
+  const texts = t();
+  const profileContainer = document.getElementById('profile-link-container') as HTMLDivElement;
+  profileContainer.innerHTML = `<a href="/profile" class="text-white hover:text-indigo-400 transition-colors text-sm" data-navigate="/profile">${texts.profileLink}</a>`;
+}
+
 langContainer.addEventListener('click', () => {
   toggleLanguage();
   router(window.location.pathname);
   updateLangButton();
+  updateProfileLink();
 });
 
 document.body.addEventListener('click', (e) => {
   const target = e.target as HTMLElement;
   const navLink = target.closest('[data-navigate]');
-
   if (navLink) {
     e.preventDefault();
     const path = navLink.getAttribute('data-navigate')!;
@@ -120,6 +165,6 @@ document.body.addEventListener('click', (e) => {
 
 window.addEventListener('popstate', () => router(window.location.pathname));
 
-// Initial Load
 router(window.location.pathname);
 updateLangButton();
+updateProfileLink();

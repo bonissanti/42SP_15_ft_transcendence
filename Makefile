@@ -27,14 +27,16 @@ rm:
 rmi:
 	@docker rmi -f $(shell docker images -q)
 
+re: stop rm rmi build up
+
 rm-all:
-	@read -p "Essa bomba vai apagar TODOS os containers, tem certeza? [y/n] " ans; \
-	if [ "$$ans" = "y" ] || [ "$$ans" = "Y" ]; then \
-		docker stop $$(docker ps -q); \
-		docker rm $$(docker ps -aq); \
-	else \
-		echo "cancelado"; \
-	fi
+	@echo "Apagando TUDO relacionado ao Docker"
+	@docker stop $$(docker ps -q) || true
+	@docker rm -f $$(docker ps -aq) || true
+	@docker rmi -f $$(docker images -aq) || true
+	@docker volume rm -f $$(docker volume ls -q) || true
+	@docker network rm $$(docker network ls -q | grep -v '^bridge$$' | grep -v '^host$$' | grep -v '^none$$') || true
+	@docker builder prune -af || true
 
 ps:
 	@docker compose -f $(COMPOSE_FILE) ps
