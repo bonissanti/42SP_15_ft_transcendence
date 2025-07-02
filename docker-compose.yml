@@ -1,0 +1,57 @@
+services:
+  gateway:
+    build:
+      context: .             
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    networks:
+      - transcendance
+    depends_on:
+      - auth-service
+      - user-service
+      - game-service
+
+  auth-service:
+    build: ./auth-service
+    networks:
+      - transcendance
+    # command: npm run dev
+    # volumes:
+    #   - ./auth-service:/app
+    #   - /app/node_modules
+
+  user-service:
+    build: ./user-service
+    networks:
+      - transcendance
+    # command: npm run dev
+    # volumes:
+    #   - ./user-service:/app
+    #   - /app/node_modules
+
+  game-service:
+    build: ./game-service
+    networks:
+      - transcendance
+    # command: npm run dev
+    # volumes:
+    #   - ./game-service:/app
+    #   - /app/node_modules
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    networks:
+      - transcendance
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+networks:
+  transcendance:
+    driver: bridge
