@@ -1,4 +1,4 @@
-import fastify from 'fastify';
+import fastify, { FastifyInstance } from 'fastify';
 import fastifyJwt from "@fastify/jwt";
 
 import { UserController } from "./Presentation/Controllers/UserController.js";
@@ -16,10 +16,16 @@ import { NotificationError } from './Shared/Errors/NotificationError.js';
 import { LoginUserService } from './Application/Services/Concrete/LoginUserService.js';
 import { LogoutUserService } from './Application/Services/Concrete/LogoutUserService.js';
 
-const server = fastify();
+declare module 'fastify' {
+  export interface FastifyInstance {
+    userRepository: UserRepository;
+  }
+}
+
+const server: FastifyInstance = fastify();
 
 server.register(fastifyJwt, {
-  secret: 'secret'
+  secret: process.env.JWT_SECRET || 'transcendence' 
 });
 
 server.get('/', async (request, reply) => {
@@ -34,6 +40,8 @@ async function main() {
   const prisma = new PrismaClient();
   const userRepository = new UserRepository(prisma);
   const notificationError = new NotificationError();
+
+  server.decorate('userRepository', userRepository);
 
   const createUserService = new CreateUserService(userRepository, notificationError);
   const editUserService = new EditUserService(userRepository, notificationError);

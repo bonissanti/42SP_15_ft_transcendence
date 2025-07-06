@@ -3,8 +3,8 @@ import {GetUserViewModel} from "../../../Presentation/ViewModels/GetUserViewMode
 export class GetUserDTO
 {
     public readonly uuid: string;
-    public readonly email: string;
-    public readonly username: string;
+    public readonly email?: string;
+    public readonly username?: string;
     public readonly profilePic: string | null;
     public readonly matchesPlayed: number;
     public readonly wins: number;

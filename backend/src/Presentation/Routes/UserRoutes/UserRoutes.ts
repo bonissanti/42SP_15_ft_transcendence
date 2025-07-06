@@ -43,4 +43,12 @@ export const UserRoutes = async (server: any, userController: UserController) =>
         await userController.GetUser(request, reply))
 
     server.get('/users/:uuid', userController.findOne.bind(userController));
+
+    server.get('/users/me', { preHandler: authenticateJWT }, async (request: FastifyRequest, reply: FastifyReply) => {
+        const userPayload = request.user as { uuid: string }; 
+        const userDTO = new GetUserDTO(userPayload.uuid); 
+        const result = await userController.getUserService.Execute(userDTO, reply);
+        return userController.handleResult(result, reply, userController.notificationError);
+    });
+
 }

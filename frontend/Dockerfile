@@ -1,14 +1,22 @@
-#Buildar
-FROM node:18-alpine AS builder
+FROM node:20-alpine AS build-stage
+
 WORKDIR /app
-COPY frontend/package*.json ./
+
+COPY package.json yarn.lock* package-lock.json* ./
+
 RUN npm install
-COPY frontend/ ./
+
+COPY . .
+
 RUN npm run build
 
-# Roda a aplicação com NGINX
 FROM nginx:1.27-alpine
-COPY --from=builder /app/dist /usr/share/nginx/html
-COPY frontend/nginx.conf /etc/nginx/conf.d/default.conf
+
+RUN rm /etc/nginx/conf.d/default.conf
+
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+COPY --from=build-stage /app/dist /usr/share/nginx/html
+
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+

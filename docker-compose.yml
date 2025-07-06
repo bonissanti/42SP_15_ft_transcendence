@@ -1,29 +1,45 @@
-services:
-  backend:
-    build:
-      context: ./backend
-    container_name: backend-pong
-    ports:
-      - "9229:9229"
-      - "3000:3000"
-    networks:
-      - pong-net
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
+version: '3.8'
 
+services:
   frontend:
-    build:
-      context: .
-      dockerfile: frontend/Dockerfile
-    container_name: frontend-pong
+    build: ./frontend
     ports:
       - "8080:80"
-    networks:
-      - pong-net
     depends_on:
       - backend
+      - authentication
+    networks:
+      - app-network
+
+  backend:
+    build: ./backend
+    environment:
+      DATABASE_URL: "file:/usr/src/app/prisma/dev.db" 
+      JWT_SECRET: "transcendence"
+    volumes:
+      - backend-db-data:/usr/src/app/prisma    
+    depends_on:
+      - authentication
+    networks:
+      - app-network
+
+  authentication:
+    build: ./authentication
+    environment:
+      DATABASE_URL: "file:/usr/src/app/prisma/auth.db"
+      JWT_SECRET: "transcendence"
+      GOOGLE_CLIENT_ID: "298539346397-imm2ctlgievdlfb7vff3pdsh2291itjk.apps.googleusercontent.com"
+    ports:
+      - "3000:3000"
+    volumes:
+      - auth-db-data:/usr/src/app/prisma
+    networks:
+      - app-network
+
+volumes:
+  backend-db-data:
+  auth-db-data:
 
 networks:
-  pong-net:
+  app-network:
     driver: bridge

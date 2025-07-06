@@ -29,12 +29,15 @@ const translations = {
     draw: 'Empate!',
 
     // Página de Perfil
-    profileTitle: 'Perfil',
+    profileTitle: 'Nome',
     profileText: 'Informações básicas do usuário.',
+    matchesPlayed: 'Partidas jogadas',
+    wins: 'Vitórias',
+    loses: 'Derrotas',
 
     // Página de Criadores
     creatorsTitle: 'Criadores',
-    creatorsText: 'Este projeto foi criado por...',
+    creatorsText: 'Este projeto foi criado por...',    
   },
   'en': {
     // Main Menu
@@ -66,6 +69,9 @@ const translations = {
     // Profile Page
     profileTitle: 'Profile',
     profileText: 'Basic user information.',
+    matchesPlayed: 'Matches Played',
+    wins: 'Wins',
+    loses: 'Defeats',
 
     // Creators Page
     creatorsTitle: 'Creators',

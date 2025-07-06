@@ -1,0 +1,14 @@
+<div>
+  <h1 class="text-4xl text-glow mb-8">{{profileTitle}}: {{user.Username}}</h1>
+  <img src="{{user.ProfilePic}}" alt="Foto de Perfil" class="w-32 h-32 rounded-full mx-auto border-4 border-white shadow-retro mb-4">
+  <div class="text-left max-w-sm mx-auto bg-slate-800 p-4 rounded-lg">
+    <p class="mb-2"><strong class="text-indigo-400">Email:</strong> {{user.Email}}</p>
+    <p class="mb-2"><strong class="text-indigo-400">Status:</strong> {{user.isOnline}}</p>
+    <p class="mb-2"><strong class="text-indigo-400">{{matchesPlayed}}:</strong> {{user.matchesPlayed}}</p>
+    <p class="mb-2"><strong class="text-indigo-400">{{wins}}:</strong> {{user.wins}}</p>
+    <p class="mb-2"><strong class="text-indigo-400">{{loses}}:</strong> {{user.loses}}</p>
+  </div>
+  <button id="logout-button" class="menu-button mt-4 bg-red-700 hover:bg-red-600">Sair</button>
+  <button class="menu-button mt-8" data-navigate="/">{{backToMenu}}</button>
+  </div>
+</div>
