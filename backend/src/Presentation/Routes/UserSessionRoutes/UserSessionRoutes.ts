@@ -17,7 +17,6 @@ export const UserSessionRoutes = async (server: any, userSessionController: User
     });
 
     server.post('/auth/google', async (request: FastifyRequest<{ Body: { credential?: string } }>, reply: FastifyReply) => {
-        console.log("🔄 RECEBENDO CREDENCIAL DO FRONTEND:", request.body);
         const { credential } = request.body;
         if (!credential) {
             return reply.status(400).send({ message: 'Credential not provided from frontend.' });

@@ -63,7 +63,6 @@ export class UserController extends BaseController {
 
   public async findOne(request: FastifyRequest<{ Params: { uuid: string } }>, reply: FastifyReply) {
     try {
-      console.log("LOG: Requisição recebida em /users/:uuid"); // <--- ADICIONAR LOG
       const { uuid } = request.params;
       const dto = new GetUserDTO(uuid);
       const result: Result<GetUserViewModel> = await this.getUserService.Execute(dto, reply);

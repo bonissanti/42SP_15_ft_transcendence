@@ -61,10 +61,7 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
   }
 
   public async GetUserQueryDTOByUuid(uuid: string): Promise<GetUserQueryDTO | null> {
-    console.log(`LOG: [UserRepository] Buscando usuário no banco com uuid: ${uuid}`); // <--- ADICIONAR LOG
     const userData = await this.prisma.user.findUnique({ where: { uuid } });
-    console.log(`LOG: [UserRepository] Usuário encontrado no banco:`, userData); // <--- ADICIONAR LOG
-
     if (!userData) return null;
     const entity = this.RecoverEntity(userData);
     return this.mapToQueryDTO(entity);

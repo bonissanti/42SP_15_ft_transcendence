@@ -20,24 +20,18 @@ export class GetUserService implements BaseService<GetUserDTO, GetUserViewModel>
     this.GetUserQueryHandler = new GetUserQueryHandler(this.UserRepository, notificationError);
   }
 
-public async Execute(dto: GetUserDTO, reply: FastifyReply): Promise<Result<GetUserViewModel>> {
+  public async Execute(dto: GetUserDTO, reply: FastifyReply): Promise<Result<GetUserViewModel>> {
     try {
-      console.log(`LOG: [GetUserService] Executando para o DTO:`, dto); // <--- ADICIONAR LOG
       const query: GetUserQuery = GetUserQuery.FromDTO(dto);
       const getUserQueryDTO = await this.GetUserQueryHandler.Handle(query);
 
-      console.log(`LOG: [GetUserService] Resultado da query handler:`, getUserQueryDTO); // <--- ADICIONAR LOG
-
       if (!getUserQueryDTO) {
-        console.error(`LOG: [GetUserService] Usuário não encontrado para o UUID: ${dto.uuid}`); // <--- ADICIONAR LOG
         return Result.Failure<GetUserViewModel>(ErrorCatalog.UserNotFound.SetError());
       }
 
       const getUserViewModel = GetUserViewModel.FromQueryDTO(getUserQueryDTO);
-      console.log(`LOG: [GetUserService] ViewModel criado:`, getUserViewModel); // <--- ADICIONAR LOG
       return Result.SucessWithData<GetUserViewModel>("User found", getUserViewModel);
     } catch (error) {
-      console.error(`LOG: [GetUserService] Erro ao executar:`, error); // <--- ADICIONAR LOG
       if (error instanceof ValidationException) {
         const message: string = error.SetErrors();
         return Result.Failure<GetUserViewModel>(message);
@@ -47,5 +41,4 @@ public async Execute(dto: GetUserDTO, reply: FastifyReply): Promise<Result<GetUs
       return Result.Failure(ErrorCatalog.InternalServerError.SetError());
     }
   }
-
 }

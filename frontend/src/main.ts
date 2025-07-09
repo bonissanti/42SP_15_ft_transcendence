@@ -134,8 +134,6 @@ async function router(path: string) {
       }
 
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("LOG: Resposta de erro do servidor:", errorText); // <--- ADICIONAR LOG
         throw new Error('Falha ao buscar dados do usuário.');
       }
 
