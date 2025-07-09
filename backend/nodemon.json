@@ -6,5 +6,5 @@
     "prisma/*.db",
     "prisma/*.db-journal"
   ],
-  "exec": "tsx src/index.ts"
+  "exec": "node --enable-source-maps --inspect=0.0.0.0:9229 --import tsx src/index.ts"
 }

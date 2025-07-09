@@ -17,7 +17,11 @@ services:
       DATABASE_URL: "file:/usr/src/app/prisma/dev.db" 
       JWT_SECRET: "transcendence"
     volumes:
-      - backend-db-data:/usr/src/app/prisma    
+      - backend-db-data:/usr/src/app/prisma
+    ports:
+      - "9229:9229"  # <--- Adicione esta linha para expor a porta de depuração
+      - "5555:5555"  # <--- Adicione esta linha para expor a porta do nodemon
+    command: sh -c "npx prisma migrate dev && npm run dev" # <--- Adicione esta linha para rodar o nodemon
     depends_on:
       - authentication
     networks:

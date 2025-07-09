@@ -114,6 +114,7 @@ async function router(path: string) {
   }
 
   if (path === '/profile') {
+    console.log("LOG: Acessando a rota /profile");
     const token = localStorage.getItem('jwtToken');
     if (!token) {
       history.pushState({}, '', '/');
@@ -122,24 +123,30 @@ async function router(path: string) {
     }
 
     try {
+      console.log("LOG: Enviando requisição para /api/users/me com o token:", token); 
       const response = await fetch(`http://localhost:8080/api/users/me`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
-
+      console.log("LOG: Resposta recebida de /api/users/me com status:", response.status);
       if (response.status === 401) {
         logout();
         return;
       }
 
-      if (!response.ok) throw new Error('Falha ao buscar dados do usuário.');
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("LOG: Resposta de erro do servidor:", errorText); // <--- ADICIONAR LOG
+        throw new Error('Falha ao buscar dados do usuário.');
+      }
 
       const user = await response.json();
+      console.log("LOG: Dados do usuário recebidos:", user);
       user.ProfilePic = user.ProfilePic || 'https://placehold.co/128x128/000000/FFFFFF?text=User';
 
       await renderView('profile', { user });
       document.getElementById('logout-button')?.addEventListener('click', logout);
     } catch (error: any) {
-      console.error("Erro ao carregar perfil:", error);
+      console.error("LOG: Erro detalhado ao carregar perfil:", error); 
       await renderView('error', { message: error.message });
     }
     return;

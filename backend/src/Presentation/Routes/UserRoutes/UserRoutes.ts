@@ -30,22 +30,38 @@ const opts = {
 
 export const UserRoutes = async (server: any, userController: UserController) => {
     
-    server.post('/user', opts, async (request: FastifyRequest<{ Body: CreateUserDTO }>, reply: FastifyReply) =>
-        await userController.CreateUser(request, reply))
+    server.post('/user', opts, async (request: FastifyRequest<{ Body: CreateUserDTO }>, reply: FastifyReply) => {
+        console.log("LOG: Requisição recebida em /api/user"); // <--- ADICIONAR LOG
+        await userController.CreateUser(request, reply);
+    });
 
-    server.put('/user', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Body: EditUserDTO }>, reply: FastifyReply) =>
-        await userController.EditUser(request, reply))
+    server.put('/user', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Body: EditUserDTO }>, reply: FastifyReply) => {
+        console.log("LOG: Requisição recebida em /api/user"); // <--- ADICIONAR LOG
+        await userController.EditUser(request, reply);
+    });
 
-    server.delete('/user', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Body: DeleteUserDTO }>, reply: FastifyReply) =>
-        await userController.DeleteUser(request, reply))
+    server.delete('/user', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Body: DeleteUserDTO }>, reply: FastifyReply) => {
+        console.log("LOG: Requisição recebida em /api/user"); // <--- ADICIONAR LOG
+        await userController.DeleteUser(request, reply);
+    });
 
-    server.get('/user', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Querystring: GetUserDTO }>, reply: FastifyReply) =>
-        await userController.GetUser(request, reply))
+    server.get('/user', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Querystring: GetUserDTO }>, reply: FastifyReply) => {
+        console.log("LOG: Requisição recebida em /api/user"); // <--- ADICIONAR LOG
+        await userController.GetUser(request, reply);
+    });
 
     server.get('/users/:uuid', userController.findOne.bind(userController));
 
     server.get('/users/me', { preHandler: authenticateJWT }, async (request: FastifyRequest, reply: FastifyReply) => {
-        const userPayload = request.user as { uuid: string }; 
+        console.log("LOG: Requisição recebida em /api/users/me"); // <--- ADICIONAR LOG
+        const userPayload = request.user as { uuid: string };
+        console.log("LOG: Payload do usuário (JWT):", userPayload); // <--- ADICIONAR LOG
+        
+        if (!userPayload || !userPayload.uuid) {
+            console.error("LOG: UUID do usuário não encontrado no token JWT."); // <--- ADICIONAR LOG
+            return reply.status(400).send({ message: "UUID do usuário inválido." });
+        }
+        
         const userDTO = new GetUserDTO(userPayload.uuid); 
         const result = await userController.getUserService.Execute(userDTO, reply);
         return userController.handleResult(result, reply, userController.notificationError);

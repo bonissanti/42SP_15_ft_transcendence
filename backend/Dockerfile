@@ -14,7 +14,12 @@ RUN npx prisma generate
 COPY . .
 
 EXPOSE 8080
+
+#Debug
 EXPOSE 9229
+
+#Prisma Studio
+EXPOSE 5555
 
 ENTRYPOINT ["./entrypoint.sh"]
 

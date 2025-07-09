@@ -63,7 +63,7 @@ async function main() {
   );
 
   await UserRoutes(server, userController);
-  await UserSessionRoutes(server, userSessionController);
+  await UserSessionRoutes(server, userSessionController, userRepository);
 
   server.setErrorHandler(async (error, request, reply) => {
     console.error("Internal server error:", error);

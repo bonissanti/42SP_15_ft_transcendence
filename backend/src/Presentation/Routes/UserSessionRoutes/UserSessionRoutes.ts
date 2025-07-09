@@ -17,6 +17,7 @@ export const UserSessionRoutes = async (server: any, userSessionController: User
     });
 
     server.post('/auth/google', async (request: FastifyRequest<{ Body: { credential?: string } }>, reply: FastifyReply) => {
+        console.log("🔄 RECEBENDO CREDENCIAL DO FRONTEND:", request.body);
         const { credential } = request.body;
         if (!credential) {
             return reply.status(400).send({ message: 'Credential not provided from frontend.' });
@@ -62,7 +63,7 @@ export const UserSessionRoutes = async (server: any, userSessionController: User
             if (!user) {
                 const emailVO = EmailVO.AddEmail(googlePayload.email);
                 
-                let username = (googlePayload.name || googlePayload.email.split('@')[0]).replace(/\s/g, '');
+                let username = (googlePayload.name || googlePayload.email.split('@')[0]);
                 if (await userRepository.VerifyIfUserExistsByUsername(username)) {
                     username = `${username}_${googlePayload.sub.slice(0, 4)}`;
                 }
@@ -82,6 +83,7 @@ export const UserSessionRoutes = async (server: any, userSessionController: User
             }
 
             const token = server.jwt.sign({ uuid: user.uuid, isAuthenticated: true });
+            console.log("🔑 TOKEN GERADO PARA UUID:", user.uuid);
             return reply.send({ token: token });
 
         } catch (error: any) {

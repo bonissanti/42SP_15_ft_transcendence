@@ -11,6 +11,7 @@ export class UserAuth0 implements BaseEntity
     constructor(email: EmailVO, auth0id: string, profilepic: string | null = null)
     {
         this.Uuid = crypto.randomUUID();
+        console.log("UserAuth0.Uuid", this.Uuid);
         this.Email = email;
         this.Auth0Id = auth0id;
         this.ProfilePic = profilepic;
