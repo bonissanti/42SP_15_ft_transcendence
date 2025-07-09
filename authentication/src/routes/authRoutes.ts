@@ -9,8 +9,6 @@ export interface IAuthOptions extends FastifyPluginOptions {
 }
 
 async function authRoutesPlugin(server: FastifyInstance, options: IAuthOptions & { prefix?: string }) {
-  console.log("✅ authRoutes plugin carregado com sucesso");
-  console.log("Body do plugin:", options);
   const googleClient = new OAuth2Client(options.GOOGLE_CLIENT_ID);
 
   server.post<{ Body: { credential?: string } }>('/auth/google', async (request, reply) => {

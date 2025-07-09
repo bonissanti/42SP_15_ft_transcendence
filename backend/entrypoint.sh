@@ -1,6 +1,12 @@
 #!/bin/sh
+
 set -e
-echo "Running database migrations..."
-npx prisma migrate dev
-echo "Migrations finished."
+
+
+echo "Rodando as migrações do Prisma..."
+npx prisma migrate deploy
+
+npx prisma studio &
+
+echo "Iniciando a aplicação..."
 exec "$@"
