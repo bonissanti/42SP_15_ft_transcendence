@@ -1,9 +1,9 @@
 export class GetTournamentDTO
 {
-    public readonly torunamentUuid: string;
+    public readonly tournamentUuid: string;
 
     constructor(tournamentUuid: string)
     {
-        this.torunamentUuid = tournamentUuid;
+        this.tournamentUuid = tournamentUuid;
     }
 }
