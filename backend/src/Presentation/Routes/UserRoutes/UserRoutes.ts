@@ -48,16 +48,11 @@ export const UserRoutes = async (server: any, userController: UserController) =>
 
     server.get('/users/:uuid', userController.findOne.bind(userController));
 
-    server.get('/users/me', { preHandler: authenticateJWT }, async (request: FastifyRequest, reply: FastifyReply) => {
-        const userPayload = request.user as { uuid: string };
-        
-        if (!userPayload || !userPayload.uuid) {
+    server.get('/users/me', { preHandler: authenticateJWT }, async (request: FastifyRequest <{ Querystring: GetUserDTO }>, reply: FastifyReply) => {
+        if (!request || !request.query.uuid) {
             return reply.status(400).send({ message: "UUID do usuário inválido." });
         }
-        
-        const userDTO = new GetUserDTO(userPayload.uuid); 
-        const result = await userController.getUserService.Execute(userDTO, reply);
-        return userController.handleResult(result, reply, userController.notificationError);
+        await userController.GetUser(request, reply);
     });
 
 }
