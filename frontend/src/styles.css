@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .menu-button {
+    @apply bg-gray-700 text-white font-press-start text-lg py-4 px-8 m-2 border-2 border-white rounded-lg cursor-pointer uppercase transition-all duration-200 hover:bg-indigo-600 hover:-translate-y-0.5 hover:shadow-retro-hover;
+  }
+
+  .text-glow {
+    text-shadow: 0 0 10px #4f46e5, 0 0 20px #4f46e5;
+  }
+}
