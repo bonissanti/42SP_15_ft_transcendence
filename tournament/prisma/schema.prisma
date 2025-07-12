@@ -9,6 +9,7 @@ datasource db {
 
 model Tournament {
     id             String  @id @default(uuid())
+    tournamentUuid String  @unique
     tournamentName String
     player1Uuid    String  @unique
     player2Uuid    String  @unique
