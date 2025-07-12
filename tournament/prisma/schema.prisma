@@ -1,0 +1,19 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "sqlite"
+    url      = "file:./dev.db"
+}
+
+model Tournament {
+    id             String  @id @default(uuid())
+    tournamentName String
+    player1Uuid    String  @unique
+    player2Uuid    String  @unique
+    player3Uuid    String? @unique
+    player4Uuid    String? @unique
+
+    @@map("tournament")
+}

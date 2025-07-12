@@ -4,11 +4,11 @@ import {LoginSessionCommandHandler} from "../../Command/Handlers/LoginSessionCom
 import {LoginSessionCommandValidator} from "../../Command/Validators/LoginSessionCommandValidator.js";
 import {UserRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/UserRepository.js";
 import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
-import { Result } from "src/Shared/Utils/Result.js";
 import {UserSessionCommand} from "../../Command/CommandObject/UserSessionCommand.js";
 import {ValidationException} from "../../../Shared/Errors/ValidationException.js";
 import {PrismaClientKnownRequestError} from "@prisma/client/runtime/library";
 import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog.js";
+import { Result } from "../../../Shared/Utils/Result.js";
 
 export class LoginUserService  implements BaseService<UserSessionDTO>
 {
