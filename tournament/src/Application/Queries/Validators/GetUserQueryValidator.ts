@@ -13,7 +13,7 @@ export class GetUserQueryValidator implements BaseValidator<GetUserQuery>
 
     public Validator(command: DeleteUserCommand)
     {
-        if (!this.UserRepository.VerifyIfUserExistsByUUID(command.Uuid))
+        if (!this.UserRepository.VerifyIfTournamentExistsByUUID(command.Uuid))
             this.NotificationError.AddError(ErrorCatalog.UserNotFound);
     }
 }

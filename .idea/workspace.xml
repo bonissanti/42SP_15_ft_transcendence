@@ -4,7 +4,43 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d3134b4-a67d-4c46-80e3-654566a805b8" name="Changes" comment="refactor: update `UserSessionRoutes`, DTO structure, and imports for consistency&#10;&#10;- Replaced redundant body typing with `UserSessionDTO` in `UserSessionRoutes`.&#10;- Updated `UserSessionController` methods to use DTOs and simplified notification handling.&#10;- Removed unused imports and fixed import paths for `LoginUserService` and `LogoutUserService`.&#10;- Adjusted IDE configuration sync and resolved minor formatting issues in `.idea/workspace.xml`." />
+    <list default="true" id="6d3134b4-a67d-4c46-80e3-654566a805b8" name="Changes" comment="feat: add unique `tournamentUuid` column and comment out PrismaService initialization&#10;&#10;- Added `tournamentUuid` column with unique constraint to `Tournament` model for better identification.&#10;- Commented out PrismaService initialization in preparation for potential refactoring or alternative implementation.">
+      <change afterPath="$PROJECT_DIR$/tournament/src/Application/Command/CommandObject/DeleteTournamentCommand.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament/src/Application/Command/CommandObject/EditTournamentCommand.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament/src/Application/Command/Handlers/CreateTournamentCommandHandler.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament/src/Application/DTO/ToQuery/GetAllTournamentsDTO.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament/src/Application/Queries/Handlers/GetAllTournamentQueryHandler.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament/src/Application/Queries/QueryObject/GetAllTournamentsQuery.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament/src/Application/Services/Concrete/CreateTournamentService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament/src/Application/Services/Concrete/DeleteTournamentService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament/src/Application/Services/Concrete/EditTournamentService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament/src/Application/Services/Concrete/GetAllTournamentService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament/src/Application/Services/Concrete/GetTournamentService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament/src/Application/ViewModel/GetAllTournamentsViewModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament/src/Application/ViewModel/GetTournamentViewModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament/src/Domain/Entities/Concrete/Tournament.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament/src/Domain/QueryDTO/GetAllTournamentsQueryDTO.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament/src/Infrastructure/Persistence/Repositories/Concrete/TournamentRepository.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament/src/Infrastructure/Persistence/Repositories/Interface/IBaseRepository.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament/src/Presentation/Controllers/TournamentController.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/Presentation/Controllers/UserController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/Presentation/Controllers/UserController.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/Application/Command/CommandObject/CreateTournamentCommand.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Application/Command/CommandObject/CreateTournamentCommand.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/Application/Command/Handlers/DeleteUserCommandHandler.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Application/Command/Handlers/DeleteTournamentCommandHandler.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/Application/Command/Handlers/EditUserCommandHandler.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Application/Command/Handlers/EditTournamentCommandHandler.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/Application/Command/Handlers/LoginSessionCommandHandler.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/Application/Command/Handlers/LogoutSessionCommandHandler.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/Application/Command/Validators/DeleteUserCommandValidator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Application/Command/Validators/DeleteUserCommandValidator.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/Application/Command/Validators/EditUserCommandValidator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Application/Command/Validators/EditTournamentCommandValidator.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/Application/Command/Validators/LoginSessionCommandValidator.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/Application/Command/Validators/LogoutSessionCommandValidator.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/Application/DTO/ToQuery/GetAllTournamentDTO.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/Application/DTO/ToQuery/GetTournamentDTO.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Application/DTO/ToQuery/GetTournamentDTO.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/Application/Queries/Handlers/BaseHandlerQuery.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Application/Queries/Handlers/BaseHandlerQuery.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/Application/Queries/Handlers/GetUserQueryHandler.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Application/Queries/Handlers/GetTournamentQueryHandler.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/Application/Queries/QueryObject/GetTournamentQuery.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Application/Queries/QueryObject/GetTournamentQuery.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/Application/Queries/Validators/GetUserQueryValidator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Application/Queries/Validators/GetUserQueryValidator.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -15,6 +51,7 @@
       <list>
         <option value="Dockerfile" />
         <option value="package.json" />
+        <option value="TypeScript File" />
       </list>
     </option>
   </component>
@@ -39,7 +76,7 @@
   }
 }</component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="ProjectErrors" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
@@ -56,15 +93,28 @@
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "feature/new-tournament",
     "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "/home/bruno/Documents/42SP/42_transcendence/tournament/src/Shared",
+    "last_opened_file_path": "/home/bruno/Documents/42SP/42_transcendence/tournament/src/Application/Queries/Handlers",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "npm.clean:dist.executor": "Run",
     "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "/home/bruno/Documents/42SP/42_transcendence/authentication/node_modules/typescript/lib"
+    "ts.external.directory.path": "/home/bruno/Documents/42SP/42_transcendence/backend/node_modules/typescript/lib"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/tournament/src/Application/Queries/Handlers" />
+      <recent name="$PROJECT_DIR$/tournament/src/Application/DTO/ToQuery" />
+      <recent name="$PROJECT_DIR$/tournament/src/Application/Services/Concrete" />
+      <recent name="$PROJECT_DIR$/tournament/src/Domain/DTO/Command" />
+      <recent name="$PROJECT_DIR$/tournament/src/Presentation/Controllers" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/tournament/src/Application" />
+      <recent name="$PROJECT_DIR$/tournament/src/Application/Queries/QueryObject" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="clean:dist" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/backend/package.json" />
@@ -97,7 +147,11 @@
       <option name="presentableId" value="Default" />
       <updated>1752330888248</updated>
       <workItem from="1752330889369" duration="4328000" />
-      <workItem from="1752335230569" duration="516000" />
+      <workItem from="1752335230569" duration="2175000" />
+      <workItem from="1752342442241" duration="1755000" />
+      <workItem from="1752344203319" duration="11126000" />
+      <workItem from="1752355352918" duration="731000" />
+      <workItem from="1752356104739" duration="1793000" />
     </task>
     <task id="LOCAL-00001" summary="refactor: Fix imports, update error handling, and add Dockerfile for tournament&#10;&#10;- Adjusted imports in `EditUserService.ts` for paths consistency.  &#10;- Updated error message key (`InvalidProfilePicExtension` to `InvalidExtension`) in `CreateUserCommandValidator.ts`.  &#10;- Added `Dockerfile` for tournament module to support containerization and deployment.">
       <option name="closed" value="true" />
@@ -139,7 +193,79 @@
       <option name="project" value="LOCAL" />
       <updated>1752335679890</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="feat: add shared utilities, custom error handling, and validation for tournament module&#10;&#10;- Introduced `CustomError` class for standardized error handling and messages.&#10;- Added `NotificationError` and `ValidationException` classes to manage grouped and validation-specific errors.&#10;- Created `Result` utility for success/failure operations with optional data handling.&#10;- Included `fs.rmdir.ts` utility to clear the `dist` folder during build processes.&#10;- Added placeholder `ErrorCatalog` for future error definitions.">
+      <option name="closed" value="true" />
+      <created>1752335774446</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1752335774446</updated>
+    </task>
+    <task id="LOCAL-00007" summary="feat: add BackendApiClient and AuthMiddleware for user verification and JWT authentication&#10;&#10;- Implemented `BackendApiClient` to handle user existence verification via the backend API.&#10;- Introduced `authenticateJWT` middleware to handle JWT verification and unauthorized responses.">
+      <option name="closed" value="true" />
+      <created>1752353183126</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1752353183126</updated>
+    </task>
+    <task id="LOCAL-00008" summary="feat: add base abstractions for tournament module controllers, entities, and commands&#10;&#10;- Introduced `BaseController` to standardize result handling and error response logic.&#10;- Added `BaseEntity` interface for common entity properties like `Uuid`.&#10;- Implemented `BaseHandlerCommand` interface to enforce structure for command handling with notifications.">
+      <option name="closed" value="true" />
+      <created>1752353191840</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1752353191840</updated>
+    </task>
+    <task id="LOCAL-00009" summary="feat: add base abstractions for tournament module&#10;&#10;- Introduced `BaseHandlerQuery` and `BaseValidator` interfaces for query and command validation structure.&#10;- Implemented `CreateTournamentCommand` class to encapsulate tournament creation command logic.&#10;- Added `BaseService` interface to standardize service execution with request-reply handling.">
+      <option name="closed" value="true" />
+      <created>1752353204272</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1752353204272</updated>
+    </task>
+    <task id="LOCAL-00010" summary="feat: add validators and DTOs for tournament module commands  &#10;&#10;- Implemented `CreateTournamentDTO` and `DeleteTournamentDTO` for handling respective command data.  &#10;- Added `CreateTournamentValidator` and `DeleteUserCommandValidator` for validating tournament and user commands.  &#10;- Introduced `DeleteUserCommandHandler` to handle user deletion logic via repository.">
+      <option name="closed" value="true" />
+      <created>1752353216838</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1752353216838</updated>
+    </task>
+    <task id="LOCAL-00011" summary="feat: add validators and DTOs for tournament module commands  &#10;&#10;- Implemented `CreateTournamentDTO` and `DeleteTournamentDTO` for handling respective command data.  &#10;- Added `CreateTournamentValidator` and `DeleteUserCommandValidator` for validating tournament and user commands.  &#10;- Introduced `DeleteUserCommandHandler` to handle user deletion logic via repository.">
+      <option name="closed" value="true" />
+      <created>1752353230365</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1752353230365</updated>
+    </task>
+    <task id="LOCAL-00012" summary="feat: add query handlers, DTOs, and validators for `GetUser` and `GetTournament` operations&#10;&#10;- Implemented `GetUserQueryHandler` and `GetTournamentQueryDTO` for handling user and tournament queries.&#10;- Added `GetUserQueryValidator` for input validation of user queries.&#10;- Introduced supporting DTOs and query objects for tournament and user processing.">
+      <option name="closed" value="true" />
+      <created>1752353261970</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1752353261970</updated>
+    </task>
+    <task id="LOCAL-00013" summary="feat: implement session command handlers and validators for login and logout actions&#10;&#10;- Added `LoginSessionCommandHandler` and `LogoutSessionCommandHandler` for handling login/logout operations.&#10;- Implemented validators `LoginSessionCommandValidator` and `LogoutSessionCommandValidator` with comprehensive validation logic.&#10;- Integrated repository and error notification for user existence and credential checks.">
+      <option name="closed" value="true" />
+      <created>1752353280002</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1752353280002</updated>
+    </task>
+    <task id="LOCAL-00014" summary="feat: add unique `tournamentUuid` column and comment out PrismaService initialization&#10;&#10;- Added `tournamentUuid` column with unique constraint to `Tournament` model for better identification.&#10;- Commented out PrismaService initialization in preparation for potential refactoring or alternative implementation.">
+      <option name="closed" value="true" />
+      <created>1752353290701</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1752353290701</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -162,6 +288,14 @@
     <MESSAGE value="feat: add tournament module with Prisma schema, package.json setup, and import fixes&#10;&#10;- Introduced `tournament` module with `Prisma` schema setup for SQLite.&#10;- Added `package.json` for dependencies, scripts, and dev tools specific to the tournament.&#10;- Fixed incorrect import paths in `LoginUserService` and `LogoutUserService`." />
     <MESSAGE value="refactor: simplify `/users/me` route and clean up User-related entities&#10;&#10;- Optimized `/users/me` route handling by integrating `GetUser` method and removing redundant logic.&#10;- Removed unused `crypto` import from `User` entity.&#10;- Adjusted formatting for consistency in `UserRepository` methods.&#10;- Streamlined `GetUserDTO` initialization in `UserController`." />
     <MESSAGE value="refactor: update `UserSessionRoutes`, DTO structure, and imports for consistency&#10;&#10;- Replaced redundant body typing with `UserSessionDTO` in `UserSessionRoutes`.&#10;- Updated `UserSessionController` methods to use DTOs and simplified notification handling.&#10;- Removed unused imports and fixed import paths for `LoginUserService` and `LogoutUserService`.&#10;- Adjusted IDE configuration sync and resolved minor formatting issues in `.idea/workspace.xml`." />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor: update `UserSessionRoutes`, DTO structure, and imports for consistency&#10;&#10;- Replaced redundant body typing with `UserSessionDTO` in `UserSessionRoutes`.&#10;- Updated `UserSessionController` methods to use DTOs and simplified notification handling.&#10;- Removed unused imports and fixed import paths for `LoginUserService` and `LogoutUserService`.&#10;- Adjusted IDE configuration sync and resolved minor formatting issues in `.idea/workspace.xml`." />
+    <MESSAGE value="feat: add shared utilities, custom error handling, and validation for tournament module&#10;&#10;- Introduced `CustomError` class for standardized error handling and messages.&#10;- Added `NotificationError` and `ValidationException` classes to manage grouped and validation-specific errors.&#10;- Created `Result` utility for success/failure operations with optional data handling.&#10;- Included `fs.rmdir.ts` utility to clear the `dist` folder during build processes.&#10;- Added placeholder `ErrorCatalog` for future error definitions." />
+    <MESSAGE value="feat: add BackendApiClient and AuthMiddleware for user verification and JWT authentication&#10;&#10;- Implemented `BackendApiClient` to handle user existence verification via the backend API.&#10;- Introduced `authenticateJWT` middleware to handle JWT verification and unauthorized responses." />
+    <MESSAGE value="feat: add base abstractions for tournament module controllers, entities, and commands&#10;&#10;- Introduced `BaseController` to standardize result handling and error response logic.&#10;- Added `BaseEntity` interface for common entity properties like `Uuid`.&#10;- Implemented `BaseHandlerCommand` interface to enforce structure for command handling with notifications." />
+    <MESSAGE value="feat: add base abstractions for tournament module&#10;&#10;- Introduced `BaseHandlerQuery` and `BaseValidator` interfaces for query and command validation structure.&#10;- Implemented `CreateTournamentCommand` class to encapsulate tournament creation command logic.&#10;- Added `BaseService` interface to standardize service execution with request-reply handling." />
+    <MESSAGE value="feat: add validators and DTOs for tournament module commands  &#10;&#10;- Implemented `CreateTournamentDTO` and `DeleteTournamentDTO` for handling respective command data.  &#10;- Added `CreateTournamentValidator` and `DeleteUserCommandValidator` for validating tournament and user commands.  &#10;- Introduced `DeleteUserCommandHandler` to handle user deletion logic via repository." />
+    <MESSAGE value="feat: add query handlers, DTOs, and validators for `GetUser` and `GetTournament` operations&#10;&#10;- Implemented `GetUserQueryHandler` and `GetTournamentQueryDTO` for handling user and tournament queries.&#10;- Added `GetUserQueryValidator` for input validation of user queries.&#10;- Introduced supporting DTOs and query objects for tournament and user processing." />
+    <MESSAGE value="feat: implement session command handlers and validators for login and logout actions&#10;&#10;- Added `LoginSessionCommandHandler` and `LogoutSessionCommandHandler` for handling login/logout operations.&#10;- Implemented validators `LoginSessionCommandValidator` and `LogoutSessionCommandValidator` with comprehensive validation logic.&#10;- Integrated repository and error notification for user existence and credential checks." />
+    <MESSAGE value="feat: add unique `tournamentUuid` column and comment out PrismaService initialization&#10;&#10;- Added `tournamentUuid` column with unique constraint to `Tournament` model for better identification.&#10;- Commented out PrismaService initialization in preparation for potential refactoring or alternative implementation." />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add unique `tournamentUuid` column and comment out PrismaService initialization&#10;&#10;- Added `tournamentUuid` column with unique constraint to `Tournament` model for better identification.&#10;- Commented out PrismaService initialization in preparation for potential refactoring or alternative implementation." />
   </component>
 </project>
