@@ -17,7 +17,7 @@ export class GetUserQuery
 
     public static FromDTO(dto: GetUserDTO): GetUserQuery
     {
-        return new GetUserQuery(dto.uuid, dto.email, dto.username, dto.profilePic);
+        return new GetUserQuery(dto.uuid, dto.email, dto.username);
     }
 
 }

@@ -3,21 +3,13 @@ import {GetUserViewModel} from "../../../Presentation/ViewModels/GetUserViewMode
 export class GetUserDTO
 {
     public readonly uuid: string;
-    public readonly email?: string;
-    public readonly username?: string;
-    public readonly profilePic: string | null;
-    public readonly matchesPlayed: number;
-    public readonly wins: number;
-    public readonly loses: number;
+    public readonly email?: string | null;
+    public readonly username?: string | null;
 
-    constructor(uuid: string, email: string, username: string, profilepic: string | null = null, matchesPlayed : number, wins : number, loses : number)
+    constructor(uuid: string, email: string = null, username: string = null)
     {
         this.uuid = uuid;
         this.email = email;
         this.username = username;
-        this.profilePic = profilepic;
-        this.matchesPlayed = matchesPlayed;
-        this.wins = wins;
-        this.loses = loses;
     }
 }
