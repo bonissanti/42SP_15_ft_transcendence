@@ -4,22 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d3134b4-a67d-4c46-80e3-654566a805b8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/tournament/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tournament/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tournament/prisma/schema.prisma" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/Application/Command/Validators/CreateUserCommandValidator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/Application/Command/Validators/CreateUserCommandValidator.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/Application/Queries/QueryObject/GetUserQuery.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/Application/Queries/QueryObject/GetUserQuery.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/Application/Services/Concrete/EditUserService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/Application/Services/Concrete/EditUserService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/Application/Services/Concrete/LoginUserService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/Application/Services/Concrete/LoginUserService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/Application/Services/Concrete/LogoutUserService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/Application/Services/Concrete/LogoutUserService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/Domain/DTO/Query/GetUserDTO.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/Domain/DTO/Query/GetUserDTO.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/Domain/Entities/Concrete/User.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/Domain/Entities/Concrete/User.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/Infrastructure/Persistence/Repositories/Concrete/UserRepository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/Infrastructure/Persistence/Repositories/Concrete/UserRepository.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/Presentation/Controllers/UserController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/Presentation/Controllers/UserController.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/Presentation/Routes/UserRoutes/UserRoutes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/Presentation/Routes/UserRoutes/UserRoutes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/Presentation/Routes/UserSessionRoutes/GoogleAuthHelpers.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/Presentation/Routes/UserSessionRoutes/GoogleAuthHelpers.ts" afterDir="false" />
-    </list>
+    <list default="true" id="6d3134b4-a67d-4c46-80e3-654566a805b8" name="Changes" comment="refactor: update `UserSessionRoutes`, DTO structure, and imports for consistency&#10;&#10;- Replaced redundant body typing with `UserSessionDTO` in `UserSessionRoutes`.&#10;- Updated `UserSessionController` methods to use DTOs and simplified notification handling.&#10;- Removed unused imports and fixed import paths for `LoginUserService` and `LogoutUserService`.&#10;- Adjusted IDE configuration sync and resolved minor formatting issues in `.idea/workspace.xml`." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -41,24 +26,24 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "bonissanti"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;bonissanti&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/ArthurSobreira/42_transcendence.git",
-    "accountId": "de286582-ad2a-4790-b6a2-7f4817dd9ce3"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/ArthurSobreira/42_transcendence.git&quot;,
+    &quot;accountId&quot;: &quot;de286582-ad2a-4790-b6a2-7f4817dd9ce3&quot;
   }
-}]]></component>
+}</component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="ProjectErrors" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 1
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
   <component name="ProjectId" id="2zmKcedwfHZtt7z3RJYxcKbTeVN" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -71,13 +56,13 @@
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "feature/new-tournament",
     "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "/home/bruno/Documents/42SP/42_transcendence",
+    "last_opened_file_path": "/home/bruno/Documents/42SP/42_transcendence/tournament/src/Shared",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "npm.clean:dist.executor": "Run",
     "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "/home/bruno/Documents/42SP/42_transcendence/backend/node_modules/typescript/lib"
+    "ts.external.directory.path": "/home/bruno/Documents/42SP/42_transcendence/authentication/node_modules/typescript/lib"
   }
 }]]></component>
   <component name="RunManager">
@@ -112,7 +97,49 @@
       <option name="presentableId" value="Default" />
       <updated>1752330888248</updated>
       <workItem from="1752330889369" duration="4328000" />
+      <workItem from="1752335230569" duration="516000" />
     </task>
+    <task id="LOCAL-00001" summary="refactor: Fix imports, update error handling, and add Dockerfile for tournament&#10;&#10;- Adjusted imports in `EditUserService.ts` for paths consistency.  &#10;- Updated error message key (`InvalidProfilePicExtension` to `InvalidExtension`) in `CreateUserCommandValidator.ts`.  &#10;- Added `Dockerfile` for tournament module to support containerization and deployment.">
+      <option name="closed" value="true" />
+      <created>1752335637646</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1752335637646</updated>
+    </task>
+    <task id="LOCAL-00002" summary="refactor: streamline `GetUserDTO` and related query handling, adjust imports&#10;&#10;- Removed unused properties from `GetUserDTO` and simplified constructor parameters.&#10;- Updated `GetUserQuery` to align with streamlined DTO structure.&#10;- Adjusted imports in `GoogleAuthHelpers` for consistency and added bcrypt support.">
+      <option name="closed" value="true" />
+      <created>1752335649337</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1752335649337</updated>
+    </task>
+    <task id="LOCAL-00003" summary="feat: add tournament module with Prisma schema, package.json setup, and import fixes&#10;&#10;- Introduced `tournament` module with `Prisma` schema setup for SQLite.&#10;- Added `package.json` for dependencies, scripts, and dev tools specific to the tournament.&#10;- Fixed incorrect import paths in `LoginUserService` and `LogoutUserService`.">
+      <option name="closed" value="true" />
+      <created>1752335658915</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1752335658915</updated>
+    </task>
+    <task id="LOCAL-00004" summary="refactor: simplify `/users/me` route and clean up User-related entities&#10;&#10;- Optimized `/users/me` route handling by integrating `GetUser` method and removing redundant logic.&#10;- Removed unused `crypto` import from `User` entity.&#10;- Adjusted formatting for consistency in `UserRepository` methods.&#10;- Streamlined `GetUserDTO` initialization in `UserController`.">
+      <option name="closed" value="true" />
+      <created>1752335670656</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1752335670656</updated>
+    </task>
+    <task id="LOCAL-00005" summary="refactor: update `UserSessionRoutes`, DTO structure, and imports for consistency&#10;&#10;- Replaced redundant body typing with `UserSessionDTO` in `UserSessionRoutes`.&#10;- Updated `UserSessionController` methods to use DTOs and simplified notification handling.&#10;- Removed unused imports and fixed import paths for `LoginUserService` and `LogoutUserService`.&#10;- Adjusted IDE configuration sync and resolved minor formatting issues in `.idea/workspace.xml`.">
+      <option name="closed" value="true" />
+      <created>1752335679890</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1752335679890</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -128,5 +155,13 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="refactor: Fix imports, update error handling, and add Dockerfile for tournament&#10;&#10;- Adjusted imports in `EditUserService.ts` for paths consistency.  &#10;- Updated error message key (`InvalidProfilePicExtension` to `InvalidExtension`) in `CreateUserCommandValidator.ts`.  &#10;- Added `Dockerfile` for tournament module to support containerization and deployment." />
+    <MESSAGE value="refactor: streamline `GetUserDTO` and related query handling, adjust imports&#10;&#10;- Removed unused properties from `GetUserDTO` and simplified constructor parameters.&#10;- Updated `GetUserQuery` to align with streamlined DTO structure.&#10;- Adjusted imports in `GoogleAuthHelpers` for consistency and added bcrypt support." />
+    <MESSAGE value="feat: add tournament module with Prisma schema, package.json setup, and import fixes&#10;&#10;- Introduced `tournament` module with `Prisma` schema setup for SQLite.&#10;- Added `package.json` for dependencies, scripts, and dev tools specific to the tournament.&#10;- Fixed incorrect import paths in `LoginUserService` and `LogoutUserService`." />
+    <MESSAGE value="refactor: simplify `/users/me` route and clean up User-related entities&#10;&#10;- Optimized `/users/me` route handling by integrating `GetUser` method and removing redundant logic.&#10;- Removed unused `crypto` import from `User` entity.&#10;- Adjusted formatting for consistency in `UserRepository` methods.&#10;- Streamlined `GetUserDTO` initialization in `UserController`." />
+    <MESSAGE value="refactor: update `UserSessionRoutes`, DTO structure, and imports for consistency&#10;&#10;- Replaced redundant body typing with `UserSessionDTO` in `UserSessionRoutes`.&#10;- Updated `UserSessionController` methods to use DTOs and simplified notification handling.&#10;- Removed unused imports and fixed import paths for `LoginUserService` and `LogoutUserService`.&#10;- Adjusted IDE configuration sync and resolved minor formatting issues in `.idea/workspace.xml`." />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor: update `UserSessionRoutes`, DTO structure, and imports for consistency&#10;&#10;- Replaced redundant body typing with `UserSessionDTO` in `UserSessionRoutes`.&#10;- Updated `UserSessionController` methods to use DTOs and simplified notification handling.&#10;- Removed unused imports and fixed import paths for `LoginUserService` and `LogoutUserService`.&#10;- Adjusted IDE configuration sync and resolved minor formatting issues in `.idea/workspace.xml`." />
   </component>
 </project>
