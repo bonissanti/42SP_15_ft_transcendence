@@ -1,32 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="c5f3ffaf-d499-48f9-98ef-d53ea682bdd0" name="Changes" comment="" />
+    <list default="true" id="6d3134b4-a67d-4c46-80e3-654566a805b8" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/tournament/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament/prisma/schema.prisma" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/Application/Command/Validators/CreateUserCommandValidator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/Application/Command/Validators/CreateUserCommandValidator.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/Application/Queries/QueryObject/GetUserQuery.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/Application/Queries/QueryObject/GetUserQuery.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/Application/Services/Concrete/EditUserService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/Application/Services/Concrete/EditUserService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/Application/Services/Concrete/LoginUserService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/Application/Services/Concrete/LoginUserService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/Application/Services/Concrete/LogoutUserService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/Application/Services/Concrete/LogoutUserService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/Domain/DTO/Query/GetUserDTO.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/Domain/DTO/Query/GetUserDTO.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/Domain/Entities/Concrete/User.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/Domain/Entities/Concrete/User.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/Infrastructure/Persistence/Repositories/Concrete/UserRepository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/Infrastructure/Persistence/Repositories/Concrete/UserRepository.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/Presentation/Controllers/UserController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/Presentation/Controllers/UserController.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/Presentation/Routes/UserRoutes/UserRoutes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/Presentation/Routes/UserRoutes/UserRoutes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/Presentation/Routes/UserSessionRoutes/GoogleAuthHelpers.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/Presentation/Routes/UserSessionRoutes/GoogleAuthHelpers.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Dockerfile" />
+        <option value="package.json" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="feature/new-trans" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;bonissanti&quot;
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "bonissanti"
   }
-}</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/ArthurSobreira/42_transcendence.git&quot;,
-    &quot;accountId&quot;: &quot;de286582-ad2a-4790-b6a2-7f4817dd9ce3&quot;
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/ArthurSobreira/42_transcendence.git",
+    "accountId": "de286582-ad2a-4790-b6a2-7f4817dd9ce3"
   }
-}</component>
-  <component name="ProjectColorInfo">{
-  &quot;customColor&quot;: &quot;&quot;,
-  &quot;associatedIndex&quot;: 8
-}</component>
-  <component name="ProjectId" id="2wZ0zvzPFUKdSNYVwAClfKIgAU4" />
+}]]></component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 1
+}]]></component>
+  <component name="ProjectId" id="2zmKcedwfHZtt7z3RJYxcKbTeVN" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -36,34 +69,64 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "feat/authentication",
+    "git-widget-placeholder": "feature/new-tournament",
     "junie.onboarding.icon.badge.shown": "true",
+    "last_opened_file_path": "/home/bruno/Documents/42SP/42_transcendence",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "/home/bruno/Documents/42SP/13.Ft_transcendence/backend/node_modules/typescript/lib"
+    "npm.clean:dist.executor": "Run",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "/home/bruno/Documents/42SP/42_transcendence/backend/node_modules/typescript/lib"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration name="clean:dist" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/backend/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="clean:dist" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.clean:dist" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-f27c65a3e318-JavaScript-WS-251.23774.424" />
+        <option value="bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-WS-251.26927.40" />
       </set>
     </attachedChunks>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="c5f3ffaf-d499-48f9-98ef-d53ea682bdd0" name="Changes" comment="" />
-      <created>1746234055346</created>
+      <changelist id="6d3134b4-a67d-4c46-80e3-654566a805b8" name="Changes" comment="" />
+      <created>1752330888248</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1746234055346</updated>
-      <workItem from="1746234056681" duration="48000" />
-      <workItem from="1746234141782" duration="367000" />
+      <updated>1752330888248</updated>
+      <workItem from="1752330889369" duration="4328000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
