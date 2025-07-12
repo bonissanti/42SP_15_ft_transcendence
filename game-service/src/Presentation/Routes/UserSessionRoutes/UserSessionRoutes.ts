@@ -29,7 +29,7 @@ export const UserSessionRoutes = async (server: any, userSessionController: User
             const user = await findOrCreateUser(googlePayload, userRepository, server);
 
             if (!user) {
-                return reply.status(500).send({ message: "Failed to process user in backend." });
+                return reply.status(500).send({ message: "Failed to process user in game-service." });
             }
 
             const token = server.jwt.sign({ uuid: user.uuid, isAuthenticated: true });

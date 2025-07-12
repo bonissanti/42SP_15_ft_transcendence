@@ -2,34 +2,36 @@ version: '3.8'
 
 services:
   frontend:
-    build: ./frontend
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
     ports:
       - "8080:80"
     depends_on:
-      - backend
-      - authentication
+      - game-service
+      - auth-service
     networks:
       - app-network
 
-  backend:
-    build: ./backend
+  game-service:
+    build: ./game-service
     environment:
       DATABASE_URL: "file:/usr/src/app/prisma/dev.db"
       JWT_SECRET: "transcendence"
     volumes:
-      - ./prisma-data/backend:/usr/src/app/prisma
+      - game-service-prisma-data:/usr/src/app/prisma
     ports:
-      # Debug
+    # Debug
       - "9229:9229"
-      # Prisma Studio
+    # Prisma Studio
       - "5555:5555"
     depends_on:
-      - authentication
+      - auth-service
     networks:
       - app-network
 
-  authentication:
-    build: ./authentication
+  auth-service:
+    build: ./auth-service
     environment:
       DATABASE_URL: "file:/usr/src/app/prisma/auth.db"
       JWT_SECRET: "transcendence"
@@ -37,10 +39,14 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./prisma-data/auth:/usr/src/app/prisma
+      - auth-prisma-data:/usr/src/app/prisma
     networks:
       - app-network
 
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  game-service-prisma-data:
+  auth-prisma-data:

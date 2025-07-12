@@ -14,7 +14,7 @@ type GooglePayload = {
 };
 
 export async function verifyGoogleCredential(credential: string, server: FastifyInstance): Promise<GooglePayload> {
-    const authServiceUrl = 'http://authentication:3000/auth/google';
+    const authServiceUrl = 'http://auth-service:3000/auth/google';
 
     const authResponse = await fetch(authServiceUrl, {
         method: 'POST',

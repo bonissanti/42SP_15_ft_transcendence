@@ -1,5 +1,3 @@
-FRONT_DIR := ./frontend
-BACK_DIR  := ./backend
 COMPOSE_FILE := docker-compose.yml
 
 .PHONY: all build up stop start restart rm rmi rm-all ps
