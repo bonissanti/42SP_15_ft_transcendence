@@ -1,6 +1,6 @@
 import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
 
-export interface BaseHandlerQuery<T>
+export interface BaseHandlerQuery<TQuery, TResult = TQuery>
 {
-    Handle(command: T): Promise<T>;
+    Handle(command: TQuery): Promise<TResult>;
 }

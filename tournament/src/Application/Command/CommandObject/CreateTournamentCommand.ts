@@ -17,7 +17,7 @@ export class CreateTournamentCommand
         this.player4Uuid = player4Uuid;
     }
 
-    public fromDTO(dto: CreateTournamentDTO)
+    public static fromDTO(dto: CreateTournamentDTO): CreateTournamentCommand
     {
         return new CreateTournamentCommand(dto.tournamentName, dto.player1Uuid, dto.player2Uuid, dto.player3Uuid, dto.player4Uuid);
     }
