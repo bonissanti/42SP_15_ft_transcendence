@@ -56,6 +56,7 @@ export class UserController extends BaseController {
 
   public async GetUser(request: FastifyRequest<{ Querystring: GetUserDTO }>, reply: FastifyReply): Promise<Result> {
     const query = request.query;
+    console.log("Query: " + query);
     const userDTO: GetUserDTO = new GetUserDTO(query.uuid, query.email, query.username, query.profilePic);
     const result: Result<GetUserViewModel> = await this.getUserService.Execute(userDTO, reply);
     return this.handleResult(result, reply, this.notificationError);
@@ -70,5 +71,10 @@ export class UserController extends BaseController {
     } catch (error: any) {
       throw error;
     }
+  }
+
+  public async GetAllUsers(request: FastifyRequest, reply: FastifyReply): Promise<Result> {
+    const result: Result<GetUserViewModel[]> = await this.getUserService.GetAllUsers();
+    return this.handleResult(result, reply, this.notificationError);
   }
 }

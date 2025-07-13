@@ -13,5 +13,5 @@
       "@prisma": ["../src/Infrastructure/Service/PrismaService.ts"]
     }
   },
-  "include": ["../src"]
+  "include": ["src"]
 }

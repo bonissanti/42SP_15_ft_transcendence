@@ -11,7 +11,7 @@ export interface IBaseRepository<TQueryDTO, TEntity>
     GetAll(): Promise<TEntity[] | null>;
     GetUserQueryDTOByUuid(uuid: string): Promise<TQueryDTO | null>;
     GetUserEntityByUuid(uuid: string): Promise<TEntity | null>;
-    GetFullUsers(): Promise<TQueryDTO[]>
+    GetFullUsers(): Promise<TQueryDTO[]>;
     VerifyIfUserExistsByUUID(uuid: string): Promise<boolean>;
     VerifyIfUserExistsByUsername(username: string): Promise<boolean>;
 }

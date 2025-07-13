@@ -43,6 +43,7 @@ export const UserRoutes = async (server: any, userController: UserController) =>
     });
 
     server.get('/user', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Querystring: GetUserDTO }>, reply: FastifyReply) => {
+        console.log("Passou");
         await userController.GetUser(request, reply);
     });
 
@@ -60,4 +61,7 @@ export const UserRoutes = async (server: any, userController: UserController) =>
         return userController.handleResult(result, reply, userController.notificationError);
     });
 
-}
+    server.get('/users', { preHandler: authenticateJWT }, async (request: FastifyRequest, reply: FastifyReply) => {
+        await userController.GetAllUsers(request, reply);
+    });
+};
