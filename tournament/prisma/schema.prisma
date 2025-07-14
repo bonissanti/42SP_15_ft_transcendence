@@ -4,17 +4,17 @@ generator client {
 
 datasource db {
     provider = "sqlite"
-    url      = "file:./dev.db"
+    url      = "file:./game.db"
 }
 
 model Tournament {
-    id             String  @id @default(uuid())
-    tournamentUuid String  @unique
+    id             String @id @default(uuid())
+    tournamentUuid String @unique
     tournamentName String
-    player1Uuid    String  @unique
-    player2Uuid    String  @unique
-    player3Uuid    String? @unique
-    player4Uuid    String? @unique
+    player1Uuid    String @unique
+    player2Uuid    String @unique
+    player3Uuid    String @unique
+    player4Uuid    String @unique
 
     @@map("tournament")
 }

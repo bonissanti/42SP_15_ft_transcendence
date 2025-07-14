@@ -24,11 +24,15 @@ export class TournamentController extends BaseController
     private readonly getTournament: GetTournamentService;
     private readonly getAllTournament: GetAllTournamentService;
 
-    constructor(createTournament: CreateTournamentService)
+    constructor()
     {
         super();
         this.notificationError = new NotificationError();
-        this.createTournament = createTournament;
+        this.createTournament = new CreateTournamentService(this.notificationError);
+        this.editTournament = new EditTournamentService(this.notificationError);
+        this.deleteTournament = new DeleteTournamentService(this.notificationError);
+        this.getTournament = new GetTournamentService(this.notificationError);
+        this.getAllTournament = new GetAllTournamentService(this.notificationError);
     }
 
     public async CreateTournament(request: FastifyRequest<{ Body: CreateTournamentDTO }>, reply: FastifyReply)
@@ -39,23 +43,23 @@ export class TournamentController extends BaseController
         return this.handleResult(result, reply, this.notificationError);
     }
 
-    public async EditTournament(request: FastifyRequest<{ Body: EditTournamentDTO }>, reply: FastifyReply<Result>)
+    public async EditTournament(request: FastifyRequest<{ Body: EditTournamentDTO }>, reply: FastifyReply)
     {
         const body = request.body;
-        const editTournamentDTO: EditTournamentDTO = new EditTournamentDTO(body.tournamentName, body.player1Uuid, body.player2Uuid, body.player3Uuid, body.player4Uuid);
+        const editTournamentDTO: EditTournamentDTO = new EditTournamentDTO(body.torunamentUuid, body.tournamentName, body.player1Uuid, body.player2Uuid, body.player3Uuid, body.player4Uuid);
         const result: Result = await this.editTournament.Execute(editTournamentDTO, reply);
         return this.handleResult(result, reply, this.notificationError);
     }
 
-    public async GetTournament(request: FastifyRequest<{ Body: GetTournamentDTO }>, reply: FastifyReply<Result>)
+    public async GetTournament(request: FastifyRequest<{ Querystring: GetTournamentDTO }>, reply: FastifyReply)
     {
-        const body = request.body;
-        const getTournamentDTO: GetTournamentDTO = new GetTournamentDTO(body.tournamentUuid);
+        const query = request.query;
+        const getTournamentDTO: GetTournamentDTO = new GetTournamentDTO(query.tournamentUuid);
         const result: Result<GetTournamentViewModel> = await this.getTournament.Execute(getTournamentDTO, reply);
         return this.handleResult(result, reply, this.notificationError);
     }
 
-    public async DeleteTournament(request: FastifyRequest<{ Body: DeleteTournamentDTO }>, reply: FastifyReply<Result>)
+    public async DeleteTournament(request: FastifyRequest<{ Body: DeleteTournamentDTO }>, reply: FastifyReply)
     {
         const body = request.body;
         const deleteTournamentDTO: DeleteTournamentDTO = new DeleteTournamentDTO(body.torunamentUuid);
@@ -63,10 +67,10 @@ export class TournamentController extends BaseController
         return this.handleResult(result, reply, this.notificationError);
     }
 
-    public async GetAllTournaments(request: FastifyRequest<{ Body: GetAllTournamentsDTO }>, reply: FastifyReply<Result>)
+    public async GetAllTournaments(request: FastifyRequest<{ Querystring: GetAllTournamentsDTO }>, reply: FastifyReply)
     {
-        const body = request.body;
-        const getAllTournamentsDTO: GetAllTournamentsDTO = new GetAllTournamentsDTO(body.userUuid);
+        const query = request.query;
+        const getAllTournamentsDTO: GetAllTournamentsDTO = new GetAllTournamentsDTO(query.userUuid);
         const result: Result<GetAllTournamentsViewModel[]> = await this.getAllTournament.Execute(getAllTournamentsDTO, reply);
         return this.handleResult(result, reply, this.notificationError);
     }

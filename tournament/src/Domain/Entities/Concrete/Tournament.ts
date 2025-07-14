@@ -1,5 +1,6 @@
 export class Tournament
 {
+    public readonly tournamentUuid: string;
     public tournamentName: string;
     public player1Uuid: string;
     public player2Uuid: string;
@@ -8,6 +9,7 @@ export class Tournament
 
     constructor (tournamentName: string, player1Uuid: string, player2Uuid: string, player3Uuid: string, player4Uuid: string)
     {
+        this.tournamentUuid = crypto.randomUUID();
         this.tournamentName = tournamentName;
         this.player1Uuid = player1Uuid;
         this.player2Uuid = player2Uuid;
