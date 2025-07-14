@@ -17,9 +17,9 @@ export class EditTournamentService implements BaseService<EditTournamentDTO>
     private editTournamentHandler: EditTournamentCommandHandler;
     private editTournamentValidator: EditTournamentCommandValidator;
 
-    constructor(userRepository: TournamentRepository, notificationError: NotificationError)
+    constructor(notificationError: NotificationError)
     {
-        this.tournamentRepository = userRepository;
+        this.tournamentRepository = new TournamentRepository();
         this.editTournamentValidator = new EditTournamentCommandValidator(this.tournamentRepository, notificationError);
         this.editTournamentHandler = new EditTournamentCommandHandler(this.tournamentRepository, notificationError);
     }

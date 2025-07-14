@@ -14,12 +14,12 @@ export class EditTournamentCommandHandler implements BaseHandlerCommand<EditTour
     {
         const tournament: Tournament | null = await this.tournamentRepository.GetTournamentEntityByUuid(command.torunamentUuid);
 
-        await this.ChangeFields(tournament, command);
+        await this.ChangeFields(tournament!, command);
 
         await this.tournamentRepository.Update(command.torunamentUuid, tournament);
     }
 
-    private async ChangeFields(tournament: Tournament | null, command: EditTournamentCommand): Promise<void>
+    private async ChangeFields(tournament: Tournament, command: EditTournamentCommand): Promise<void>
     {
        tournament.tournamentName = command.tournamentName;
        tournament.player1Uuid = command.player1Uuid;

@@ -4,10 +4,10 @@ export class EditTournamentDTO
     public readonly tournamentName: string;
     public readonly player1Uuid: string;
     public readonly player2Uuid: string;
-    public readonly player3Uuid?: string | null;
-    public readonly player4Uuid?: string | null;
+    public readonly player3Uuid: string;
+    public readonly player4Uuid: string;
 
-    constructor(tournamentUuid: string, tournamentName: string, player1Uuid: string, player2Uuid: string, player3Uuid?: string | null, player4Uuid?: string | null)
+    constructor(tournamentUuid: string, tournamentName: string, player1Uuid: string, player2Uuid: string, player3Uuid: string, player4Uuid: string)
     {
         this.torunamentUuid = tournamentUuid;
         this.tournamentName = tournamentName;

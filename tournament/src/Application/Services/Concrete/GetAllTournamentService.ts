@@ -17,9 +17,9 @@ export class GetAllTournamentService implements BaseService<GetAllTournamentsDTO
     private tournamentRepository: TournamentRepository;
     private GetUserQueryHandler: GetAllTournamentQueryHandler;
 
-    constructor(userRepository: TournamentRepository, notificationError: NotificationError)
+    constructor(notificationError: NotificationError)
     {
-        this.tournamentRepository = userRepository;
+        this.tournamentRepository = new TournamentRepository();
         this.GetUserQueryHandler = new GetAllTournamentQueryHandler(this.tournamentRepository, notificationError);
     }
 
@@ -28,7 +28,7 @@ export class GetAllTournamentService implements BaseService<GetAllTournamentsDTO
         try
         {
             const query: GetAllTournamentsQuery = GetAllTournamentsQuery.fromDTO(dto);
-            const getAllTournamentsQueryDTO: GetAllTournamentsQueryDTO[] = await this.GetUserQueryHandler.Handle(query);
+            const getAllTournamentsQueryDTO: GetAllTournamentsQueryDTO[] | null = await this.GetUserQueryHandler.Handle(query);
 
             if (!getAllTournamentsQueryDTO) {
                 return Result.Failure<GetAllTournamentsViewModel[]>(ErrorCatalog.UserNotFound.SetError());
