@@ -17,9 +17,9 @@ export class GetTournamentService implements BaseService<GetTournamentDTO, GetTo
     private tournamentRepository: TournamentRepository;
     private getTournamentQueryHandler: GetTournamentQueryHandler;
 
-    constructor(userRepository: TournamentRepository, notificationError: NotificationError)
+    constructor(notificationError: NotificationError)
     {
-        this.tournamentRepository = userRepository;
+        this.tournamentRepository = new TournamentRepository();
         this.getTournamentQueryHandler = new GetTournamentQueryHandler(this.tournamentRepository, notificationError);
     }
 
