@@ -17,9 +17,9 @@ export class DeleteTournamentService implements BaseService<DeleteTournamentDTO>
     private deleteTournamentHandler: DeleteTournamentCommandHandler;
     private deleteUserCommandValidator: DeleteUserCommandValidator;
 
-    constructor(userRepository: TournamentRepository, notificationError: NotificationError)
+    constructor(notificationError: NotificationError)
     {
-        this.tournamentRepository = userRepository;
+        this.tournamentRepository = new TournamentRepository();
         this.deleteUserCommandValidator = new DeleteUserCommandValidator(this.tournamentRepository, notificationError);
         this.deleteTournamentHandler = new DeleteTournamentCommandHandler(this.tournamentRepository, notificationError);
     }

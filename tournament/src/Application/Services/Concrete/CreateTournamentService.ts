@@ -17,9 +17,9 @@ export class CreateTournamentService implements BaseService<CreateTournamentDTO>
     private createTournamentCommandHandler: CreateTournamentCommandHandler;
     private createTournamentValidator: CreateTournamentValidator;
 
-    constructor(tournamentRepository: TournamentRepository, notificationError: NotificationError)
+    constructor(notificationError: NotificationError)
     {
-        this.tournamentRepository = tournamentRepository;
+        this.tournamentRepository = new TournamentRepository();
         this.createTournamentValidator = new CreateTournamentValidator(this.tournamentRepository, notificationError);
         this.createTournamentCommandHandler = new CreateTournamentCommandHandler(this.tournamentRepository, notificationError);
     }

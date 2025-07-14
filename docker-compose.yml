@@ -8,6 +8,7 @@ services:
     depends_on:
       - backend
       - authentication
+      - tournament
     networks:
       - app-network
 
@@ -38,6 +39,18 @@ services:
       - "3000:3000"
     volumes:
       - ./prisma-data/auth:/usr/src/app/prisma
+    networks:
+      - app-network
+
+  tournament:
+    build: ./tournament
+    environment:
+      DATABASE_URL: "file:/usr/src/app/prisma/game.db"
+      JWT_SECRET: "transcendence"
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./prisma-data/game:/usr/src/app/prisma
     networks:
       - app-network
 
