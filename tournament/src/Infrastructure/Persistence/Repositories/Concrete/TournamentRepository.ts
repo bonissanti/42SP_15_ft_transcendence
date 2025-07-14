@@ -1,21 +1,16 @@
-import {PrismaClient, Tournament as PrismaUser} from '@prisma/client';
 import {IBaseRepository} from "../Interface/IBaseRepository.js";
 import {ErrorCatalog} from "../../../../Shared/Errors/ErrorCatalog.js";
 import {Tournament} from "../../../../Domain/Entities/Concrete/Tournament";
 import {GetTournamentQueryDTO} from "../../../../Domain/QueryDTO/GetTournamentQueryDTO";
+import prisma from "@prisma";
 
 export class TournamentRepository implements IBaseRepository<GetTournamentQueryDTO, Tournament>
 {
-    private prisma: PrismaClient;
-
-    constructor(prisma: PrismaClient) {
-        this.prisma = prisma;
-    }
-
     public async Create(tournamentEntity: Tournament): Promise<void>
     {
-        await this.prisma.tournament.create({
+        await prisma.tournament.create({
             data: {
+                tournamentUuid: tournamentEntity.tournamentUuid,
                 tournamentName: tournamentEntity.tournamentName,
                 player1Uuid: tournamentEntity.player1Uuid,
                 player2Uuid: tournamentEntity.player2Uuid,
@@ -27,35 +22,35 @@ export class TournamentRepository implements IBaseRepository<GetTournamentQueryD
 
     public async Update(_uuid: string, tournamentEntity: Tournament | null): Promise<void>
     {
-        await this.prisma.tournament.update({
+        await prisma.tournament.update({
             where: {tournamentUuid: _uuid},
             data: {
-                tournamentName: tournamentEntity.tournamentName,
-                player1Uuid: tournamentEntity.player1Uuid,
-                player2Uuid: tournamentEntity.player2Uuid,
-                player3Uuid: tournamentEntity.player3Uuid,
-                player4Uuid: tournamentEntity.player4Uuid,
+                tournamentName: tournamentEntity?.tournamentName,
+                player1Uuid: tournamentEntity?.player1Uuid,
+                player2Uuid: tournamentEntity?.player2Uuid,
+                player3Uuid: tournamentEntity?.player3Uuid,
+                player4Uuid: tournamentEntity?.player4Uuid,
             },
         });
     }
 
     public async Delete(_uuid: string): Promise<void> {
-        await this.prisma.tournament.delete({
+        await prisma.tournament.delete({
             where: {tournamentUuid: _uuid},
         });
     }
 
     public async GetAll(): Promise<Tournament[]>
     {
-        const usersData = await this.prisma.tournament.findMany();
-        if (!usersData.length) {
+        const tournamentsData = await prisma.tournament.findMany();
+        if (!tournamentsData.length) {
             throw new Error(ErrorCatalog.TournamentNotFound.SetError());
         }
-        return usersData.map(user => this.RecoverEntity(user));
+        return tournamentsData.map((tournament) => this.RecoverEntity(tournament));
     }
 
     public async GetTournamentQueryDTOByUuid(uuid: string): Promise<GetTournamentQueryDTO | null> {
-        const tournamentData = await this.prisma.tournament.findUnique({where: {uuid}});
+        const tournamentData = await prisma.tournament.findUnique({where: {tournamentUuid: uuid}});
 
         if (!tournamentData)
             return null;
@@ -66,7 +61,7 @@ export class TournamentRepository implements IBaseRepository<GetTournamentQueryD
 
     public async GetTournamentEntityByUuid(uuid: string): Promise<Tournament | null>
     {
-        const userData = await this.prisma.tournament.findUnique({where: {uuid}});
+        const userData = await prisma.tournament.findUnique({where: {tournamentUuid: uuid}});
 
         if (!userData)
             return null;
@@ -76,7 +71,7 @@ export class TournamentRepository implements IBaseRepository<GetTournamentQueryD
 
     public async GetAllTournaments(uuid?: string): Promise<GetTournamentQueryDTO[]>
     {
-       const tournaments = await this.prisma.tournament.findMany({
+       const tournaments = await prisma.tournament.findMany({
            where: uuid? {
                OR: [
                    {player1Uuid: uuid},
@@ -87,11 +82,12 @@ export class TournamentRepository implements IBaseRepository<GetTournamentQueryD
            } : {}
        });
 
-       return tournaments.map(tournament => this.mapToQueryDTO(this.RecoverEntity(tournament)));
+       return tournaments.map((tournament) =>
+           this.mapToQueryDTO(this.RecoverEntity(tournament)));
     }
 
     public async VerifyIfTournamentExistsByUUID(uuid: string): Promise<boolean> {
-        const user = await this.prisma.tournament.findUnique({where: {uuid}});
+        const user = await prisma.tournament.findUnique({where: {tournamentUuid: uuid}});
         return user !== null;
     }
 
@@ -106,7 +102,7 @@ export class TournamentRepository implements IBaseRepository<GetTournamentQueryD
         );
     }
 
-    private RecoverEntity(tournament: PrismaUser): Tournament {
+    private RecoverEntity(tournament: Tournament): Tournament {
         return new Tournament(
             tournament.tournamentName,
             tournament.player1Uuid,
