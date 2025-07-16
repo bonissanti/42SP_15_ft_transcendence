@@ -22,6 +22,12 @@ export class CreateHistoryValidator implements BaseValidator<CreateHistoryComman
     {
         await this.ValidateUserExists(command);
 
+        if (command.player1Username === command.player2Username)
+            this.NotificationError.AddError(ErrorCatalog.PlayerCantPlayAgainstSelf);
+
+        if (command.player1Points < 0 || command.player2Points < 0)
+            this.NotificationError.AddError(ErrorCatalog.NegativePoints);
+
         if (this.NotificationError.NumberOfErrors() > 0){
             const allErrors : CustomError[] = this.NotificationError.GetAllErrors();
             throw new ValidationException(allErrors);

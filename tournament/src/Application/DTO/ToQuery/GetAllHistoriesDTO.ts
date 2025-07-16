@@ -1,4 +1,4 @@
-export class GetAllHistoryDTO
+export class GetAllHistoriesDTO
 {
     public readonly username: string;
 
