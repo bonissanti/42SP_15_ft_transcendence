@@ -1,4 +1,4 @@
-import {DeleteTournamentDTO} from "../../DTO/ToCommand/DeleteTournamentDTO";
+import {DeleteTournamentDTO} from "../../../Application/DTO/ToCommand/DeleteTournamentDTO";
 
 export class DeleteTournamentCommand
 {

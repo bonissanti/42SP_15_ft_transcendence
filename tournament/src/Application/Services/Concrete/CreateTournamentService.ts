@@ -3,13 +3,13 @@ import { FastifyReply } from "fastify";
 import { Result } from "../../../Shared/Utils/Result.js";
 import { ErrorCatalog } from "../../../Shared/Errors/ErrorCatalog.js";
 import { TournamentRepository } from "../../../Infrastructure/Persistence/Repositories/Concrete/TournamentRepository.js";
-import { CreateTournamentCommandHandler } from "../../Command/Handlers/CreateTournamentCommandHandler.js";
-import { CreateTournamentValidator } from "../../Command/Validators/CreateTournamentValidator.js";
+import { CreateTournamentCommandHandler } from "../../../Domain/Command/Handlers/CreateTournamentCommandHandler.js";
+import { CreateTournamentValidator } from "../../../Domain/Command/Validators/CreateTournamentValidator.js";
 import { NotificationError } from "../../../Shared/Errors/NotificationError.js";
 import { ValidationException } from "../../../Shared/Errors/ValidationException.js";
 import { Prisma } from "@prisma/client";
 import {CreateTournamentDTO} from "../../DTO/ToCommand/CreateTournamentDTO";
-import {CreateTournamentCommand} from "../../Command/CommandObject/CreateTournamentCommand";
+import {CreateTournamentCommand} from "../../../Domain/Command/CommandObject/CreateTournamentCommand";
 
 export class CreateTournamentService implements BaseService<CreateTournamentDTO>
 {

@@ -1,9 +1,9 @@
-import {TournamentRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/TournamentRepository.js";
-import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
-import {BaseValidator} from "./BaseValidator.js";
-import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog.js";
-import {ValidationException} from "../../../Shared/Errors/ValidationException.js";
-import {CustomError} from "../../../Shared/Errors/CustomError.js";
+import {TournamentRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/TournamentRepository";
+import {NotificationError} from "../../../Shared/Errors/NotificationError";
+import {BaseValidator} from "./BaseValidator";
+import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog";
+import {ValidationException} from "../../../Shared/Errors/ValidationException";
+import {CustomError} from "../../../Shared/Errors/CustomError";
 import {CreateTournamentCommand} from "../CommandObject/CreateTournamentCommand";
 import {BackendApiClient} from "../../../Infrastructure/Http/Concrete/BackendApiClient";
 
@@ -51,7 +51,7 @@ export class CreateTournamentValidator implements BaseValidator<CreateTournament
         }
         catch (error)
         {
-            this.NotificationError.AddError(ErrorCatalog.InternalBackendApiError);
+            this.NotificationError.AddError(ErrorCatalog.InternalBackendApiErrorVerifyUserExists);
         }
     }
 }

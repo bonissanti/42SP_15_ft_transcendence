@@ -1,8 +1,8 @@
-import {BaseHandlerCommand} from "./BaseHandlerCommand.js";
-import {TournamentRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/TournamentRepository.js";
-import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
+import {BaseHandlerCommand} from "./BaseHandlerCommand";
+import {TournamentRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/TournamentRepository";
+import {NotificationError} from "../../../Shared/Errors/NotificationError";
 import {CreateTournamentCommand} from "../CommandObject/CreateTournamentCommand";
-import {Tournament} from "../../../Domain/Entities/Concrete/Tournament";
+import {Tournament} from "../../Entities/Concrete/Tournament";
 
 export class CreateTournamentCommandHandler implements BaseHandlerCommand<CreateTournamentCommand>
 {

@@ -1,6 +1,6 @@
-import {BaseHandlerCommand} from "./BaseHandlerCommand.js";
-import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
-import {TournamentRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/TournamentRepository.js";
+import {BaseHandlerCommand} from "./BaseHandlerCommand";
+import {NotificationError} from "../../../Shared/Errors/NotificationError";
+import {TournamentRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/TournamentRepository";
 import {DeleteTournamentCommand} from "../CommandObject/DeleteTournamentCommand";
 
 
