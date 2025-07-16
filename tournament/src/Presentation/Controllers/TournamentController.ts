@@ -70,7 +70,7 @@ export class TournamentController extends BaseController
     public async GetAllTournaments(request: FastifyRequest<{ Querystring: GetAllTournamentsDTO }>, reply: FastifyReply)
     {
         const query = request.query;
-        const getAllTournamentsDTO: GetAllTournamentsDTO = new GetAllTournamentsDTO(query.userUuid);
+        const getAllTournamentsDTO: GetAllTournamentsDTO = new GetAllTournamentsDTO(query.username);
         const result: Result<GetAllTournamentsViewModel[]> = await this.getAllTournament.Execute(getAllTournamentsDTO, reply);
         return this.handleResult(result, reply, this.notificationError);
     }
