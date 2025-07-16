@@ -2,7 +2,7 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 import { UserSessionController } from '../../Controllers/UserSessionController.js';
 import { UserRepository } from '../../../Infrastructure/Persistence/Repositories/Concrete/UserRepository.js';
 import { verifyGoogleCredential, findOrCreateUser, handleAuthError } from './GoogleAuthHelpers.js';
-import {UserSessionDTO} from "../../../Domain/DTO/Command/UserSessionDTO";
+import {UserSessionDTO} from "../../../Domain/DTO/Command/UserSessionDTO.js";
 
 export const UserSessionRoutes = async (server: any, userSessionController: UserSessionController, userRepository: UserRepository): Promise<void> => {
     server.post('/login', async (request: FastifyRequest<{ Body: UserSessionDTO}>, reply: FastifyReply) => {
