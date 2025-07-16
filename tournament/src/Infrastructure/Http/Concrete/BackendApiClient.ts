@@ -7,14 +7,17 @@ export class BackendApiClient implements IBackendApiClient
 
     constructor()
     {
-        this.baseUrl = process.env.BACKEND_API_URL || 'http://backend:8080';
+        //TODO: voltar para o url do BACKEND depois, esse debaixo foi para testar
+        this.baseUrl = process.env.BACKEND_API_URL || 'http://127.0.0.1:8080';
     }
 
-    public async verifyUserExists(uuid: string[]) : Promise<boolean>
+    public async verifyUserExists(uuids: string[]) : Promise<boolean>
     {
         try
         {
-            const response = await axios.get(`${this.baseUrl}/user/exists/${uuid}`);
+            const response = await axios.get(`${this.baseUrl}/user/exists/`, {
+                params: { uuids: uuids }
+            });
 
             return response.status === 200;
         }

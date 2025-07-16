@@ -3,7 +3,7 @@ FROM node:18 AS build
 WORKDIR /usr/src/app
 
 COPY package*.json ./
-RUN npm install
+RUN npm install --registry https://registry.npmjs.org/ --no-optional
 
 COPY . .
 

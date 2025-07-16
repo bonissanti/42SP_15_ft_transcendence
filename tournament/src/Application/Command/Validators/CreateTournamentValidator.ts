@@ -51,7 +51,7 @@ export class CreateTournamentValidator implements BaseValidator<CreateTournament
         }
         catch (error)
         {
-            this.NotificationError.AddError(ErrorCatalog.InternalServerError);
+            this.NotificationError.AddError(ErrorCatalog.InternalBackendApiError);
         }
     }
 }
