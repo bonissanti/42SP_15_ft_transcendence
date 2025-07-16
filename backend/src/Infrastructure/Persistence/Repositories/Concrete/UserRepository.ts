@@ -7,7 +7,7 @@ import {PasswordHashVO} from "../../../../Domain/ValueObjects/PasswordHashVO.js"
 import {GetUserQueryDTO} from "../../../../Domain/QueryDTO/GetUserQueryDTO.js";
 
 export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
-    private prisma: PrismaClient;
+    public prisma: PrismaClient;
 
     constructor(prisma: PrismaClient) {
         this.prisma = prisma;
@@ -83,9 +83,19 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
         return user !== null;
     }
 
+    public async VerifyIfUsersExistsByUUIDs(uuids: string[]): Promise<boolean> {
+        const users = await this.prisma.user.findMany({where: {uuid: {in: uuids}}});
+        return users.length === uuids.length;
+    }
+
     public async VerifyIfUserExistsByUsername(username: string): Promise<boolean> {
         const user = await this.prisma.user.findUnique({where: {username}});
         return user !== null;
+    }
+
+    public async VerifyIfUsersExistsByUsername(usernames: string[]): Promise<boolean> {
+        const users = await this.prisma.user.findMany({where: {username: {in: usernames}}});
+        return users.length === usernames.length;
     }
 
     private mapToQueryDTO(userEntity: User): GetUserQueryDTO {

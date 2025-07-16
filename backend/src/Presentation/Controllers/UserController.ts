@@ -11,6 +11,8 @@ import { DeleteUserService } from "../../Application/Services/Concrete/DeleteUse
 import { GetUserDTO } from "../../Domain/DTO/Query/GetUserDTO.js";
 import { GetUserService } from "../../Application/Services/Concrete/GetUserService.js";
 import { GetUserViewModel } from "../ViewModels/GetUserViewModel.js";
+import {VerifyIfUsersExistsByUuidsDTO} from "../../Domain/DTO/Query/VerifyIfUsersExistsByUuidsDTO.js";
+import {VerificationService} from "../../Application/Services/Concrete/VerificationService.js";
 
 export class UserController extends BaseController {
     private readonly notificationError: NotificationError;
@@ -18,12 +20,14 @@ export class UserController extends BaseController {
     private readonly editUserService: EditUserService;
     private readonly deleteUserService: DeleteUserService;
     private readonly getUserService: GetUserService;
+    private readonly verificationService: VerificationService;
 
     constructor(
         createUserService: CreateUserService,
         editUserService: EditUserService,
         deleteUserService: DeleteUserService,
-        getUserService: GetUserService
+        getUserService: GetUserService,
+        verificationService: VerificationService
     ) {
         super();
         this.notificationError = new NotificationError();
@@ -31,6 +35,7 @@ export class UserController extends BaseController {
         this.editUserService = editUserService;
         this.deleteUserService = deleteUserService;
         this.getUserService = getUserService;
+        this.verificationService = verificationService;
     }
 
     public async CreateUser(request: FastifyRequest<{ Body: CreateUserDTO }>, reply: FastifyReply): Promise<Result> {
@@ -58,6 +63,13 @@ export class UserController extends BaseController {
         const query = request.query;
         const userDTO: GetUserDTO = new GetUserDTO(query.uuid, query.email, query.username);
         const result: Result<GetUserViewModel> = await this.getUserService.Execute(userDTO, reply);
+        return this.handleResult(result, reply, this.notificationError);
+    }
+
+    public async VerifyIfUsersExists(request: FastifyRequest<{ Querystring: { uuids: string[] } }>, reply: FastifyReply): Promise<Result> {
+        const query = request.query;
+        const usersDTO: VerifyIfUsersExistsByUuidsDTO = new VerifyIfUsersExistsByUuidsDTO(query.uuids);
+        const result: Result<boolean> = await this.verificationService.VerifyIfUserExistsByUuidsService(usersDTO, reply);
         return this.handleResult(result, reply, this.notificationError);
     }
 

@@ -28,6 +28,19 @@ const opts = {
     }
 }
 
+const optsChecker = {
+    schema: {
+        querystring: {
+            type: 'object',
+            properties: {
+                uuids: {type: 'array', items: {type: 'string'}},
+            },
+            required: ['uuids'],
+            additionalProperties: false,
+        }
+    }
+}
+
 export const UserRoutes = async (server: any, userController: UserController) => {
     
     server.post('/user', opts, async (request: FastifyRequest<{ Body: CreateUserDTO }>, reply: FastifyReply) => {
@@ -45,6 +58,10 @@ export const UserRoutes = async (server: any, userController: UserController) =>
     server.get('/user', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Querystring: GetUserDTO }>, reply: FastifyReply) => {
         await userController.GetUser(request, reply);
     });
+
+    server.get('/user/exists', optsChecker, async (request: FastifyRequest<{ Querystring: { uuids: string[] }}>, reply: FastifyReply) => {
+        await userController.VerifyIfUsersExists(request, reply);
+    })
 
     server.get('/users/:uuid', userController.findOne.bind(userController));
 
