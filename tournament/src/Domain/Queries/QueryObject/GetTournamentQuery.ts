@@ -1,4 +1,4 @@
-import {GetTournamentDTO} from "../../DTO/ToQuery/GetTournamentDTO";
+import {GetTournamentDTO} from "../../../Application/DTO/ToQuery/GetTournamentDTO";
 
 export class GetTournamentQuery
 {

@@ -7,9 +7,9 @@ import {ValidationException} from "../../../Shared/Errors/ValidationException.js
 import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog.js";
 import {Prisma} from '@prisma/client';
 import {GetAllTournamentsDTO} from "../../DTO/ToQuery/GetAllTournamentsDTO";
-import {GetAllTournamentsQuery} from "../../Queries/QueryObject/GetAllTournamentsQuery";
+import {GetAllTournamentsQuery} from "../../../Domain/Queries/QueryObject/GetAllTournamentsQuery";
 import {GetAllTournamentsViewModel} from "../../ViewModel/GetAllTournamentsViewModel";
-import {GetAllTournamentQueryHandler} from "../../Queries/Handlers/GetAllTournamentQueryHandler";
+import {GetAllTournamentQueryHandler} from "../../../Domain/Queries/Handlers/GetAllTournamentQueryHandler";
 import {GetAllTournamentsQueryDTO} from "../../../Domain/QueryDTO/GetAllTournamentsQueryDTO";
 
 export class GetAllTournamentService implements BaseService<GetAllTournamentsDTO, GetAllTournamentsViewModel[]>
