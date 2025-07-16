@@ -1,4 +1,4 @@
-import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
+import {NotificationError} from "../../../Shared/Errors/NotificationError";
 
 export interface BaseHandlerQuery<TQuery, TResult = TQuery>
 {
