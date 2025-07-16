@@ -1,7 +1,7 @@
-import {BaseValidator} from "../../Command/Validators/BaseValidator.js";
-import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog.js";
-import {TournamentRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/TournamentRepository.js";
-import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
+import {BaseValidator} from "../../Command/Validators/BaseValidator";
+import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog";
+import {TournamentRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/TournamentRepository";
+import {NotificationError} from "../../../Shared/Errors/NotificationError";
 import {GetTournamentQuery} from "../QueryObject/GetTournamentQuery";
 import {DeleteTournamentCommand} from "../../Command/CommandObject/DeleteTournamentCommand";
 

@@ -1,8 +1,8 @@
-import {TournamentRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/TournamentRepository.js";
-import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
-import {BaseHandlerQuery} from "./BaseHandlerQuery.js";
+import {TournamentRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/TournamentRepository";
+import {NotificationError} from "../../../Shared/Errors/NotificationError";
+import {BaseHandlerQuery} from "./BaseHandlerQuery";
 import {GetTournamentQuery} from "../QueryObject/GetTournamentQuery";
-import {GetTournamentQueryDTO} from "../../../Domain/QueryDTO/GetTournamentQueryDTO";
+import {GetTournamentQueryDTO} from "../../QueryDTO/GetTournamentQueryDTO";
 
 export class GetTournamentQueryHandler implements BaseHandlerQuery<GetTournamentQuery | null>
 {
