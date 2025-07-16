@@ -1,4 +1,4 @@
-import {CreateTournamentDTO} from "../../DTO/ToCommand/CreateTournamentDTO";
+import {CreateTournamentDTO} from "../../../Application/DTO/ToCommand/CreateTournamentDTO";
 
 export class CreateTournamentCommand
 {
