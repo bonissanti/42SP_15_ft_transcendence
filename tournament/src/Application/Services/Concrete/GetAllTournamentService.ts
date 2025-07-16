@@ -31,7 +31,7 @@ export class GetAllTournamentService implements BaseService<GetAllTournamentsDTO
             const getAllTournamentsQueryDTO: GetAllTournamentsQueryDTO[] | null = await this.GetUserQueryHandler.Handle(query);
 
             if (!getAllTournamentsQueryDTO) {
-                return Result.Failure<GetAllTournamentsViewModel[]>(ErrorCatalog.UserNotFound.SetError());
+                return Result.Failure<GetAllTournamentsViewModel[]>(ErrorCatalog.TournamentNotFound.SetError());
             }
 
             const getAllTournamentsViewModel = GetAllTournamentsViewModel.fromQueryDTOlist(getAllTournamentsQueryDTO);
