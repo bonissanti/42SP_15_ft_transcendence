@@ -8,4 +8,5 @@ export class ErrorCatalog
     public static readonly UserNotFound: CustomError = new CustomError(404, "User not found");
     public static readonly TournamentNotFound: CustomError = new CustomError(404, "Tournament not found");
     public static readonly InternalServerError: CustomError = new CustomError(500, "Internal server error");
+    public static readonly InternalBackendApiError: CustomError = new CustomError(500, "Error while trying to communicate with the backend api");
 }
