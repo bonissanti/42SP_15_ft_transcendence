@@ -26,7 +26,7 @@ export const HistoryRoutes = async (server: any, historyController: HistoryContr
         await historyController.CreateHistory(request, reply);
     });
 
-    server.get('/history/', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Querystring: { username: string }}>, reply: FastifyReply) =>{
+    server.get('/history', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Querystring: { username: string }}>, reply: FastifyReply) =>{
         await historyController.GetAllHistories(request, reply);
     });
 }

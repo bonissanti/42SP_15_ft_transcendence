@@ -3,6 +3,8 @@ import prisma from "@prisma";
 import fastify from "fastify";
 import {TournamentRoutes} from "./Presentation/Routes/TournamentRoutes/TournamentRoutes";
 import {TournamentController} from "./Presentation/Controllers/TournamentController";
+import {HistoryController} from "./Presentation/Controllers/HistoryController";
+import {HistoryRoutes} from "./Presentation/Routes/HistoryRoutes/HistoryRoutes";
 
 const server = fastify();
 
@@ -13,8 +15,10 @@ server.register(fastifyJwt, {
 async function main()
 {
     const tournamentController = new TournamentController();
+    const historyController = new HistoryController();
 
     await TournamentRoutes(server, tournamentController);
+    await HistoryRoutes(server, historyController);
 
     server.setErrorHandler((async (error, request, reply) => {
         console.log("erro aqui?");
