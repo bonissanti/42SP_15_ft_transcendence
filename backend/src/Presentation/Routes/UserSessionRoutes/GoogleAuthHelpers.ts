@@ -5,7 +5,7 @@ import { EmailVO } from '../../../Domain/ValueObjects/EmailVO.js';
 import { PasswordHashVO } from '../../../Domain/ValueObjects/PasswordHashVO.js';
 import * as crypto from "crypto";
 
-import fetch from 'node-fetch';
+// import fetch from 'node-fetch';
 import * as bcrypt from "bcrypt";
 
 type GooglePayload = {

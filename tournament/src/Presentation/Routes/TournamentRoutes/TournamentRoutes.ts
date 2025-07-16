@@ -26,7 +26,7 @@ const opts = {
 
 export const TournamentRoutes = async (server: any, tournamentController: TournamentController) =>
 {
-    server.post('/tournament', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Body: CreateTournamentDTO }>, reply: FastifyReply) => {
+    server.post('/tournament', opts, async (request: FastifyRequest<{ Body: CreateTournamentDTO }>, reply: FastifyReply) => {
         return await tournamentController.CreateTournament(request, reply);
     });
 

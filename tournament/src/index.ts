@@ -17,13 +17,12 @@ async function main()
     await TournamentRoutes(server, tournamentController);
 
     server.setErrorHandler((async (error, request, reply) => {
-        console.log("Internal server error: ", error.message, "")
-        reply.status(500).send({message: error.message})
+        console.log("erro aqui?");
     }));
 
     try
     {
-        const address = await server.listen({ port: 8081, host: '0.0.0.0' });
+        const address = await server.listen({ port: 8081 });
         console.log(`Server listening on ${address}`);
     }
     catch (err)
