@@ -3,13 +3,13 @@ import {BaseService} from "../Interfaces/BaseService.js";
 import {TournamentRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/TournamentRepository.js";
 import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog.js";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import {EditTournamentCommandHandler} from "../../Command/Handlers/EditTournamentCommandHandler.js";
-import {EditTournamentCommandValidator} from "../../Command/Validators/EditTournamentCommandValidator.js";
+import {EditTournamentCommandHandler} from "../../../Domain/Command/Handlers/EditTournamentCommandHandler.js";
+import {EditTournamentCommandValidator} from "../../../Domain/Command/Validators/EditTournamentCommandValidator.js";
 import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
 import { ValidationException } from "../../../Shared/Errors/ValidationException.js";
 import { Result } from "../../../Shared/Utils/Result.js";
 import {EditTournamentDTO} from "../../DTO/ToCommand/EditTournamentDTO";
-import {EditTournamentCommand} from "../../Command/CommandObject/EditTournamentCommand";
+import {EditTournamentCommand} from "../../../Domain/Command/CommandObject/EditTournamentCommand";
 
 export class EditTournamentService implements BaseService<EditTournamentDTO>
 {

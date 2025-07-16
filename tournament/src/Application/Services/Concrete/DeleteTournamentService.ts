@@ -2,13 +2,13 @@ import { FastifyReply } from "fastify";
 import { BaseService } from "../Interfaces/BaseService.js";
 import { NotificationError } from "../../../Shared/Errors/NotificationError.js";
 import { TournamentRepository } from "../../../Infrastructure/Persistence/Repositories/Concrete/TournamentRepository.js";
-import { DeleteUserCommandValidator } from "../../Command/Validators/DeleteUserCommandValidator.js";
-import { DeleteTournamentCommandHandler } from "../../Command/Handlers/DeleteTournamentCommandHandler.js";
+import { DeleteUserCommandValidator } from "../../../Domain/Command/Validators/DeleteUserCommandValidator.js";
+import { DeleteTournamentCommandHandler } from "../../../Domain/Command/Handlers/DeleteTournamentCommandHandler.js";
 import { Result } from "../../../Shared/Utils/Result.js";
 import { ValidationException } from "../../../Shared/Errors/ValidationException.js";
 import { ErrorCatalog } from "../../../Shared/Errors/ErrorCatalog.js";
 import { Prisma } from "@prisma/client";
-import {DeleteTournamentCommand} from "../../Command/CommandObject/DeleteTournamentCommand";
+import {DeleteTournamentCommand} from "../../../Domain/Command/CommandObject/DeleteTournamentCommand";
 import {DeleteTournamentDTO} from "../../DTO/ToCommand/DeleteTournamentDTO";
 
 export class DeleteTournamentService implements BaseService<DeleteTournamentDTO>
