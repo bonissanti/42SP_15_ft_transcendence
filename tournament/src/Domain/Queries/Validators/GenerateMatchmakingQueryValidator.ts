@@ -44,3 +44,5 @@ export class GenerateMatchmakingQueryValidator implements BaseValidator<Generate
         }
     }
 }
+
+//TODO: adicionar validators dos outros gets
