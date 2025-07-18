@@ -29,4 +29,9 @@ export class NotificationError
     {
         return this.ListOfErrors;
     }
+
+    public SetAllErrorsToString(): string
+    {
+        return this.ListOfErrors.map(e => 'Code:' + e.Code + ' Message: ' + e.Message).join('\n');
+    }
 }

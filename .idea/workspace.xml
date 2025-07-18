@@ -4,23 +4,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d3134b4-a67d-4c46-80e3-654566a805b8" name="Changes" comment="feat: implement `HistoryService` with `Create` method, add `History` and `MatchMaking` models to Prisma schema&#10;&#10;- Introduced `HistoryService` to manage tournament history creation and processing.&#10;- Added `History` and `MatchMaking` models to `tournament.prisma` schema for tracking matches and histories.&#10;- Updated `backend.prisma` schema formatting for consistency.">
-      <change afterPath="$PROJECT_DIR$/tournament/src/Application/ViewModel/GetAllHistoriesViewModel.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tournament/src/Domain/Queries/Handlers/GetAllHistoriesQueryHandler.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tournament/src/Domain/QueryDTO/GetAllHistoriesQueryDTO.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tournament/src/Infrastructure/Persistence/Repositories/Concrete/HistoryRepository.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tournament/src/Presentation/Controllers/HistoryController.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tournament/src/Presentation/Routes/HistoryRoutes/HistoryRoutes.ts" afterDir="false" />
+    <list default="true" id="6d3134b4-a67d-4c46-80e3-654566a805b8" name="Changes" comment="feat: implement `GetAllHistories` in `HistoryService` and update `GetAllTournamentsDTO`&#10;&#10;- Added `GetAll` method in `HistoryService` to retrieve tournament histories based on username.&#10;- Updated `GetAllTournamentsDTO` to replace `userUuid` with `username`.">
+      <change afterPath="$PROJECT_DIR$/tournament/src/Application/DTO/ToCommand/GenerateMatchmakingDTO.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament/src/Application/Services/Concrete/MatchmakingService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament/src/Application/ViewModel/GenerateMatchmakingViewModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament/src/Domain/Queries/Handlers/GenerateMatchmakingQueryHandler.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament/src/Domain/Queries/QueryObject/GenerateMatchmakingQuery.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament/src/Domain/Queries/Validators/GenerateMatchmakingQueryValidator.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament/src/Domain/QueryDTO/GenerateMatchmakingQueryDTO.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament/src/Presentation/Controllers/MatchmakingController.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tournament/src/Presentation/Routes/MatchmakingRoutes/MatchmakingRoutes.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournament/src/Application/DTO/ToQuery/GetAllHistoryDTO.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Application/DTO/ToQuery/GetAllHistoriesDTO.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournament/src/Application/DTO/ToQuery/GetAllTournamentsDTO.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Application/DTO/ToQuery/GetAllTournamentsDTO.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournament/src/Application/Services/Concrete/GetAllTournamentService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Application/Services/Concrete/GetAllTournamentService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournament/src/Application/Services/Concrete/HistoryService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Application/Services/Concrete/HistoryService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/Domain/DTO/Query/GetUserDTO.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/Domain/DTO/Query/GetUserDTO.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/Infrastructure/Persistence/Repositories/Concrete/UserRepository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/Infrastructure/Persistence/Repositories/Concrete/UserRepository.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/Presentation/Routes/UserRoutes/UserRoutes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/Presentation/Routes/UserRoutes/UserRoutes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/Domain/Command/Handlers/CreateHistoryCommandHandler.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Domain/Command/Handlers/CreateHistoryCommandHandler.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tournament/src/Domain/Command/Validators/CreateHistoryValidator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Domain/Command/Validators/CreateHistoryValidator.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournament/src/Domain/Queries/QueryObject/GetAllTournamentsQuery.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Domain/Queries/QueryObject/GetAllTournamentsQuery.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournament/src/Domain/Queries/QueryObject/GetHistoryQuery.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Domain/Queries/QueryObject/GetAllHistoriesQuery.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournament/src/Presentation/Controllers/TournamentController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Presentation/Controllers/TournamentController.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/Domain/Command/Validators/CreateTournamentValidator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Domain/Command/Validators/CreateTournamentValidator.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/Domain/Command/Validators/EditTournamentCommandValidator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Domain/Command/Validators/EditTournamentCommandValidator.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/Infrastructure/Http/Concrete/BackendApiClient.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Infrastructure/Http/Concrete/BackendApiClient.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/Infrastructure/Http/Interface/IBackendApiClient.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Infrastructure/Http/Interface/IBackendApiClient.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/Infrastructure/Persistence/Repositories/Concrete/HistoryRepository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Infrastructure/Persistence/Repositories/Concrete/HistoryRepository.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tournament/src/Shared/Errors/ErrorCatalog.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Shared/Errors/ErrorCatalog.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/Shared/Errors/NotificationError.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Shared/Errors/NotificationError.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/index.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,8 +77,10 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;Docker.tournament: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.All in rest-api_10.executor&quot;: &quot;Run&quot;,
     &quot;HTTP Request.http-requests-log | #1.executor&quot;: &quot;Run&quot;,
     &quot;HTTP Request.http-requests-log | #7.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.rest-api_10 | #1.executor&quot;: &quot;Run&quot;,
     &quot;HTTP Request.rest-api_9 | #1.executor&quot;: &quot;Run&quot;,
     &quot;JavaScript Debug.127.0.0.1:8080.executor&quot;: &quot;Debug&quot;,
     &quot;JavaScript Debug.127.0.0.1:8081.executor&quot;: &quot;Debug&quot;,
@@ -84,7 +93,9 @@
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.build.executor&quot;: &quot;Run&quot;,
     &quot;npm.clean:dist.executor&quot;: &quot;Run&quot;,
+    &quot;npm.start (1).executor&quot;: &quot;Run&quot;,
     &quot;npm.start.executor&quot;: &quot;Debug&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;ts.external.directory.path&quot;: &quot;/home/bruno/Documents/42SP/42_transcendence/backend/node_modules/typescript/lib&quot;
@@ -99,24 +110,21 @@
       <recent name="$PROJECT_DIR$/tournament/src/Presentation/Controllers" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/tournament/src/Domain/Queries/QueryObject" />
+      <recent name="$PROJECT_DIR$/tournament/src/Domain/Command/Handlers" />
       <recent name="$PROJECT_DIR$/tournament/src/Domain/Queries/Handlers" />
       <recent name="$PROJECT_DIR$/tournament/src/Domain" />
       <recent name="$PROJECT_DIR$/backend/src/Domain/DTO/Query" />
-      <recent name="$PROJECT_DIR$/tournament/src/Application" />
-      <recent name="$PROJECT_DIR$/tournament/src/Application/Queries/QueryObject" />
     </key>
   </component>
-  <component name="RunManager" selected="HTTP Request.http-requests-log | #7">
-    <configuration name="http-requests-log | #1" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/.idea/httpRequests/http-requests-log.http" executionIdentifier="#1" runType="Run single request">
+  <component name="RunManager" selected="npm.start">
+    <configuration name="All in rest-api_10" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" path="$APPLICATION_CONFIG_DIR$/scratches/rest-api_10.http">
       <method v="2" />
     </configuration>
     <configuration name="http-requests-log | #7" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/.idea/httpRequests/http-requests-log.http" executionIdentifier="#7" index="7" runType="Run single request">
       <method v="2" />
     </configuration>
-    <configuration name="rest-api_9 | #1" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/rest-api_9.http" executionIdentifier="#1" runType="Run single request">
-      <method v="2" />
-    </configuration>
-    <configuration name="127.0.0.1:8080" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://127.0.0.1:8080">
+    <configuration name="rest-api_10 | #1" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/rest-api_10.http" executionIdentifier="#1" runType="Run single request">
       <method v="2" />
     </configuration>
     <configuration name="127.0.0.1:8081" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://127.0.0.1:8081">
@@ -135,21 +143,30 @@
       <envs />
       <method v="2" />
     </configuration>
+    <configuration name="start" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/tournament/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="start" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
     <list>
+      <item itemvalue="HTTP Request.All in rest-api_10" />
+      <item itemvalue="HTTP Request.rest-api_10 | #1" />
       <item itemvalue="HTTP Request.http-requests-log | #7" />
-      <item itemvalue="HTTP Request.http-requests-log | #1" />
-      <item itemvalue="HTTP Request.rest-api_9 | #1" />
-      <item itemvalue="JavaScript Debug.127.0.0.1:8080" />
       <item itemvalue="JavaScript Debug.127.0.0.1:8081" />
       <item itemvalue="npm.start" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="HTTP Request.http-requests-log | #7" />
         <item itemvalue="JavaScript Debug.127.0.0.1:8081" />
-        <item itemvalue="HTTP Request.http-requests-log | #1" />
-        <item itemvalue="JavaScript Debug.127.0.0.1:8080" />
-        <item itemvalue="HTTP Request.rest-api_9 | #1" />
+        <item itemvalue="HTTP Request.rest-api_10 | #1" />
+        <item itemvalue="HTTP Request.All in rest-api_10" />
+        <item itemvalue="HTTP Request.http-requests-log | #7" />
+        <item itemvalue="npm.start" />
       </list>
     </recent_temporary>
   </component>
@@ -182,7 +199,8 @@
       <workItem from="1752622489377" duration="1208000" />
       <workItem from="1752623711391" duration="2314000" />
       <workItem from="1752626039489" duration="3372000" />
-      <workItem from="1752701419694" duration="7735000" />
+      <workItem from="1752701419694" duration="8696000" />
+      <workItem from="1752793555871" duration="6368000" />
     </task>
     <task id="LOCAL-00001" summary="refactor: Fix imports, update error handling, and add Dockerfile for tournament&#10;&#10;- Adjusted imports in `EditUserService.ts` for paths consistency.  &#10;- Updated error message key (`InvalidProfilePicExtension` to `InvalidExtension`) in `CreateUserCommandValidator.ts`.  &#10;- Added `Dockerfile` for tournament module to support containerization and deployment.">
       <option name="closed" value="true" />
@@ -472,7 +490,47 @@
       <option name="project" value="LOCAL" />
       <updated>1752706923764</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="feat: add new errors to `ErrorCatalog` and update history validation logic&#10;&#10;- Added `PlayerCantPlayAgainstSelf` and `NegativePoints` errors to `ErrorCatalog` for enhanced validation.&#10;- Renamed `GetAllHistoryDTO` and `GetHistoryQuery` to `GetAllHistoriesDTO` and `GetAllHistoriesQuery`.&#10;- Updated `CreateHistoryValidator` to enforce validation for self-play and negative points.">
+      <option name="closed" value="true" />
+      <created>1752709258460</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1752709258460</updated>
+    </task>
+    <task id="LOCAL-00038" summary="feat: add `GetAllHistoriesQueryHandler`, `GetAllHistoriesViewModel`, and DTO for history retrieval&#10;&#10;- Implemented `GetAllHistoriesQueryHandler` to handle history retrieval by username.&#10;- Added `GetAllHistoriesViewModel` for mapping DTO data to a user-friendly format.&#10;- Introduced `GetAllHistoriesQueryDTO` to structure history query data.&#10;- Updated `GetAllTournamentsDTO` to replace `userUuid` with `username`.">
+      <option name="closed" value="true" />
+      <created>1752709268079</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1752709268079</updated>
+    </task>
+    <task id="LOCAL-00039" summary="feat: add `GetAllHistoriesQueryHandler`, `GetAllHistoriesViewModel`, and DTO for history retrieval&#10;&#10;- Implemented `GetAllHistoriesQueryHandler` to handle history retrieval by username.&#10;- Added `GetAllHistoriesViewModel` for mapping DTO data to a user-friendly format.&#10;- Introduced `GetAllHistoriesQueryDTO` to structure history query data.&#10;- Updated `GetAllTournamentsDTO` to replace `userUuid` with `username`.">
+      <option name="closed" value="true" />
+      <created>1752709276850</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1752709276850</updated>
+    </task>
+    <task id="LOCAL-00040" summary="feat: implement `GetAllHistories` in `HistoryService` and update `GetAllTournamentsDTO`&#10;&#10;- Added `GetAll` method in `HistoryService` to retrieve tournament histories based on username.&#10;- Updated `GetAllTournamentsDTO` to replace `userUuid` with `username`.">
+      <option name="closed" value="true" />
+      <created>1752709285371</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1752709285371</updated>
+    </task>
+    <task id="LOCAL-00041" summary="feat: implement `GetAllHistories` in `HistoryService` and update `GetAllTournamentsDTO`&#10;&#10;- Added `GetAll` method in `HistoryService` to retrieve tournament histories based on username.&#10;- Updated `GetAllTournamentsDTO` to replace `userUuid` with `username`.">
+      <option name="closed" value="true" />
+      <created>1752710073833</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1752710073833</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -490,11 +548,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="feat: add base abstractions for tournament module&#10;&#10;- Introduced `BaseHandlerQuery` and `BaseValidator` interfaces for query and command validation structure.&#10;- Implemented `CreateTournamentCommand` class to encapsulate tournament creation command logic.&#10;- Added `BaseService` interface to standardize service execution with request-reply handling." />
-    <MESSAGE value="feat: add validators and DTOs for tournament module commands  &#10;&#10;- Implemented `CreateTournamentDTO` and `DeleteTournamentDTO` for handling respective command data.  &#10;- Added `CreateTournamentValidator` and `DeleteUserCommandValidator` for validating tournament and user commands.  &#10;- Introduced `DeleteUserCommandHandler` to handle user deletion logic via repository." />
-    <MESSAGE value="feat: add query handlers, DTOs, and validators for `GetUser` and `GetTournament` operations&#10;&#10;- Implemented `GetUserQueryHandler` and `GetTournamentQueryDTO` for handling user and tournament queries.&#10;- Added `GetUserQueryValidator` for input validation of user queries.&#10;- Introduced supporting DTOs and query objects for tournament and user processing." />
-    <MESSAGE value="feat: implement session command handlers and validators for login and logout actions&#10;&#10;- Added `LoginSessionCommandHandler` and `LogoutSessionCommandHandler` for handling login/logout operations.&#10;- Implemented validators `LoginSessionCommandValidator` and `LogoutSessionCommandValidator` with comprehensive validation logic.&#10;- Integrated repository and error notification for user existence and credential checks." />
-    <MESSAGE value="feat: add unique `tournamentUuid` column and comment out PrismaService initialization&#10;&#10;- Added `tournamentUuid` column with unique constraint to `Tournament` model for better identification.&#10;- Commented out PrismaService initialization in preparation for potential refactoring or alternative implementation." />
     <MESSAGE value="feat: implement tournament command handlers, validators, and services&#10;&#10;- Added `CreateTournamentCommandHandler`, `EditTournamentCommandHandler`, and `DeleteTournamentCommandHandler` for tournament operations.&#10;- Implemented `EditTournamentCommandValidator` and `DeleteTournamentCommandValidator` for validation.&#10;- Created services: `CreateTournamentService`, `EditTournamentService`, and `DeleteTournamentService` to handle logic and execution flow. &#10;- Enhanced `BaseHandlerQuery` to support result typing.&#10;- Introduced DTOs and command objects for tournament operations." />
     <MESSAGE value="feat: implement query handlers, DTOs, and services for `GetAllTournaments` and improve existing tournament query operations&#10;&#10;- Added `GetAllTournamentQueryHandler` to handle all tournaments query logic.&#10;- Implemented new DTOs: `GetAllTournamentsDTO`, `GetAllTournamentsQueryDTO`, and `GetAllTournamentsViewModel`.&#10;- Created `GetAllTournamentService` to manage query execution and result transformation.&#10;- Enhanced existing `GetTournamentQuery` with `fromDTO` method and resolved typos in `GetTournamentDTO`. &#10;- Refactored `GetUserQueryHandler` to `GetTournamentQueryHandler` and updated corresponding methods and repositories." />
     <MESSAGE value="refactor: replace session commands with tournament-based operations and refactor structure&#10;&#10;- Removed `LoginSessionCommandHandler`, `LogoutSessionCommandHandler`, and related validators.&#10;- Added `TournamentController` with methods for managing tournament operations.&#10;- Introduced `TournamentRepository` and `Tournament` entity to handle tournament persistence and data transformation.&#10;- Updated `GetUserQueryValidator` to reference tournaments instead of users.&#10;- Simplified workspace configuration and adjusted file paths for consistency." />
@@ -515,7 +568,12 @@
     <MESSAGE value="refactor: relocate query objects to `Domain` layer and update imports&#10;&#10;- Moved `GetAllTournamentsQuery`, `GetTournamentQuery`, and other query objects to `Domain` layer.&#10;- Added `GetHistoryQuery` for handling username-based query logic.&#10;- Updated import paths across affected files for consistency." />
     <MESSAGE value="refactor: relocate query handlers, validators to `Domain`, add `History` entity and update imports&#10;&#10;- Moved `GetTournamentQueryHandler`, `GetUserQueryValidator`, and related logic to `Domain` layer.  &#10;- Added `History` entity for managing tournament history details.  &#10;- Updated import paths across affected modules for consistency." />
     <MESSAGE value="feat: implement `HistoryService` with `Create` method, add `History` and `MatchMaking` models to Prisma schema&#10;&#10;- Introduced `HistoryService` to manage tournament history creation and processing.&#10;- Added `History` and `MatchMaking` models to `tournament.prisma` schema for tracking matches and histories.&#10;- Updated `backend.prisma` schema formatting for consistency." />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: implement `HistoryService` with `Create` method, add `History` and `MatchMaking` models to Prisma schema&#10;&#10;- Introduced `HistoryService` to manage tournament history creation and processing.&#10;- Added `History` and `MatchMaking` models to `tournament.prisma` schema for tracking matches and histories.&#10;- Updated `backend.prisma` schema formatting for consistency." />
+    <MESSAGE value="feat: add new errors to `ErrorCatalog` and update history validation logic&#10;&#10;- Added `PlayerCantPlayAgainstSelf` and `NegativePoints` errors to `ErrorCatalog` for enhanced validation.&#10;- Renamed `GetAllHistoryDTO` and `GetHistoryQuery` to `GetAllHistoriesDTO` and `GetAllHistoriesQuery`.&#10;- Updated `CreateHistoryValidator` to enforce validation for self-play and negative points." />
+    <MESSAGE value="feat: add history retrieval features and update tournament query DTO&#10;&#10;- Added `HistoryController` and `HistoryRoutes` to handle history functionality.&#10;- Implemented history-related DTOs for creating and retrieving history data.&#10;- Updated `GetAllTournamentsQuery` to use `username` instead of `userUuid`." />
+    <MESSAGE value="feat: add history retrieval features and update tournament query DTO&#10;&#10;- Added `HistoryController` and `HistoryRoutes` to handle history functionality.&#10;- Implemented history-related DTOs for creating and retrieving history data.&#10;- Updated `GetAllTournamentsQuery` to use `username` instead of `userUuid`." />
+    <MESSAGE value="feat: add `HistoryRepository` and integrate it with routes&#10;&#10;- Implemented `HistoryRepository` with `Create` and `GetAllHistoriesByUsername` methods.&#10;- Integrated `HistoryRoutes` and `HistoryController` into the application." />
+    <MESSAGE value="feat: add `HistoryRepository` and integrate it with routes&#10;&#10;- Implemented `HistoryRepository` with `Create` and `GetAllHistoriesByUsername` methods.&#10;- Integrated `HistoryRoutes` and `HistoryController` into the application." />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add `HistoryRepository` and integrate it with routes&#10;&#10;- Implemented `HistoryRepository` with `Create` and `GetAllHistoriesByUsername` methods.&#10;- Integrated `HistoryRoutes` and `HistoryController` into the application." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -531,19 +589,19 @@
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/tournament/src/index.ts</url>
-          <line>14</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/tournament/src/index.ts</url>
-          <line>8</line>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/backend/src/Presentation/Controllers/UserController.ts</url>
           <line>68</line>
           <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/tournament/src/Presentation/Controllers/HistoryController.ts</url>
+          <line>36</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/tournament/src/Presentation/Routes/HistoryRoutes/HistoryRoutes.ts</url>
+          <line>22</line>
+          <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

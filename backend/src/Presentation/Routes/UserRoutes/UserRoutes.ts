@@ -59,7 +59,7 @@ export const UserRoutes = async (server: any, userController: UserController) =>
         await userController.GetUser(request, reply);
     });
 
-    server.get('/user/exists', optsChecker, async (request: FastifyRequest<{ Querystring: { uuids: string[] }}>, reply: FastifyReply) => {
+    server.get('/users/exists', optsChecker, async (request: FastifyRequest<{ Querystring: { uuids: string[] }}>, reply: FastifyReply) => {
         await userController.VerifyIfUsersExists(request, reply);
     })
 

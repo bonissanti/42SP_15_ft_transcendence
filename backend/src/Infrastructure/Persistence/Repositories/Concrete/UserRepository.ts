@@ -98,6 +98,37 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
         return users.length === usernames.length;
     }
 
+    public async SearchForClosestOpponent(username: string, paremeterWin: number, paremterLoses: number, totalGames: number)
+    {
+        const maxRationDifference = 10;
+        const minMatchesPlayed = Math.abs(15 - totalGames);
+        const maxMatchesPlayed = totalGames + 10;
+        const userWinRatio = (paremeterWin / totalGames) * 100;
+
+        const potentialOpponents = await this.prisma.user.findMany({
+            where: {
+                username: { not: username },
+                matchesPlayed: { gte: minMatchesPlayed, lte: maxMatchesPlayed },
+            }
+        })
+
+        const usersWithRatioDifference = potentialOpponents
+            .map(user => ({
+                ...user,
+                winRatio: (user.wins / user.matchesPlayed) * 100,
+                ratioDifference: Math.abs(((user.wins / user.matchesPlayed) * 100) - userWinRatio)
+            }))
+            .filter(user => user.ratioDifference <= maxRationDifference);
+
+        const candidates = usersWithRatioDifference.length > 0 ? usersWithRatioDifference : this.SearchForAnyOpponent(usersWithRatioDifference);
+    }
+
+    //TODO: trocar any por talvez, value object
+    private SearchForAnyOpponent(usersWithRatioDifference: User)
+    {
+
+    }
+
     private mapToQueryDTO(userEntity: User): GetUserQueryDTO {
         return new GetUserQueryDTO(
             userEntity.Uuid,
