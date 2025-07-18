@@ -21,7 +21,7 @@ async function main()
     await HistoryRoutes(server, historyController);
 
     server.setErrorHandler((async (error, request, reply) => {
-        console.log("erro aqui?");
+        console.log("Error: ", error);
     }));
 
     try

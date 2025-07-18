@@ -41,6 +41,8 @@ export class HistoryRepository implements IBaseRepository<GetAllHistoriesQueryDT
         return historyData.map((history: History) => this.RecoverEntity(history));
     }
 
+
+
     private RecoverEntity(history: History): History {
         return new History(
             history.tournamentName,
