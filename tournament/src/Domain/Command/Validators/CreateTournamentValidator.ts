@@ -25,7 +25,7 @@ export class CreateTournamentValidator implements BaseValidator<CreateTournament
         await this.validateUsersExists(command);
 
         if (this.NotificationError.NumberOfErrors() > 0){
-            const allErrors : CustomError[] = this.NotificationError.GetAllErrors();
+            const allErrors: CustomError[] = this.NotificationError.GetAllErrors();
             throw new ValidationException(allErrors);
         }
     }
@@ -44,14 +44,14 @@ export class CreateTournamentValidator implements BaseValidator<CreateTournament
             if (usersList.length < 4)
                 this.NotificationError.AddError(ErrorCatalog.InvalidNumberOfParticipants);
 
-            const exists: boolean = await this.backendApiClient.verifyUserExists(usersList);
+            const exists: boolean = await this.backendApiClient.VerifyIfUsersExists(usersList);
 
             if (!exists)
                 this.NotificationError.AddError(ErrorCatalog.UserNotFound);
         }
         catch (error)
         {
-            this.NotificationError.AddError(ErrorCatalog.InternalBackendApiErrorVerifyUserExists);
+            this.NotificationError.AddError(ErrorCatalog.InternalBackendApiErrorVerifyIfUsersExists);
         }
     }
 }

@@ -45,13 +45,13 @@ export class EditTournamentCommandValidator implements BaseValidator<EditTournam
             if (usersList.length < 4)
                 this.NotificationError.AddError(ErrorCatalog.InvalidNumberOfParticipants);
 
-            const exists: boolean = await this.backendApiClient.verifyUserExists(usersList);
+            const exists: boolean = await this.backendApiClient.VerifyIfUsersExists(usersList);
 
             if (!exists)
                 this.NotificationError.AddError(ErrorCatalog.UserNotFound);
-        } catch (error) {
+        }
+        catch (error) {
             this.NotificationError.AddError(ErrorCatalog.InternalServerError);
         }
-
     }
 }
