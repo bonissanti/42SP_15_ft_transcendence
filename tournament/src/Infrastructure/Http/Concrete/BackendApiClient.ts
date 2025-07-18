@@ -30,6 +30,7 @@ export class BackendApiClient implements IBackendApiClient
         }
     }
 
+    //TODO: implementar
     public async VerifyIfUserExists(uuid: string): Promise<boolean>
     {
         try
@@ -49,6 +50,7 @@ export class BackendApiClient implements IBackendApiClient
         }
     }
 
+    //TODO: implementar
     public async AddWinLoseForUser(player1Username: string, player1Points: number, player2Username: string, player2Points: number): Promise<boolean>
     {
         try
