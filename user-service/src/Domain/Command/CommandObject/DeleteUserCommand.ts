@@ -1,4 +1,4 @@
-import {DeleteUserDTO} from "../../../Domain/DTO/Command/DeleteUserDTO.js";
+import {DeleteUserDTO} from "../../../Application/DTO/ToCommand/DeleteUserDTO.js";
 
 export class DeleteUserCommand
 {
