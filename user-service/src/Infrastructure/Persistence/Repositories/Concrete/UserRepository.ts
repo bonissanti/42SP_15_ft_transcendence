@@ -89,16 +89,19 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
   }
 
   private mapToQueryDTO(userEntity: User): GetUserQueryDTO {
-    return new GetUserQueryDTO(
-      userEntity.Uuid,
-      userEntity.Email.getEmail(),
-      userEntity.Username,
-      userEntity.ProfilePic ?? "",
-      userEntity.matchesPlayed,
-      userEntity.wins,
-      userEntity.loses
-    );
-  }
+      return new GetUserQueryDTO(
+        userEntity.Uuid,
+        userEntity.Email.getEmail(),
+        userEntity.Username,
+        userEntity.ProfilePic ?? "",
+        userEntity.matchesPlayed,
+        userEntity.wins,
+        userEntity.loses,
+        userEntity.isOnline,
+        userEntity.LastLogin
+      );
+    }
+
 
   private RecoverEntity(user: PrismaUser): User {
     const userEntity = new User(
@@ -107,13 +110,13 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
       user.username,
       user.profilePic,
       user.lastLogin,
+      user.isOnline,
       user.matchesPlayed,
       user.wins,
       user.loses
     );
     userEntity.Uuid = user.uuid;
     userEntity.Auth0Id = user.auth0Id;
-    userEntity.isOnline = user.isOnline;
 
     return userEntity;
   }

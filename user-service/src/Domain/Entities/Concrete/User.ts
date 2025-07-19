@@ -23,17 +23,18 @@ export class User implements BaseEntity
         username: string,
         profilepic: string | null,
         lastlogin: Date | null,
+        isOnline: boolean,
         matchesPlayed: number,
         wins: number,
         loses: number
     ) {
         this.Uuid = crypto.randomUUID();
-        console.log("User.Uuid", this.Uuid);
         this.Email = email;
         this.PasswordHash = passwordHash;
         this.Username = username;
         this.ProfilePic = profilepic;
         this.LastLogin = lastlogin;
+        this.isOnline = isOnline;
         this.matchesPlayed = matchesPlayed;
         this.wins = wins;
         this.loses = loses;

@@ -7,8 +7,10 @@ export class GetUserQueryDTO
     public readonly matchesPlayed: number | null;
     public readonly wins: number | null;
     public readonly loses: number | null;
+    public readonly isOnline: boolean | null;
+    public readonly lastLogin: Date | null;
 
-    constructor(uuid: string, email: string, username: string, profilepic: string | null = null, matchesPlayed: number, wins: number, loses: number)
+    constructor(uuid: string, email: string, username: string, profilepic: string | null = null, matchesPlayed: number, wins: number, loses: number, isOnline: boolean, lastLogin: Date | null)
     {
         this.Uuid = uuid;
         this.Email = email;
@@ -17,5 +19,7 @@ export class GetUserQueryDTO
         this.matchesPlayed = matchesPlayed;
         this.wins = wins;
         this.loses = loses;
+        this.isOnline = isOnline;
+        this.lastLogin = lastLogin;
     }
 }

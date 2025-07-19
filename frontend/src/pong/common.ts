@@ -1,4 +1,3 @@
-// src/pong/common.ts
 export interface Paddle {
   x: number; y: number; width: number; height: number; score: number;
 }
@@ -10,7 +9,6 @@ export const PADDLE_WIDTH = 15, PADDLE_HEIGHT = 100, BALL_RADIUS = 10;
 export const PADDLE_SPEED = 8, AI_SPEED = 5;
 export const WIN_SCORE = 3;
 
-// --- Estado Interno do Módulo (não exportado diretamente) ---
 let canvas: HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D;
 let ball: Ball | null = null;

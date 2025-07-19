@@ -34,6 +34,7 @@ const translations = {
     matchesPlayed: 'Partidas jogadas',
     wins: 'Vitórias',
     loses: 'Derrotas',
+    lastLogin: 'Último login',
 
     // Página de Criadores
     creatorsTitle: 'Criadores',
@@ -72,6 +73,7 @@ const translations = {
     matchesPlayed: 'Matches Played',
     wins: 'Wins',
     loses: 'Defeats',
+    lastLogin: 'Last login',
 
     // Creators Page
     creatorsTitle: 'Creators',
@@ -110,6 +112,7 @@ const translations = {
     matchesPlayed: 'Partidas jugadas',
     wins: 'Victorias',
     loses: 'Derrotas',
+    lastLogin: 'Último inicio de sesión',
 
     // Página de Creadores
     creatorsTitle: 'Creadores',
@@ -148,6 +151,7 @@ const translations = {
     matchesPlayed: 'Parties jouées',
     wins: 'Victoires',
     loses: 'Défaites',
+    lastLogin: 'Dernière connexion',
 
     // Page des Créateurs
     creatorsTitle: 'Créateurs',

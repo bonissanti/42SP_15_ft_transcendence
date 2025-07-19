@@ -9,9 +9,11 @@ export class GetUserViewModel
     public readonly matchesPlayed: number | null;
     public readonly wins: number | null;
     public readonly loses: number | null;
+    public readonly isOnline: boolean | null;
+    public readonly lastLogin: Date | null;
 
 
-    constructor(uuid?: string, username?: string, email?: string, profilepic: string | null = null, matchesPlayed? : number, wins? : number, loses? : number)
+    constructor(uuid?: string, username?: string, email?: string, profilepic: string | null = null, matchesPlayed? : number, wins? : number, loses? : number, isOnline?: boolean, lastLogin?: Date | null)
     {
         this.Uuid = uuid ?? null;
         this.Username = username ?? null;
@@ -20,10 +22,12 @@ export class GetUserViewModel
         this.matchesPlayed = matchesPlayed ?? null;
         this.wins = wins ?? null;
         this.loses = loses ?? null;
+        this.isOnline = isOnline ?? null;
+        this.lastLogin = lastLogin === undefined ? null : lastLogin;
     }
 
     public static FromQueryDTO(query: GetUserQueryDTO | null): GetUserViewModel
     {
-        return new GetUserViewModel(query?.Uuid, query?.Username, query?.Email, query?.ProfilePic, query?.matchesPlayed, query?.wins, query?.loses);
+        return new GetUserViewModel(query?.Uuid, query?.Username, query?.Email, query?.ProfilePic, query?.matchesPlayed, query?.wins, query?.loses, query?.isOnline, query?.lastLogin);
     }
 }
