@@ -4,10 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d3134b4-a67d-4c46-80e3-654566a805b8" name="Changes" comment="chore: add TODO placeholders for unimplemented methods in `BackendApiClient`">
-      <change afterPath="$PROJECT_DIR$/backend/src/Domain/QueryDTO/GetUserMatchmakingQueryDTO.ts" afterDir="false" />
+    <list default="true" id="6d3134b4-a67d-4c46-80e3-654566a805b8" name="Changes" comment="feat: enhance matchmaking logic in `UserRepository` and add `GetUserMatchmakingQueryDTO`&#10;&#10;- Updated `SearchForClosestOpponent` to refine candidate selection based on win ratio differences.&#10;- Implemented a fallback `SearchForAnyOpponent` method for broader matchmaking.&#10;- Added `mapToUserMatchmakingQueryDTO` for structured matchmaking data mapping.&#10;- Introduced `GetUserMatchmakingQueryDTO` to support detailed matchmaking query responses.">
+      <change afterPath="$PROJECT_DIR$/tournament/src/Domain/QueryDTO/GetUserMatchmakingQueryDTO.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/Infrastructure/Persistence/Repositories/Concrete/UserRepository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/Infrastructure/Persistence/Repositories/Concrete/UserRepository.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/Application/DTO/ToCommand/GenerateMatchmakingDTO.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Application/DTO/ToCommand/GenerateMatchmakingDTO.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/Application/Services/Concrete/MatchmakingService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Application/Services/Concrete/MatchmakingService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/Domain/Queries/Handlers/GenerateMatchmakingQueryHandler.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Domain/Queries/Handlers/GenerateMatchmakingQueryHandler.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/Domain/Queries/QueryObject/GenerateMatchmakingQuery.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Domain/Queries/QueryObject/GenerateMatchmakingQuery.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/Domain/Queries/Validators/GenerateMatchmakingQueryValidator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Domain/Queries/Validators/GenerateMatchmakingQueryValidator.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/Domain/QueryDTO/GenerateMatchmakingQueryDTO.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/Infrastructure/Http/Concrete/BackendApiClient.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Infrastructure/Http/Concrete/BackendApiClient.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/Presentation/Controllers/MatchmakingController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Presentation/Controllers/MatchmakingController.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/Presentation/Routes/MatchmakingRoutes/MatchmakingRoutes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Presentation/Routes/MatchmakingRoutes/MatchmakingRoutes.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -182,6 +191,7 @@
       <workItem from="1752701419694" duration="8696000" />
       <workItem from="1752793555871" duration="8203000" />
       <workItem from="1752936359530" duration="928000" />
+      <workItem from="1752937299761" duration="2352000" />
     </task>
     <task id="LOCAL-00001" summary="refactor: Fix imports, update error handling, and add Dockerfile for tournament&#10;&#10;- Adjusted imports in `EditUserService.ts` for paths consistency.  &#10;- Updated error message key (`InvalidProfilePicExtension` to `InvalidExtension`) in `CreateUserCommandValidator.ts`.  &#10;- Added `Dockerfile` for tournament module to support containerization and deployment.">
       <option name="closed" value="true" />
@@ -567,7 +577,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752801659903</updated>
     </task>
-    <option name="localTasksCounter" value="49" />
+    <task id="LOCAL-00049" summary="feat: enhance matchmaking logic in `UserRepository` and add `GetUserMatchmakingQueryDTO`&#10;&#10;- Updated `SearchForClosestOpponent` to refine candidate selection based on win ratio differences.&#10;- Implemented a fallback `SearchForAnyOpponent` method for broader matchmaking.&#10;- Added `mapToUserMatchmakingQueryDTO` for structured matchmaking data mapping.&#10;- Introduced `GetUserMatchmakingQueryDTO` to support detailed matchmaking query responses.">
+      <option name="closed" value="true" />
+      <created>1752937454715</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1752937454715</updated>
+    </task>
+    <option name="localTasksCounter" value="50" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -585,7 +603,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="refactor: update `BackendApiClient` request structure, error handling, and enhance `Dockerfile` installation&#10;&#10;- Refactored `BackendApiClient` to use query parameters for `verifyUserExists` and updated related typings.&#10;- Adjusted error mappings in `CreateTournamentValidator` for internal backend API errors.&#10;- Enhanced `Dockerfile` to include registry-specific npm installation with optional dependencies disabled.&#10;- Revised `BaseHandlerQuery` interface to support distinct command and result types." />
     <MESSAGE value="feat: add `InternalBackendApiError`, update `GetUserQuery` and related services&#10;&#10;- Introduced new error type `InternalBackendApiError` in `ErrorCatalog` for backend communication issues.&#10;- Made `Email` and `Username` optional in `GetUserQuery` and adjusted its constructor for better flexibility.&#10;- Updated `GetUserService` to reflect changes in query and handle nullable fields seamlessly." />
     <MESSAGE value="feat: add user existence verification via UUIDs endpoint&#10;&#10;- Introduced `/user/exists` GET route to verify user existence by UUIDs with input validation.&#10;- Added `VerifyIfUsersExistsByUuidsDTO` and `VerificationService` for handling new functionality.&#10;- Updated `UserRepository` with methods to validate user existence by UUID or username arrays." />
     <MESSAGE value="feat: add `VerificationService`, `VerifyIfUsersExistsByUuidsDTO`, and update paths in tsconfig&#10;&#10;- Introduced `VerificationService` to handle user existence verification logic.&#10;- Added `VerifyIfUsersExistsByUuidsDTO` for querying user existence by UUIDs.&#10;- Updated TypeScript configuration paths to ensure proper module resolution." />
@@ -610,7 +627,8 @@
     <MESSAGE value="feat: add matchmaking service, user search method, and update routes&#10;&#10;- Implemented `MatchmakingService` with preliminary `Generate` logic.&#10;- Added `SearchForClosestOpponent` method in `UserRepository` for matchmaking user search based on win ratio and matches played.&#10;- Updated `UserRoutes` with corrected endpoint `/users/exists`.&#10;- Extended `NotificationError` with `SetAllErrorsToString` method for better error handling." />
     <MESSAGE value="chore: add missing newline and leave TODO for additional validators&#10;&#10;- Fixed missing newline in `GenerateMatchmakingQueryValidator.ts`.&#10;- Added a TODO placeholder to include validators for additional getters." />
     <MESSAGE value="chore: add TODO placeholders for unimplemented methods in `BackendApiClient`" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore: add TODO placeholders for unimplemented methods in `BackendApiClient`" />
+    <MESSAGE value="feat: enhance matchmaking logic in `UserRepository` and add `GetUserMatchmakingQueryDTO`&#10;&#10;- Updated `SearchForClosestOpponent` to refine candidate selection based on win ratio differences.&#10;- Implemented a fallback `SearchForAnyOpponent` method for broader matchmaking.&#10;- Added `mapToUserMatchmakingQueryDTO` for structured matchmaking data mapping.&#10;- Introduced `GetUserMatchmakingQueryDTO` to support detailed matchmaking query responses." />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: enhance matchmaking logic in `UserRepository` and add `GetUserMatchmakingQueryDTO`&#10;&#10;- Updated `SearchForClosestOpponent` to refine candidate selection based on win ratio differences.&#10;- Implemented a fallback `SearchForAnyOpponent` method for broader matchmaking.&#10;- Added `mapToUserMatchmakingQueryDTO` for structured matchmaking data mapping.&#10;- Introduced `GetUserMatchmakingQueryDTO` to support detailed matchmaking query responses." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
