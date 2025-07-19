@@ -6,7 +6,11 @@ const langContainer = document.getElementById('lang-switcher-container') as HTML
 
 export function updateLangSwitcher() {
   const lang = getCurrentLanguage();
-  langContainer.innerHTML = `<button class="bg-gray-700 p-2 rounded-md border-2 border-white text-sm hover:bg-indigo-600 transition-colors">${lang === 'pt-BR' ? 'PT-BR' : 'EN'}</button>`;
+  langContainer.innerHTML = `
+    <button class="bg-gray-700 p-2 rounded-md border-2 border-white text-sm hover:bg-indigo-600 transition-colors">
+      ${lang}
+    </button>
+  `;
 }
 
 export function initLangSwitcher() {
