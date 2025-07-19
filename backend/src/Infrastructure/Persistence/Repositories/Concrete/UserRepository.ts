@@ -99,7 +99,7 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
         return users.length === usernames.length;
     }
 
-    public async SearchForClosestOpponent(username: string, paremeterWin: number, paremterLoses: number, totalGames: number)
+    public async SearchForClosestOpponent(username: string, paremeterWin: number, totalGames: number)
     {
         const maxRationDifference = 10;
         const minMatchesPlayed = Math.abs(15 - totalGames);
