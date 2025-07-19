@@ -10,12 +10,12 @@ services:
     depends_on:
       - user-service
       - auth-service
-      - tournament
+      - game-service
     networks:
       - app-network
 
   user-service:
-    build: ./user-service
+    build: user-service
     environment:
       DATABASE_URL: "file:/usr/src/app/prisma/dev.db"
       JWT_SECRET: "transcendence"
@@ -44,15 +44,15 @@ services:
     networks:
       - app-network
 
-  tournament:
-    build: ./tournament
+  game-service:
+    build: game-service
     environment:
       DATABASE_URL: "file:/usr/src/app/prisma/game.db"
       JWT_SECRET: "transcendence"
     ports:
       - "3001:3000"
     volumes:
-      - ./prisma-data/game:/usr/src/app/prisma
+      - game-service-prisma-data:/usr/src/app/prisma
     networks:
       - app-network
 
@@ -63,4 +63,4 @@ networks:
 volumes:
   user-service-prisma-data:
   auth-prisma-data:
-  tournament:
+  game-service-prisma-data:
