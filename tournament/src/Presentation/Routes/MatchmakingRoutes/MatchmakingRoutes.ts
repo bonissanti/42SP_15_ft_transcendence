@@ -1,5 +1,7 @@
 import {authenticateJWT} from "../../Middleware/AuthMiddleware";
 import {FastifyReply, FastifyRequest} from "fastify";
+import {GenerateMatchmakingDTO} from "../../../Application/DTO/ToCommand/GenerateMatchmakingDTO";
+import {MatchmakingController} from "../../Controllers/MatchmakingController";
 
 export const MatchmakingRoutes = async (server: any, matchmakingController: MatchmakingController) =>
 {
