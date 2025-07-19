@@ -1,4 +1,4 @@
-import {GetUserViewModel} from "../../../Presentation/ViewModels/GetUserViewModel.js";
+import {GetUserViewModel} from "../../ViewModels/GetUserViewModel.js";
 
 export class GetUserDTO
 {

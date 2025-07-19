@@ -1,12 +1,12 @@
 import {FastifyReply} from "fastify";
 import {BaseService} from "../Interfaces/BaseService.js";
-import {EditUserDTO} from "../../../Domain/DTO/Command/EditUserDTO.js";
+import {EditUserDTO} from "../../DTO/ToCommand/EditUserDTO.js";
 import {UserRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/UserRepository.js";
-import {EditUserCommand} from "../../Command/CommandObject/EditUserCommand.js";
+import {EditUserCommand} from "../../../Domain/Command/CommandObject/EditUserCommand.js";
 import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog.js";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import {EditUserCommandHandler} from "../../Command/Handlers/EditUserCommandHandler.js";
-import {EditUserCommandValidator} from "../../Command/Validators/EditUserCommandValidator.js";
+import {EditUserCommandHandler} from "../../../Domain/Command/Handlers/EditUserCommandHandler.js";
+import {EditUserCommandValidator} from "../../../Domain/Command/Validators/EditUserCommandValidator.js";
 import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
 import { ValidationException } from "../../../Shared/Errors/ValidationException.js";
 import { Result } from "../../../Shared/Utils/Result.js";
