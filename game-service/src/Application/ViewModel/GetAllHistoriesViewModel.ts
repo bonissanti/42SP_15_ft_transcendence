@@ -1,5 +1,4 @@
 import {GetAllHistoriesQueryDTO} from "../../Domain/QueryDTO/GetAllHistoriesQueryDTO";
-import {GetAllTournamentsViewModel} from "./GetAllTournamentsViewModel";
 
 export class GetAllHistoriesViewModel
 {

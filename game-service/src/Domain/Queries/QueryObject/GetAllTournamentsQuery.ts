@@ -1,4 +1,3 @@
-import {GetAllTournamentsQueryDTO} from "../../QueryDTO/GetAllTournamentsQueryDTO";
 import {GetAllTournamentsDTO} from "../../../Application/DTO/ToQuery/GetAllTournamentsDTO";
 
 export class GetAllTournamentsQuery

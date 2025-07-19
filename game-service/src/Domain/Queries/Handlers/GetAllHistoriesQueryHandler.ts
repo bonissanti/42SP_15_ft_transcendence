@@ -1,8 +1,6 @@
-import {BaseHandlerCommand} from "../../Command/Handlers/BaseHandlerCommand";
 import {BaseHandlerQuery} from "./BaseHandlerQuery";
 import {GetAllHistoriesQuery} from "../QueryObject/GetAllHistoriesQuery";
 import {GetAllHistoriesQueryDTO} from "../../QueryDTO/GetAllHistoriesQueryDTO";
-import {TournamentRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/TournamentRepository";
 import {HistoryRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/HistoryRepository";
 import {NotificationError} from "../../../Shared/Errors/NotificationError";
 

@@ -1,5 +1,3 @@
-import { CustomError } from "../Errors/CustomError.js";
-
 export class Result<T = void>
 {
     public readonly isSucess: boolean;
