@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d3134b4-a67d-4c46-80e3-654566a805b8" name="Changes" comment="feat: add matchmaking service, user search method, and update routes&#10;&#10;- Implemented `MatchmakingService` with preliminary `Generate` logic.&#10;- Added `SearchForClosestOpponent` method in `UserRepository` for matchmaking user search based on win ratio and matches played.&#10;- Updated `UserRoutes` with corrected endpoint `/users/exists`.&#10;- Extended `NotificationError` with `SetAllErrorsToString` method for better error handling." />
+    <list default="true" id="6d3134b4-a67d-4c46-80e3-654566a805b8" name="Changes" comment="chore: add TODO placeholders for unimplemented methods in `BackendApiClient`">
+      <change afterPath="$PROJECT_DIR$/backend/src/Domain/QueryDTO/GetUserMatchmakingQueryDTO.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/Infrastructure/Persistence/Repositories/Concrete/UserRepository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/Infrastructure/Persistence/Repositories/Concrete/UserRepository.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -176,7 +180,8 @@
       <workItem from="1752623711391" duration="2314000" />
       <workItem from="1752626039489" duration="3372000" />
       <workItem from="1752701419694" duration="8696000" />
-      <workItem from="1752793555871" duration="7919000" />
+      <workItem from="1752793555871" duration="8203000" />
+      <workItem from="1752936359530" duration="928000" />
     </task>
     <task id="LOCAL-00001" summary="refactor: Fix imports, update error handling, and add Dockerfile for tournament&#10;&#10;- Adjusted imports in `EditUserService.ts` for paths consistency.  &#10;- Updated error message key (`InvalidProfilePicExtension` to `InvalidExtension`) in `CreateUserCommandValidator.ts`.  &#10;- Added `Dockerfile` for tournament module to support containerization and deployment.">
       <option name="closed" value="true" />
@@ -546,7 +551,23 @@
       <option name="project" value="LOCAL" />
       <updated>1752801469755</updated>
     </task>
-    <option name="localTasksCounter" value="47" />
+    <task id="LOCAL-00047" summary="chore: add missing newline and leave TODO for additional validators&#10;&#10;- Fixed missing newline in `GenerateMatchmakingQueryValidator.ts`.&#10;- Added a TODO placeholder to include validators for additional getters.">
+      <option name="closed" value="true" />
+      <created>1752801608961</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1752801608961</updated>
+    </task>
+    <task id="LOCAL-00048" summary="chore: add TODO placeholders for unimplemented methods in `BackendApiClient`">
+      <option name="closed" value="true" />
+      <created>1752801659903</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1752801659903</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -564,8 +585,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="feat: initialize core tournament services, enhance DTOs, and update schema&#10;&#10;- Added services: `EditTournamentService`, `DeleteTournamentService`, `GetTournamentService`, and `GetAllTournamentService` with internal repository instantiation.&#10;- Enhanced `TournamentController` methods to handle query parameters and corrected DTO instantiations.&#10;- Updated `Tournament` entity to include `tournamentUuid` generation via `crypto.randomUUID`.&#10;- Modified Prisma schema: changed database file name, adjusted field constraints, and added `PrismaService`." />
-    <MESSAGE value="feat: setup TypeScript config and refactor TournamentRepository for unified Prisma access&#10;&#10;- Added `tsconfig.json` with standardized compiler options.&#10;- Removed redundant `PrismaClient` instantiation. TournamentRepository now uses a shared `PrismaService` (`@prisma`) for database operations.&#10;- Adjusted method calls in `TournamentRepository` to align with updated structure.&#10;- Added `TournamentRoutes` to configure endpoints for tournament operations." />
     <MESSAGE value="refactor: update `BackendApiClient` request structure, error handling, and enhance `Dockerfile` installation&#10;&#10;- Refactored `BackendApiClient` to use query parameters for `verifyUserExists` and updated related typings.&#10;- Adjusted error mappings in `CreateTournamentValidator` for internal backend API errors.&#10;- Enhanced `Dockerfile` to include registry-specific npm installation with optional dependencies disabled.&#10;- Revised `BaseHandlerQuery` interface to support distinct command and result types." />
     <MESSAGE value="feat: add `InternalBackendApiError`, update `GetUserQuery` and related services&#10;&#10;- Introduced new error type `InternalBackendApiError` in `ErrorCatalog` for backend communication issues.&#10;- Made `Email` and `Username` optional in `GetUserQuery` and adjusted its constructor for better flexibility.&#10;- Updated `GetUserService` to reflect changes in query and handle nullable fields seamlessly." />
     <MESSAGE value="feat: add user existence verification via UUIDs endpoint&#10;&#10;- Introduced `/user/exists` GET route to verify user existence by UUIDs with input validation.&#10;- Added `VerifyIfUsersExistsByUuidsDTO` and `VerificationService` for handling new functionality.&#10;- Updated `UserRepository` with methods to validate user existence by UUID or username arrays." />
@@ -589,7 +608,9 @@
     <MESSAGE value="refactor: rename method in `IBackendApiClient` and update logs for clarity&#10;&#10;- Renamed `verifyUserExists` to `VerifyIfUsersExists` in `IBackendApiClient` for consistency.&#10;- Enhanced error logging in `index.ts` for better debugging. &#10;- Minor formatting updates in `HistoryRepository`." />
     <MESSAGE value="feat: implement matchmaking controller, view model, and query handlers&#10;&#10;- Added `MatchmakingController` with matchmaking logic and integration via `GenerateMatchmakingDTO`.&#10;- Introduced `GenerateMatchmakingViewModel` to structure matchmaking data.&#10;- Implemented `GenerateMatchmakingQueryHandler` and `GenerateMatchmakingQueryValidator` for query processing and validation." />
     <MESSAGE value="feat: add matchmaking service, user search method, and update routes&#10;&#10;- Implemented `MatchmakingService` with preliminary `Generate` logic.&#10;- Added `SearchForClosestOpponent` method in `UserRepository` for matchmaking user search based on win ratio and matches played.&#10;- Updated `UserRoutes` with corrected endpoint `/users/exists`.&#10;- Extended `NotificationError` with `SetAllErrorsToString` method for better error handling." />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: add matchmaking service, user search method, and update routes&#10;&#10;- Implemented `MatchmakingService` with preliminary `Generate` logic.&#10;- Added `SearchForClosestOpponent` method in `UserRepository` for matchmaking user search based on win ratio and matches played.&#10;- Updated `UserRoutes` with corrected endpoint `/users/exists`.&#10;- Extended `NotificationError` with `SetAllErrorsToString` method for better error handling." />
+    <MESSAGE value="chore: add missing newline and leave TODO for additional validators&#10;&#10;- Fixed missing newline in `GenerateMatchmakingQueryValidator.ts`.&#10;- Added a TODO placeholder to include validators for additional getters." />
+    <MESSAGE value="chore: add TODO placeholders for unimplemented methods in `BackendApiClient`" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore: add TODO placeholders for unimplemented methods in `BackendApiClient`" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

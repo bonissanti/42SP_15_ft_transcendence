@@ -5,6 +5,7 @@ import {ErrorCatalog} from "../../../../Shared/Errors/ErrorCatalog.js";
 import {EmailVO} from "../../../../Domain/ValueObjects/EmailVO.js";
 import {PasswordHashVO} from "../../../../Domain/ValueObjects/PasswordHashVO.js";
 import {GetUserQueryDTO} from "../../../../Domain/QueryDTO/GetUserQueryDTO.js";
+import {GetUserMatchmakingQueryDTO} from "../../../../Domain/QueryDTO/GetUserMatchmakingQueryDTO.js";
 
 export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
     public prisma: PrismaClient;
@@ -120,13 +121,36 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
             }))
             .filter(user => user.ratioDifference <= maxRationDifference);
 
-        const candidates = usersWithRatioDifference.length > 0 ? usersWithRatioDifference : this.SearchForAnyOpponent(usersWithRatioDifference);
+        const candidates = usersWithRatioDifference.length > 0 ? usersWithRatioDifference : this.SearchForAnyOpponent(potentialOpponents, userWinRatio)
+
+        const randomIndex: number = Math.floor(Math.random() * candidates.length);
+        return this.mapToUserMatchmakingQueryDTO(candidates[randomIndex]);
     }
 
-    //TODO: trocar any por talvez, value object
-    private SearchForAnyOpponent(usersWithRatioDifference: User)
+    private SearchForAnyOpponent(potentialOpponents: any, userWinRatio: number)
     {
+        return potentialOpponents
+            .map((user: { wins: number; matchesPlayed: number; }) => ({
+                ...user,
+                winRatio: (user.wins / user.matchesPlayed) * 100,
+                ratioDifference: Math.abs(((user.wins / user.matchesPlayed) * 100) - userWinRatio)
+            }))
+            .slice(0, 10);
 
+    }
+
+    private mapToUserMatchmakingQueryDTO(user: any): GetUserMatchmakingQueryDTO
+    {
+        return new GetUserMatchmakingQueryDTO(
+            user.uuid,
+            user.username,
+            user.profilePic,
+            user.matchesPlayed,
+            user.wins,
+            user.loses,
+            user.winRatio,
+            user.ratioDifference,
+        );
     }
 
     private mapToQueryDTO(userEntity: User): GetUserQueryDTO {
