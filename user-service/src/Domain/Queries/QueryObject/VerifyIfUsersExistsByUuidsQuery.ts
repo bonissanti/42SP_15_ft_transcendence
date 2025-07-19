@@ -1,4 +1,4 @@
-import {VerifyIfUsersExistsByUuidsDTO} from "../../../Domain/DTO/Query/VerifyIfUsersExistsByUuidsDTO.js";
+import {VerifyIfUsersExistsByUuidsDTO} from "../../../Application/DTO/ToQuery/VerifyIfUsersExistsByUuidsDTO.js";
 
 export class VerifyIfUsersExistsByUuidsQuery
 {
