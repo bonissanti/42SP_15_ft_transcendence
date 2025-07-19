@@ -11,19 +11,21 @@ import { DeleteUserService } from "../../Application/Services/Concrete/DeleteUse
 import { GetUserDTO } from "../../Domain/DTO/Query/GetUserDTO.js";
 import { GetUserService } from "../../Application/Services/Concrete/GetUserService.js";
 import { GetUserViewModel } from "../ViewModels/GetUserViewModel.js";
-
+import { UserRepository } from "../../Infrastructure/Persistence/Repositories/Concrete/UserRepository.js";
 export class UserController extends BaseController {
   private readonly notificationError: NotificationError;
   private readonly createUserService: CreateUserService;
   private readonly editUserService: EditUserService;
   private readonly deleteUserService: DeleteUserService;
   private readonly getUserService: GetUserService;
+  private readonly userRepository: UserRepository;
 
   constructor(
     createUserService: CreateUserService,
     editUserService: EditUserService,
     deleteUserService: DeleteUserService,
-    getUserService: GetUserService
+    getUserService: GetUserService,
+    userRepository: UserRepository
   ) {
     super();
     this.notificationError = new NotificationError();
@@ -31,6 +33,7 @@ export class UserController extends BaseController {
     this.editUserService = editUserService;
     this.deleteUserService = deleteUserService;
     this.getUserService = getUserService;
+    this.userRepository = userRepository;
   }
 
   public async CreateUser(request: FastifyRequest<{ Body: CreateUserDTO }>, reply: FastifyReply): Promise<Result> {
@@ -77,4 +80,20 @@ export class UserController extends BaseController {
     const result: Result<GetUserViewModel[]> = await this.getUserService.GetAllUsers();
     return this.handleResult(result, reply, this.notificationError);
   }
+
+  public async UpdateUserStatus(uuid: string, isOnline: boolean, reply: FastifyReply): Promise<Result> {
+        try {
+            const user = await this.userRepository.GetUserEntityByUuid(uuid);
+            if (!user) {
+                return this.handleResult(Result.Failure("Usuário não encontrado."), reply, this.notificationError);
+            }
+
+            user.ChangeStatusOnline(isOnline);
+            await this.userRepository.Update(uuid, user);
+            return this.handleResult(Result.Sucess("Status do usuário atualizado."), reply, this.notificationError);
+        } catch (error) {
+            return this.handleResult(Result.Failure("Erro ao atualizar o status do usuário."), reply, this.notificationError);
+        }
+    }
+
 }

@@ -66,7 +66,7 @@ async function createNewUserFromGoogle(payload: GooglePayload, userRepository: U
     const randomPassword = crypto.randomBytes(16).toString('hex');
     const passwordHash = await PasswordHashVO.Create(randomPassword);
 
-    const userEntity = new User(emailVO, passwordHash, username, payload.picture || null, new Date(), 0, 0, 0);
+    const userEntity = new User(emailVO, passwordHash, username, payload.picture || null, new Date(), true, 0, 0, 0);
     userEntity.ChangeAuth0Id(payload.sub);
 
     await userRepository.Create(userEntity);

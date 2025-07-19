@@ -61,6 +61,17 @@ export const UserRoutes = async (server: any, userController: UserController) =>
         return userController.handleResult(result, reply, userController.notificationError);
     });
 
+        server.put('/users/me/status', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Body: { isOnline: boolean } }>, reply: FastifyReply) => {
+        const userPayload = request.user as { uuid: string };
+        const { isOnline } = request.body;
+
+        if (!userPayload || !userPayload.uuid) {
+            return reply.status(400).send({ message: "UUID do usuário inválido." });
+        }
+
+        await userController.UpdateUserStatus(userPayload.uuid, isOnline, reply);
+    });
+
     server.get('/users', { preHandler: authenticateJWT }, async (request: FastifyRequest, reply: FastifyReply) => {
         await userController.GetAllUsers(request, reply);
     });

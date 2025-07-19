@@ -1,5 +1,6 @@
 import { API_BASE_URL, GOOGLE_CLIENT_ID } from '../utils/constants';
 import { updateProfileLink } from '../components/profileLink';  
+import { stopStatusListeners } from '../core/router';
 
 declare global {
   interface Window {
@@ -31,10 +32,17 @@ function navigateTo(path: string) {
 }
 
 export function logout() {
+  if (localStorage.getItem('jwtToken')) {
+    navigator.sendBeacon(`${API_BASE_URL}/users/me/status`, JSON.stringify({ isOnline: false }));
+  }
+
+  stopStatusListeners(); // Para os listeners de status
   localStorage.removeItem('jwtToken');
   updateProfileLink();
   navigateTo('/login');
 }
+
+
 
 async function handleGoogleCredentialResponse(response: any) {
   try {

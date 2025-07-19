@@ -54,7 +54,8 @@ async function main() {
     createUserService,
     editUserService,
     deleteUserService,
-    getUserService
+    getUserService,
+    userRepository
   );
 
   const userSessionController = new UserSessionController(
