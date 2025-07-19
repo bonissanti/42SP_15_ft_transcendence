@@ -1,15 +1,12 @@
-// src/core/router.ts
-
 import { routes } from '../config/routes';
 import { renderView } from './view';
 import { stopPongGame } from '../pong/game';
 import { initializeGoogleButton, logout } from '../auth/auth';
-import { fetchWithAuth } from '../api/api'; // Importe o fetchWithAuth
+import { fetchWithAuth } from '../api/api';
 
 const appContainer = document.getElementById('app') as HTMLDivElement;
 let statusListenersActive = false;
 
-// Função para atualizar o status (só envia se houver token)
 async function updateUserStatus(isOnline: boolean) {
     if (!localStorage.getItem('jwtToken')) return;
     try {
@@ -23,17 +20,15 @@ async function updateUserStatus(isOnline: boolean) {
     }
 }
 
-// Handlers para os eventos
 const handleFocus = () => updateUserStatus(true);
 const handleBlur = () => updateUserStatus(false);
-// Usamos 'unload' com sendBeacon para garantir o envio ao fechar a página
+
 const handleUnload = () => {
     if (localStorage.getItem('jwtToken')) {
         navigator.sendBeacon('/api/users/me/status', JSON.stringify({ isOnline: false }));
     }
 };
 
-// Funções para iniciar e parar os listeners
 function startStatusListeners() {
     if (statusListenersActive) return;
     window.addEventListener('focus', handleFocus);
@@ -54,7 +49,7 @@ export async function router() {
   const path = window.location.pathname;
 
   stopPongGame();
-  stopStatusListeners(); // Garante que os listeners sejam removidos em cada troca de rota
+  stopStatusListeners(); 
 
   appContainer.innerHTML = `<h1>Carregando...</h1>`;
 
@@ -73,42 +68,41 @@ export async function router() {
     return;
   }
 
-  // Se o usuário está logado e em uma rota protegida, ative o status
   if (token && isProtectedRoute) {
     startStatusListeners();
-    updateUserStatus(true); // Define como online ao carregar a página
+    updateUserStatus(true);
   }
 
   const route = routes.find(r => r.path === path);
 
   if (route) {
-    // ... (resto do seu código do router permanece igual)
     if (route.path === '/profile' && route.action) {
-        appContainer.innerHTML = await (route.action as Function)();
+      appContainer.innerHTML = await (route.action as Function)();
     } else {
-        appContainer.innerHTML = await renderView(route.view);
-        if (route.action) {
-            (route.action as Function)();
-        }
+      appContainer.innerHTML = await renderView(route.view);
+      if (route.action) {
+        (route.action as Function)();
+      }
     }
+
     if (route.view === 'login') {
-        initializeGoogleButton();
+      initializeGoogleButton();
     }
   } else {
     appContainer.innerHTML = await renderView('404');
   }
 }
 
-// ... (resto dos seus listeners em router.ts permanecem iguais)
 document.body.addEventListener('click', (e) => {
-    const target = e.target as HTMLElement;
-    const navLink = target.closest('[data-navigate]');
-    if (navLink) {
-        e.preventDefault();
-        const path = navLink.getAttribute('data-navigate')!;
-        history.pushState({}, '', path);
-        router();
-    }
+  const target = e.target as HTMLElement;
+  const navLink = target.closest('[data-navigate]');
+  if (navLink) {
+    e.preventDefault();
+    const path = navLink.getAttribute('data-navigate')!;
+    history.pushState({}, '', path);
+    router();
+  }
 });
+
 window.addEventListener('popstate', router);
 window.addEventListener('auth-error', logout);
