@@ -1,17 +1,17 @@
 import {BaseHandlerQuery} from "./BaseHandlerQuery";
 import {GenerateMatchmakingQuery} from "../QueryObject/GenerateMatchmakingQuery";
-import {GenerateMatchmakingQueryDTO} from "../../QueryDTO/GenerateMatchmakingQueryDTO";
+import {GetUserMatchmakingQueryDTO} from "../../QueryDTO/GetUserMatchmakingQueryDTO";
 import {NotificationError} from "../../../Shared/Errors/NotificationError";
-import {HistoryRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/HistoryRepository";
+import {BackendApiClient} from "../../../Infrastructure/Http/Concrete/BackendApiClient";
 
-export class GenerateMatchmakingQueryHandler implements BaseHandlerQuery<GenerateMatchmakingQuery, GenerateMatchmakingQueryDTO>
+export class GenerateMatchmakingQueryHandler implements BaseHandlerQuery<GenerateMatchmakingQuery, GetUserMatchmakingQueryDTO | null>
 {
-    constructor(private historyRepository: HistoryRepository, NotificationError: NotificationError)
+    constructor(private backendApiClient: BackendApiClient, NotificationError: NotificationError)
     {
     }
 
-    async Handle(query: GenerateMatchmakingQuery): Promise<GenerateMatchmakingQueryDTO | null>
+    async Handle(query: GenerateMatchmakingQuery): Promise<GetUserMatchmakingQueryDTO | null>
     {
-        return await this.historyRepository.SearchForClosestOpponent(query.wins);
+        return await this.backendApiClient.SearchForOpponent(query.username, query.wins, query.totalGames);
     }
 }

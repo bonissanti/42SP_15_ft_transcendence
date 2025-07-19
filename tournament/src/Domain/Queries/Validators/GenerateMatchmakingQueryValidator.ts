@@ -19,8 +19,8 @@ export class GenerateMatchmakingQueryValidator implements BaseValidator<Generate
     {
         await this.ValidateUsersExists(query);
 
-        if (query.wins < 0)
-            this.notificationError.AddError(ErrorCatalog.NegativePoints);
+        if (query.wins < 0 || query.totalGames < 0)
+            this.notificationError.AddError(ErrorCatalog.NegativeValues);
 
         if (this.notificationError.NumberOfErrors() > 0)
         {
@@ -33,7 +33,7 @@ export class GenerateMatchmakingQueryValidator implements BaseValidator<Generate
     {
         try
         {
-            const exists: boolean = await this.backendApiClient.VerifyIfUserExists(query.uuid);
+            const exists: boolean = await this.backendApiClient.VerifyIfUserExistsByUsername(query.username);
 
             if (!exists)
                 this.notificationError.AddError(ErrorCatalog.UserNotFound);
