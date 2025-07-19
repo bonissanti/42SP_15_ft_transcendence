@@ -1,18 +1,20 @@
-import { CreateUserDTO } from "../../Domain/DTO/Command/CreateUserDTO.js";
+import { CreateUserDTO } from "../../Application/DTO/ToCommand/CreateUserDTO.js";
 import { Result } from "../../Shared/Utils/Result.js";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { BaseController } from "./BaseController.js";
 import { CreateUserService } from "../../Application/Services/Concrete/CreateUserService.js";
 import { NotificationError } from "../../Shared/Errors/NotificationError.js";
-import { EditUserDTO } from "../../Domain/DTO/Command/EditUserDTO.js";
+import { EditUserDTO } from "../../Application/DTO/ToCommand/EditUserDTO.js";
 import { EditUserService } from "../../Application/Services/Concrete/EditUserService.js";
-import { DeleteUserDTO } from "../../Domain/DTO/Command/DeleteUserDTO.js";
+import { DeleteUserDTO } from "../../Application/DTO/ToCommand/DeleteUserDTO.js";
 import { DeleteUserService } from "../../Application/Services/Concrete/DeleteUserService.js";
-import { GetUserDTO } from "../../Domain/DTO/Query/GetUserDTO.js";
+import { GetUserDTO } from "../../Application/DTO/ToQuery/GetUserDTO.js";
 import { GetUserService } from "../../Application/Services/Concrete/GetUserService.js";
-import { GetUserViewModel } from "../ViewModels/GetUserViewModel.js";
-import {VerifyIfUsersExistsByUuidsDTO} from "../../Domain/DTO/Query/VerifyIfUsersExistsByUuidsDTO.js";
-import {VerificationService} from "../../Application/Services/Concrete/VerificationService.js";
+import { GetUserViewModel } from "../../Application/ViewModels/GetUserViewModel.js";
+import {VerifyIfUsersExistsByUuidsDTO} from "../../Application/DTO/ToQuery/VerifyIfUsersExistsByUuidsDTO.js";
+import {UserService} from "../../Application/Services/Concrete/UserService.js";
+import {UpdateStatsDTO} from "../../Application/DTO/ToCommand/UpdateStatsDTO.js";
+import * as repl from "node:repl";
 
 export class UserController extends BaseController {
     private readonly notificationError: NotificationError;
@@ -20,14 +22,14 @@ export class UserController extends BaseController {
     private readonly editUserService: EditUserService;
     private readonly deleteUserService: DeleteUserService;
     private readonly getUserService: GetUserService;
-    private readonly verificationService: VerificationService;
+    private readonly userService: UserService;
 
     constructor(
         createUserService: CreateUserService,
         editUserService: EditUserService,
         deleteUserService: DeleteUserService,
         getUserService: GetUserService,
-        verificationService: VerificationService
+        verificationService: UserService
     ) {
         super();
         this.notificationError = new NotificationError();
@@ -35,7 +37,7 @@ export class UserController extends BaseController {
         this.editUserService = editUserService;
         this.deleteUserService = deleteUserService;
         this.getUserService = getUserService;
-        this.verificationService = verificationService;
+        this.userService = verificationService;
     }
 
     public async CreateUser(request: FastifyRequest<{ Body: CreateUserDTO }>, reply: FastifyReply): Promise<Result> {
@@ -69,7 +71,7 @@ export class UserController extends BaseController {
     public async VerifyIfUsersExists(request: FastifyRequest<{ Querystring: { uuids: string[] } }>, reply: FastifyReply): Promise<Result> {
         const query = request.query;
         const usersDTO: VerifyIfUsersExistsByUuidsDTO = new VerifyIfUsersExistsByUuidsDTO(query.uuids);
-        const result: Result<boolean> = await this.verificationService.VerifyIfUserExistsByUuidsService(usersDTO, reply);
+        const result: Result<boolean> = await this.userService.VerifyIfUserExistsByUuidsService(usersDTO, reply);
         return this.handleResult(result, reply, this.notificationError);
     }
 
@@ -85,5 +87,13 @@ export class UserController extends BaseController {
         catch (error: any) {
             throw error;
         }
+    }
+
+    public async UpdateStats(request: FastifyRequest<{ Body: UpdateStatsDTO }>, reply: FastifyReply): Promise<Result>
+    {
+        const query = request.body;
+        const statsDTO: UpdateStatsDTO = new UpdateStatsDTO(query.player1Username, query.player1Points, query.player2Username, query.player2Points);
+        const result: Result<void> = await this.userService.UpdateStatsService(statsDTO, reply);
+        return this.handleResult(result, reply, this.notificationError);
     }
 }
