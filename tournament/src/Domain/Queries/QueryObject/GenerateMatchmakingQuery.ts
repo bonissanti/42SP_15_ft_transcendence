@@ -2,17 +2,19 @@ import {GenerateMatchmakingDTO} from "../../../Application/DTO/ToCommand/Generat
 
 export class GenerateMatchmakingQuery
 {
-    public readonly uuid: string;
+    public readonly username: string;
     public readonly wins: number;
+    public readonly totalGames: number;
 
-    constructor(uuid: string, wins: number)
+    constructor(username: string, wins: number, totalGames: number)
     {
-        this.uuid = uuid;
+        this.username = username;
         this.wins = wins;
+        this.totalGames = totalGames;
     }
 
     public static fromDTO(dto: GenerateMatchmakingDTO): GenerateMatchmakingQuery
     {
-        return new GenerateMatchmakingQuery(dto.uuid, dto.wins);
+        return new GenerateMatchmakingQuery(dto.username, dto.wins, dto.totalGames);
     }
 }

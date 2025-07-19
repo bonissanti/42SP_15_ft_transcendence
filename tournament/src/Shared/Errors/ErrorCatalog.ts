@@ -9,6 +9,7 @@ export class ErrorCatalog
     public static readonly PlayerCantPlayAgainstSelf: CustomError = new CustomError(400, "Player can't play against himself");
     public static readonly NegativePoints: CustomError = new CustomError(400, "Points can't be negative");
     public static readonly NegativeWins: CustomError = new CustomError(400, "Wins can't be negative");
+    public static readonly NegativeValues: CustomError = new CustomError(400, "Wins or Total Games can't be negative");
     public static readonly UserNotFound: CustomError = new CustomError(404, "User not found");
     public static readonly TournamentNotFound: CustomError = new CustomError(404, "Tournament not found");
     public static readonly HistoryNotFound: CustomError = new CustomError(404, "History not found");

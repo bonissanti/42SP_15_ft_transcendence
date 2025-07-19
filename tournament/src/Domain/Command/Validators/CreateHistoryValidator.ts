@@ -53,7 +53,7 @@ export class CreateHistoryValidator implements BaseValidator<CreateHistoryComman
         }
         catch (error)
         {
-            this.NotificationError.AddError(ErrorCatalog.InternalBackendApiErrorVerifyUserExists);
+            this.NotificationError.AddError(ErrorCatalog.InternalBackendApiErrorVerifyIfUserExists);
         }
     }
 }
