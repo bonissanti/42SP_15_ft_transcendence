@@ -4,19 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d3134b4-a67d-4c46-80e3-654566a805b8" name="Changes" comment="feat: enhance matchmaking logic in `UserRepository` and add `GetUserMatchmakingQueryDTO`&#10;&#10;- Updated `SearchForClosestOpponent` to refine candidate selection based on win ratio differences.&#10;- Implemented a fallback `SearchForAnyOpponent` method for broader matchmaking.&#10;- Added `mapToUserMatchmakingQueryDTO` for structured matchmaking data mapping.&#10;- Introduced `GetUserMatchmakingQueryDTO` to support detailed matchmaking query responses.">
-      <change afterPath="$PROJECT_DIR$/tournament/src/Domain/QueryDTO/GetUserMatchmakingQueryDTO.ts" afterDir="false" />
+    <list default="true" id="6d3134b4-a67d-4c46-80e3-654566a805b8" name="Changes" comment="refactor: remove unused `GenerateMatchmakingQueryDTO` and `GenerateMatchmakingViewModel` classes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/Infrastructure/Persistence/Repositories/Concrete/UserRepository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/Infrastructure/Persistence/Repositories/Concrete/UserRepository.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournament/src/Application/DTO/ToCommand/GenerateMatchmakingDTO.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Application/DTO/ToCommand/GenerateMatchmakingDTO.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournament/src/Application/Services/Concrete/MatchmakingService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Application/Services/Concrete/MatchmakingService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournament/src/Domain/Queries/Handlers/GenerateMatchmakingQueryHandler.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Domain/Queries/Handlers/GenerateMatchmakingQueryHandler.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournament/src/Domain/Queries/QueryObject/GenerateMatchmakingQuery.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Domain/Queries/QueryObject/GenerateMatchmakingQuery.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournament/src/Domain/Queries/Validators/GenerateMatchmakingQueryValidator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Domain/Queries/Validators/GenerateMatchmakingQueryValidator.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournament/src/Domain/QueryDTO/GenerateMatchmakingQueryDTO.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournament/src/Infrastructure/Http/Concrete/BackendApiClient.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Infrastructure/Http/Concrete/BackendApiClient.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/prisma/db-trans.db" beforeDir="false" afterPath="$PROJECT_DIR$/backend/prisma/db-trans.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tournament/src/Presentation/Controllers/MatchmakingController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Presentation/Controllers/MatchmakingController.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tournament/src/Presentation/Routes/MatchmakingRoutes/MatchmakingRoutes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/Presentation/Routes/MatchmakingRoutes/MatchmakingRoutes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/src/index.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +46,7 @@
   }
 }</component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
@@ -63,33 +56,36 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Docker.tournament: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;HTTP Request.All in rest-api_10.executor&quot;: &quot;Run&quot;,
-    &quot;HTTP Request.http-requests-log | #1.executor&quot;: &quot;Run&quot;,
-    &quot;HTTP Request.http-requests-log | #7.executor&quot;: &quot;Run&quot;,
-    &quot;HTTP Request.rest-api_10 | #1.executor&quot;: &quot;Run&quot;,
-    &quot;HTTP Request.rest-api_9 | #1.executor&quot;: &quot;Run&quot;,
-    &quot;JavaScript Debug.127.0.0.1:8080.executor&quot;: &quot;Debug&quot;,
-    &quot;JavaScript Debug.127.0.0.1:8081.executor&quot;: &quot;Debug&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/new-tournament&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/bruno/Documents/42SP/42_transcendence/tournament/src/Application/Queries/Handlers&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;npm.build.executor&quot;: &quot;Run&quot;,
-    &quot;npm.clean:dist.executor&quot;: &quot;Run&quot;,
-    &quot;npm.start (1).executor&quot;: &quot;Run&quot;,
-    &quot;npm.start.executor&quot;: &quot;Debug&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/home/bruno/Documents/42SP/42_transcendence/backend/node_modules/typescript/lib&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Docker.tournament: Compose Deployment.executor": "Run",
+    "HTTP Request.All in rest-api_10.executor": "Run",
+    "HTTP Request.http-requests-log | #1.executor": "Run",
+    "HTTP Request.http-requests-log | #6.executor": "Run",
+    "HTTP Request.http-requests-log | #7.executor": "Run",
+    "HTTP Request.http-requests-log | #8.executor": "Run",
+    "HTTP Request.rest-api_10 | #1.executor": "Run",
+    "HTTP Request.rest-api_11 | #1.executor": "Run",
+    "HTTP Request.rest-api_9 | #1.executor": "Run",
+    "JavaScript Debug.127.0.0.1:8080.executor": "Debug",
+    "JavaScript Debug.127.0.0.1:8081.executor": "Debug",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "feature/new-tournament",
+    "junie.onboarding.icon.badge.shown": "true",
+    "last_opened_file_path": "/home/bruno/Documents/42SP/42_transcendence/tournament/src/Application/Queries/Handlers",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "npm.build.executor": "Run",
+    "npm.clean:dist.executor": "Run",
+    "npm.start (1).executor": "Run",
+    "npm.start.executor": "Debug",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "/home/bruno/Documents/42SP/42_transcendence/backend/node_modules/typescript/lib"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/tournament/src/Application/Queries/Handlers" />
@@ -107,13 +103,16 @@
     </key>
   </component>
   <component name="RunManager" selected="npm.start">
-    <configuration name="All in rest-api_10" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" path="$APPLICATION_CONFIG_DIR$/scratches/rest-api_10.http">
+    <configuration name="http-requests-log | #1" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/.idea/httpRequests/http-requests-log.http" executionIdentifier="#1" runType="Run single request">
       <method v="2" />
     </configuration>
-    <configuration name="http-requests-log | #7" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/.idea/httpRequests/http-requests-log.http" executionIdentifier="#7" index="7" runType="Run single request">
+    <configuration name="http-requests-log | #6" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/.idea/httpRequests/http-requests-log.http" executionIdentifier="#6" index="6" runType="Run single request">
       <method v="2" />
     </configuration>
-    <configuration name="rest-api_10 | #1" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/rest-api_10.http" executionIdentifier="#1" runType="Run single request">
+    <configuration name="http-requests-log | #8" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/.idea/httpRequests/http-requests-log.http" executionIdentifier="#8" index="8" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <configuration name="rest-api_11 | #1" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/rest-api_11.http" executionIdentifier="#1" runType="Run single request">
       <method v="2" />
     </configuration>
     <configuration name="127.0.0.1:8081" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://127.0.0.1:8081">
@@ -126,7 +125,7 @@
       <method v="2" />
     </configuration>
     <configuration name="start" type="js.build_tools.npm" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/package.json" />
+      <package-json value="$PROJECT_DIR$/tournament/package.json" />
       <command value="start" />
       <node-interpreter value="project" />
       <envs />
@@ -143,19 +142,20 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="HTTP Request.All in rest-api_10" />
-      <item itemvalue="HTTP Request.rest-api_10 | #1" />
-      <item itemvalue="HTTP Request.http-requests-log | #7" />
+      <item itemvalue="HTTP Request.http-requests-log | #1" />
+      <item itemvalue="HTTP Request.http-requests-log | #6" />
+      <item itemvalue="HTTP Request.http-requests-log | #8" />
+      <item itemvalue="HTTP Request.rest-api_11 | #1" />
       <item itemvalue="JavaScript Debug.127.0.0.1:8081" />
       <item itemvalue="npm.start" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="JavaScript Debug.127.0.0.1:8081" />
-        <item itemvalue="HTTP Request.rest-api_10 | #1" />
-        <item itemvalue="HTTP Request.All in rest-api_10" />
-        <item itemvalue="HTTP Request.http-requests-log | #7" />
-        <item itemvalue="npm.start" />
+        <item itemvalue="HTTP Request.rest-api_11 | #1" />
+        <item itemvalue="HTTP Request.http-requests-log | #8" />
+        <item itemvalue="HTTP Request.http-requests-log | #6" />
+        <item itemvalue="HTTP Request.http-requests-log | #1" />
       </list>
     </recent_temporary>
   </component>
@@ -191,47 +191,9 @@
       <workItem from="1752701419694" duration="8696000" />
       <workItem from="1752793555871" duration="8203000" />
       <workItem from="1752936359530" duration="928000" />
-      <workItem from="1752937299761" duration="2352000" />
-    </task>
-    <task id="LOCAL-00001" summary="refactor: Fix imports, update error handling, and add Dockerfile for tournament&#10;&#10;- Adjusted imports in `EditUserService.ts` for paths consistency.  &#10;- Updated error message key (`InvalidProfilePicExtension` to `InvalidExtension`) in `CreateUserCommandValidator.ts`.  &#10;- Added `Dockerfile` for tournament module to support containerization and deployment.">
-      <option name="closed" value="true" />
-      <created>1752335637646</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1752335637646</updated>
-    </task>
-    <task id="LOCAL-00002" summary="refactor: streamline `GetUserDTO` and related query handling, adjust imports&#10;&#10;- Removed unused properties from `GetUserDTO` and simplified constructor parameters.&#10;- Updated `GetUserQuery` to align with streamlined DTO structure.&#10;- Adjusted imports in `GoogleAuthHelpers` for consistency and added bcrypt support.">
-      <option name="closed" value="true" />
-      <created>1752335649337</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1752335649337</updated>
-    </task>
-    <task id="LOCAL-00003" summary="feat: add tournament module with Prisma schema, package.json setup, and import fixes&#10;&#10;- Introduced `tournament` module with `Prisma` schema setup for SQLite.&#10;- Added `package.json` for dependencies, scripts, and dev tools specific to the tournament.&#10;- Fixed incorrect import paths in `LoginUserService` and `LogoutUserService`.">
-      <option name="closed" value="true" />
-      <created>1752335658915</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1752335658915</updated>
-    </task>
-    <task id="LOCAL-00004" summary="refactor: simplify `/users/me` route and clean up User-related entities&#10;&#10;- Optimized `/users/me` route handling by integrating `GetUser` method and removing redundant logic.&#10;- Removed unused `crypto` import from `User` entity.&#10;- Adjusted formatting for consistency in `UserRepository` methods.&#10;- Streamlined `GetUserDTO` initialization in `UserController`.">
-      <option name="closed" value="true" />
-      <created>1752335670656</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1752335670656</updated>
-    </task>
-    <task id="LOCAL-00005" summary="refactor: update `UserSessionRoutes`, DTO structure, and imports for consistency&#10;&#10;- Replaced redundant body typing with `UserSessionDTO` in `UserSessionRoutes`.&#10;- Updated `UserSessionController` methods to use DTOs and simplified notification handling.&#10;- Removed unused imports and fixed import paths for `LoginUserService` and `LogoutUserService`.&#10;- Adjusted IDE configuration sync and resolved minor formatting issues in `.idea/workspace.xml`.">
-      <option name="closed" value="true" />
-      <created>1752335679890</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1752335679890</updated>
+      <workItem from="1752937299761" duration="2991000" />
+      <workItem from="1752944155456" duration="34000" />
+      <workItem from="1752945751687" duration="1371000" />
     </task>
     <task id="LOCAL-00006" summary="feat: add shared utilities, custom error handling, and validation for tournament module&#10;&#10;- Introduced `CustomError` class for standardized error handling and messages.&#10;- Added `NotificationError` and `ValidationException` classes to manage grouped and validation-specific errors.&#10;- Created `Result` utility for success/failure operations with optional data handling.&#10;- Included `fs.rmdir.ts` utility to clear the `dist` folder during build processes.&#10;- Added placeholder `ErrorCatalog` for future error definitions.">
       <option name="closed" value="true" />
@@ -585,7 +547,47 @@
       <option name="project" value="LOCAL" />
       <updated>1752937454715</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="feat: update matchmaking DTOs and queries to support total games and username&#10;&#10;- Replaced `uuid` with `username` in `GenerateMatchmakingDTO` and `GenerateMatchmakingQuery`.&#10;- Added `totalGames` property to DTOs and queries for enhanced matchmaking logic.&#10;- Updated `BackendApiClient` with new methods for user verification and opponent search.&#10;- Added `NegativeValues` error to `ErrorCatalog` for input validation.">
+      <option name="closed" value="true" />
+      <created>1752940167757</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1752940167758</updated>
+    </task>
+    <task id="LOCAL-00051" summary="refactor: replace `HistoryRepository` with `BackendApiClient` in `GenerateMatchmakingQueryHandler` and update validation&#10;&#10;- Updated `Handler` to use `BackendApiClient` for opponent search and user validation.&#10;- Extended input validation to include `totalGames` check.&#10;- Replaced `uuid` with `username` in user validation and opponent search methods.">
+      <option name="closed" value="true" />
+      <created>1752940175279</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1752940175279</updated>
+    </task>
+    <task id="LOCAL-00052" summary="refactor: replace `HistoryRepository` with `BackendApiClient` in `GenerateMatchmakingQueryHandler` and update validation&#10;&#10;- Updated `Handler` to use `BackendApiClient` for opponent search and user validation.&#10;- Extended input validation to include `totalGames` check.&#10;- Replaced `uuid` with `username` in user validation and opponent search methods.">
+      <option name="closed" value="true" />
+      <created>1752940184527</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1752940184527</updated>
+    </task>
+    <task id="LOCAL-00053" summary="refactor: simplify `SearchForClosestOpponent` and enhance `MatchmakingService`&#10;&#10;- Removed unnecessary `paremterLoses` parameter from `SearchForClosestOpponent`.&#10;- Refactored `MatchmakingService` to include enhanced query validation and error handling.&#10;- Updated `Generate` method to return detailed matchmaking results using `GetUserMatchmakingViewModel`.">
+      <option name="closed" value="true" />
+      <created>1752940200698</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1752940200698</updated>
+    </task>
+    <task id="LOCAL-00054" summary="refactor: remove unused `GenerateMatchmakingQueryDTO` and `GenerateMatchmakingViewModel` classes">
+      <option name="closed" value="true" />
+      <created>1752940252028</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1752940252028</updated>
+    </task>
+    <option name="localTasksCounter" value="55" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -603,11 +605,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="feat: add `InternalBackendApiError`, update `GetUserQuery` and related services&#10;&#10;- Introduced new error type `InternalBackendApiError` in `ErrorCatalog` for backend communication issues.&#10;- Made `Email` and `Username` optional in `GetUserQuery` and adjusted its constructor for better flexibility.&#10;- Updated `GetUserService` to reflect changes in query and handle nullable fields seamlessly." />
-    <MESSAGE value="feat: add user existence verification via UUIDs endpoint&#10;&#10;- Introduced `/user/exists` GET route to verify user existence by UUIDs with input validation.&#10;- Added `VerifyIfUsersExistsByUuidsDTO` and `VerificationService` for handling new functionality.&#10;- Updated `UserRepository` with methods to validate user existence by UUID or username arrays." />
-    <MESSAGE value="feat: add `VerificationService`, `VerifyIfUsersExistsByUuidsDTO`, and update paths in tsconfig&#10;&#10;- Introduced `VerificationService` to handle user existence verification logic.&#10;- Added `VerifyIfUsersExistsByUuidsDTO` for querying user existence by UUIDs.&#10;- Updated TypeScript configuration paths to ensure proper module resolution." />
-    <MESSAGE value="refactor: relocate query/command handlers and update import statements&#10;&#10;- Moved `BaseHandlerQuery` and `BaseHandlerCommand` from `Application` to `Domain` layer.&#10;- Updated `NotificationError` imports to remove `.js` extensions for consistency." />
-    <MESSAGE value="feat: implement `CreateHistory` command handling with validation and repository integration&#10;&#10;- Added `CreateHistoryCommandHandler` for processing `CreateHistoryCommand`.&#10;- Introduced `CreateHistoryDTO` and related `fromDTO` conversion method.&#10;- Created `CreateHistoryValidator` to validate command inputs and ensure user existence via `BackendApiClient`.&#10;- Updated relevant import paths and repository logic for new functionality." />
     <MESSAGE value="refactor: relocate tournament commands/handlers/validators to `Domain` layer and update imports  &#10;&#10;- Moved `CreateTournamentValidator`, `DeleteTournamentCommand`, `CreateTournamentCommand`, and related handlers to the `Domain` layer.  &#10;- Updated import paths throughout the affected files for consistency.  &#10;- Adjusted error handling in `CreateTournamentValidator` to use `InternalBackendApiErrorVerifyUserExists`." />
     <MESSAGE value="refactor: relocate `EditTournament` and `DeleteTournament` commands/handlers/validators to `Domain` layer&#10;&#10;- Moved `EditTournamentCommand`, `EditTournamentCommandHandler`, `EditTournamentCommandValidator`, `DeleteTournamentCommand`, `DeleteUserCommandValidator`, and their handlers to the `Domain` layer.&#10;- Updated import paths across affected files for consistency and alignment with project structure." />
     <MESSAGE value="feat: add new errors to `ErrorCatalog` and enhance `GetAllTournamentQueryHandler`&#10;&#10;- Added `InvalidNumberOfParticipantsHistory` and `HistoryNotFound` errors in `ErrorCatalog`.&#10;- Updated `InternalBackendApiError` message for `verifyUserExists` endpoint.&#10;- Introduced `GetAllHistoryDTO` for handling username-based query logic.&#10;- Adjusted import paths in `GetAllTournamentQueryHandler` for consistency." />
@@ -628,7 +625,12 @@
     <MESSAGE value="chore: add missing newline and leave TODO for additional validators&#10;&#10;- Fixed missing newline in `GenerateMatchmakingQueryValidator.ts`.&#10;- Added a TODO placeholder to include validators for additional getters." />
     <MESSAGE value="chore: add TODO placeholders for unimplemented methods in `BackendApiClient`" />
     <MESSAGE value="feat: enhance matchmaking logic in `UserRepository` and add `GetUserMatchmakingQueryDTO`&#10;&#10;- Updated `SearchForClosestOpponent` to refine candidate selection based on win ratio differences.&#10;- Implemented a fallback `SearchForAnyOpponent` method for broader matchmaking.&#10;- Added `mapToUserMatchmakingQueryDTO` for structured matchmaking data mapping.&#10;- Introduced `GetUserMatchmakingQueryDTO` to support detailed matchmaking query responses." />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: enhance matchmaking logic in `UserRepository` and add `GetUserMatchmakingQueryDTO`&#10;&#10;- Updated `SearchForClosestOpponent` to refine candidate selection based on win ratio differences.&#10;- Implemented a fallback `SearchForAnyOpponent` method for broader matchmaking.&#10;- Added `mapToUserMatchmakingQueryDTO` for structured matchmaking data mapping.&#10;- Introduced `GetUserMatchmakingQueryDTO` to support detailed matchmaking query responses." />
+    <MESSAGE value="feat: update matchmaking DTOs and queries to support total games and username&#10;&#10;- Replaced `uuid` with `username` in `GenerateMatchmakingDTO` and `GenerateMatchmakingQuery`.&#10;- Added `totalGames` property to DTOs and queries for enhanced matchmaking logic.&#10;- Updated `BackendApiClient` with new methods for user verification and opponent search.&#10;- Added `NegativeValues` error to `ErrorCatalog` for input validation." />
+    <MESSAGE value="refactor: replace `HistoryRepository` with `BackendApiClient` in `GenerateMatchmakingQueryHandler` and update validation&#10;&#10;- Updated `Handler` to use `BackendApiClient` for opponent search and user validation.&#10;- Extended input validation to include `totalGames` check.&#10;- Replaced `uuid` with `username` in user validation and opponent search methods." />
+    <MESSAGE value="refactor: update `UserRepository` and `MatchmakingService` for improved matchmaking logic&#10;&#10;- Removed unnecessary `parameterLoses` from `SearchForClosestOpponent`" />
+    <MESSAGE value="refactor: simplify `SearchForClosestOpponent` and enhance `MatchmakingService`&#10;&#10;- Removed unnecessary `paremterLoses` parameter from `SearchForClosestOpponent`.&#10;- Refactored `MatchmakingService` to include enhanced query validation and error handling.&#10;- Updated `Generate` method to return detailed matchmaking results using `GetUserMatchmakingViewModel`." />
+    <MESSAGE value="refactor: remove unused `GenerateMatchmakingQueryDTO` and `GenerateMatchmakingViewModel` classes" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor: remove unused `GenerateMatchmakingQueryDTO` and `GenerateMatchmakingViewModel` classes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -657,6 +659,18 @@
           <url>file://$PROJECT_DIR$/tournament/src/Presentation/Routes/HistoryRoutes/HistoryRoutes.ts</url>
           <line>22</line>
           <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/tournament/dist/Application/Services/Concrete/MatchmakingService.js</url>
+          <line>23</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/tournament/src/Application/Services/Concrete/MatchmakingService.ts</url>
+          <line>31</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="11" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

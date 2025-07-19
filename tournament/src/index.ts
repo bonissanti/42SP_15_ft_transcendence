@@ -5,6 +5,8 @@ import {TournamentRoutes} from "./Presentation/Routes/TournamentRoutes/Tournamen
 import {TournamentController} from "./Presentation/Controllers/TournamentController";
 import {HistoryController} from "./Presentation/Controllers/HistoryController";
 import {HistoryRoutes} from "./Presentation/Routes/HistoryRoutes/HistoryRoutes";
+import {MatchmakingController} from "./Presentation/Controllers/MatchmakingController";
+import {MatchmakingRoutes} from "./Presentation/Routes/MatchmakingRoutes/MatchmakingRoutes";
 
 const server = fastify();
 
@@ -16,9 +18,11 @@ async function main()
 {
     const tournamentController = new TournamentController();
     const historyController = new HistoryController();
+    const matchmakingController = new MatchmakingController();
 
     await TournamentRoutes(server, tournamentController);
     await HistoryRoutes(server, historyController);
+    await MatchmakingRoutes(server, matchmakingController);
 
     server.setErrorHandler((async (error, request, reply) => {
         console.log("Error: ", error);

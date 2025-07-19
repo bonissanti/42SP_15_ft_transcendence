@@ -16,10 +16,10 @@ export class MatchmakingController extends BaseController
         this.matchMakingService = new MatchmakingService(this.notificationError);
     }
 
-    public async GenerateMatchmaking(request: FastifyRequest<{ Body: GenerateMatchmakingDTO }>, reply: FastifyReply)
+    public async GenerateMatchmaking(request: FastifyRequest<{ Querystring: GenerateMatchmakingDTO }>, reply: FastifyReply)
     {
-        const body = request.body;
-        const dto: GenerateMatchmakingDTO = new GenerateMatchmakingDTO(body.username, body.wins, body.totalGames);
+        const query = request.query;
+        const dto: GenerateMatchmakingDTO = new GenerateMatchmakingDTO(query.username, query.wins, query.totalGames);
         const result = await this.matchMakingService.Generate(dto, reply);
         return this.handleResult(result, reply, this.notificationError);
     }
