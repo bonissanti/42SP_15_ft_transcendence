@@ -34,7 +34,7 @@ export class CreateUserCommandValidator implements BaseValidator<CreateUserComma
         }
 
         if (!this.CheckExtension(command.ProfilePic) && command.ProfilePic != null)
-            this.NotificationError.AddError(ErrorCatalog.InvalidProfilePicExtension);
+            this.NotificationError.AddError(ErrorCatalog.InvalidExtension);
 
         if (this.NotificationError.NumberOfErrors() > 0){
             const allErrors : CustomError[] = this.NotificationError.GetAllErrors();

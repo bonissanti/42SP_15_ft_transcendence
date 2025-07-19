@@ -8,7 +8,7 @@ import {LogoutSessionCommandValidator} from "../../Command/Validators/LogoutSess
 import {ValidationException} from "../../../Shared/Errors/ValidationException.js";
 import {PrismaClientKnownRequestError} from "@prisma/client/runtime/library";
 import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog.js";
-import { Result } from "src/Shared/Utils/Result.js";
+import { Result } from "../../../Shared/Utils/Result.js";
 
 export class LogoutUserService implements BaseService<UserSessionDTO>
 {

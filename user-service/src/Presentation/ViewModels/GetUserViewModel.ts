@@ -11,7 +11,7 @@ export class GetUserViewModel
     public readonly loses: number | null;
 
 
-    constructor(uuid?: string, username?: string, email?: string, profilepic: string | null = null, matchesPlayed? : number, wins? : number, loses? : number)
+    constructor(uuid?: string, username?: string, email?: string, profilepic: string | null = null, matchesPlayed? : number | null, wins? : number | null, loses? : number | null)
     {
         this.Uuid = uuid ?? null;
         this.Username = username ?? null;
