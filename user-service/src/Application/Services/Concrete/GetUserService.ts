@@ -49,26 +49,21 @@ export class GetUserService implements BaseService<GetUserDTO, GetUserViewModel>
             return Result.Failure(ErrorCatalog.InternalServerError.SetError());
         }
     }
-<<<<<<< HEAD
-  }
 
-  public async GetAllUsers(): Promise<Result<GetUserViewModel[]>> {
-    try {
-      const getUserQueryDTOs: GetUserQueryDTO[] = await this.GetUserQueryHandler.GetAll();
-      const getUserViewModels: GetUserViewModel[] = getUserQueryDTOs.map(dto => GetUserViewModel.FromQueryDTO(dto));
-      
-      return Result.SucessWithData<GetUserViewModel[]>("Users found", getUserViewModels);
-    } catch (error) {
-      if (error instanceof ValidationException) {
-        const message: string = error.SetErrors();
-        return Result.Failure<GetUserViewModel[]>(message);
-      } else if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        return Result.Failure(ErrorCatalog.DatabaseViolated.SetError());
-      }
-      return Result.Failure(ErrorCatalog.InternalServerError.SetError());
+    public async GetAllUsers(): Promise<Result<GetUserViewModel[]>> {
+        try {
+          const getUserQueryDTOs: GetUserQueryDTO[] = await this.GetUserQueryHandler.GetAll();
+          const getUserViewModels: GetUserViewModel[] = getUserQueryDTOs.map(dto => GetUserViewModel.FromQueryDTO(dto));
+          
+          return Result.SucessWithData<GetUserViewModel[]>("Users found", getUserViewModels);
+        } catch (error) {
+          if (error instanceof ValidationException) {
+            const message: string = error.SetErrors();
+            return Result.Failure<GetUserViewModel[]>(message);
+          } else if (error instanceof Prisma.PrismaClientKnownRequestError) {
+            return Result.Failure(ErrorCatalog.DatabaseViolated.SetError());
+          }
+          return Result.Failure(ErrorCatalog.InternalServerError.SetError());
+        }
     }
-  }
 }
-=======
-}
->>>>>>> 5e8138dd314895855a87802351c8f5750698a22b
