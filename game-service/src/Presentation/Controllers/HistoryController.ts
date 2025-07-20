@@ -25,7 +25,11 @@ export class HistoryController extends BaseController
             body.player1Username,
             body.player1Points,
             body.player2Username,
-            body.player2Points)
+            body.player2Points,
+            body.player3Username,
+            body.player3Points,
+            body.player4Username,
+            body.player4Points)
 
         const result = await this.historyService.Create(createHistoryDTO, reply);
         return this.handleResult(result, reply, this.notificationError);
