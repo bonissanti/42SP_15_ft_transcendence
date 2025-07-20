@@ -23,7 +23,13 @@ export class EditUserCommandHandler implements BaseHandlerCommand<EditUserComman
 
     private async ChangeFields(user: User | null, command: EditUserCommand): Promise<void>
     {
-        const emailVO = EmailVO.AddEmail(command.Email);
+        let emailVO: EmailVO;
+
+        if (command.Anonymous)
+            emailVO = await EmailVO.AddEmailWithHash(command.Email);
+        else
+            emailVO = EmailVO.AddEmail(command.Email);
+
         const passwordHashVO = await PasswordHashVO.Create(command.Password);
 
        user?.ChangeEmail(emailVO);

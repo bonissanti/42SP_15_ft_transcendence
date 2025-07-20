@@ -49,7 +49,7 @@ export class UserController extends BaseController {
 
     public async EditUser(request: FastifyRequest<{ Body: EditUserDTO }>, reply: FastifyReply): Promise<Result> {
         const body = request.body;
-        const userDTO: EditUserDTO = new EditUserDTO(body.uuid, body.email, body.password, body.username, body.profilePic);
+        const userDTO: EditUserDTO = new EditUserDTO(body.uuid, body.email, body.password, body.username, body.anonymous, body.profilePic);
         const result: Result = await this.editUserService.Execute(userDTO, reply);
         return this.handleResult(result, reply, this.notificationError);
     }
