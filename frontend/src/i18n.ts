@@ -17,7 +17,7 @@ const translations = {
     backToMenu: 'Voltar ao Menu',
 
     // Jogo Pong
-    pongInstructions: 'P1: A/D | P2: ←/→ | P3: W/S | P4: ↑/↓',
+    pongInstructions: 'P1: W/S | P2: ↑/↓| P3: A/D | P4: ←/→',
 
     // Jogo RPS
     rpsTitle: 'Pedra, Papel & Tesoura',
@@ -60,7 +60,7 @@ const translations = {
     backToMenu: 'Back to Menu',
 
     // Pong Game
-    pongInstructions: 'P1: A/D | P2: ←/→ | P3: W/S | P4: ↑/↓',
+    pongInstructions: 'P1: W/S | P2: ↑/↓ | P3: A/D | P4: ←/→',
 
     // RPS Game
     rpsTitle: 'Rock, Paper & Scissors',
@@ -103,7 +103,7 @@ const translations = {
     backToMenu: 'Volver al menú',
 
     // Juego Pong
-    pongInstructions: 'P1: A/D | P2: ←/→ | P3: W/S | P4: ↑/↓',
+    pongInstructions: 'P1: W/S | P2: ↑/↓ | P3: A/D | P4: ←/→',
 
     // Juego RPS
     rpsTitle: 'Piedra, Papel y Tijeras',
@@ -146,7 +146,7 @@ const translations = {
     backToMenu: 'Retour au menu',
 
     // Jeu Pong
-    pongInstructions: 'J1 : A/D | J2 : ←/→ | J3 : W/S | J4 : ↑/↓',
+    pongInstructions: 'J1 : W/S | J2 : ↑/↓ | J3 : A/D | J4 : ←/→',
 
     // Jeu RPS
     rpsTitle: 'Pierre, Papier & Ciseaux',

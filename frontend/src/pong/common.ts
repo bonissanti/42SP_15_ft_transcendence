@@ -52,6 +52,23 @@ export function initSharedState(): boolean {
   if (!canvas) return false;
   ctx = canvas.getContext('2d')!;
 
+  if (!ball) {
+    ball = {
+      x: canvas.width / 2,
+      y: canvas.height / 2,
+      radius: BALL_RADIUS,
+      speedX: 5,
+      speedY: 0
+    };
+  }
+
+  if (paddles.length === 0) {
+    paddles = [
+      { x: 20, y: canvas.height / 2 - PADDLE_HEIGHT / 2, width: PADDLE_WIDTH, height: PADDLE_HEIGHT, score: 0 },
+      { x: canvas.width - 20 - PADDLE_WIDTH, y: canvas.height / 2 - PADDLE_HEIGHT / 2, width: PADDLE_WIDTH, height: PADDLE_HEIGHT, score: 0 }
+    ];
+  }
+
   document.addEventListener('keydown', keyDownHandler);
   document.addEventListener('keyup', keyUpHandler);
   return true;

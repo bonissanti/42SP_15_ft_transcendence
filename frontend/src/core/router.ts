@@ -81,7 +81,7 @@ export async function router() {
     } else {
       appContainer.innerHTML = await renderView(route.view);
       if (route.action) {
-        (route.action as Function)();
+        setTimeout(() => (route.action as Function)(), 1);
       }
     } 
 
