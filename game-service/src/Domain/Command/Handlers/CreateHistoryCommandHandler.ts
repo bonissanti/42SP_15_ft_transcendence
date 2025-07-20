@@ -4,6 +4,7 @@ import {NotificationError} from "../../../Shared/Errors/NotificationError";
 import {History} from "../../Entities/Concrete/History";
 import {HistoryRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/HistoryRepository";
 import {BackendApiClient} from "../../../Infrastructure/Http/Concrete/BackendApiClient";
+import {UpdateStatsExternalDTO} from "../../ExternalDTO/UpdateStatsExternalDTO";
 
 export class CreateHistoryCommandHandler implements BaseHandlerCommand<CreateHistoryCommand>
 {
@@ -23,16 +24,25 @@ export class CreateHistoryCommandHandler implements BaseHandlerCommand<CreateHis
             command.player1Username,
             command.player1Points,
             command.player2Username,
-            command.player2Points
+            command.player2Points,
+            command.player3Username,
+            command.player3Points,
+            command.player4Username,
+            command.player4Points
         );
 
-        await this.backendApiClient.AddWinLoseForUser(
+        const addStatsAfterMatch: UpdateStatsExternalDTO = new UpdateStatsExternalDTO(
             command.player1Username,
             command.player1Points,
             command.player2Username,
-            command.player2Points
-        )
+            command.player2Points,
+            command.player3Username,
+            command.player3Points,
+            command.player4Username,
+            command.player4Points
+        );
 
+        await this.backendApiClient.UpdateStatsForUsers(addStatsAfterMatch);
         await this.historyRepository.Create(historyEntity);
     }
 }
