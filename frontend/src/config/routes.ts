@@ -1,6 +1,7 @@
 import { initPongGame } from '../pong/game';
 import { initRpsGame } from '../rps/game';
 import { showProfile } from '../pages/profile';
+import { showWinner } from '../pages/winner';
 
 export const routes = [
   { path: '/login', view: 'login' },
@@ -12,4 +13,5 @@ export const routes = [
   { path: '/rps', view: 'rps', action: initRpsGame },
   { path: '/creators', view: 'creators' },
   { path: '/profile', view: 'profile', action: showProfile },
+  { path: '/winner', view: 'winner', action: showWinner },
 ];

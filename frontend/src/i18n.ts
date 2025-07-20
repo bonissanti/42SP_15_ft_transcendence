@@ -38,7 +38,11 @@ const translations = {
 
     // Página de Criadores
     creatorsTitle: 'Criadores',
-    creatorsText: 'Este projeto foi criado por...',    
+    creatorsText: 'Este projeto foi criado por...',
+
+    // Página de Vencedor
+    congratulations: 'Parabéns!',
+    youWon: 'você ganhou!',
   },
   'en': {
     // Main Menu
@@ -78,6 +82,10 @@ const translations = {
     // Creators Page
     creatorsTitle: 'Creators',
     creatorsText: 'This project was created by...',
+    
+    // Winner Page
+    congratulations: 'Congratulations!',
+    youWon: 'you won!',
   },
   'es': {
     // Menú Principal
@@ -117,6 +125,10 @@ const translations = {
     // Página de Creadores
     creatorsTitle: 'Creadores',
     creatorsText: 'Este proyecto fue creado por...',
+  
+    // Página de Ganador
+    congratulations: '¡Felicidades!',
+    youWon: '¡has ganado!',
   },
   'fr': {
     // Menu Principal
@@ -156,6 +168,10 @@ const translations = {
     // Page des Créateurs
     creatorsTitle: 'Créateurs',
     creatorsText: 'Ce projet a été créé par...',
+
+    // Page du Gagnant
+    congratulations: 'Félicitations !',
+    youWon: 'vous avez gagné !',
   }
 };
 

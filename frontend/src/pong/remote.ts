@@ -8,17 +8,52 @@ import {
 let ws: WebSocket | null = null;
 let animationFrameId: number | null = null;
 
-async function getUserProfile(): Promise<{ username: string }> {
+async function getUserProfile(): Promise<{ username: string, profilePic: string }> {
   try {
     const response = await fetchWithAuth('/users/me');
     if (!response.ok) {
-      return { username: 'Anônimo' };
+      return { username: 'Anônimo', profilePic: 'https://placehold.co/128x128/000000/FFFFFF?text=User' };
     }
     const user = await response.json();
-    return { username: user.Username || 'Anônimo' };
+    return { 
+        username: user.Username || 'Anônimo',
+        profilePic: user.ProfilePic || 'https://placehold.co/128x128/000000/FFFFFF?text=User'
+    };
   } catch (error) {
-    return { username: 'Anônimo' };
+    return { username: 'Anônimo', profilePic: 'https://placehold.co/128x128/000000/FFFFFF?text=User' };
   }
+}
+
+function renderWaitingRoom(players: any[]) {
+    const waitingRoomDiv = document.getElementById('waiting-room')!;
+    const gameContainerDiv = document.getElementById('game-container')!;
+    const slotsDiv = document.getElementById('player-slots')!;
+    const waitingMessage = document.getElementById('waiting-message')!;
+
+    waitingRoomDiv.classList.remove('hidden');
+    gameContainerDiv.classList.add('hidden');
+    slotsDiv.innerHTML = '';
+
+    for (let i = 0; i < 4; i++) {
+        const player = players[i];
+        let slotHtml: string;
+        if (player) {
+            slotHtml = `
+                <div class="bg-slate-800 p-4 rounded-lg flex flex-col items-center justify-center border-2 border-white shadow-retro h-48 transition-all duration-300 transform hover:scale-105">
+                    <img src="${player.profilePic}" alt="Foto de ${player.username}" class="w-24 h-24 rounded-full mb-4 border-2 border-indigo-400">
+                    <p class="text-lg truncate">${player.username}</p>
+                </div>
+            `;
+        } else {
+            slotHtml = `
+                <div class="bg-slate-900 p-4 rounded-lg flex flex-col items-center justify-center border-2 border-dashed border-gray-600 h-48">
+                    <p class="text-lg text-gray-500">Aguardando...</p>
+                </div>
+            `;
+        }
+        slotsDiv.innerHTML += slotHtml;
+    }
+    waitingMessage.textContent = `Aguardando mais ${4 - players.length} jogador(es)...`
 }
 
 function updateRemote() {
@@ -45,7 +80,7 @@ function gameLoop() {
 export async function initRemoteGame() {
   if (!initSharedState()) return;
 
-  const { username } = await getUserProfile();
+  const { username, profilePic } = await getUserProfile();
   const token = localStorage.getItem('jwtToken');
   if (!token) {
     window.location.hash = '/login';
@@ -54,20 +89,24 @@ export async function initRemoteGame() {
   const payload = JSON.parse(atob(token.split('.')[1]));
   const userId = payload.uuid;
 
-  ws = new WebSocket(`ws://localhost:8081?userId=${userId}&username=${encodeURIComponent(username)}`);
+  ws = new WebSocket(`ws://localhost:8081?userId=${userId}&username=${encodeURIComponent(username)}&profilePic=${encodeURIComponent(profilePic)}`);
 
-  ws.onopen = () => console.log(`WebSocket conectado como ${username}. Aguardando oponentes...`);
+  ws.onopen = () => {
+      console.log(`WebSocket conectado como ${username}.`);
+      renderWaitingRoom([]);
+  };
 
   ws.onmessage = (event) => {
     const message = JSON.parse(event.data);
     switch (message.type) {
-      case 'waiting_for_opponent':
-        setIsWaiting(true);
-        draw();
+      case 'lobby_update':
+        renderWaitingRoom(message.players);
         break;
       case 'game_start':
+        document.getElementById('waiting-room')?.classList.add('hidden');
+        document.getElementById('game-container')?.classList.remove('hidden');
         setIsWaiting(false);
-        const playerNames = [message.opponents[0], message.opponents[1], message.opponents[2], username];
+        const playerNames = message.opponents;
         setPlayerNames(playerNames);
         if(message.paddles && message.ball){
           setPaddles(message.paddles);
@@ -80,9 +119,16 @@ export async function initRemoteGame() {
         setPaddles(message.paddles);
         break;
       case 'game_over':
-        alert(message.winner === message.playerNumber ? 'Você ganhou!' : `Jogador ${message.winner} ganhou!`);
         stopRemoteGame();
-        window.location.hash = '/';
+        if (message.winner) {
+          const { username, profilePic } = message.winner;
+          const path = `/winner?username=${encodeURIComponent(username)}&profilePic=${encodeURIComponent(profilePic)}`;
+          history.pushState({}, '', path);
+          window.dispatchEvent(new PopStateEvent('popstate'));
+        } else {
+            alert('O jogo terminou sem um vencedor claro.');
+            window.location.hash = '/';
+        }
         break;
       case 'opponent_disconnected':
         alert("Um oponente desconectou. O jogo terminou.");
@@ -98,10 +144,10 @@ export async function initRemoteGame() {
   };
 
   ws.onclose = () => {
-    if (animationFrameId) {
-      alert("A conexão com o servidor foi perdida.");
-      stopRemoteGame();
-      window.location.hash = '/';
+    if (animationFrameId === null) {
+        alert("A conexão com o servidor foi perdida ou não foi possível entrar no lobby.");
+        stopRemoteGame();
+        window.location.hash = '/';
     }
   };
 }
@@ -120,4 +166,9 @@ export function stopRemoteGame() {
     ws = null;
   }
   setIsWaiting(false);
+  
+  const waitingRoomDiv = document.getElementById('waiting-room');
+  const gameContainerDiv = document.getElementById('game-container');
+  if (waitingRoomDiv) waitingRoomDiv.classList.add('hidden');
+  if (gameContainerDiv) gameContainerDiv.classList.remove('hidden');
 }

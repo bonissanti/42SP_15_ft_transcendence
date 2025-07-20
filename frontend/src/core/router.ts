@@ -76,7 +76,7 @@ export async function router() {
   const route = routes.find(r => r.path === path);
 
   if (route) {
-    if (route.path === '/profile' && route.action) {
+    if ((route.path === '/profile' || route.path === '/winner') && route.action) {
       appContainer.innerHTML = await (route.action as Function)();
     } else {
       appContainer.innerHTML = await renderView(route.view);

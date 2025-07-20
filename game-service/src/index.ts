@@ -5,7 +5,7 @@ interface Paddle { x: number; y: number; width: number; height: number; score: n
 interface Ball { x: number; y: number; radius: number; speedX: number; speedY: number; }
 interface GameState { ball: Ball; paddles: Paddle[]; }
 interface PlayerInputs { [key: string]: boolean; }
-interface ClientData { ws: WebSocket; username: string; inputs: PlayerInputs; }
+interface ClientData { ws: WebSocket; username: string; inputs: PlayerInputs; id: string; profilePic: string; }
 interface Game {
   playerIds: string[];
   gameState: GameState;
@@ -22,9 +22,15 @@ const INITIAL_BALL_SPEED = 5;
 
 const clients = new Map<string, ClientData>();
 const games = new Map<string, Game>();
-const waitingPlayers: string[] = [];
+const lobby: ClientData[] = [];
 
 const wss = new WebSocketServer({ port: 8081 });
+
+function broadcastLobbyUpdate() {
+  const lobbyInfo = lobby.map(c => ({ id: c.id, username: c.username, profilePic: c.profilePic }));
+  const message = JSON.stringify({ type: 'lobby_update', players: lobbyInfo });
+  lobby.forEach(client => client.ws.send(message));
+}
 
 function createInitialGameState(): GameState {
   return {
@@ -69,16 +75,17 @@ function startGame(playerIds: string[]) {
 
     newGame.gameLoopInterval = setInterval(() => updateGame(gameId), 1000 / 60);
 
+    const playerInfos = playerIds.map(id => clients.get(id)!);
+    const usernames = playerInfos.map(p => p.username);
+
     playerIds.forEach((playerId, index) => {
         const client = clients.get(playerId);
         if (client) {
-            const opponentUsernames = playerIds.filter(id => id !== playerId).map(id => clients.get(id)?.username || 'Anônimo');
-            client.ws.send(JSON.stringify({ type: 'game_start', gameId, opponents: opponentUsernames, playerNumber: index + 1 }));
+            client.ws.send(JSON.stringify({ type: 'game_start', gameId, opponents: usernames, playerNumber: index + 1 }));
         }
     });
     console.log(`Jogo iniciado entre 4 jogadores. GameId: ${gameId}`);
 }
-
 function updateGame(gameId: string) {
     const game = games.get(gameId);
     if (!game) return;
@@ -173,21 +180,26 @@ function updateGame(gameId: string) {
     const activePlayers = paddles.filter(p => !p.lost);
     if (activePlayers.length <= 1) {
         const winnerIndex = paddles.findIndex(p => !p.lost);
-        const winner = winnerIndex !== -1 ? winnerIndex + 1 : 0;
-        playerClients.forEach((client, index) => {
-            if(client) client.ws.send(JSON.stringify({ type: 'game_over', winner: winner, playerNumber: index + 1 }));
+        const winnerId = winnerIndex !== -1 ? playerIds[winnerIndex] : null;
+        const winnerClient = winnerId ? clients.get(winnerId) : null;
+        
+        const winnerData = winnerClient 
+            ? { id: winnerClient.id, username: winnerClient.username, profilePic: winnerClient.profilePic }
+            : null;
+
+        playerClients.forEach((client) => {
+            if(client) client.ws.send(JSON.stringify({ type: 'game_over', winner: winnerData }));
         });
         stopGame(gameId);
         return;
     }
+
 
     const updateMessage = JSON.stringify({ type: 'update', ...gameState });
     playerClients.forEach(client => {
         if (client && client.ws.readyState === WebSocket.OPEN) client.ws.send(updateMessage);
     });
 }
-
-
 function collides(b: Ball, p: Paddle): boolean {
     const p_top = p.y, p_bottom = p.y + p.height;
     const p_left = p.x, p_right = p.x + p.width;
@@ -212,6 +224,7 @@ wss.on('connection', (ws, req) => {
   const url = new URL(req.url!, `http://${req.headers.host}`);
   const userId = url.searchParams.get('userId');
   const username = url.searchParams.get('username') || 'Anônimo';
+  const profilePic = url.searchParams.get('profilePic') || 'https://placehold.co/128x128/000000/FFFFFF?text=User';
 
   if (!userId || clients.has(userId)) {
     ws.send(JSON.stringify({ type: 'error', message: 'ID de usuário inválido ou já conectado.' }));
@@ -220,15 +233,16 @@ wss.on('connection', (ws, req) => {
   }
 
   console.log(`Jogador ${username} (${userId}) conectado.`);
-  clients.set(userId, { ws, username, inputs: {} });
-  waitingPlayers.push(userId);
+  const clientData: ClientData = { ws, username, inputs: {}, id: userId, profilePic };
+  clients.set(userId, clientData);
+  lobby.push(clientData);
+  
+  broadcastLobbyUpdate();
 
-  if (waitingPlayers.length >= 4) {
-    const gamePlayers = waitingPlayers.splice(0, 4);
-    startGame(gamePlayers);
-  } else {
-    ws.send(JSON.stringify({ type: 'waiting_for_opponent' }));
-    console.log(`${username} (${userId}) está esperando por mais ${4 - waitingPlayers.length} oponentes.`);
+  if (lobby.length >= 4) {
+    const gamePlayers = lobby.splice(0, 4);
+    const playerIds = gamePlayers.map(p => p.id);
+    startGame(playerIds);
   }
 
   ws.on('message', (message) => {
@@ -244,8 +258,11 @@ wss.on('connection', (ws, req) => {
 
   ws.on('close', () => {
     console.log(`Jogador ${clients.get(userId)?.username} (${userId}) desconectado.`);
-    const waitingIndex = waitingPlayers.indexOf(userId);
-    if (waitingIndex > -1) waitingPlayers.splice(waitingIndex, 1);
+    const lobbyIndex = lobby.findIndex(c => c.id === userId);
+    if (lobbyIndex > -1) {
+        lobby.splice(lobbyIndex, 1);
+        broadcastLobbyUpdate();
+    }
     
     for (const [gameId, game] of games.entries()) {
         if (game.playerIds.includes(userId)) {
