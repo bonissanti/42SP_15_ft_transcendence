@@ -16,10 +16,16 @@ export class CreateUserCommandHandler implements BaseHandlerCommand<CreateUserCo
 
     async Handle(command: CreateUserCommand) : Promise<void>
     {
+        let emailVO: EmailVO;
+
         const passwordHashVO = await PasswordHashVO.Create(command.Password);
-        const emailVO = EmailVO.AddEmail(command.Email);
+
+        if (command.Annonymous)
+            emailVO = await EmailVO.AddEmailWithHash(command.Email);
+        else
+            emailVO = EmailVO.AddEmail(command.Email);
+
         const userEntity: User = new User(emailVO, passwordHashVO, command.Username, command.ProfilePic, command.LastLogin, 0, 0, 0);
-        
         await this.UserRepository.Create(userEntity);
     }
 }

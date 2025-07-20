@@ -42,7 +42,7 @@ export class UserController extends BaseController {
 
     public async CreateUser(request: FastifyRequest<{ Body: CreateUserDTO }>, reply: FastifyReply): Promise<Result> {
         const body = request.body;
-        const userDTO: CreateUserDTO = new CreateUserDTO(body.email, body.password, body.username, body.profilePic, body.lastLogin);
+        const userDTO: CreateUserDTO = new CreateUserDTO(body.email, body.password, body.username, body.annonymous, body.profilePic, body.lastLogin);
         const result: Result = await this.createUserService.Execute(userDTO, reply);
         return this.handleResult(result, reply, this.notificationError);
     }
