@@ -6,8 +6,8 @@ export class VerifyIfUsersExistsByUuidsQuery
     {
     }
 
-    public static FromDTO(dto: VerifyIfUsersExistsByUuidsDTO): VerifyIfUsersExistsByUuidsDTO
+    public static FromDTO(dto: VerifyIfUsersExistsByUuidsDTO): VerifyIfUsersExistsByUuidsQuery
     {
-        return new VerifyIfUsersExistsByUuidsDTO(dto.Uuids);
+        return new VerifyIfUsersExistsByUuidsQuery(dto.Uuids);
     }
 }
