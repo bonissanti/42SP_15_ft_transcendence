@@ -15,7 +15,7 @@ export class MatchmakingController extends BaseController
         this.notificationError = new NotificationError();
         this.matchMakingService = new MatchmakingService(this.notificationError);
     }
-
+    //[Não implementado no front]
     public async GenerateMatchmaking(request: FastifyRequest<{ Querystring: GenerateMatchmakingDTO }>, reply: FastifyReply)
     {
         const query = request.query;

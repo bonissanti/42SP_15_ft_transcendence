@@ -15,6 +15,8 @@ import {VerifyIfUsersExistsByUuidsDTO} from "../../Application/DTO/ToQuery/Verif
 import {UserService} from "../../Application/Services/Concrete/UserService.js";
 import {UpdateStatsDTO} from "../../Application/DTO/ToCommand/UpdateStatsDTO.js";
 import * as repl from "node:repl";
+import {VerifyIfUserExistsByUsernameDTO} from "../../Application/DTO/ToQuery/VerifyIfUserExistsByUsernameDTO.js";
+import {VerifyIfUsersExistsByUsernamesDTO} from "../../Application/DTO/ToQuery/VerifyIfUsersExistsByUsernamesDTO.js";
 
 export class UserController extends BaseController {
     private readonly notificationError: NotificationError;
@@ -68,10 +70,26 @@ export class UserController extends BaseController {
         return this.handleResult(result, reply, this.notificationError);
     }
 
-    public async VerifyIfUsersExists(request: FastifyRequest<{ Querystring: { uuids: (string | null)[] } }>, reply: FastifyReply): Promise<Result> {
+    public async VerifyIfUsersExistsByUuids(request: FastifyRequest<{ Querystring: { uuids: (string | null)[] } }>, reply: FastifyReply): Promise<Result> {
         const query = request.query;
         const usersDTO: VerifyIfUsersExistsByUuidsDTO = new VerifyIfUsersExistsByUuidsDTO(query.uuids);
         const result: Result<boolean> = await this.userService.VerifyIfUserExistsByUuidsService(usersDTO, reply);
+        return this.handleResult(result, reply, this.notificationError);
+    }
+
+    //Verifica se a lista de pessoas existem
+    public async VerifyIfUsersExistsByUsernames(request: FastifyRequest<{ Querystring: { usernames: (string | null)[] } }>, reply: FastifyReply): Promise<Result> {
+        const query = request.query;
+        const usersDTO: VerifyIfUsersExistsByUsernamesDTO = new VerifyIfUsersExistsByUsernamesDTO(query.usernames);
+        const result: Result<boolean> = await this.userService.VerifyIfUsersExistsByUsernamesService(usersDTO, reply);
+        return this.handleResult(result, reply, this.notificationError);
+    }
+
+    //Verifica se uma pessoa existe
+    public async VerifyIfUserExistsByUsername(request: FastifyRequest<{ Querystring: { username: string }}>, reply: FastifyReply): Promise<Result>{
+        const query = request.query;
+        const userDTO: VerifyIfUserExistsByUsernameDTO = new VerifyIfUserExistsByUsernameDTO(query.username);
+        const result: Result<boolean> = await this.userService.VerifyIfUserExistsByUsernameService(userDTO, reply);
         return this.handleResult(result, reply, this.notificationError);
     }
 
@@ -92,7 +110,16 @@ export class UserController extends BaseController {
     public async UpdateStats(request: FastifyRequest<{ Body: UpdateStatsDTO }>, reply: FastifyReply): Promise<Result>
     {
         const query = request.body;
-        const statsDTO: UpdateStatsDTO = new UpdateStatsDTO(query.player1Username, query.player1Points, query.player2Username, query.player2Points);
+        const statsDTO: UpdateStatsDTO = new UpdateStatsDTO(
+            query.player1Username,
+            query.player1Points,
+            query.player2Username,
+            query.player2Points,
+            query.player3Username,
+            query.player3Points,
+            query.player4Username,
+            query.player4Points,
+        );
         const result: Result<void> = await this.userService.UpdateStatsService(statsDTO, reply);
         return this.handleResult(result, reply, this.notificationError);
     }
