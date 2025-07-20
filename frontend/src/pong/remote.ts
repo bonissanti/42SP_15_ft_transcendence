@@ -1,39 +1,26 @@
+import { fetchWithAuth } from '../api/api';
 import {
   initSharedState, stopSharedState, draw, keys,
   setBall, setPlayer1, setPlayer2, setAnimationFrameId, setIsWaiting,
+  setPlayerNames
 } from './common';
 
 let ws: WebSocket | null = null;
-let opponentId: string | null = null;
 let animationFrameId: number | null = null;
 
-function showInvitePopup(inviterId: string, inviterUsername: string) {
-  const popup = document.createElement('div');
-  popup.className = 'invite-popup';
-  popup.innerHTML = `
-    <div class="popup-content">
-      <p>${inviterUsername} está te convidando para jogar!</p>
-      <button id="accept-invite">Aceitar</button>
-      <button id="reject-invite">Rejeitar</button>
-    </div>
-  `;
-  document.body.appendChild(popup);
-
-  document.getElementById('accept-invite')?.addEventListener('click', () => {
-    ws?.send(JSON.stringify({ type: 'accept_invite', inviterId }));
-    document.body.removeChild(popup);
-  });
-
-  document.getElementById('reject-invite')?.addEventListener('click', () => {
-    ws?.send(JSON.stringify({ type: 'reject_invite', inviterId }));
-    document.body.removeChild(popup);
-  });
-
-  setTimeout(() => {
-    if (document.body.contains(popup)) {
-      document.body.removeChild(popup);
+async function getUserProfile(): Promise<{ username: string }> {
+  try {
+    const response = await fetchWithAuth('/users/me');
+    if (!response.ok) {
+      console.error('Falha ao buscar dados do usuário, usando "Anônimo".');
+      return { username: 'Anônimo' };
     }
-  }, 10000);
+    const user = await response.json();
+    return { username: user.Username || 'Anônimo' };
+  } catch (error) {
+    console.error("Erro ao carregar perfil para o jogo:", error);
+    return { username: 'Anônimo' };
+  }
 }
 
 function updateRemote() {
@@ -57,37 +44,40 @@ function gameLoop() {
   setAnimationFrameId(animationFrameId);
 }
 
-export function initRemoteGame(_opponentId?: string) {
+export async function initRemoteGame() {
   if (!initSharedState()) return;
 
-  opponentId = _opponentId || null;
+  const { username } = await getUserProfile();
+
   const token = localStorage.getItem('jwtToken');
-  if (!token) return;
+  if (!token) {
+    console.error("Token JWT não encontrado.");
+    window.location.hash = '/login';
+    return;
+  }
   const payload = JSON.parse(atob(token.split('.')[1]));
   const userId = payload.uuid;
 
-  ws = new WebSocket(`ws://localhost:8081?userId=${userId}`);
+  ws = new WebSocket(`ws://localhost:8081?userId=${userId}&username=${encodeURIComponent(username)}`);
 
   ws.onopen = () => {
-    if (opponentId) {
-      ws?.send(JSON.stringify({ type: 'invite', opponentId }));
-      setIsWaiting(true);
-    }
+    console.log(`WebSocket conectado como ${username}. Aguardando oponente...`);
   };
 
   ws.onmessage = (event) => {
     const message = JSON.parse(event.data);
     switch (message.type) {
-      case 'invite_received':
-        showInvitePopup(message.inviterId, message.inviterUsername);
-        break;
-      case 'invite_rejected':
-        alert(`${message.inviteeUsername} recusou o convite.`);
-        stopRemoteGame();
-        window.location.hash = '/pong/remote-multiplayer';
+      case 'waiting_for_opponent':
+        setIsWaiting(true);
+        draw();
         break;
       case 'game_start':
         setIsWaiting(false);
+        if (message.playerNumber === 1) {
+          setPlayerNames(username, message.opponentUsername);
+        } else {
+          setPlayerNames(message.opponentUsername, username);
+        }
         gameLoop();
         break;
       case 'update':
@@ -100,6 +90,11 @@ export function initRemoteGame(_opponentId?: string) {
         stopRemoteGame();
         window.location.hash = '/';
         break;
+      case 'opponent_disconnected':
+        alert("Seu oponente desconectou. Você venceu por W.O.!");
+        stopRemoteGame();
+        window.location.hash = '/';
+        break;
       case 'error':
         alert(`Erro do servidor: ${message.message}`);
         stopRemoteGame();
@@ -109,9 +104,11 @@ export function initRemoteGame(_opponentId?: string) {
   };
 
   ws.onclose = () => {
-    alert("A conexão com o servidor foi perdida.");
-    stopRemoteGame();
-    window.location.hash = '/';
+    if (animationFrameId) {
+      alert("A conexão com o servidor foi perdida.");
+      stopRemoteGame();
+      window.location.hash = '/';
+    }
   };
 }
 
@@ -119,6 +116,7 @@ export function stopRemoteGame() {
   stopSharedState();
   if (animationFrameId) {
     cancelAnimationFrame(animationFrameId);
+    setAnimationFrameId(null);
     animationFrameId = null;
   }
   if (ws) {
@@ -127,4 +125,5 @@ export function stopRemoteGame() {
     ws.close();
     ws = null;
   }
+  setIsWaiting(false);
 }

@@ -36,13 +36,11 @@ export function logout() {
     navigator.sendBeacon(`${API_BASE_URL}/users/me/status`, JSON.stringify({ isOnline: false }));
   }
 
-  stopStatusListeners(); // Para os listeners de status
+  stopStatusListeners();
   localStorage.removeItem('jwtToken');
   updateProfileLink();
   navigateTo('/login');
 }
-
-
 
 async function handleGoogleCredentialResponse(response: any) {
   try {

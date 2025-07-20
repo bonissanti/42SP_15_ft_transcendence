@@ -19,6 +19,7 @@ const PADDLE_SPEED = 8, WIN_SCORE = 3;
 
 const clients = new Map<string, ClientData>();
 const games = new Map<string, Game>();
+let waitingPlayerId: string | null = null;
 
 const wss = new WebSocketServer({ port: 8081 });
 
@@ -37,6 +38,35 @@ function resetBall(gameState: GameState) {
   gameState.ball.speedY = (Math.random() * 6) - 3;
 }
 
+function startGame(player1Id: string, player2Id: string) {
+    const player1Client = clients.get(player1Id);
+    const player2Client = clients.get(player2Id);
+
+    if (player1Client && player2Client) {
+        const gameId = `${player1Id}-${player2Id}`;
+        const gameState = createInitialGameState();
+        resetBall(gameState);
+
+        const newGame: Game = {
+            player1Id,
+            player2Id,
+            gameState,
+            gameLoopInterval: null,
+        };
+        games.set(gameId, newGame);
+
+        newGame.gameLoopInterval = setInterval(() => updateGame(gameId), 1000 / 60);
+
+        player1Client.ws.send(JSON.stringify({ type: 'game_start', gameId, opponentUsername: player2Client.username, playerNumber: 1 }));
+        player2Client.ws.send(JSON.stringify({ type: 'game_start', gameId, opponentUsername: player1Client.username, playerNumber: 2 }));
+
+        console.log(`Jogo iniciado entre ${player1Client.username} e ${player2Client.username}. GameId: ${gameId}`);
+    } else {
+        console.error("Não foi possível iniciar o jogo: um ou ambos os jogadores não foram encontrados.");
+    }
+}
+
+
 function updateGame(gameId: string) {
   const game = games.get(gameId);
   if (!game) return;
@@ -48,7 +78,7 @@ function updateGame(gameId: string) {
   const player2Client = clients.get(player2Id);
 
   if (!player1Client || !player2Client) {
-    stopGame(gameId);
+    stopGame(gameId, player1Client ? player2Id : player1Id);
     return;
   }
 
@@ -102,15 +132,25 @@ function collides(b: Ball, p: Paddle): boolean {
   return p_left < b_right && p_right > b_left && p_top < b_bottom && p_bottom > b_top;
 }
 
-function stopGame(gameId: string) {
-  const game = games.get(gameId);
-  if (game && game.gameLoopInterval) {
-    clearInterval(game.gameLoopInterval);
-    game.gameLoopInterval = null;
-    games.delete(gameId);
-    console.log(`Jogo ${gameId} finalizado.`);
-  }
+function stopGame(gameId: string, disconnectedPlayerId?: string) {
+    const game = games.get(gameId);
+    if (game) {
+        if (game.gameLoopInterval) {
+            clearInterval(game.gameLoopInterval);
+            game.gameLoopInterval = null;
+        }
+
+        const remainingPlayerId = game.player1Id === disconnectedPlayerId ? game.player2Id : game.player1Id;
+        const remainingClient = clients.get(remainingPlayerId);
+        if (remainingClient && remainingClient.ws.readyState === WebSocket.OPEN) {
+            remainingClient.ws.send(JSON.stringify({ type: 'opponent_disconnected' }));
+        }
+
+        games.delete(gameId);
+        console.log(`Jogo ${gameId} finalizado.`);
+    }
 }
+
 
 wss.on('connection', (ws, req) => {
   const url = new URL(req.url!, `http://${req.headers.host}`);
@@ -126,25 +166,25 @@ wss.on('connection', (ws, req) => {
   console.log(`Jogador ${username} (${userId}) conectado.`);
   clients.set(userId, { ws, username, inputs: {} });
 
+  if (waitingPlayerId) {
+    const opponentId = waitingPlayerId;
+    waitingPlayerId = null;
+    console.log(`Pareando ${username} (${userId}) com ${clients.get(opponentId)?.username} (${opponentId})`);
+    startGame(opponentId, userId);
+  } else {
+    waitingPlayerId = userId;
+    ws.send(JSON.stringify({ type: 'waiting_for_opponent' }));
+    console.log(`${username} (${userId}) está esperando por um oponente.`);
+  }
+
   ws.on('message', (message) => {
     try {
       const data = JSON.parse(message.toString());
       const clientData = clients.get(userId);
       if (!clientData) return;
 
-      switch (data.type) {
-        case 'invite':
-          handleInvite(userId, data.opponentId);
-          break;
-        case 'accept_invite':
-          handleAcceptInvite(userId, data.inviterId);
-          break;
-        case 'reject_invite':
-          handleRejectInvite(userId, data.inviterId);
-          break;
-        case 'keys':
+      if (data.type === 'keys') {
           clientData.inputs = data.keys;
-          break;
       }
     } catch (e) {
       console.error("Mensagem inválida recebida: ", message.toString());
@@ -154,67 +194,19 @@ wss.on('connection', (ws, req) => {
   ws.on('close', () => {
     const clientData = clients.get(userId);
     console.log(`Jogador ${clientData?.username} (${userId}) desconectado.`);
+    
+    if (waitingPlayerId === userId) {
+        waitingPlayerId = null;
+        console.log("Jogador em espera desconectou. Fila limpa.");
+    }
+    
     for (const [gameId, game] of games.entries()) {
       if (game.player1Id === userId || game.player2Id === userId) {
-        stopGame(gameId);
+        stopGame(gameId, userId);
       }
     }
     clients.delete(userId);
   });
 });
 
-function handleInvite(inviterId: string, opponentId: string) {
-  const opponentClient = clients.get(opponentId);
-  const inviterClient = clients.get(inviterId);
-
-  if (opponentClient && inviterClient) {
-    opponentClient.ws.send(JSON.stringify({ 
-      type: 'invite_received', 
-      inviterId,
-      inviterUsername: inviterClient.username 
-    }));
-    console.log(`Convite enviado de ${inviterClient.username} para ${opponentClient.username}`);
-  } else {
-    inviterClient?.ws.send(JSON.stringify({ type: 'error', message: 'Oponente não está online.' }));
-  }
-}
-
-function handleAcceptInvite(inviteeId: string, inviterId: string) {
-  const inviterClient = clients.get(inviterId);
-  const inviteeClient = clients.get(inviteeId);
-
-  if (inviterClient && inviteeClient) {
-    const gameId = `${inviterId}-${inviteeId}`;
-    const gameState = createInitialGameState();
-    resetBall(gameState);
-
-    const newGame: Game = {
-      player1Id: inviterId,
-      player2Id: inviteeId,
-      gameState,
-      gameLoopInterval: null,
-    };
-    games.set(gameId, newGame);
-
-    newGame.gameLoopInterval = setInterval(() => updateGame(gameId), 1000 / 60);
-
-    inviterClient.ws.send(JSON.stringify({ type: 'game_start', gameId, opponentUsername: inviteeClient.username, playerNumber: 1 }));
-    inviteeClient.ws.send(JSON.stringify({ type: 'game_start', gameId, opponentUsername: inviterClient.username, playerNumber: 2 }));
-
-    console.log(`Jogo iniciado entre ${inviterClient.username} e ${inviteeClient.username}. GameId: ${gameId}`);
-  }
-}
-
-function handleRejectInvite(inviteeId: string, inviterId: string) {
-  const inviterClient = clients.get(inviterId);
-  const inviteeClient = clients.get(inviteeId);
-  if (inviterClient && inviteeClient) {
-    inviterClient.ws.send(JSON.stringify({ 
-      type: 'invite_rejected', 
-      inviteeId,
-      inviteeUsername: inviteeClient.username
-    }));
-  }
-}
-
-console.log('🚀 Game service rodando na porta 8081 e aguardando jogadores...');
+console.log('🚀 Game service (com matchmaking) rodando na porta 8081 e aguardando jogadores...');

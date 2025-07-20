@@ -83,7 +83,7 @@ export async function router() {
       if (route.action) {
         (route.action as Function)();
       }
-    }
+    } 
 
     if (route.view === 'login') {
       initializeGoogleButton();

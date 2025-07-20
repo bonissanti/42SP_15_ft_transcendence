@@ -16,6 +16,8 @@ let player1: Paddle;
 let player2: Paddle;
 let animationFrameId: number | null = null;
 let isWaiting = false;
+let player1Name = 'Player 1';
+let player2Name = 'Player 2';
 
 export const keys: { [key: string]: boolean } = {};
 
@@ -33,6 +35,11 @@ export const setIsWaiting = (waiting: boolean) => { isWaiting = waiting; };
 
 export function keyDownHandler(e: KeyboardEvent) { keys[e.key] = true; }
 export function keyUpHandler(e: KeyboardEvent) { keys[e.key] = false; }
+
+export function setPlayerNames(p1Name: string, p2Name: string) {
+    player1Name = p1Name;
+    player2Name = p2Name;
+}
 
 export function initSharedState(): boolean {
   canvas = document.getElementById('pongCanvas') as HTMLCanvasElement;
@@ -56,46 +63,45 @@ export function stopSharedState(): void {
   document.removeEventListener('keyup', keyUpHandler);
 }
 
-export function draw(): void {
-  if (!ctx) return;
+export function draw() {
+    const canvas = document.getElementById('pongCanvas') as HTMLCanvasElement;
+    if (!canvas) return;
+    const context = canvas.getContext('2d');
+    if (!context) return;
 
-  if (isWaiting) {
-    ctx.fillStyle = '#000';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#fff';
-    ctx.font = '24px "Press Start 2P"';
-    ctx.textAlign = 'center';
-    ctx.fillText('Aguardando oponente...', canvas.width / 2, canvas.height / 2);
-    ctx.textAlign = 'left';
-    return;
-  }
+    context.fillStyle = 'black';
+    context.fillRect(0, 0, canvas.width, canvas.height);
 
-  ctx.fillStyle = '#000';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+    if (isWaiting) {
+        context.fillStyle = 'white';
+        context.font = '30px Arial';
+        context.textAlign = 'center';
+        context.fillText('Aguardando um oponente...', canvas.width / 2, canvas.height / 2);
+        return;
+    }
 
-  ctx.strokeStyle = '#fff';
-  ctx.setLineDash([10, 10]);
-  ctx.beginPath();
-  ctx.moveTo(canvas.width / 2, 0);
-  ctx.lineTo(canvas.width / 2, canvas.height);
-  ctx.stroke();
-  ctx.setLineDash([]);
+    if (!player1 || !player2 || !ball) {
+        return;
+    }
 
-  ctx.fillStyle = '#fff';
-  ctx.font = '45px "Press Start 2P"';
-  if (player1 && player2) {
-    ctx.fillText(player1.score.toString(), canvas.width / 4, 60);
-    ctx.fillText(player2.score.toString(), 3 * canvas.width / 4, 60);
-    ctx.fillRect(player1.x, player1.y, player1.width, player1.height);
-    ctx.fillRect(player2.x, player2.y, player2.width, player2.height);
-  }
+    context.fillStyle = 'white';
+    context.font = '20px Arial';
+    context.textAlign = 'center';
+    context.fillText(player1Name, canvas.width / 4, 30);
+    context.fillText(player2Name, (canvas.width / 4) * 3, 30);
+    context.font = '40px Arial';
+    context.fillText(player1.score.toString(), canvas.width / 4, 80);
+    context.fillText(player2.score.toString(), (canvas.width / 4) * 3, 80);
 
-  if (ball) {
-    ctx.beginPath();
-    ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
-    ctx.fill();
-  }
+    context.fillStyle = 'white';
+    context.fillRect(player1.x, player1.y, player1.width, player1.height);
+    context.fillRect(player2.x, player2.y, player2.width, player2.height);
+
+    context.beginPath();
+    context.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+    context.fill();
 }
+
 
 export function collides(b: Ball, p: Paddle): boolean {
   return b.x - b.radius < p.x + p.width && b.x + b.radius > p.x &&
