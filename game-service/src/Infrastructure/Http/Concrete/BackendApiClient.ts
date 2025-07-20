@@ -13,12 +13,12 @@ export class BackendApiClient implements IBackendApiClient
         this.baseUrl = process.env.BACKEND_API_URL || 'http://127.0.0.1:8080';
     }
 
-    public async VerifyIfUsersExists(uuids: (string | null)[]) : Promise<boolean>
+    public async VerifyIfUsersExistsByUsername(usernames: (string | null)[]) : Promise<boolean>
     {
         try
         {
-            const response = await axios.get(`${this.baseUrl}/users/exists/`, {
-                params: { uuids: uuids }
+            const response = await axios.get(`${this.baseUrl}/users/exists/usernames`, {
+                params: { usernames: usernames }
             });
 
             return response.status === 200;
@@ -32,8 +32,8 @@ export class BackendApiClient implements IBackendApiClient
         }
     }
 
-    //Não implementado
-    public async VerifyIfUserExists(uuid: string): Promise<boolean>
+
+    public async VerifyIfUserExistsByUuid(uuid: string): Promise<boolean>
     {
         try
         {
@@ -52,7 +52,6 @@ export class BackendApiClient implements IBackendApiClient
         }
     }
 
-    //TODO: implementar
     public async VerifyIfUserExistsByUsername(username: string): Promise<boolean>
     {
         try

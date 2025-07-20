@@ -16,10 +16,10 @@ export class CreateTournamentCommandHandler implements BaseHandlerCommand<Create
     {
         const tournamentEntity: Tournament = new Tournament(
             command.tournamentName,
-            command.player1Uuid,
-            command.player2Uuid,
-            command.player3Uuid,
-            command.player4Uuid
+            command.player1Username,
+            command.player2Username,
+            command.player3Username,
+            command.player4Username
         );
 
         await this.tournamentRepository.Create(tournamentEntity);
