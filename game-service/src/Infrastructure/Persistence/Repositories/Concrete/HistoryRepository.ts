@@ -42,12 +42,12 @@ export class HistoryRepository implements IBaseRepository<GetAllHistoriesQueryDT
         if (!historyData.length)
             throw new Error(ErrorCatalog.HistoryNotFound.SetError());
 
-        return historyData.map((history: History) => this.RecoverEntity(history));
+        return historyData.map((historyData) => this.RecoverEntity(historyData));
     }
 
-    private RecoverEntity(history: History): History {
+    private RecoverEntity(history: any): History {
         return new History(
-            history.tournamentName,
+            history.tournamentName ?? undefined,
             history.player1Username,
             history.player1Points,
             history.player2Username,
