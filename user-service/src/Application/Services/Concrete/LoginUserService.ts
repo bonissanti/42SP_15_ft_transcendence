@@ -1,16 +1,19 @@
 import {BaseService} from "../Interfaces/BaseService.js";
-import {UserSessionDTO} from "../../../Domain/DTO/Command/UserSessionDTO.js";
-import {LoginSessionCommandHandler} from "../../Command/Handlers/LoginSessionCommandHandler.js";
-import {LoginSessionCommandValidator} from "../../Command/Validators/LoginSessionCommandValidator.js";
+import {UserSessionDTO} from "../../DTO/Command/UserSessionDTO.js";
+import {LoginSessionCommandHandler} from "../../../Domain/Command/Handlers/LoginSessionCommandHandler.js";
+import {LoginSessionCommandValidator} from "../../../Domain/Command/Validators/LoginSessionCommandValidator.js";
 import {UserRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/UserRepository.js";
 import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
-import {UserSessionCommand} from "../../Command/CommandObject/UserSessionCommand.js";
+import {UserSessionCommand} from "../../../Domain/Command/CommandObject/UserSessionCommand.js";
 import {ValidationException} from "../../../Shared/Errors/ValidationException.js";
 import {PrismaClientKnownRequestError} from "@prisma/client/runtime/library";
 import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog.js";
 import { Result } from "../../../Shared/Utils/Result.js";
+import {FastifyRequest} from "fastify";
+import {User} from "../../../Domain/Entities/Concrete/User.js";
+import {LoginUserViewModel} from "../../ViewModels/LoginUserViewModel.js";
 
-export class LoginUserService  implements BaseService<UserSessionDTO>
+export class LoginUserService  implements BaseService<UserSessionDTO, LoginUserViewModel>
 {
     private readonly UserRepository: UserRepository;
     private readonly LoginUserHandler: LoginSessionCommandHandler;
@@ -23,31 +26,50 @@ export class LoginUserService  implements BaseService<UserSessionDTO>
         this.LoginUserHandler = new LoginSessionCommandHandler(this.UserRepository, notification);
     }
 
-    public async Execute(dto: UserSessionDTO) : Promise<Result<void>>
+    public Execute(): Promise<Result<LoginUserViewModel>>
+    {
+        throw new Error("Method not implemented.");
+    }
+
+    public async Login(dto: UserSessionDTO, request: FastifyRequest) : Promise<Result<LoginUserViewModel>>
     {
         try
         {
             const command: UserSessionCommand = UserSessionCommand.FromDTO(dto);
             await this.LoginUserValidator.Validator(command);
             await this.LoginUserHandler.Handle(command);
+            const loginUserViewModel = this.GenerateToken(request);
 
-            return Result.Sucess("User logged in successfully");
+            return Result.SucessWithData<LoginUserViewModel>("User logged in successfully", loginUserViewModel);
         }
         catch (error)
         {
             if (error instanceof ValidationException)
             {
                 const message: string = error.SetErrors();
-                return Result.Failure(message);
+                return Result.Failure<LoginUserViewModel>(message);
             }
             else if (error instanceof  PrismaClientKnownRequestError)
             {
                 if (error.code === 'P2002')
-                    return Result.Failure(ErrorCatalog.UsernameAlreadyExists.SetError());
+                    return Result.Failure<LoginUserViewModel>(ErrorCatalog.UsernameAlreadyExists.SetError());
 
-                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError());
+                return Result.Failure<LoginUserViewModel>(ErrorCatalog.DatabaseViolated.SetError());
             }
-            return Result.Failure(ErrorCatalog.InternalServerError.SetError());
+            return Result.Failure<LoginUserViewModel>(ErrorCatalog.InternalServerError.SetError());
         }
+    }
+
+    private GenerateToken(request: FastifyRequest<{ Body: UserSessionDTO }>)
+    {
+        const body = request.body;
+
+        const token = request.server.jwt.sign({
+            uuid: body.uuid,
+            username: body.username,
+            isAuthenticated: true,
+        }, { expiresIn: '1h' });
+
+        return new LoginUserViewModel(token);
     }
 }

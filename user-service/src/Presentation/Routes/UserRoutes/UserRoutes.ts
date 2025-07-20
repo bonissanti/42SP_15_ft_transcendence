@@ -1,9 +1,9 @@
 import {FastifyReply, FastifyRequest} from "fastify";
-import {CreateUserDTO} from "../../../Domain/DTO/Command/CreateUserDTO.js";
+import {CreateUserDTO} from "../../../Application/DTO/Command/CreateUserDTO.js";
 import {authenticateJWT} from "../../Middleware/AuthMiddleware.js";
-import {EditUserDTO} from "../../../Domain/DTO/Command/EditUserDTO.js";
-import {DeleteUserDTO} from "../../../Domain/DTO/Command/DeleteUserDTO.js";
-import {GetUserDTO} from "../../../Domain/DTO/Query/GetUserDTO.js";
+import {EditUserDTO} from "../../../Application/DTO/Command/EditUserDTO.js";
+import {DeleteUserDTO} from "../../../Application/DTO/Command/DeleteUserDTO.js";
+import {GetUserDTO} from "../../../Application/DTO/Query/GetUserDTO.js";
 import {UserController} from "../../Controllers/UserController.js";
 
 const opts = {
