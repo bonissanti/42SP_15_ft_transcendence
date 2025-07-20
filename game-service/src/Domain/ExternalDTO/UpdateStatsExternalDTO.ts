@@ -1,4 +1,4 @@
-export class UpdateStatsDTO
+export class UpdateStatsExternalDTO
 {
     public readonly player1Username: string;
     public readonly player1Points: number;

@@ -17,7 +17,11 @@ export class HistoryRepository implements IBaseRepository<GetAllHistoriesQueryDT
                 player1Username: entity.player1Username,
                 player1Points: entity.player1Points,
                 player2Username: entity.player2Username,
-                player2Points: entity.player2Points
+                player2Points: entity.player2Points,
+                player3Username: entity.player3Username,
+                player3Points: entity.player3Points,
+                player4Username: entity.player4Username,
+                player4Points: entity.player4Points,
             }
         });
     }
@@ -28,7 +32,9 @@ export class HistoryRepository implements IBaseRepository<GetAllHistoriesQueryDT
             where: username? {
                 OR: [
                     {player1Username: username},
-                    {player2Username: username}
+                    {player2Username: username},
+                    {player3Username: username},
+                    {player4Username: username},
                 ]
             } : {}
         });
@@ -39,15 +45,17 @@ export class HistoryRepository implements IBaseRepository<GetAllHistoriesQueryDT
         return historyData.map((history: History) => this.RecoverEntity(history));
     }
 
-
-
     private RecoverEntity(history: History): History {
         return new History(
             history.tournamentName,
             history.player1Username,
             history.player1Points,
             history.player2Username,
-            history.player2Points
+            history.player2Points,
+            history.player3Username,
+            history.player3Points,
+            history.player4Username,
+            history.player4Points
         );
     }
 

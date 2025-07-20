@@ -27,6 +27,10 @@ model History {
     player1Points   Int
     player2Username String
     player2Points   Int
+    player3Username String?
+    player3Points   Int?
+    player4Username String?
+    player4Points   Int?
     matchedAt       DateTime @default(now())
 
     @@map("history")
