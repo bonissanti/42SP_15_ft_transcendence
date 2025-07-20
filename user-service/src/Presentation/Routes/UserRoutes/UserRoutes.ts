@@ -42,6 +42,19 @@ const optsChecker = {
     }
 }
 
+const optsUsernamesChecker = {
+    schema: {
+        querystring: {
+            type: 'object',
+            properties: {
+                usernames: {type: 'array', items: {type: 'string'}},
+            },
+            required: ['usernames'],
+            additionalProperties: false,
+        }
+    }
+}
+
 const updateStatsOpts = {
     schema: {
         body: {
@@ -80,8 +93,16 @@ export const UserRoutes = async (server: any, userController: UserController) =>
         await userController.GetUser(request, reply);
     });
 
-    server.get('/users/exists', optsChecker, async (request: FastifyRequest<{ Querystring: { uuids: (string | null)[] }}>, reply: FastifyReply) => {
-        await userController.VerifyIfUsersExists(request, reply);
+    server.get('/users/exists/uuids', optsChecker, async (request: FastifyRequest<{ Querystring: { uuids: (string | null)[] }}>, reply: FastifyReply) => {
+        await userController.VerifyIfUsersExistsByUuids(request, reply);
+    })
+
+    server.get('/users/exists/usernames', optsUsernamesChecker, async (request: FastifyRequest<{ Querystring: { usernames: (string | null)[] }}>, reply: FastifyReply) => {
+        await userController.VerifyIfUsersExistsByUsernames(request, reply);
+    })
+
+    server.get('/users/exists/:username', { preHandler: authenticateJWT }, async (request: FastifyRequest <{ username: string }>, reply: FastifyReply) => {
+        await userController.VerifyIfUserExistsByUsername(request, reply);
     })
 
     server.get('/users/:uuid', userController.findOne.bind(userController));

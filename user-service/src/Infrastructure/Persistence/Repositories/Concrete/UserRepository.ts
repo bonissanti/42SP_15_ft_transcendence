@@ -126,10 +126,15 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
         return user !== null;
     }
 
-    public async VerifyIfUsersExistsByUsername(usernames: string[]): Promise<boolean> {
-        const users = await this.prisma.user.findMany({where: {username: {in: usernames}}});
+    public async VerifyIfUsersExistsByUsername(usernames: (string | null)[]): Promise<boolean> {
+        const validUsernames = usernames.filter(username => username != null || username !== '') as string[];
 
-        return users.length === usernames.length;
+        if (validUsernames.length === 0)
+            return false;
+
+        const users = await this.prisma.user.findMany({where: {username: {in: validUsernames}}});
+
+        return users.length === validUsernames.length;
     }
 
     public async SearchForClosestOpponent(username: string, paremeterWin: number, totalGames: number)
