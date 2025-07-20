@@ -68,7 +68,7 @@ export class UserController extends BaseController {
         return this.handleResult(result, reply, this.notificationError);
     }
 
-    public async VerifyIfUsersExists(request: FastifyRequest<{ Querystring: { uuids: string[] } }>, reply: FastifyReply): Promise<Result> {
+    public async VerifyIfUsersExists(request: FastifyRequest<{ Querystring: { uuids: (string | null)[] } }>, reply: FastifyReply): Promise<Result> {
         const query = request.query;
         const usersDTO: VerifyIfUsersExistsByUuidsDTO = new VerifyIfUsersExistsByUuidsDTO(query.uuids);
         const result: Result<boolean> = await this.userService.VerifyIfUserExistsByUuidsService(usersDTO, reply);

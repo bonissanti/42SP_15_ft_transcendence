@@ -108,10 +108,16 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
         return user !== null;
     }
 
-    public async VerifyIfUsersExistsByUUIDs(uuids: string[]): Promise<boolean> {
-        const users = await this.prisma.user.findMany({where: {uuid: {in: uuids}}});
+    public async VerifyIfUsersExistsByUUIDs(uuids: (string | null)[]): Promise<boolean>
+    {
+        const validUuids = uuids.filter(uuid => uuid != null || uuid !== '') as string[];
 
-        return users.length === uuids.length;
+        if (validUuids.length === 0)
+            return false;
+
+        const users = await this.prisma.user.findMany({where: {uuid: {in: validUuids}}});
+
+        return users.length === validUuids.length;
     }
 
     public async VerifyIfUserExistsByUsername(username: string): Promise<boolean> {

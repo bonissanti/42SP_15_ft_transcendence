@@ -42,6 +42,26 @@ const optsChecker = {
     }
 }
 
+const updateStatsOpts = {
+    schema: {
+        body: {
+            type: 'object',
+            properties: {
+                player1Username: { type: 'string' },
+                player1Points: { type: 'number' },
+                player2Username: { type: 'string' },
+                player2Points: { type: 'number' },
+                player3Username: { type: ['string', 'null'] },
+                player3Points: { type: ['number', 'null'] },
+                player4Username: { type: ['string', 'null'] },
+                player4Points: { type: ['number', 'null'] },
+            },
+            required: ['player1Username', 'player1Points', 'player2Username', 'player2Points'],
+            additionalProperties: false,
+        }
+    }
+}
+
 export const UserRoutes = async (server: any, userController: UserController) => {
     
     server.post('/user', opts, async (request: FastifyRequest<{ Body: CreateUserDTO }>, reply: FastifyReply) => {
@@ -60,7 +80,7 @@ export const UserRoutes = async (server: any, userController: UserController) =>
         await userController.GetUser(request, reply);
     });
 
-    server.get('/users/exists', optsChecker, async (request: FastifyRequest<{ Querystring: { uuids: string[] }}>, reply: FastifyReply) => {
+    server.get('/users/exists', optsChecker, async (request: FastifyRequest<{ Querystring: { uuids: (string | null)[] }}>, reply: FastifyReply) => {
         await userController.VerifyIfUsersExists(request, reply);
     })
 
@@ -73,7 +93,7 @@ export const UserRoutes = async (server: any, userController: UserController) =>
         await userController.GetUser(request, reply);
     });
 
-    server.put('/updateStats', { preHandler: authenticateJWT }, async (request: FastifyRequest <{ Body: UpdateStatsDTO }>,  reply: FastifyReply) => {
+    server.put('/updateStats', updateStatsOpts, async (request: FastifyRequest <{ Body: UpdateStatsDTO }>,  reply: FastifyReply) => {
         await userController.UpdateStats(request, reply);
     });
 }
