@@ -1,8 +1,8 @@
 import { fetchWithAuth } from '../api/api';
 import {
   initSharedState, stopSharedState, draw, keys,
-  setBall, setPlayer1, setPlayer2, setAnimationFrameId, setIsWaiting,
-  setPlayerNames
+  setBall, setPaddles, setAnimationFrameId, setIsWaiting,
+  setPlayerNames,
 } from './common';
 
 let ws: WebSocket | null = null;
@@ -12,13 +12,11 @@ async function getUserProfile(): Promise<{ username: string }> {
   try {
     const response = await fetchWithAuth('/users/me');
     if (!response.ok) {
-      console.error('Falha ao buscar dados do usuário, usando "Anônimo".');
       return { username: 'Anônimo' };
     }
     const user = await response.json();
     return { username: user.Username || 'Anônimo' };
   } catch (error) {
-    console.error("Erro ao carregar perfil para o jogo:", error);
     return { username: 'Anônimo' };
   }
 }
@@ -28,10 +26,10 @@ function updateRemote() {
     ws.send(JSON.stringify({
       type: 'keys',
       keys: {
-        'w': keys['w'],
-        's': keys['s'],
-        'ArrowUp': keys['ArrowUp'],
-        'ArrowDown': keys['ArrowDown']
+        'w': keys['w'], 's': keys['s'],
+        'a': keys['a'], 'd': keys['d'],
+        'ArrowUp': keys['ArrowUp'], 'ArrowDown': keys['ArrowDown'],
+        'ArrowLeft': keys['ArrowLeft'], 'ArrowRight': keys['ArrowRight']
       }
     }));
   }
@@ -48,10 +46,8 @@ export async function initRemoteGame() {
   if (!initSharedState()) return;
 
   const { username } = await getUserProfile();
-
   const token = localStorage.getItem('jwtToken');
   if (!token) {
-    console.error("Token JWT não encontrado.");
     window.location.hash = '/login';
     return;
   }
@@ -60,9 +56,7 @@ export async function initRemoteGame() {
 
   ws = new WebSocket(`ws://localhost:8081?userId=${userId}&username=${encodeURIComponent(username)}`);
 
-  ws.onopen = () => {
-    console.log(`WebSocket conectado como ${username}. Aguardando oponente...`);
-  };
+  ws.onopen = () => console.log(`WebSocket conectado como ${username}. Aguardando oponentes...`);
 
   ws.onmessage = (event) => {
     const message = JSON.parse(event.data);
@@ -73,25 +67,25 @@ export async function initRemoteGame() {
         break;
       case 'game_start':
         setIsWaiting(false);
-        if (message.playerNumber === 1) {
-          setPlayerNames(username, message.opponentUsername);
-        } else {
-          setPlayerNames(message.opponentUsername, username);
+        const playerNames = [message.opponents[0], message.opponents[1], message.opponents[2], username];
+        setPlayerNames(playerNames);
+        if(message.paddles && message.ball){
+          setPaddles(message.paddles);
+          setBall(message.ball);
         }
         gameLoop();
         break;
       case 'update':
         setBall(message.ball);
-        setPlayer1(message.player1);
-        setPlayer2(message.player2);
+        setPaddles(message.paddles);
         break;
       case 'game_over':
-        alert(message.winner === message.playerNumber ? 'Você ganhou!' : 'Você perdeu!');
+        alert(message.winner === message.playerNumber ? 'Você ganhou!' : `Jogador ${message.winner} ganhou!`);
         stopRemoteGame();
         window.location.hash = '/';
         break;
       case 'opponent_disconnected':
-        alert("Seu oponente desconectou. Você venceu por W.O.!");
+        alert("Um oponente desconectou. O jogo terminou.");
         stopRemoteGame();
         window.location.hash = '/';
         break;
