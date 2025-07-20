@@ -1,7 +1,6 @@
 import {BaseEntity} from "../Interface/BaseEntity.js";
 import {PasswordHashVO} from "../../ValueObjects/PasswordHashVO.js";
 import {EmailVO} from "../../ValueObjects/EmailVO.js";
-import crypto from 'crypto'
 
 export class User implements BaseEntity
 {

@@ -1,5 +1,14 @@
 import { WebSocketServer, WebSocket } from 'ws';
 import { URL } from 'url';
+import fastify from "fastify";
+import fastifyJwt from "@fastify/jwt";
+import prisma from "./Infrastructure/Service/PrismaService";
+import { TournamentRoutes } from "./Presentation/Routes/TournamentRoutes/TournamentRoutes";
+import { TournamentController } from "./Presentation/Controllers/TournamentController";
+import { HistoryController } from "./Presentation/Controllers/HistoryController";
+import { HistoryRoutes } from "./Presentation/Routes/HistoryRoutes/HistoryRoutes";
+import { MatchmakingController } from "./Presentation/Controllers/MatchmakingController";
+import { MatchmakingRoutes } from "./Presentation/Routes/MatchmakingRoutes/MatchmakingRoutes";
 
 interface Paddle { x: number; y: number; width: number; height: number; score: number; lost: boolean; }
 interface Ball { x: number; y: number; radius: number; speedX: number; speedY: number; }
@@ -24,8 +33,6 @@ const clients = new Map<string, ClientData>();
 const games = new Map<string, Game>();
 const lobby: ClientData[] = [];
 
-const wss = new WebSocketServer({ port: 8081 });
-
 function broadcastLobbyUpdate() {
   const lobbyInfo = lobby.map(c => ({ id: c.id, username: c.username, profilePic: c.profilePic }));
   const message = JSON.stringify({ type: 'lobby_update', players: lobbyInfo });
@@ -35,10 +42,10 @@ function broadcastLobbyUpdate() {
 function createInitialGameState(): GameState {
   return {
     paddles: [
-      { x: CANVAS_WIDTH / 2 - PADDLE_WIDTH / 2, y: 10, width: PADDLE_WIDTH, height: PADDLE_HEIGHT, score: 0, lost: false }, // Top
-      { x: CANVAS_WIDTH / 2 - PADDLE_WIDTH / 2, y: CANVAS_HEIGHT - PADDLE_HEIGHT - 10, width: PADDLE_WIDTH, height: PADDLE_HEIGHT, score: 0, lost: false }, // Bottom
-      { x: 10, y: CANVAS_HEIGHT / 2 - PADDLE_WIDTH / 2, width: PADDLE_HEIGHT, height: PADDLE_WIDTH, score: 0, lost: false }, // Left
-      { x: CANVAS_WIDTH - PADDLE_HEIGHT - 10, y: CANVAS_HEIGHT / 2 - PADDLE_WIDTH / 2, width: PADDLE_HEIGHT, height: PADDLE_WIDTH, score: 0, lost: false } // Right
+      { x: CANVAS_WIDTH / 2 - PADDLE_WIDTH / 2, y: 10, width: PADDLE_WIDTH, height: PADDLE_HEIGHT, score: 0, lost: false },
+      { x: CANVAS_WIDTH / 2 - PADDLE_WIDTH / 2, y: CANVAS_HEIGHT - PADDLE_HEIGHT - 10, width: PADDLE_WIDTH, height: PADDLE_HEIGHT, score: 0, lost: false },
+      { x: 10, y: CANVAS_HEIGHT / 2 - PADDLE_WIDTH / 2, width: PADDLE_HEIGHT, height: PADDLE_WIDTH, score: 0, lost: false },
+      { x: CANVAS_WIDTH - PADDLE_HEIGHT - 10, y: CANVAS_HEIGHT / 2 - PADDLE_WIDTH / 2, width: PADDLE_HEIGHT, height: PADDLE_WIDTH, score: 0, lost: false }
     ],
     ball: { x: CANVAS_WIDTH / 2, y: CANVAS_HEIGHT / 2, radius: BALL_RADIUS, speedX: 0, speedY: 0 },
   };
@@ -112,41 +119,41 @@ function updateGame(gameId: string) {
     ball.x += ball.speedX;
     ball.y += ball.speedY;
 
-  if (ball.y - ball.radius < 0) {
-    if (paddles[0].lost && collides(ball, paddles[0])) {
-      ball.speedY *= -1;
-      ball.y = paddles[0].y + paddles[0].height + ball.radius;
-    } else {
-      paddles[0].score++;
-      resetBall(gameState);
+    if (ball.y - ball.radius < 0) {
+        if (paddles[0].lost && collides(ball, paddles[0])) {
+            ball.speedY *= -1;
+            ball.y = paddles[0].y + paddles[0].height + ball.radius;
+        } else {
+            paddles[0].score++;
+            resetBall(gameState);
+        }
+    } else if (ball.y + ball.radius > CANVAS_HEIGHT) {
+        if (paddles[1].lost && collides(ball, paddles[1])) {
+            ball.speedY *= -1;
+            ball.y = paddles[1].y - ball.radius;
+        } else {
+            paddles[1].score++;
+            resetBall(gameState);
+        }
     }
-  } else if (ball.y + ball.radius > CANVAS_HEIGHT) {
-    if (paddles[1].lost && collides(ball, paddles[1])) {
-      ball.speedY *= -1;
-      ball.y = paddles[1].y - ball.radius;
-    } else {
-      paddles[1].score++;
-      resetBall(gameState);
-    }
-  }
 
-  if (ball.x - ball.radius < 0) {
-    if (paddles[2].lost && collides(ball, paddles[2])) {
-      ball.speedX *= -1;
-      ball.x = paddles[2].x + paddles[2].width + ball.radius;
-    } else {
-      paddles[2].score++;
-      resetBall(gameState);
+    if (ball.x - ball.radius < 0) {
+        if (paddles[2].lost && collides(ball, paddles[2])) {
+            ball.speedX *= -1;
+            ball.x = paddles[2].x + paddles[2].width + ball.radius;
+        } else {
+            paddles[2].score++;
+            resetBall(gameState);
+        }
+    } else if (ball.x + ball.radius > CANVAS_WIDTH) {
+        if (paddles[3].lost && collides(ball, paddles[3])) {
+            ball.speedX *= -1;
+            ball.x = paddles[3].x - ball.radius;
+        } else {
+            paddles[3].score++;
+            resetBall(gameState);
+        }
     }
-  } else if (ball.x + ball.radius > CANVAS_WIDTH) {
-    if (paddles[3].lost && collides(ball, paddles[3])) {
-      ball.speedX *= -1;
-      ball.x = paddles[3].x - ball.radius;
-    } else {
-      paddles[3].score++;
-      resetBall(gameState);
-    }
-  }
   
     paddles.forEach((paddle, index) => {
         if (!paddle.lost && collides(ball, paddle)) {
@@ -194,7 +201,6 @@ function updateGame(gameId: string) {
         return;
     }
 
-
     const updateMessage = JSON.stringify({ type: 'update', ...gameState });
     playerClients.forEach(client => {
         if (client && client.ws.readyState === WebSocket.OPEN) client.ws.send(updateMessage);
@@ -220,62 +226,103 @@ function stopGame(gameId: string) {
     }
 }
 
-wss.on('connection', (ws, req) => {
-  const url = new URL(req.url!, `http://${req.headers.host}`);
-  const userId = url.searchParams.get('userId');
-  const username = url.searchParams.get('username') || 'Anônimo';
-  const profilePic = url.searchParams.get('profilePic') || 'https://placehold.co/128x128/000000/FFFFFF?text=User';
+async function main()
+{
+    const server = fastify();
 
-  if (!userId || clients.has(userId)) {
-    ws.send(JSON.stringify({ type: 'error', message: 'ID de usuário inválido ou já conectado.' }));
-    ws.close();
-    return;
-  }
+    server.register(fastifyJwt, {
+        secret: process.env.JWT_SECRET || 'transcendence'
+    });
 
-  console.log(`Jogador ${username} (${userId}) conectado.`);
-  const clientData: ClientData = { ws, username, inputs: {}, id: userId, profilePic };
-  clients.set(userId, clientData);
-  lobby.push(clientData);
-  
-  broadcastLobbyUpdate();
+    const tournamentController = new TournamentController();
+    const historyController = new HistoryController();
+    const matchmakingController = new MatchmakingController();
 
-  if (lobby.length >= 4) {
-    const gamePlayers = lobby.splice(0, 4);
-    const playerIds = gamePlayers.map(p => p.id);
-    startGame(playerIds);
-  }
+    await TournamentRoutes(server, tournamentController);
+    await HistoryRoutes(server, historyController);
+    await MatchmakingRoutes(server, matchmakingController);
 
-  ws.on('message', (message) => {
-    try {
-      const data = JSON.parse(message.toString());
-      const clientData = clients.get(userId);
-      if (!clientData) return;
-      if (data.type === 'keys') clientData.inputs = data.keys;
-    } catch (e) {
-      console.error("Mensagem inválida recebida: ", message.toString());
-    }
-  });
+    server.setErrorHandler((async (error, request, reply) => {
+        console.log("Error: ", error);
+    }));
 
-  ws.on('close', () => {
-    console.log(`Jogador ${clients.get(userId)?.username} (${userId}) desconectado.`);
-    const lobbyIndex = lobby.findIndex(c => c.id === userId);
-    if (lobbyIndex > -1) {
-        lobby.splice(lobbyIndex, 1);
-        broadcastLobbyUpdate();
-    }
+    const wss = new WebSocketServer({ noServer: true });
+
+    server.server.on('upgrade', (request, socket, head) => {
+        wss.handleUpgrade(request, socket, head, (ws) => {
+            wss.emit('connection', ws, request);
+        });
+    });
     
-    for (const [gameId, game] of games.entries()) {
-        if (game.playerIds.includes(userId)) {
-            stopGame(gameId);
-            const remainingPlayers = game.playerIds.filter(id => id !== userId && clients.has(id));
-            remainingPlayers.forEach(id => {
-                const client = clients.get(id);
-                client?.ws.send(JSON.stringify({ type: 'opponent_disconnected' }));
-            });
-        }
-    }
-    clients.delete(userId);
-  });
-});
+    wss.on('connection', (ws, req) => {
+        const url = new URL(req.url!, `http://${req.headers.host}`);
+        const userId = url.searchParams.get('userId');
+        const username = url.searchParams.get('username') || 'Anônimo';
+        const profilePic = url.searchParams.get('profilePic') || 'https://placehold.co/128x128/000000/FFFFFF?text=User';
 
-console.log('🚀 Game service para 4 jogadores rodando na porta 8081...');
+        if (!userId || clients.has(userId)) {
+            ws.send(JSON.stringify({ type: 'error', message: 'ID de usuário inválido ou já conectado.' }));
+            ws.close();
+            return;
+        }
+
+        console.log(`Jogador ${username} (${userId}) conectado.`);
+        const clientData: ClientData = { ws, username, inputs: {}, id: userId, profilePic };
+        clients.set(userId, clientData);
+        lobby.push(clientData);
+        
+        broadcastLobbyUpdate();
+
+        if (lobby.length >= 4) {
+            const gamePlayers = lobby.splice(0, 4);
+            const playerIds = gamePlayers.map(p => p.id);
+            startGame(playerIds);
+        }
+
+        ws.on('message', (message) => {
+            try {
+                const data = JSON.parse(message.toString());
+                const clientData = clients.get(userId);
+                if (!clientData) return;
+                if (data.type === 'keys') clientData.inputs = data.keys;
+            } catch (e) {
+                console.error("Mensagem inválida recebida: ", message.toString());
+            }
+        });
+
+        ws.on('close', () => {
+            console.log(`Jogador ${clients.get(userId)?.username} (${userId}) desconectado.`);
+            const lobbyIndex = lobby.findIndex(c => c.id === userId);
+            if (lobbyIndex > -1) {
+                lobby.splice(lobbyIndex, 1);
+                broadcastLobbyUpdate();
+            }
+            
+            for (const [gameId, game] of games.entries()) {
+                if (game.playerIds.includes(userId)) {
+                    stopGame(gameId);
+                    const remainingPlayers = game.playerIds.filter(id => id !== userId && clients.has(id));
+                    remainingPlayers.forEach(id => {
+                        const client = clients.get(id);
+                        client?.ws.send(JSON.stringify({ type: 'opponent_disconnected' }));
+                    });
+                }
+            }
+            clients.delete(userId);
+        });
+    });
+
+    try
+    {
+        const address = await server.listen({ port: 3001 });
+        console.log(`HTTP and WebSocket Server listening on ${address}`);
+    }
+    catch (err)
+    {
+        console.log("Failed to start server: ", err, "");
+        await prisma.$disconnect();
+        process.exit(1);
+    }
+}
+
+main();

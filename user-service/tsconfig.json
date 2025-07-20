@@ -10,7 +10,7 @@
     "moduleResolution": "nodenext",
     "baseUrl": ".",
     "paths": {
-      "@prisma": ["../src/Infrastructure/Service/PrismaService.ts"]
+      "@prisma": ["src/Infrastructure/Service/PrismaService.ts"]
     }
   },
   "include": ["src"]

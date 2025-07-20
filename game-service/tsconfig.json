@@ -1,11 +1,17 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "strict": true,
+    "target": "es2022",
+    "module": "NodeNext",
     "esModuleInterop": true,
-    "skipLibCheck": true
-  }
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "outDir": "dist",
+    "moduleResolution": "nodenext",
+    "baseUrl": ".",
+    "paths": {
+      "@prisma": ["src/Infrastructure/Service/PrismaService.ts"]
+    }
+  },
+  "include": ["src"]
 }
