@@ -2,7 +2,7 @@ import {VerifyIfUsersExistsByUuidsDTO} from "../../../Application/DTO/ToQuery/Ve
 
 export class VerifyIfUsersExistsByUuidsQuery
 {
-    constructor(public readonly Uuids: string[])
+    constructor(public readonly Uuids: (string | null)[])
     {
     }
 
