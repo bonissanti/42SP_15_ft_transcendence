@@ -314,7 +314,7 @@ async function main()
 
     try
     {
-        const address = await server.listen({ port: 3001 });
+        const address = await server.listen({ port: 3001, host: '0.0.0.0' });
         console.log(`HTTP and WebSocket Server listening on ${address}`);
     }
     catch (err)
