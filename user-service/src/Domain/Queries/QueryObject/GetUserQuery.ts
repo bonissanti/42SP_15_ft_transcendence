@@ -1,4 +1,4 @@
-import {GetUserDTO} from "../../../Domain/DTO/Query/GetUserDTO.js";
+import {GetUserDTO} from "../../../Application/DTO/Query/GetUserDTO.js";
 
 export class GetUserQuery
 {

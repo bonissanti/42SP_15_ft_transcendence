@@ -1,4 +1,4 @@
-import {CreateUserDTO} from "../../../Domain/DTO/Command/CreateUserDTO.js";
+import {CreateUserDTO} from "../../../Application/DTO/Command/CreateUserDTO.js";
 
 export class CreateUserCommand
 {

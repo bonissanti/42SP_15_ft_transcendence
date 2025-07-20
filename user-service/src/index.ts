@@ -18,69 +18,69 @@ import { LogoutUserService } from './Application/Services/Concrete/LogoutUserSer
 import {VerificationService} from "./Application/Services/Concrete/VerificationService.js";
 
 declare module 'fastify' {
-  export interface FastifyInstance {
-    userRepository: UserRepository;
-  }
+    export interface FastifyInstance {
+        userRepository: UserRepository;
+    }
 }
 
 const server: FastifyInstance = fastify();
 
 server.register(fastifyJwt, {
-  secret: process.env.JWT_SECRET || 'transcendence' 
+    secret: process.env.JWT_SECRET || 'transcendence'
 });
 
 server.get('/', async (request, reply) => {
-  return 'Rodando!';
+    return 'Rodando!';
 });
 
 server.get('/health', async (request, reply) => {
-  return { status: 'ok', time: new Date() };
+    return { status: 'ok', time: new Date() };
 });
 
 async function main() {
-  const prisma = new PrismaClient();
-  const userRepository = new UserRepository(prisma);
-  const notificationError = new NotificationError();
+    const prisma = new PrismaClient();
+    const userRepository = new UserRepository(prisma);
+    const notificationError = new NotificationError();
 
-  server.decorate('userRepository', userRepository);
+    server.decorate('userRepository', userRepository);
 
-  const createUserService = new CreateUserService(userRepository, notificationError);
-  const editUserService = new EditUserService(userRepository, notificationError);
-  const deleteUserService = new DeleteUserService(userRepository, notificationError);
-  const getUserService = new GetUserService(userRepository, notificationError);
-  const verificationService = new VerificationService(userRepository, notificationError);
-  const loginUserService = new LoginUserService(userRepository, notificationError);
-  const logoutUserService = new LogoutUserService(userRepository, notificationError);
+    const createUserService = new CreateUserService(userRepository, notificationError);
+    const editUserService = new EditUserService(userRepository, notificationError);
+    const deleteUserService = new DeleteUserService(userRepository, notificationError);
+    const getUserService = new GetUserService(userRepository, notificationError);
+    const verificationService = new VerificationService(userRepository, notificationError);
+    const loginUserService = new LoginUserService(userRepository, notificationError);
+    const logoutUserService = new LogoutUserService(userRepository, notificationError);
 
-  const userController = new UserController(
-    createUserService,
-    editUserService,
-    deleteUserService,
-    getUserService,
-    verificationService
-  );
+    const userController = new UserController(
+        createUserService,
+        editUserService,
+        deleteUserService,
+        getUserService,
+        verificationService
+    );
 
-  const userSessionController = new UserSessionController(
-    loginUserService,
-    logoutUserService
-  );
+    const userSessionController = new UserSessionController(
+        loginUserService,
+        logoutUserService
+    );
 
-  await UserRoutes(server, userController);
-  await UserSessionRoutes(server, userSessionController, userRepository);
+    await UserRoutes(server, userController);
+    await UserSessionRoutes(server, userSessionController, userRepository);
 
-  server.setErrorHandler(async (error, request, reply) => {
-    console.error("Internal server error:", error);
-    reply.status(500).send({ message: "Ocorreu um erro interno." });
-  });
+    server.setErrorHandler(async (error, request, reply) => {
+        console.error("Internal server error:", error);
+        reply.status(500).send({ message: "Ocorreu um erro interno." });
+    });
 
-  try {
-    const address = await server.listen({ port: 8080, host: '0.0.0.0' });
-    console.log(`Server listening at ${address}`);
-  } catch (err) {
-    console.error("Falha ao iniciar o servidor:", err);
-    await prisma.$disconnect();
-    process.exit(1);
-  }
+    try {
+        const address = await server.listen({ port: 8080, host: '0.0.0.0' });
+        console.log(`Server listening at ${address}`);
+    } catch (err) {
+        console.error("Falha ao iniciar o servidor:", err);
+        await prisma.$disconnect();
+        process.exit(1);
+    }
 }
 
 main();

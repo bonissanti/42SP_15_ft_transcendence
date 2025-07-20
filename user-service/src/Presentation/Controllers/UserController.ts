@@ -1,17 +1,17 @@
-import { CreateUserDTO } from "../../Domain/DTO/Command/CreateUserDTO.js";
+import { CreateUserDTO } from "../../Application/DTO/Command/CreateUserDTO.js";
 import { Result } from "../../Shared/Utils/Result.js";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { BaseController } from "./BaseController.js";
 import { CreateUserService } from "../../Application/Services/Concrete/CreateUserService.js";
 import { NotificationError } from "../../Shared/Errors/NotificationError.js";
-import { EditUserDTO } from "../../Domain/DTO/Command/EditUserDTO.js";
+import { EditUserDTO } from "../../Application/DTO/Command/EditUserDTO.js";
 import { EditUserService } from "../../Application/Services/Concrete/EditUserService.js";
-import { DeleteUserDTO } from "../../Domain/DTO/Command/DeleteUserDTO.js";
+import { DeleteUserDTO } from "../../Application/DTO/Command/DeleteUserDTO.js";
 import { DeleteUserService } from "../../Application/Services/Concrete/DeleteUserService.js";
-import { GetUserDTO } from "../../Domain/DTO/Query/GetUserDTO.js";
+import { GetUserDTO } from "../../Application/DTO/Query/GetUserDTO.js";
 import { GetUserService } from "../../Application/Services/Concrete/GetUserService.js";
-import { GetUserViewModel } from "../ViewModels/GetUserViewModel.js";
-import {VerifyIfUsersExistsByUuidsDTO} from "../../Domain/DTO/Query/VerifyIfUsersExistsByUuidsDTO.js";
+import { GetUserViewModel } from "../../Application/ViewModels/GetUserViewModel.js";
+import {VerifyIfUsersExistsByUuidsDTO} from "../../Application/DTO/Query/VerifyIfUsersExistsByUuidsDTO.js";
 import {VerificationService} from "../../Application/Services/Concrete/VerificationService.js";
 
 export class UserController extends BaseController {

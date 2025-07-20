@@ -2,7 +2,7 @@ import {BaseHandlerCommand} from "./BaseHandlerCommand.js";
 import {UserRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/UserRepository.js";
 import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
 import {UserSessionCommand} from "../CommandObject/UserSessionCommand.js";
-import {PasswordHashVO} from "../../../Domain/ValueObjects/PasswordHashVO.js";
+import {PasswordHashVO} from "../../ValueObjects/PasswordHashVO.js";
 
 export class LoginSessionCommandHandler implements BaseHandlerCommand<UserSessionCommand>
 {

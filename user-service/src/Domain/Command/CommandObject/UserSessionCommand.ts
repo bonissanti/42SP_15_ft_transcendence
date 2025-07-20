@@ -1,4 +1,4 @@
-import {UserSessionDTO} from "../../../Domain/DTO/Command/UserSessionDTO.js";
+import {UserSessionDTO} from "../../../Application/DTO/Command/UserSessionDTO.js";
 
 export class UserSessionCommand
 {

@@ -2,13 +2,13 @@ import {BaseValidator} from "./BaseValidator.js";
 import {UserSessionCommand} from "../CommandObject/UserSessionCommand.js";
 import {UserRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/UserRepository.js";
 import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
-import {EmailVO} from "../../../Domain/ValueObjects/EmailVO.js";
+import {EmailVO} from "../../ValueObjects/EmailVO.js";
 import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog.js";
-import {PasswordHashVO} from "../../../Domain/ValueObjects/PasswordHashVO.js";
+import {PasswordHashVO} from "../../ValueObjects/PasswordHashVO.js";
 import {CustomError} from "../../../Shared/Errors/CustomError.js";
 import {ValidationException} from "../../../Shared/Errors/ValidationException.js";
 
-export class LoginSessionCommandValidator implements BaseValidator<UserSessionCommand>
+export class LogoutSessionCommandValidator implements BaseValidator<UserSessionCommand>
 {
     constructor(private UserRepository: UserRepository, private NotificationError: NotificationError)
     {

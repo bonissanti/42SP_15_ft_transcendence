@@ -1,4 +1,4 @@
-import {EditUserDTO} from "../../../Domain/DTO/Command/EditUserDTO.js";
+import {EditUserDTO} from "../../../Application/DTO/Command/EditUserDTO.js";
 
 export class EditUserCommand
 {

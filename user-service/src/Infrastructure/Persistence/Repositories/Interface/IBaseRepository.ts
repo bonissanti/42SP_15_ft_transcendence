@@ -1,5 +1,5 @@
 import {NotificationError} from "../../../../Shared/Errors/NotificationError.js";
-import {GetUserDTO} from "../../../../Domain/DTO/Query/GetUserDTO.js";
+import {GetUserDTO} from "../../../../Application/DTO/Query/GetUserDTO.js";
 import {GetUserQueryDTO} from "../../../../Domain/QueryDTO/GetUserQueryDTO.js";
 import {User} from "../../../../Domain/Entities/Concrete/User.js";
 

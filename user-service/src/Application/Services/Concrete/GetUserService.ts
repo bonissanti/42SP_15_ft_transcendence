@@ -1,11 +1,11 @@
 import { BaseService } from "../Interfaces/BaseService.js";
-import { GetUserDTO } from "../../../Domain/DTO/Query/GetUserDTO.js";
+import { GetUserDTO } from "../../DTO/Query/GetUserDTO.js";
 import { NotificationError } from "../../../Shared/Errors/NotificationError.js";
 import { FastifyReply } from "fastify";
-import { GetUserQuery } from "../../Queries/QueryObject/GetUserQuery.js";
-import { GetUserQueryHandler } from "../../Queries/Handlers/GetUserQueryHandler.js";
+import { GetUserQuery } from "../../../Domain/Queries/QueryObject/GetUserQuery.js";
+import { GetUserQueryHandler } from "../../../Domain/Queries/Handlers/GetUserQueryHandler.js";
 import { UserRepository } from "../../../Infrastructure/Persistence/Repositories/Concrete/UserRepository.js";
-import { GetUserViewModel } from "../../../Presentation/ViewModels/GetUserViewModel.js";
+import { GetUserViewModel } from "../../ViewModels/GetUserViewModel.js";
 import { Result } from "../../../Shared/Utils/Result.js";
 import { ValidationException } from "../../../Shared/Errors/ValidationException.js";
 import { ErrorCatalog } from "../../../Shared/Errors/ErrorCatalog.js";

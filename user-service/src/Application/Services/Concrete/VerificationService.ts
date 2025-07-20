@@ -1,15 +1,15 @@
 import {BaseService} from "../Interfaces/BaseService.js";
 import {UserRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/UserRepository.js";
 import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
-import {VerifyIfUsersExistsByUuidsDTO} from "../../../Domain/DTO/Query/VerifyIfUsersExistsByUuidsDTO.js";
+import {VerifyIfUsersExistsByUuidsDTO} from "../../DTO/Query/VerifyIfUsersExistsByUuidsDTO.js";
 import {FastifyReply} from "fastify";
 import {Result} from "../../../Shared/Utils/Result.js";
 import {ValidationException} from "../../../Shared/Errors/ValidationException.js";
-import {GetUserViewModel} from "../../../Presentation/ViewModels/GetUserViewModel.js";
+import {GetUserViewModel} from "../../ViewModels/GetUserViewModel.js";
 import {Prisma} from "@prisma/client";
 import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog.js";
-import {VerifyIfUsersExistsByUuidsQuery} from "../../Queries/QueryObject/VerifyIfUsersExistsByUuidsQuery.js";
-import {VerifyIfUsersExistsByUuidsQueryHandler} from "../../Queries/Handlers/VerifyIfUsersExistsByUuidsQueryHandler.js";
+import {VerifyIfUsersExistsByUuidsQuery} from "../../../Domain/Queries/QueryObject/VerifyIfUsersExistsByUuidsQuery.js";
+import {VerifyIfUsersExistsByUuidsQueryHandler} from "../../../Domain/Queries/Handlers/VerifyIfUsersExistsByUuidsQueryHandler.js";
 
 export class VerificationService implements BaseService<any,  boolean>
 {
