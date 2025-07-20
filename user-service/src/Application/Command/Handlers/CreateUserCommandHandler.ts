@@ -20,7 +20,19 @@ export class CreateUserCommandHandler implements BaseHandlerCommand<CreateUserCo
         console.log("Passou PasswordHashVO.Create", passwordHashVO)
         const emailVO = EmailVO.AddEmail(command.Email);
         console.log("Passou EmailVO.AddEmail", emailVO)
-        const userEntity: User = new User(emailVO, passwordHashVO, command.Username, command.ProfilePic, command.LastLogin, 0, 0, 0);
+        
+        const userEntity: User = new User(
+            emailVO, 
+            passwordHashVO, 
+            command.Username, 
+            command.ProfilePic, 
+            command.LastLogin,
+            false,
+            0,
+            0,
+            0
+        );
+        
         console.log("Passou User Entity", userEntity)
         await this.UserRepository.Create(userEntity);
         console.log("Passou UserRepository.Create", userEntity)

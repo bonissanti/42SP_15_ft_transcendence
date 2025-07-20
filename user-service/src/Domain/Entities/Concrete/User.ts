@@ -1,6 +1,8 @@
+// user-service/src/Domain/Entities/Concrete/User.ts
 import {BaseEntity} from "../Interface/BaseEntity.js";
 import {PasswordHashVO} from "../../ValueObjects/PasswordHashVO.js";
 import {EmailVO} from "../../ValueObjects/EmailVO.js";
+import * as crypto from "crypto";
 
 export class User implements BaseEntity
 {
@@ -63,7 +65,7 @@ export class User implements BaseEntity
         if (profilepic != this.ProfilePic)
             this.ProfilePic = profilepic;
     }
-
+ 
     public ChangeAuth0Id(auth0id: string): void
     {
         if (auth0id != this.Auth0Id)
