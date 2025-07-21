@@ -8,13 +8,13 @@ datasource db {
 }
 
 model Tournament {
-    id             String @id @default(uuid())
-    tournamentUuid String @unique
-    tournamentName String
-    player1Uuid    String @unique
-    player2Uuid    String @unique
-    player3Uuid    String @unique
-    player4Uuid    String @unique
+    id              String @id @default(uuid())
+    tournamentUuid  String @unique
+    tournamentName  String
+    player1Username String @unique
+    player2Username String @unique
+    player3Username String @unique
+    player4Username String @unique
 
     @@map("game-service")
 }
@@ -27,6 +27,10 @@ model History {
     player1Points   Int
     player2Username String
     player2Points   Int
+    player3Username String?
+    player3Points   Int?
+    player4Username String?
+    player4Points   Int?
     matchedAt       DateTime @default(now())
 
     @@map("history")

@@ -1,6 +1,7 @@
 import {IBackendApiClient} from "../Interface/IBackendApiClient";
 import axios from 'axios';
 import {GetUserMatchmakingQueryDTO} from "../../../Domain/QueryDTO/GetUserMatchmakingQueryDTO";
+import {UpdateStatsExternalDTO} from "../../../Domain/ExternalDTO/UpdateStatsExternalDTO";
 
 export class BackendApiClient implements IBackendApiClient
 {
@@ -12,12 +13,12 @@ export class BackendApiClient implements IBackendApiClient
         this.baseUrl = process.env.BACKEND_API_URL || 'http://127.0.0.1:8080';
     }
 
-    public async VerifyIfUsersExists(uuids: string[]) : Promise<boolean>
+    public async VerifyIfUsersExistsByUsername(usernames: (string | null)[]) : Promise<boolean>
     {
         try
         {
-            const response = await axios.get(`${this.baseUrl}/users/exists/`, {
-                params: { uuids: uuids }
+            const response = await axios.get(`${this.baseUrl}/users/exists/usernames`, {
+                params: { usernames: usernames }
             });
 
             return response.status === 200;
@@ -31,8 +32,8 @@ export class BackendApiClient implements IBackendApiClient
         }
     }
 
-    //TODO: implementar
-    public async VerifyIfUserExists(uuid: string): Promise<boolean>
+
+    public async VerifyIfUserExistsByUuid(uuid: string): Promise<boolean>
     {
         try
         {
@@ -70,15 +71,11 @@ export class BackendApiClient implements IBackendApiClient
         }
     }
 
-    //TODO: implementar
-    public async AddWinLoseForUser(player1Username: string, player1Points: number, player2Username: string, player2Points: number): Promise<boolean>
+    public async UpdateStatsForUsers(updateStatsExternalDTO: UpdateStatsExternalDTO): Promise<boolean>
     {
         try
         {
-            const response = await axios.get(`${this.baseUrl}/user/winLose`, {
-                params: { player1Username: player1Username, player1Points: player1Points, player2Username: player2Username, player2Points: player2Points }
-            });
-
+            const response = await axios.put(`${this.baseUrl}/user/updateStats`, updateStatsExternalDTO);
             return response.status === 200;
         }
         catch (error)

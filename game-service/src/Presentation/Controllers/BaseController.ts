@@ -8,7 +8,8 @@ export abstract class BaseController
     {
         var totalErrors = notificationError.NumberOfErrors();
         notificationError.CleanErrors();
-        if (result.isSucess){
+        if (result.isSucess)
+        {
             const responseData = result.getData();
             if (responseData) {
                 console.log("Response Data:", responseData);

@@ -71,33 +71,71 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
 
     public async GetUserEntityByUuid(uuid: string): Promise<User | null> {
         const userData = await this.prisma.user.findUnique({where: {uuid}});
-        if (!userData) return null;
+
+        if (!userData)
+            return null;
         return this.RecoverEntity(userData);
     }
 
-    public async GetFullUsers(): Promise<GetUserQueryDTO[]> {
+    public async GetUserEntityByUsername(username: string): Promise<User | null>
+    {
+        const userData = await this.prisma.user.findUnique({ where: {username}});
+
+        if (!userData)
+            return null;
+        return this.RecoverEntity(userData);
+    }
+
+    public async GetUsersEntitiesByUsername(usernames: string[]): Promise<User[]>
+    {
+        const usersData = await this.prisma.user.findMany({where: {username: {in: usernames}}});
+
+        if (!usersData.length)
+            return [];
+        return usersData.map(user => this.RecoverEntity(user));
+    }
+
+    public async GetFullUsers(): Promise<GetUserQueryDTO[]>
+    {
         const userEntities: User[] = await this.GetAll();
+
         return userEntities.map(user => this.mapToQueryDTO(user));
     }
 
-    public async VerifyIfUserExistsByUUID(uuid: string): Promise<boolean> {
+    public async VerifyIfUserExistsByUUID(uuid: string): Promise<boolean>
+    {
         const user = await this.prisma.user.findUnique({where: {uuid}});
+
         return user !== null;
     }
 
-    public async VerifyIfUsersExistsByUUIDs(uuids: string[]): Promise<boolean> {
-        const users = await this.prisma.user.findMany({where: {uuid: {in: uuids}}});
-        return users.length === uuids.length;
+    public async VerifyIfUsersExistsByUUIDs(uuids: (string | null)[]): Promise<boolean>
+    {
+        const validUuids = uuids.filter(uuid => uuid != null || uuid !== '') as string[];
+
+        if (validUuids.length === 0)
+            return false;
+
+        const users = await this.prisma.user.findMany({where: {uuid: {in: validUuids}}});
+
+        return users.length === validUuids.length;
     }
 
     public async VerifyIfUserExistsByUsername(username: string): Promise<boolean> {
         const user = await this.prisma.user.findUnique({where: {username}});
+
         return user !== null;
     }
 
-    public async VerifyIfUsersExistsByUsername(usernames: string[]): Promise<boolean> {
-        const users = await this.prisma.user.findMany({where: {username: {in: usernames}}});
-        return users.length === usernames.length;
+    public async VerifyIfUsersExistsByUsername(usernames: (string | null)[]): Promise<boolean> {
+        const validUsernames = usernames.filter(username => username != null || username !== '') as string[];
+
+        if (validUsernames.length === 0)
+            return false;
+
+        const users = await this.prisma.user.findMany({where: {username: {in: validUsernames}}});
+
+        return users.length === validUsernames.length;
     }
 
     public async SearchForClosestOpponent(username: string, paremeterWin: number, totalGames: number)

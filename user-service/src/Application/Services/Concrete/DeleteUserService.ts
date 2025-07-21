@@ -1,11 +1,11 @@
 import { FastifyReply } from "fastify";
 import { BaseService } from "../Interfaces/BaseService.js";
-import { DeleteUserDTO } from "../../../Domain/DTO/Command/DeleteUserDTO.js";
+import { DeleteUserDTO } from "../../DTO/ToCommand/DeleteUserDTO.js";
 import { NotificationError } from "../../../Shared/Errors/NotificationError.js";
 import { UserRepository } from "../../../Infrastructure/Persistence/Repositories/Concrete/UserRepository.js";
-import { DeleteUserCommandValidator } from "../../Command/Validators/DeleteUserCommandValidator.js";
-import { DeleteUserCommand } from "../../Command/CommandObject/DeleteUserCommand.js";
-import { DeleteUserCommandHandler } from "../../Command/Handlers/DeleteUserCommandHandler.js";
+import { DeleteUserCommandValidator } from "../../../Domain/Command/Validators/DeleteUserCommandValidator.js";
+import { DeleteUserCommand } from "../../../Domain/Command/CommandObject/DeleteUserCommand.js";
+import { DeleteUserCommandHandler } from "../../../Domain/Command/Handlers/DeleteUserCommandHandler.js";
 import { Result } from "../../../Shared/Utils/Result.js";
 import { ValidationException } from "../../../Shared/Errors/ValidationException.js";
 import { ErrorCatalog } from "../../../Shared/Errors/ErrorCatalog.js";

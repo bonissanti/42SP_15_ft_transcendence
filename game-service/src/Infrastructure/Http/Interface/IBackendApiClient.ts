@@ -1,4 +1,4 @@
 export interface IBackendApiClient
 {
-    VerifyIfUsersExists(uuid: string[]) : Promise<boolean>;
+    VerifyIfUsersExistsByUsername(uuid: string[]) : Promise<boolean>;
 }
