@@ -57,6 +57,7 @@ async function main() {
     editUserService,
     deleteUserService,
     getUserService,
+    userRepository,
     verificationService
   );
 

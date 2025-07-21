@@ -1,3 +1,4 @@
+// user-service/src/Infrastructure/Persistence/Repositories/Concrete/UserRepository.ts
 import {PrismaClient, User as PrismaUser} from '@prisma/client';
 import {IBaseRepository} from "../Interface/IBaseRepository.js";
 import {User} from "../../../../Domain/Entities/Concrete/User.js";
@@ -181,13 +182,13 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
     {
         return new GetUserMatchmakingQueryDTO(
             user.uuid,
+            user.email,
             user.username,
             user.profilePic,
             user.matchesPlayed,
             user.wins,
             user.loses,
-            user.winRatio,
-            user.ratioDifference,
+            user.winRatio
         );
     }
 
@@ -199,7 +200,9 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
             userEntity.ProfilePic ?? "",
             userEntity.matchesPlayed,
             userEntity.wins,
-            userEntity.loses
+            userEntity.loses,
+            userEntity.isOnline,
+            userEntity.LastLogin
         );
     }
 
@@ -210,6 +213,7 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
             user.username,
             user.profilePic,
             user.lastLogin,
+            user.isOnline,
             user.matchesPlayed,
             user.wins,
             user.loses

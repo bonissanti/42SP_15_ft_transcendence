@@ -10,4 +10,17 @@
   .text-glow {
     text-shadow: 0 0 10px #4f46e5, 0 0 20px #4f46e5;
   }
+  .invite-popup {
+    @apply fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50;
+  }
+
+  .popup-content {
+    @apply bg-slate-800 p-8 rounded-xl shadow-2xl text-center;
+  }
+
+  /* Estilizando os botões dentro do popup (opcional) */
+  .popup-content button {
+    @apply menu-button text-base px-6 py-2; /* Reutiliza e ajusta o estilo do menu-button */
+  }
+
 }

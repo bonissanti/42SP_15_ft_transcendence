@@ -22,9 +22,7 @@ services:
     volumes:
       - user-service-prisma-data:/usr/src/app/prisma
     ports:
-    # Debug
       - "9229:9229"
-    # Prisma Studio
       - "5555:5555"
     depends_on:
       - auth-service
@@ -50,7 +48,7 @@ services:
       DATABASE_URL: "file:/usr/src/app/prisma/game.db"
       JWT_SECRET: "transcendence"
     ports:
-      - "3001:3000"
+      - "3001:3001"
     volumes:
       - game-service-prisma-data:/usr/src/app/prisma
     networks:
