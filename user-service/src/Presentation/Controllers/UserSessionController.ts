@@ -24,7 +24,7 @@ export class UserSessionController extends BaseController
     public async LoginUser(request: FastifyRequest<{ Body: UserSessionDTO }>, reply: FastifyReply)
     {
         const body = request.body;
-        const result: Result<LoginUserViewModel> = await this.loginUserService.Login(body, request);
+        const result: Result<LoginUserViewModel> = await this.loginUserService.Login(body, request, reply);
 
         return(this.handleResult(result, reply, this.notificationError));
     }

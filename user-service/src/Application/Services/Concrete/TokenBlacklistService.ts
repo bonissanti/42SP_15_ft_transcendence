@@ -25,7 +25,7 @@ export class TokenBlacklistService
             await this.redisClient.set(key, "1");
     }
 
-    static async isTokenBlacklisted(token: string): boolean
+    static async isTokenBlacklisted(token: string): Promise<boolean>
     {
         const key = this.BLACKLIST_PREFIX + token;
         const result = await this.redisClient.get(key);
