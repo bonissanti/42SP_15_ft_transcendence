@@ -1,5 +1,6 @@
 import fastify from "fastify";
 import fastifyJwt from "@fastify/jwt";
+import cors from '@fastify/cors';
 import prisma from "./Infrastructure/Service/PrismaService";
 import { TournamentRoutes } from "./Presentation/Routes/TournamentRoutes/TournamentRoutes";
 import { TournamentController } from "./Presentation/Controllers/TournamentController";
@@ -11,6 +12,11 @@ import { setupWebSocket } from './game/websockets';
 
 async function main() {
     const server = fastify();
+
+    await server.register(cors, {
+        origin: "*",
+        methods: ["GET", "POST", "PUT", "DELETE"],
+    });
 
     server.register(fastifyJwt, {
         secret: process.env.JWT_SECRET || 'transcendence'

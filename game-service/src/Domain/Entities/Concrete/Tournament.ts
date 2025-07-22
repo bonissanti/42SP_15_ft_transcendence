@@ -1,3 +1,5 @@
+import * as crypto from 'crypto';
+
 export class Tournament
 {
     public readonly tournamentUuid: string;

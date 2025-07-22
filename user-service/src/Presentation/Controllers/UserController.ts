@@ -81,12 +81,20 @@ export class UserController extends BaseController {
   }
 
   //Verifica se a lista de pessoas existem
-  public async VerifyIfUsersExistsByUsernames(request: FastifyRequest<{ Querystring: { usernames: (string | null)[] } }>, reply: FastifyReply): Promise<Result> {
+public async VerifyIfUsersExistsByUsernames(request: FastifyRequest<{ Querystring: { usernames: string } }>, reply: FastifyReply): Promise<Result> {
     const query = request.query;
-    const usersDTO: VerifyIfUsersExistsByUsernamesDTO = new VerifyIfUsersExistsByUsernamesDTO(query.usernames);
+
+    // Converte a string separada por vírgulas de volta para um array de strings
+    const usernamesArray = query.usernames ? query.usernames.split(',') : [];
+
+    console.log("Received request to verify if users exist by usernames:", usernamesArray);
+
+    // Continua o fluxo normal usando o array
+    const usersDTO = new VerifyIfUsersExistsByUsernamesDTO(usernamesArray);
     const result: Result<boolean> = await this.userService.VerifyIfUsersExistsByUsernamesService(usersDTO, reply);
+
     return this.handleResult(result, reply, this.notificationError);
-  }
+}
 
   //Verifica se uma pessoa existe
   public async VerifyIfUserExistsByUsername(request: FastifyRequest<{ Querystring: { username: string } }>, reply: FastifyReply): Promise<Result> {

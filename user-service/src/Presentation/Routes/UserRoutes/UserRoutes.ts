@@ -43,17 +43,16 @@ const optsChecker = {
 }
 
 const optsUsernamesChecker = {
-    schema: {
-        querystring: {
-            type: 'object',
-            properties: {
-                usernames: {type: 'array', items: {type: 'string'}},
-            },
-            required: ['usernames'],
-            additionalProperties: false,
-        }
+  schema: {
+    querystring: {
+      type: 'object',
+      required: ['usernames'],
+      properties: {
+        usernames: { type: 'string' }
+      }
     }
-}
+  }
+};
 
 const updateStatsOpts = {
     schema: {
