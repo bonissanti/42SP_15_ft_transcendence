@@ -27,7 +27,10 @@ const opts = {
 export const TournamentRoutes = async (server: any, tournamentController: TournamentController) =>
 {
     server.post('/tournament', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Body: CreateTournamentDTO }>, reply: FastifyReply) => {
-        return await tournamentController.CreateTournament(request, reply);
+        console.log("Received request to create tournament with body: ", request.body);
+        const response = await tournamentController.CreateTournament(request, reply);
+        console.log("Tournament created response: ", response);
+        return response;
     });
 
     server.put('/tournament', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Body: EditTournamentDTO }>, reply: FastifyReply) => {

@@ -1,10 +1,11 @@
 import { initSinglePlayerGame, stopSinglePlayerGame } from './singleplayer';
 import { initMultiplayerGame, stopMultiplayerGame } from './multiplayer';
 import { initRemoteGame, stopRemoteGame } from './remote';
+import { initTournamentGame, stopTournamentGame } from './tournament';
 
 let stopCurrentGame: () => void = () => {};
 
-export function initPongGame(mode: 'singleplayer' | 'multiplayer' | 'remote-multiplayer'): void {
+export function initPongGame(mode: 'singleplayer' | 'multiplayer' | 'remote-multiplayer' | 'tournament'): void {
   stopPongGame();
 
   switch (mode) {
@@ -20,6 +21,10 @@ export function initPongGame(mode: 'singleplayer' | 'multiplayer' | 'remote-mult
       initRemoteGame();
       stopCurrentGame = stopRemoteGame;
       break;
+    case 'tournament':
+        initTournamentGame();
+        stopCurrentGame = stopTournamentGame;
+        break;
   }
 }
 

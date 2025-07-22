@@ -35,6 +35,7 @@ export class CreateTournamentService implements BaseService<CreateTournamentDTO>
         }
         catch (error)
         {
+            console.log("Error in CreateTournamentService.Execute:", error);
             if (error instanceof ValidationException)
             {
                 const message: string = error.SetErrors();

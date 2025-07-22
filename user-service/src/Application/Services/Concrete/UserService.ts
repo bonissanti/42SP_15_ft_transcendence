@@ -79,7 +79,7 @@ export class UserService implements BaseService<any,  boolean>
             const exists = await this.VerifyUsersByUsernamesQueryHandler.Handle(query);
 
             if (!exists)
-                return Result.Failure<boolean>("User does not exists");
+                return Result.Failure<boolean>("User does notists");
 
             return Result.SucessWithData<boolean>("All users exists!", exists);
         }
@@ -135,6 +135,7 @@ export class UserService implements BaseService<any,  boolean>
         try
         {
             const query: VerifyIfUserExistsByUsernameQuery = VerifyIfUserExistsByUsernameQuery.fromQuery(dto);
+            console.log("Received request to verify if user exists by username:", query.username);
             const exists = await this.VerifyIfUserExistsByUsernameQueryHandler.Handle(query)
 
             if (!exists)

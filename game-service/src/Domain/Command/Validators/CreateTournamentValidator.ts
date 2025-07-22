@@ -43,7 +43,7 @@ export class CreateTournamentValidator implements BaseValidator<CreateTournament
 
             if (usersList.length < 4)
                 this.NotificationError.AddError(ErrorCatalog.InvalidNumberOfParticipants);
-
+            console.log("Verifying if users exist with usernames:", usersList);
             const exists: boolean = await this.backendApiClient.VerifyIfUsersExistsByUsername(usersList);
 
             if (!exists)
