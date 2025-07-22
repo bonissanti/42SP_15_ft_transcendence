@@ -48,7 +48,7 @@ const optsUsernamesChecker = {
       type: 'object',
       required: ['usernames'],
       properties: {
-        usernames: { type: 'string' }
+        usernames: { type: 'array', items: { type: 'string' } }
       }
     }
   }

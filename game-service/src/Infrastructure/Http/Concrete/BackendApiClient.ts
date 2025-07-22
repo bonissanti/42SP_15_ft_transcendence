@@ -2,6 +2,7 @@ import {IBackendApiClient} from "../Interface/IBackendApiClient";
 import axios from 'axios';
 import {GetUserMatchmakingQueryDTO} from "../../../Domain/QueryDTO/GetUserMatchmakingQueryDTO";
 import {UpdateStatsExternalDTO} from "../../../Domain/ExternalDTO/UpdateStatsExternalDTO";
+import { stringify } from 'qs';
 
 export class BackendApiClient implements IBackendApiClient
 {
@@ -14,28 +15,27 @@ export class BackendApiClient implements IBackendApiClient
     }
 
     public async VerifyIfUsersExistsByUsername(usernames: (string | null)[]): Promise<boolean> {
-        try {
-            // 1. Filtra para remover nulos/vazios e junta o array em uma única string
-            const usernamesAsString = usernames.filter(u => u != null && u !== '').join(',');
+    try {
+        const validUsernames = usernames.filter(u => u != null && u !== '');
 
-            // 2. Se não houver usernames válidos, retorna false para evitar uma chamada desnecessária
-            if (!usernamesAsString) {
-                return false;
+        if (validUsernames.length === 0) {
+            return false;
+        }
+
+        const response = await axios.get(`${this.baseUrl}/users/exists/usernames`, {
+            params: { usernames: validUsernames },
+            paramsSerializer: params => {
+                return stringify(params, { arrayFormat: 'repeat' });
             }
-            
-            // 3. Envia a string como o valor do parâmetro 'usernames'
-            const response = await axios.get(`${this.baseUrl}/users/exists/usernames`, {
-                params: { usernames: usernamesAsString }
-            });
+        });
 
-            return response.status === 200;
+        return response.status === 200;
         } catch (error) {
-            // Agora o erro 400 também será tratado como "usuário não encontrado" ou falha
             if (axios.isAxiosError(error) && (error.response?.status === 404 || error.response?.status === 400)) {
                 console.error("Error from user-service:", error.response?.data);
                 return false;
             }
-            throw error; // Lança outros erros (como 500)
+            throw error;
         }
     }
 
