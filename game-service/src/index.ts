@@ -1,4 +1,8 @@
 import fastifyJwt from "@fastify/jwt";
+import helmet from "@fastify/helmet";
+import fastifyJwt from "@fastify/jwt";
+import {fastifyCors} from "@fastify/cors";
+
 import prisma from "./Infrastructure/Service/PrismaService";
 import fastify from "fastify";
 import {TournamentRoutes} from "./Presentation/Routes/TournamentRoutes/TournamentRoutes";
@@ -12,6 +16,21 @@ const server = fastify();
 
 server.register(fastifyJwt, {
     secret: process.env.JWT_SECRET || 'transcendence'
+});
+
+server.register(helmet,
+    {
+        contentSecurityPolicy: {
+            directives: {
+                defaultSrc: ["'self'"],
+                script: ["'self'"]
+            }
+        }
+    });
+
+server.register(fastifyCors, {
+    origin: ['http://localhost:5173'],
+    credentials: true
 });
 
 async function main()

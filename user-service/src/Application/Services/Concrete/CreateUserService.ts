@@ -31,11 +31,15 @@ export class CreateUserService implements BaseService<CreateUserDTO> {
             await this.CreateUserHandler.Handle(command);
 
             return Result.Sucess("User created successfully");
-        } catch (error) {
-            if (error instanceof ValidationException) {
+        } catch (error)
+        {
+            if (error instanceof ValidationException)
+            {
                 const message: string = error.SetErrors();
                 return Result.Failure(message);
-            } else if (error instanceof Prisma.PrismaClientKnownRequestError) {
+            }
+            else if (error instanceof Prisma.PrismaClientKnownRequestError)
+            {
                 if (error.code === 'P2002') {
                     const target = error.meta?.target as string[];
 
