@@ -9,9 +9,10 @@ import {ValidationException} from "../../../Shared/Errors/ValidationException.js
 import {PrismaClientKnownRequestError} from "@prisma/client/runtime/library";
 import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog.js";
 import { Result } from "../../../Shared/Utils/Result.js";
-import {FastifyRequest} from "fastify";
+import {FastifyReply, FastifyRequest} from "fastify";
 import {User} from "../../../Domain/Entities/Concrete/User.js";
 import {LoginUserViewModel} from "../../ViewModels/LoginUserViewModel.js";
+import * as process from "node:process";
 
 export class LoginUserService  implements BaseService<UserSessionDTO, LoginUserViewModel>
 {
@@ -31,14 +32,14 @@ export class LoginUserService  implements BaseService<UserSessionDTO, LoginUserV
         throw new Error("Method not implemented.");
     }
 
-    public async Login(dto: UserSessionDTO, request: FastifyRequest) : Promise<Result<LoginUserViewModel>>
+    public async Login(dto: UserSessionDTO, request: FastifyRequest <{ Body: UserSessionDTO}>, reply: FastifyReply) : Promise<Result<LoginUserViewModel>>
     {
         try
         {
             const command: UserSessionCommand = UserSessionCommand.FromDTO(dto);
             await this.LoginUserValidator.Validator(command);
             await this.LoginUserHandler.Handle(command);
-            const loginUserViewModel = this.GenerateToken(request);
+            const loginUserViewModel = this.GenerateToken(reply, request);
 
             return Result.SucessWithData<LoginUserViewModel>("User logged in successfully", loginUserViewModel);
         }
@@ -60,15 +61,21 @@ export class LoginUserService  implements BaseService<UserSessionDTO, LoginUserV
         }
     }
 
-    private GenerateToken(request: FastifyRequest<{ Body: UserSessionDTO }>)
+    private GenerateToken(reply: FastifyReply, request: FastifyRequest<{ Body: UserSessionDTO }>)
     {
         const body = request.body;
 
         const token = request.server.jwt.sign({
             uuid: body.uuid,
-            username: body.username,
             isAuthenticated: true,
         }, { expiresIn: '1h' });
+
+        reply.setCookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            path: '/'
+        });
 
         return new LoginUserViewModel(token);
     }

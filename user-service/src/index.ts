@@ -1,5 +1,8 @@
 import fastify, { FastifyInstance } from 'fastify';
+import helmet from "@fastify/helmet";
 import fastifyJwt from "@fastify/jwt";
+import cookie from "@fastify/cookie";
+import {fastifyCors} from "@fastify/cors";
 
 import { UserController } from "./Presentation/Controllers/UserController.js";
 import { UserSessionController } from "./Presentation/Controllers/UserSessionController.js";
@@ -27,6 +30,22 @@ const server: FastifyInstance = fastify();
 
 server.register(fastifyJwt, {
     secret: process.env.JWT_SECRET || 'transcendence'
+});
+
+server.register(helmet,
+    {
+        contentSecurityPolicy: {
+            directives: {
+                defaultSrc: ["'self'"],
+                script: ["'self'"]
+            }
+        }
+    });
+
+server.register(cookie);
+server.register(fastifyCors, {
+    origin: ['http://localhost:5173'],
+    credentials: true
 });
 
 server.get('/', async (request, reply) => {
