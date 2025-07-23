@@ -25,7 +25,7 @@ export class LogoutUserService implements BaseService<UserSessionDTO>
         this.LogoutUserHandler = new LogoutSessionCommandHandler(this.UserRepository);
     }
 
-    public async Execute(dto: UserSessionDTO, request: FastifyRequest): Promise<Result<void>>
+    public async Logout(dto: UserSessionDTO, request: FastifyRequest): Promise<Result<void>>
     {
         try
         {
@@ -56,5 +56,10 @@ export class LogoutUserService implements BaseService<UserSessionDTO>
             }
             return Result.Failure(ErrorCatalog.InternalServerError.SetError());
         }
+    }
+
+    Execute(dto: UserSessionDTO): Promise<Result<void>>
+    {
+        throw new Error("Method not implemented.");
     }
 }

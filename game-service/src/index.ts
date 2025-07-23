@@ -1,4 +1,3 @@
-import fastifyJwt from "@fastify/jwt";
 import helmet from "@fastify/helmet";
 import fastifyJwt from "@fastify/jwt";
 import {fastifyCors} from "@fastify/cors";
