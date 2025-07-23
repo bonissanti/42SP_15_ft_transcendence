@@ -12,10 +12,11 @@ import { GetUserDTO } from "../../Application/DTO/Query/GetUserDTO.js";
 import { GetUserService } from "../../Application/Services/Concrete/GetUserService.js";
 import { GetUserViewModel } from "../../Application/ViewModels/GetUserViewModel.js";
 import {VerifyIfUsersExistsByUuidsDTO} from "../../Application/DTO/Query/VerifyIfUsersExistsByUuidsDTO.js";
-import {VerificationService} from "../../Application/Services/Concrete/VerificationService.js";
 import {VerifyIfUserExistsByUsernameDTO} from "../../Application/DTO/ToQuery/VerifyIfUserExistsByUsernameDTO.js";
 import {VerifyIfUsersExistsByUsernamesDTO} from "../../Application/DTO/ToQuery/VerifyIfUsersExistsByUsernamesDTO.js";
 import {UpdateStatsDTO} from "../../Application/DTO/ToCommand/UpdateStatsDTO.js";
+import {UserRepository} from "../../Infrastructure/Persistence/Repositories/Concrete/UserRepository.js";
+import {UserService} from "../../Application/Services/Concrete/UserService.js";
 
 export class UserController extends BaseController {
   private readonly notificationError: NotificationError;
@@ -46,14 +47,14 @@ export class UserController extends BaseController {
 
     public async CreateUser(request: FastifyRequest<{ Body: CreateUserDTO }>, reply: FastifyReply): Promise<Result> {
         const body = request.body;
-        const userDTO: CreateUserDTO = new CreateUserDTO(body.email, body.password, body.username, body.profilePic, body.lastLogin);
+        const userDTO: CreateUserDTO = new CreateUserDTO(body.email, body.password, body.username, body.annonymous, body.profilePic, body.lastLogin);
         const result: Result = await this.createUserService.Execute(userDTO, reply);
         return this.handleResult(result, reply, this.notificationError);
     }
 
     public async EditUser(request: FastifyRequest<{ Body: EditUserDTO }>, reply: FastifyReply): Promise<Result> {
         const body = request.body;
-        const userDTO: EditUserDTO = new EditUserDTO(body.uuid, body.email, body.password, body.username, body.profilePic);
+        const userDTO: EditUserDTO = new EditUserDTO(body.uuid, body.email, body.password, body.username, body.anonymous, body.profilePic);
         const result: Result = await this.editUserService.Execute(userDTO, reply);
         return this.handleResult(result, reply, this.notificationError);
     }
@@ -77,10 +78,10 @@ export class UserController extends BaseController {
         const usersDTO: VerifyIfUsersExistsByUuidsDTO = new VerifyIfUsersExistsByUuidsDTO(query.uuids);
         const result: Result<boolean> = await this.userService.VerifyIfUserExistsByUuidsService(usersDTO, reply);
         return this.handleResult(result, reply, this.notificationError);
-  }
+    }
 
   //Verifica se a lista de pessoas existem
-  public async VerifyIfUsersExistsByUsernames(request: FastifyRequest<{ Querystring: { usernames: string[] } }>, reply: FastifyReply) {
+  public async VerifyIfUsersExistsByUsernames(request: FastifyRequest<{ Querystring: { usernames: (string | null)[] } }>, reply: FastifyReply) {
     const query = request.query;
     const usernamesArray = request.query.usernames;
 

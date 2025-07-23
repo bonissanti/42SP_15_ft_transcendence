@@ -2,12 +2,12 @@ import {VerifyIfUsersExistsByUuidsDTO} from "../../../Application/DTO/Query/Veri
 
 export class VerifyIfUsersExistsByUuidsQuery
 {
-    constructor(public readonly Uuids: string[])
+    constructor(public readonly Uuids: (string | null)[])
     {
     }
 
-    public static FromDTO(dto: VerifyIfUsersExistsByUuidsDTO): VerifyIfUsersExistsByUuidsDTO
+    public static FromDTO(dto: VerifyIfUsersExistsByUuidsDTO): VerifyIfUsersExistsByUuidsQuery
     {
-        return new VerifyIfUsersExistsByUuidsDTO(dto.Uuids);
+        return new VerifyIfUsersExistsByUuidsQuery(dto.Uuids);
     }
 }

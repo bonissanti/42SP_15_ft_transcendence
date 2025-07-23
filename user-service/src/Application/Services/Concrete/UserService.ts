@@ -19,9 +19,15 @@ import {
 import {
     VerifyIfUsersExistsByUsernamesQueryHandler
 } from "../../../Domain/Queries/Handlers/VerifyIfUsersExistsByUsernamesQueryHandler.js";
+import {VerifyIfUsersExistsByUuidsDTO} from "../../DTO/Query/VerifyIfUsersExistsByUuidsDTO.js";
+import {VerifyIfUsersExistsByUuidsQuery} from "../../../Domain/Queries/QueryObject/VerifyIfUsersExistsByUuidsQuery.js";
+import {
+    VerifyIfUsersExistsByUuidsQueryHandler
+} from "../../../Domain/Queries/Handlers/VerifyIfUsersExistsByUuidsQueryHandler.js";
 
 export class UserService implements BaseService<any,  boolean>
 {
+    private VerifyIfUserExistsQueryHandler: VerifyIfUsersExistsByUuidsQueryHandler;
     private VerifyUsersByUsernamesQueryHandler: VerifyIfUsersExistsByUsernamesQueryHandler;
     private VerifyIfUserExistsByUsernameQueryHandler: VerifyUserExistsByUsernameQueryHandler;
     private UpdateStatsValidator: UpdateStatsCommandValidator;
@@ -29,6 +35,7 @@ export class UserService implements BaseService<any,  boolean>
 
     constructor(private userRepository: UserRepository, notificationError: NotificationError)
     {
+        this.VerifyIfUserExistsQueryHandler = new VerifyIfUsersExistsByUuidsQueryHandler(userRepository, notificationError);
         this.VerifyUsersByUsernamesQueryHandler = new VerifyIfUsersExistsByUsernamesQueryHandler(userRepository, notificationError);
         this.VerifyIfUserExistsByUsernameQueryHandler = new VerifyUserExistsByUsernameQueryHandler(userRepository, notificationError);
         this.UpdateStatsValidator = new UpdateStatsCommandValidator(userRepository, notificationError);
@@ -37,6 +44,33 @@ export class UserService implements BaseService<any,  boolean>
 
     Execute(dto: any, reply: FastifyReply): Promise<Result<boolean>> {
         throw new Error("Method not implemented.");
+    }
+
+    public async VerifyIfUserExistsByUuidsService(dto: VerifyIfUsersExistsByUuidsDTO, reply: FastifyReply): Promise<Result<boolean>>
+    {
+        try
+        {
+            const query: VerifyIfUsersExistsByUuidsQuery = VerifyIfUsersExistsByUuidsQuery.FromDTO(dto);
+            const exists = await this.VerifyIfUserExistsQueryHandler.Handle(query);
+
+            if (!exists)
+                return Result.Failure<boolean>("User does not exists");
+
+            return Result.SucessWithData<boolean>("All users exists!", exists);
+        }
+        catch (error)
+        {
+            if (error instanceof ValidationException)
+            {
+                const message: string = error.SetErrors();
+                return Result.Failure<false>(message);
+            }
+            else if (error instanceof Prisma.PrismaClientKnownRequestError)
+            {
+                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError());
+            }
+            return Result.Failure(ErrorCatalog.InternalServerError.SetError());
+        }
     }
 
     public async VerifyIfUsersExistsByUsernamesService(dto: VerifyIfUsersExistsByUsernamesQuery, reply: FastifyReply): Promise<Result<boolean>>
