@@ -13,12 +13,12 @@ const opts = {
             type: 'object',
             properties: {
                 tournamentName: {type: 'string'},
-                player1Uuid: {type: 'string'},
-                player2Uuid: {type: 'string'},
-                player3Uuid: {type: 'string'},
-                player4Uuid: {type: 'string'},
+                player1Username: {type: 'string'},
+                player2Username: {type: 'string'},
+                player3Username: {type: 'string'},
+                player4Username: {type: 'string'},
             },
-            required: ['tournamentName', 'player1Uuid', 'player2Uuid', 'player3Uuid', 'player4Uuid'],
+            required: ['tournamentName', 'player1Username', 'player2Username', 'player3Username', 'player4Username'],
             additionalProperties: false,
         }
     }
@@ -27,7 +27,10 @@ const opts = {
 export const TournamentRoutes = async (server: any, tournamentController: TournamentController) =>
 {
     server.post('/tournament', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Body: CreateTournamentDTO }>, reply: FastifyReply) => {
-        return await tournamentController.CreateTournament(request, reply);
+        console.log("Received request to create tournament with body: ", request.body);
+        const response = await tournamentController.CreateTournament(request, reply);
+        console.log("Tournament created response: ", response);
+        return response;
     });
 
     server.put('/tournament', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Body: EditTournamentDTO }>, reply: FastifyReply) => {

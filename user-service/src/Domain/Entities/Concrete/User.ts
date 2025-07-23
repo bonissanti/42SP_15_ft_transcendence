@@ -1,6 +1,8 @@
+// user-service/src/Domain/Entities/Concrete/User.ts
 import {BaseEntity} from "../Interface/BaseEntity.js";
 import {PasswordHashVO} from "../../ValueObjects/PasswordHashVO.js";
 import {EmailVO} from "../../ValueObjects/EmailVO.js";
+import * as crypto from "crypto";
 
 export class User implements BaseEntity
 {
@@ -22,17 +24,18 @@ export class User implements BaseEntity
         username: string,
         profilepic: string | null,
         lastlogin: Date | null,
+        isOnline: boolean,
         matchesPlayed: number,
         wins: number,
         loses: number
     ) {
         this.Uuid = crypto.randomUUID();
-        console.log("User.Uuid", this.Uuid);
         this.Email = email;
         this.PasswordHash = passwordHash;
         this.Username = username;
         this.ProfilePic = profilepic;
         this.LastLogin = lastlogin;
+        this.isOnline = isOnline;
         this.matchesPlayed = matchesPlayed;
         this.wins = wins;
         this.loses = loses;
@@ -62,7 +65,7 @@ export class User implements BaseEntity
         if (profilepic != this.ProfilePic)
             this.ProfilePic = profilepic;
     }
-
+ 
     public ChangeAuth0Id(auth0id: string): void
     {
         if (auth0id != this.Auth0Id)

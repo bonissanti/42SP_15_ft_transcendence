@@ -17,7 +17,7 @@ const translations = {
     backToMenu: 'Voltar ao Menu',
 
     // Jogo Pong
-    pongInstructions: 'P1: W/S | P2: ↑/↓',
+    pongInstructions: 'P1: W/S | P2: ↑/↓| P3: A/D | P4: ←/→',
 
     // Jogo RPS
     rpsTitle: 'Pedra, Papel & Tesoura',
@@ -34,10 +34,15 @@ const translations = {
     matchesPlayed: 'Partidas jogadas',
     wins: 'Vitórias',
     loses: 'Derrotas',
+    lastLogin: 'Último login',
 
     // Página de Criadores
     creatorsTitle: 'Criadores',
-    creatorsText: 'Este projeto foi criado por...',    
+    creatorsText: 'Este projeto foi criado por...',
+
+    // Página de Vencedor
+    congratulations: 'Parabéns!',
+    youWon: 'você ganhou!',
   },
   'en': {
     // Main Menu
@@ -55,7 +60,7 @@ const translations = {
     backToMenu: 'Back to Menu',
 
     // Pong Game
-    pongInstructions: 'P1: W/S | P2: ↑/↓',
+    pongInstructions: 'P1: W/S | P2: ↑/↓ | P3: A/D | P4: ←/→',
 
     // RPS Game
     rpsTitle: 'Rock, Paper & Scissors',
@@ -72,10 +77,15 @@ const translations = {
     matchesPlayed: 'Matches Played',
     wins: 'Wins',
     loses: 'Defeats',
+    lastLogin: 'Last login',
 
     // Creators Page
     creatorsTitle: 'Creators',
     creatorsText: 'This project was created by...',
+    
+    // Winner Page
+    congratulations: 'Congratulations!',
+    youWon: 'you won!',
   },
   'es': {
     // Menú Principal
@@ -93,7 +103,7 @@ const translations = {
     backToMenu: 'Volver al menú',
 
     // Juego Pong
-    pongInstructions: 'P1: W/S | P2: ↑/↓',
+    pongInstructions: 'P1: W/S | P2: ↑/↓ | P3: A/D | P4: ←/→',
 
     // Juego RPS
     rpsTitle: 'Piedra, Papel y Tijeras',
@@ -110,10 +120,15 @@ const translations = {
     matchesPlayed: 'Partidas jugadas',
     wins: 'Victorias',
     loses: 'Derrotas',
+    lastLogin: 'Último inicio de sesión',
 
     // Página de Creadores
     creatorsTitle: 'Creadores',
     creatorsText: 'Este proyecto fue creado por...',
+  
+    // Página de Ganador
+    congratulations: '¡Felicidades!',
+    youWon: '¡has ganado!',
   },
   'fr': {
     // Menu Principal
@@ -131,7 +146,7 @@ const translations = {
     backToMenu: 'Retour au menu',
 
     // Jeu Pong
-    pongInstructions: 'J1 : W/S | J2 : ↑/↓',
+    pongInstructions: 'J1 : W/S | J2 : ↑/↓ | J3 : A/D | J4 : ←/→',
 
     // Jeu RPS
     rpsTitle: 'Pierre, Papier & Ciseaux',
@@ -148,10 +163,15 @@ const translations = {
     matchesPlayed: 'Parties jouées',
     wins: 'Victoires',
     loses: 'Défaites',
+    lastLogin: 'Dernière connexion',
 
     // Page des Créateurs
     creatorsTitle: 'Créateurs',
     creatorsText: 'Ce projet a été créé par...',
+
+    // Page du Gagnant
+    congratulations: 'Félicitations !',
+    youWon: 'vous avez gagné !',
   }
 };
 

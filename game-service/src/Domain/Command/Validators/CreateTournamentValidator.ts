@@ -35,16 +35,16 @@ export class CreateTournamentValidator implements BaseValidator<CreateTournament
         try
         {
             const usersList: string[] = [
-                command.player1Uuid,
-                command.player2Uuid,
-                command.player3Uuid,
-                command.player4Uuid,
+                command.player1Username,
+                command.player2Username,
+                command.player3Username,
+                command.player4Username,
             ].filter(uuid => uuid != null && uuid !== '');
 
             if (usersList.length < 4)
                 this.NotificationError.AddError(ErrorCatalog.InvalidNumberOfParticipants);
-
-            const exists: boolean = await this.backendApiClient.VerifyIfUsersExists(usersList);
+            console.log("Verifying if users exist with usernames:", usersList);
+            const exists: boolean = await this.backendApiClient.VerifyIfUsersExistsByUsername(usersList);
 
             if (!exists)
                 this.NotificationError.AddError(ErrorCatalog.UserNotFound);

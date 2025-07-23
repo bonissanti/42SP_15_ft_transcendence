@@ -1,17 +1,17 @@
 export class CreateTournamentDTO
 {
     public readonly tournamentName: string;
-    public readonly player1Uuid: string;
-    public readonly player2Uuid: string;
-    public readonly player3Uuid: string;
-    public readonly player4Uuid: string;
+    public readonly player1Username: string;
+    public readonly player2Username: string;
+    public readonly player3Username: string;
+    public readonly player4Username: string;
 
-    constructor(tournamentName: string, player1Uuid: string, player2Uuid: string, player3Uuid: string, player4Uuid: string)
+    constructor(tournamentName: string, player1Username: string, player2Username: string, player3Username: string, player4Username: string)
     {
         this.tournamentName = tournamentName;
-        this.player1Uuid = player1Uuid;
-        this.player2Uuid = player2Uuid;
-        this.player3Uuid = player3Uuid;
-        this.player4Uuid = player4Uuid;
+        this.player1Username = player1Username;
+        this.player2Username = player2Username;
+        this.player3Username = player3Username;
+        this.player4Username = player4Username;
     }
 }

@@ -22,11 +22,15 @@ export class CreateHistoryValidator implements BaseValidator<CreateHistoryComman
     {
         await this.ValidateUserExists(command);
 
-        if (command.player1Username === command.player2Username)
+        if (this.VerifyIfPlayerIsPlayingAgainstSelf(command))
             this.NotificationError.AddError(ErrorCatalog.PlayerCantPlayAgainstSelf);
 
         if (command.player1Points < 0 || command.player2Points < 0)
             this.NotificationError.AddError(ErrorCatalog.NegativePoints);
+
+        if ((command.player3Points && command.player3Points < 0) || (command.player4Points && command.player4Points < 0))
+            this.NotificationError.AddError(ErrorCatalog.NegativePoints);
+
 
         if (this.NotificationError.NumberOfErrors() > 0){
             const allErrors : CustomError[] = this.NotificationError.GetAllErrors();
@@ -34,19 +38,34 @@ export class CreateHistoryValidator implements BaseValidator<CreateHistoryComman
         }
     }
 
+    private VerifyIfPlayerIsPlayingAgainstSelf(command: CreateHistoryCommand): boolean
+    {
+        const players: (string | null)[] = [
+            command.player1Username,
+            command.player2Username,
+            command.player3Username,
+            command.player4Username
+        ].filter(username => username != null && username !== '');
+
+        const set = new Set(players);
+        return set.size !== players.length;
+    }
+
     private async ValidateUserExists(command: CreateHistoryCommand)
     {
         try
         {
-            const userList: string[] = [
+            const userList: (string | null)[] = [
                 command.player1Username,
-                command.player2Username
+                command.player2Username,
+                command.player3Username,
+                command.player4Username
             ].filter(username => username != null && username !== '');
 
             if (userList.length < 2)
                 this.NotificationError.AddError(ErrorCatalog.InvalidNumberOfParticipantsHistory);
 
-            const exists: boolean = await this.backendApiClient.VerifyIfUsersExists(userList);
+            const exists: boolean = await this.backendApiClient.VerifyIfUsersExistsByUsername(userList);
 
             if (!exists)
                 this.NotificationError.AddError(ErrorCatalog.UserNotFound);

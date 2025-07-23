@@ -5,9 +5,6 @@ import { EmailVO } from '../../../Domain/ValueObjects/EmailVO.js';
 import { PasswordHashVO } from '../../../Domain/ValueObjects/PasswordHashVO.js';
 import * as crypto from "crypto";
 
-// import fetch from 'node-fetch';
-import * as bcrypt from "bcrypt";
-
 type GooglePayload = {
     sub: string;
     email: string;
@@ -68,7 +65,7 @@ async function createNewUserFromGoogle(payload: GooglePayload, userRepository: U
     const randomPassword = crypto.randomBytes(16).toString('hex');
     const passwordHash = await PasswordHashVO.Create(randomPassword);
 
-    const userEntity = new User(emailVO, passwordHash, username, payload.picture || null, new Date(), 0, 0, 0);
+    const userEntity = new User(emailVO, passwordHash, username, payload.picture || null, new Date(), true, 0, 0, 0);
     userEntity.ChangeAuth0Id(payload.sub);
 
     await userRepository.Create(userEntity);

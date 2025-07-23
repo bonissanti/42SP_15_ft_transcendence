@@ -20,7 +20,7 @@ export class EditTournamentCommandValidator implements BaseValidator<EditTournam
     public async Validator(command: EditTournamentCommand): Promise<void>
     {
 
-        if (!await this.tournamentRepository.VerifyIfTournamentExistsByUUID(command.torunamentUuid))
+        if (!await this.tournamentRepository.VerifyIfTournamentExistsByUUID(command.tournamentUuid))
             this.NotificationError.AddError(ErrorCatalog.TournamentNotFound);
 
         await this.validateUsersExists(command);
@@ -36,16 +36,16 @@ export class EditTournamentCommandValidator implements BaseValidator<EditTournam
     {
         try {
             const usersList: string[] = [
-                command.player1Uuid,
-                command.player2Uuid,
-                command.player3Uuid,
-                command.player4Uuid,
+                command.player1Username,
+                command.player2Username,
+                command.player3Username,
+                command.player4Username,
             ].filter(uuid => uuid != null && uuid !== '');
 
             if (usersList.length < 4)
                 this.NotificationError.AddError(ErrorCatalog.InvalidNumberOfParticipants);
 
-            const exists: boolean = await this.backendApiClient.VerifyIfUsersExists(usersList);
+            const exists: boolean = await this.backendApiClient.VerifyIfUsersExistsByUsername(usersList);
 
             if (!exists)
                 this.NotificationError.AddError(ErrorCatalog.UserNotFound);

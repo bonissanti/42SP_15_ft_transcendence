@@ -16,13 +16,28 @@ export class CreateUserCommandHandler implements BaseHandlerCommand<CreateUserCo
 
     async Handle(command: CreateUserCommand) : Promise<void>
     {
+        let emailVO: EmailVO;
+
         const passwordHashVO = await PasswordHashVO.Create(command.Password);
-        console.log("Passou PasswordHashVO.Create", passwordHashVO)
-        const emailVO = EmailVO.AddEmail(command.Email);
-        console.log("Passou EmailVO.AddEmail", emailVO)
-        const userEntity: User = new User(emailVO, passwordHashVO, command.Username, command.ProfilePic, command.LastLogin, 0, 0, 0);
-        console.log("Passou User Entity", userEntity)
+
+        if (command.Annonymous) {
+            emailVO = await EmailVO.AddEmailWithHash(command.Email);
+        } else {
+            emailVO = EmailVO.AddEmail(command.Email);
+        }
+        
+        const userEntity: User = new User(
+            emailVO, 
+            passwordHashVO, 
+            command.Username, 
+            command.ProfilePic, 
+            command.LastLogin,
+            false,
+            0,
+            0,
+            0
+        );
+        
         await this.UserRepository.Create(userEntity);
-        console.log("Passou UserRepository.Create", userEntity)
     }
 }

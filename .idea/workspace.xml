@@ -50,37 +50,37 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Docker.tournament: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;HTTP Request.All in rest-api_10.executor&quot;: &quot;Run&quot;,
-    &quot;HTTP Request.http-requests-log | #1.executor&quot;: &quot;Run&quot;,
-    &quot;HTTP Request.http-requests-log | #6.executor&quot;: &quot;Run&quot;,
-    &quot;HTTP Request.http-requests-log | #7.executor&quot;: &quot;Run&quot;,
-    &quot;HTTP Request.http-requests-log | #8.executor&quot;: &quot;Run&quot;,
-    &quot;HTTP Request.rest-api_10 | #1.executor&quot;: &quot;Run&quot;,
-    &quot;HTTP Request.rest-api_11 | #1.executor&quot;: &quot;Run&quot;,
-    &quot;HTTP Request.rest-api_9 | #1.executor&quot;: &quot;Run&quot;,
-    &quot;JavaScript Debug.127.0.0.1:8080.executor&quot;: &quot;Debug&quot;,
-    &quot;JavaScript Debug.127.0.0.1:8081.executor&quot;: &quot;Debug&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;fix/login-logout&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/bruno/Documents/42SP/42_transcendence/tournament/src/Application/Queries/Handlers&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;npm.build.executor&quot;: &quot;Run&quot;,
-    &quot;npm.clean:dist.executor&quot;: &quot;Run&quot;,
-    &quot;npm.start (1).executor&quot;: &quot;Run&quot;,
-    &quot;npm.start.executor&quot;: &quot;Debug&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/home/bruno/Documents/42SP/42_transcendence/frontend/node_modules/typescript/lib&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Docker.tournament: Compose Deployment.executor": "Run",
+    "HTTP Request.All in rest-api_10.executor": "Run",
+    "HTTP Request.http-requests-log | #1.executor": "Run",
+    "HTTP Request.http-requests-log | #6.executor": "Run",
+    "HTTP Request.http-requests-log | #7.executor": "Run",
+    "HTTP Request.http-requests-log | #8.executor": "Run",
+    "HTTP Request.rest-api_10 | #1.executor": "Run",
+    "HTTP Request.rest-api_11 | #1.executor": "Run",
+    "HTTP Request.rest-api_9 | #1.executor": "Run",
+    "JavaScript Debug.127.0.0.1:8080.executor": "Debug",
+    "JavaScript Debug.127.0.0.1:8081.executor": "Debug",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "Merging fix/login-logout",
+    "junie.onboarding.icon.badge.shown": "true",
+    "last_opened_file_path": "/home/bruno/Documents/42SP/42_transcendence/tournament/src/Application/Queries/Handlers",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "npm.build.executor": "Run",
+    "npm.clean:dist.executor": "Run",
+    "npm.start (1).executor": "Run",
+    "npm.start.executor": "Debug",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "/home/bruno/Documents/42SP/42_transcendence/frontend/node_modules/typescript/lib"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/tournament/src/Application/Queries/Handlers" />
