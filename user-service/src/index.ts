@@ -19,7 +19,7 @@ import { NotificationError } from './Shared/Errors/NotificationError.js';
 import { LoginUserService } from './Application/Services/Concrete/LoginUserService.js';
 import { LogoutUserService } from './Application/Services/Concrete/LogoutUserService.js';
 import {UserService} from "./Application/Services/Concrete/UserService.js";
-import {VerificationService} from "./Application/Services/Concrete/VerificationService.js";
+import {User} from "./Domain/Entities/Concrete/User.js";
 
 declare module 'fastify' {
     export interface FastifyInstance {
@@ -68,9 +68,9 @@ async function main() {
   const editUserService = new EditUserService(userRepository, notificationError);
   const deleteUserService = new DeleteUserService(userRepository, notificationError);
   const getUserService = new GetUserService(userRepository, notificationError);
-  const verificationService = new VerificationService(userRepository, notificationError);
   const loginUserService = new LoginUserService(userRepository, notificationError);
   const logoutUserService = new LogoutUserService(userRepository, notificationError);
+  const userService = new UserService(userRepository, notificationError);
 
   const userController = new UserController(
     createUserService,
@@ -78,7 +78,7 @@ async function main() {
     deleteUserService,
     getUserService,
     userRepository,
-    verificationService
+    userService
   );
 
     const userSessionController = new UserSessionController(

@@ -15,4 +15,9 @@ export class GetUserQueryHandler implements BaseHandlerQuery<GetUserQuery | null
     {
         return await this.UserRepository.GetUserQueryDTOByUuid(query.Uuid);
     }
+
+    async GetAll(): Promise<GetUserQueryDTO[]>
+    {
+        return await this.UserRepository.GetFullUsers();
+    }
 }
