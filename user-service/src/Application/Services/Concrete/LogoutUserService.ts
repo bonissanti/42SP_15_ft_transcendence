@@ -1,4 +1,4 @@
-import {UserSessionDTO} from "../../DTO/Command/UserSessionDTO.js";
+import {UserSessionDTO} from "../../DTO/ToCommand/UserSessionDTO.js";
 import {UserRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/UserRepository.js";
 import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
 import {BaseService} from "../Interfaces/BaseService.js";

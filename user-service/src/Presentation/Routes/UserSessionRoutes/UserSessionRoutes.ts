@@ -2,7 +2,7 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 import { UserSessionController } from '../../Controllers/UserSessionController.js';
 import { UserRepository } from '../../../Infrastructure/Persistence/Repositories/Concrete/UserRepository.js';
 import { verifyGoogleCredential, findOrCreateUser, handleAuthError } from './GoogleAuthHelpers.js';
-import {UserSessionDTO} from "../../../Application/DTO/Command/UserSessionDTO.js";
+import {UserSessionDTO} from "../../../Application/DTO/ToCommand/UserSessionDTO.js";
 import {authenticateJWT} from "../../Middleware/AuthMiddleware.js";
 
 export const UserSessionRoutes = async (server: any, userSessionController: UserSessionController, userRepository: UserRepository): Promise<void> => {

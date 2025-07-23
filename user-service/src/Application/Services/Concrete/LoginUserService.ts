@@ -1,5 +1,5 @@
 import {BaseService} from "../Interfaces/BaseService.js";
-import {UserSessionDTO} from "../../DTO/Command/UserSessionDTO.js";
+import {UserSessionDTO} from "../../DTO/ToCommand/UserSessionDTO.js";
 import {LoginSessionCommandHandler} from "../../../Domain/Command/Handlers/LoginSessionCommandHandler.js";
 import {LoginSessionCommandValidator} from "../../../Domain/Command/Validators/LoginSessionCommandValidator.js";
 import {UserRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/UserRepository.js";

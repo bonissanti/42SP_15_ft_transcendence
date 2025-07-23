@@ -1,4 +1,4 @@
-import { CreateUserDTO } from "../../DTO/Command/CreateUserDTO.js";
+import { CreateUserDTO } from "../../DTO/ToCommand/CreateUserDTO.js";
 import { BaseService } from "../Interfaces/BaseService.js";
 import { FastifyReply } from "fastify";
 import { Result } from "../../../Shared/Utils/Result.js";

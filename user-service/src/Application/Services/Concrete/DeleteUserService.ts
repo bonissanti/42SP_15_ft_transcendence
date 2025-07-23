@@ -1,6 +1,6 @@
 import { FastifyReply } from "fastify";
 import { BaseService } from "../Interfaces/BaseService.js";
-import { DeleteUserDTO } from "../../DTO/Command/DeleteUserDTO.js";
+import { DeleteUserDTO } from "../../DTO/ToCommand/DeleteUserDTO.js";
 import { NotificationError } from "../../../Shared/Errors/NotificationError.js";
 import { UserRepository } from "../../../Infrastructure/Persistence/Repositories/Concrete/UserRepository.js";
 import { DeleteUserCommandValidator } from "../../../Domain/Command/Validators/DeleteUserCommandValidator.js";

@@ -1,6 +1,6 @@
 import {FastifyReply} from "fastify";
 import {BaseService} from "../Interfaces/BaseService.js";
-import {EditUserDTO} from "../../DTO/Command/EditUserDTO.js";
+import {EditUserDTO} from "../../DTO/ToCommand/EditUserDTO.js";
 import {UserRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/UserRepository.js";
 import {EditUserCommand} from "../../../Domain/Command/CommandObject/EditUserCommand.js";
 import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog.js";

@@ -4,17 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d3134b4-a67d-4c46-80e3-654566a805b8" name="Changes" comment="refactor: remove redundant `VerifyIfUserExistsByUuidsService` and unused query handler&#10;&#10;- Deleted `VerifyIfUserExistsByUuidsService` method and related query handler for cleanup.&#10;- Added `qs` and `@types/qs` to dependencies for handling query string parsing.&#10;- Updated `package-lock.json` with new dependency installations.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/Application/DTO/Command/EditUserDTO.ts" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/Application/DTO/Command/EditUserDTO.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/Application/DTO/Query/VerifyIfUsersExistsByUuidsDTO.ts" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/Application/DTO/Query/VerifyIfUsersExistsByUuidsDTO.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/Application/Services/Concrete/UserService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/Application/Services/Concrete/UserService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/Application/Services/Concrete/VerificationService.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/Application/ViewModels/GetUserViewModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/Application/ViewModels/GetUserViewModel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/Domain/Command/CommandObject/CreateUserCommand.ts" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/Domain/Command/CommandObject/CreateUserCommand.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/Domain/Command/CommandObject/EditUserCommand.ts" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/Domain/Command/CommandObject/EditUserCommand.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/Presentation/Controllers/UserController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/Presentation/Controllers/UserController.ts" afterDir="false" />
-    </list>
+    <list default="true" id="6d3134b4-a67d-4c46-80e3-654566a805b8" name="Changes" comment="feat: add `GetAllUsers` method and update constructors for enhanced user handling&#10;&#10;- Introduced `GetAllUsers` method in `GetUserService` to fetch all users.&#10;- Added `GetAll` method in `GetUserQueryHandler` for querying all users.&#10;- Updated `GetUserViewModel` constructor to support nullable numerical values. &#10;- Refactored imports and service assignments in `index.ts`." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -205,30 +195,6 @@
       <workItem from="1753220205206" duration="8857000" />
       <workItem from="1753229549471" duration="1180000" />
       <workItem from="1753262409938" duration="1325000" />
-    </task>
-    <task id="LOCAL-00022" summary="feat: setup TypeScript config and refactor TournamentRepository for unified Prisma access&#10;&#10;- Added `tsconfig.json` with standardized compiler options.&#10;- Removed redundant `PrismaClient` instantiation. TournamentRepository now uses a shared `PrismaService` (`@prisma`) for database operations.&#10;- Adjusted method calls in `TournamentRepository` to align with updated structure.&#10;- Added `TournamentRoutes` to configure endpoints for tournament operations.">
-      <option name="closed" value="true" />
-      <created>1752535802718</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1752535802718</updated>
-    </task>
-    <task id="LOCAL-00023" summary="refactor: update `BackendApiClient` request structure, error handling, and enhance `Dockerfile` installation&#10;&#10;- Refactored `BackendApiClient` to use query parameters for `verifyUserExists` and updated related typings.&#10;- Adjusted error mappings in `CreateTournamentValidator` for internal backend API errors.&#10;- Enhanced `Dockerfile` to include registry-specific npm installation with optional dependencies disabled.&#10;- Revised `BaseHandlerQuery` interface to support distinct command and result types.">
-      <option name="closed" value="true" />
-      <created>1752629104414</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1752629104414</updated>
-    </task>
-    <task id="LOCAL-00024" summary="feat: add `InternalBackendApiError`, update `GetUserQuery` and related services&#10;&#10;- Introduced new error type `InternalBackendApiError` in `ErrorCatalog` for backend communication issues.&#10;- Made `Email` and `Username` optional in `GetUserQuery` and adjusted its constructor for better flexibility.&#10;- Updated `GetUserService` to reflect changes in query and handle nullable fields seamlessly.">
-      <option name="closed" value="true" />
-      <created>1752629116280</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
-      <option name="project" value="LOCAL" />
-      <updated>1752629116280</updated>
     </task>
     <task id="LOCAL-00025" summary="feat: add `InternalBackendApiError`, update `GetUserQuery` and related services&#10;&#10;- Introduced new error type `InternalBackendApiError` in `ErrorCatalog` for backend communication issues.&#10;- Made `Email` and `Username` optional in `GetUserQuery` and adjusted its constructor for better flexibility.&#10;- Updated `GetUserService` to reflect changes in query and handle nullable fields seamlessly.">
       <option name="closed" value="true" />
@@ -598,7 +564,31 @@
       <option name="project" value="LOCAL" />
       <updated>1753266072840</updated>
     </task>
-    <option name="localTasksCounter" value="71" />
+    <task id="LOCAL-00071" summary="feat: add `anonymous` property to user commands and refactor constructors&#10;&#10;- Introduced `anonymous` property in `EditUserCommand` and `CreateUserCommand` for enhanced user data handling.&#10;- Updated constructors and DTO mappings to support the new property.&#10;- Removed unused comment in `BackendApiClient`.">
+      <option name="closed" value="true" />
+      <created>1753267643584</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1753267643584</updated>
+    </task>
+    <task id="LOCAL-00072" summary="feat: add `GetAllUsers` method and update constructors for enhanced user handling&#10;&#10;- Introduced `GetAllUsers` method in `GetUserService` to fetch all users.&#10;- Added `GetAll` method in `GetUserQueryHandler` for querying all users.&#10;- Updated `GetUserViewModel` constructor to support nullable numerical values. &#10;- Refactored imports and service assignments in `index.ts`.">
+      <option name="closed" value="true" />
+      <created>1753267652680</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1753267652680</updated>
+    </task>
+    <task id="LOCAL-00073" summary="feat: add `GetAllUsers` method and update constructors for enhanced user handling&#10;&#10;- Introduced `GetAllUsers` method in `GetUserService` to fetch all users.&#10;- Added `GetAll` method in `GetUserQueryHandler` for querying all users.&#10;- Updated `GetUserViewModel` constructor to support nullable numerical values. &#10;- Refactored imports and service assignments in `index.ts`.">
+      <option name="closed" value="true" />
+      <created>1753267661939</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1753267661940</updated>
+    </task>
+    <option name="localTasksCounter" value="74" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -616,10 +606,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="chore: add missing newline and leave TODO for additional validators&#10;&#10;- Fixed missing newline in `GenerateMatchmakingQueryValidator.ts`.&#10;- Added a TODO placeholder to include validators for additional getters." />
-    <MESSAGE value="chore: add TODO placeholders for unimplemented methods in `BackendApiClient`" />
-    <MESSAGE value="feat: enhance matchmaking logic in `UserRepository` and add `GetUserMatchmakingQueryDTO`&#10;&#10;- Updated `SearchForClosestOpponent` to refine candidate selection based on win ratio differences.&#10;- Implemented a fallback `SearchForAnyOpponent` method for broader matchmaking.&#10;- Added `mapToUserMatchmakingQueryDTO` for structured matchmaking data mapping.&#10;- Introduced `GetUserMatchmakingQueryDTO` to support detailed matchmaking query responses." />
-    <MESSAGE value="feat: update matchmaking DTOs and queries to support total games and username&#10;&#10;- Replaced `uuid` with `username` in `GenerateMatchmakingDTO` and `GenerateMatchmakingQuery`.&#10;- Added `totalGames` property to DTOs and queries for enhanced matchmaking logic.&#10;- Updated `BackendApiClient` with new methods for user verification and opponent search.&#10;- Added `NegativeValues` error to `ErrorCatalog` for input validation." />
     <MESSAGE value="refactor: replace `HistoryRepository` with `BackendApiClient` in `GenerateMatchmakingQueryHandler` and update validation&#10;&#10;- Updated `Handler` to use `BackendApiClient` for opponent search and user validation.&#10;- Extended input validation to include `totalGames` check.&#10;- Replaced `uuid` with `username` in user validation and opponent search methods." />
     <MESSAGE value="refactor: update `UserRepository` and `MatchmakingService` for improved matchmaking logic&#10;&#10;- Removed unnecessary `parameterLoses` from `SearchForClosestOpponent`" />
     <MESSAGE value="refactor: simplify `SearchForClosestOpponent` and enhance `MatchmakingService`&#10;&#10;- Removed unnecessary `paremterLoses` parameter from `SearchForClosestOpponent`.&#10;- Refactored `MatchmakingService` to include enhanced query validation and error handling.&#10;- Updated `Generate` method to return detailed matchmaking results using `GetUserMatchmakingViewModel`." />
@@ -641,7 +627,11 @@
     <MESSAGE value="feat: add Redis integration and enhance `LogoutUserService` logic&#10;&#10;- Added `redis` dependency to manage session storage and caching (`package.json`, `package-lock.json`).&#10;- Updated `LogoutUserService` to support passing `request` alongside session data.&#10;- Introduced Redis client packages for modular functionality: `@redis/client`, `@redis/bloom`, `@redis/json`, `@redis/search`, `@redis/time-series`." />
     <MESSAGE value="Merge remote-tracking branch 'origin/master' into fix/login-logout&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;game-service/package-lock.json&#10;#&#9;game-service/package.json&#10;#&#9;game-service/src/index.ts&#10;#&#9;user-service/package-lock.json&#10;#&#9;user-service/package.json&#10;#&#9;user-service/src/Application/DTO/Command/CreateUserAuth0DTO.ts&#10;#&#9;user-service/src/Application/DTO/Command/CreateUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/Command/DeleteUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/Command/EditUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/Command/UserSessionDTO.ts&#10;#&#9;user-service/src/Application/DTO/Query/GetUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/Query/VerifyIfUsersExistsByUuidsDTO.ts&#10;#&#9;user-service/src/Application/DTO/ToCommand/CreateUserAuth0DTO.ts&#10;#&#9;user-service/src/Application/DTO/ToCommand/CreateUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/ToCommand/DeleteUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/ToCommand/EditUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/ToCommand/UserSessionDTO.ts&#10;#&#9;user-service/src/Application/Services/Concrete/CreateUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/DeleteUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/EditUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/GetUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/LoginUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/LogoutUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/VerificationService.ts&#10;#&#9;user-service/src/Domain/Command/CommandObject/CreateUserCommand.ts&#10;#&#9;user-service/src/Domain/Command/CommandObject/DeleteUserCommand.ts&#10;#&#9;user-service/src/Domain/Command/CommandObject/EditUserCommand.ts&#10;#&#9;user-service/src/Domain/Command/CommandObject/UserSessionCommand.ts&#10;#&#9;user-service/src/Domain/DTO/Command/CreateUserAuth0DTO.ts&#10;#&#9;user-service/src/Domain/DTO/Command/CreateUserDTO.ts&#10;#&#9;user-service/src/Domain/DTO/Command/DeleteUserDTO.ts&#10;#&#9;user-service/src/Domain/DTO/Command/EditUserDTO.ts&#10;#&#9;user-service/src/Domain/DTO/Command/UserSessionDTO.ts&#10;#&#9;user-service/src/Domain/Queries/Handlers/GetUserQueryHandler.ts&#10;#&#9;user-service/src/Domain/Queries/QueryObject/GetUserQuery.ts&#10;#&#9;user-service/src/Domain/Queries/QueryObject/VerifyIfUsersExistsByUuidsQuery.ts&#10;#&#9;user-service/src/Infrastructure/Persistence/Repositories/Interface/IBaseRepository.ts&#10;#&#9;user-service/src/Presentation/Controllers/UserController.ts&#10;#&#9;user-service/src/Presentation/Controllers/UserSessionController.ts&#10;#&#9;user-service/src/Presentation/Middleware/AuthMiddleware.ts&#10;#&#9;user-service/src/Presentation/Routes/UserRoutes/UserRoutes.ts&#10;#&#9;user-service/src/Presentation/Routes/UserSessionRoutes/UserSessionRoutes.ts&#10;#&#9;user-service/src/index.ts" />
     <MESSAGE value="refactor: remove redundant `VerifyIfUserExistsByUuidsService` and unused query handler&#10;&#10;- Deleted `VerifyIfUserExistsByUuidsService` method and related query handler for cleanup.&#10;- Added `qs` and `@types/qs` to dependencies for handling query string parsing.&#10;- Updated `package-lock.json` with new dependency installations." />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor: remove redundant `VerifyIfUserExistsByUuidsService` and unused query handler&#10;&#10;- Deleted `VerifyIfUserExistsByUuidsService` method and related query handler for cleanup.&#10;- Added `qs` and `@types/qs` to dependencies for handling query string parsing.&#10;- Updated `package-lock.json` with new dependency installations." />
+    <MESSAGE value="feat: add `anonymous` property to user commands and refactor constructors&#10;&#10;- Introduced `anonymous` property in `EditUserCommand` and `CreateUserCommand` for enhanced user data handling.&#10;- Updated constructors and DTO mappings to support the new property.&#10;- Removed unused comment in `BackendApiClient`." />
+    <MESSAGE value="feat: add `GetAllUsers` method and update constructors for enhanced user handling&#10;&#10;- Introduced `GetAllUsers` method in `GetUserService` to fetch all users.&#10;- Added `GetAll` method in `GetUserQueryHandler` for querying all users.&#10;- Updated `GetUserViewModel` constructor to support nullable numerical values. &#10;- Refactored imports and service assignments in `index.ts`." />
+    <MESSAGE value="feat: add `GetAllUsers` method and update user handling constructors&#10;&#10;- Added `GetAllUsers` method in `GetUserService` and `GetAll` in `GetUserQueryHandler` to retrieve all users.&#10;- Enhanced `GetUserViewModel` constructor for nullable numerical values.&#10;- Refactored imports and service assignments in `index.ts`." />
+    <MESSAGE value="feat: add `GetAllUsers` method and update user handling constructors&#10;&#10;- Added `GetAllUsers` method in `GetUserService` and `GetAll` in `GetUserQueryHandler` to retrieve all users.&#10;- Enhanced `GetUserViewModel` constructor for nullable numerical values.&#10;- Refactored imports and service assignments in `index.ts`." />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add `GetAllUsers` method and update user handling constructors&#10;&#10;- Added `GetAllUsers` method in `GetUserService` and `GetAll` in `GetUserQueryHandler` to retrieve all users.&#10;- Enhanced `GetUserViewModel` constructor for nullable numerical values.&#10;- Refactored imports and service assignments in `index.ts`." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

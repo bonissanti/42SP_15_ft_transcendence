@@ -19,11 +19,11 @@ import {
 import {
     VerifyIfUsersExistsByUsernamesQueryHandler
 } from "../../../Domain/Queries/Handlers/VerifyIfUsersExistsByUsernamesQueryHandler.js";
-import {VerifyIfUsersExistsByUuidsDTO} from "../../DTO/Query/VerifyIfUsersExistsByUuidsDTO.js";
 import {VerifyIfUsersExistsByUuidsQuery} from "../../../Domain/Queries/QueryObject/VerifyIfUsersExistsByUuidsQuery.js";
 import {
     VerifyIfUsersExistsByUuidsQueryHandler
 } from "../../../Domain/Queries/Handlers/VerifyIfUsersExistsByUuidsQueryHandler.js";
+import {VerifyIfUsersExistsByUuidsDTO} from "../../DTO/ToQuery/VerifyIfUsersExistsByUuidsDTO.js";
 
 export class UserService implements BaseService<any,  boolean>
 {

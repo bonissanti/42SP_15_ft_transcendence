@@ -1,11 +1,11 @@
 import {FastifyReply, FastifyRequest} from "fastify";
-import {CreateUserDTO} from "../../../Application/DTO/Command/CreateUserDTO.js";
+import {CreateUserDTO} from "../../../Application/DTO/ToCommand/CreateUserDTO.js";
 import {authenticateJWT} from "../../Middleware/AuthMiddleware.js";
-import {EditUserDTO} from "../../../Application/DTO/Command/EditUserDTO.js";
-import {DeleteUserDTO} from "../../../Application/DTO/Command/DeleteUserDTO.js";
-import {GetUserDTO} from "../../../Application/DTO/Query/GetUserDTO.js";
+import {EditUserDTO} from "../../../Application/DTO/ToCommand/EditUserDTO.js";
+import {DeleteUserDTO} from "../../../Application/DTO/ToCommand/DeleteUserDTO.js";
 import {UserController} from "../../Controllers/UserController.js";
 import {UpdateStatsDTO} from "../../../Application/DTO/ToCommand/UpdateStatsDTO.js";
+import {GetUserDTO} from "../../../Application/DTO/ToQuery/GetUserDTO.js";
 
 const opts = {
     schema: {

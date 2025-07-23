@@ -1,7 +1,6 @@
 import {GetUserQuery} from "../QueryObject/GetUserQuery.js";
 import {UserRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/UserRepository.js";
 import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
-import {GetUserDTO} from "../../../Application/DTO/Query/GetUserDTO.js";
 import {BaseHandlerQuery} from "./BaseHandlerQuery.js";
 import {GetUserQueryDTO} from "../../QueryDTO/GetUserQueryDTO.js";
 

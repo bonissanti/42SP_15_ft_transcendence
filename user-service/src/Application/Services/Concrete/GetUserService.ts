@@ -1,5 +1,4 @@
 import { BaseService } from "../Interfaces/BaseService.js";
-import { GetUserDTO } from "../../DTO/Query/GetUserDTO.js";
 import { NotificationError } from "../../../Shared/Errors/NotificationError.js";
 import { FastifyReply } from "fastify";
 import { GetUserQuery } from "../../../Domain/Queries/QueryObject/GetUserQuery.js";
@@ -11,6 +10,7 @@ import { ValidationException } from "../../../Shared/Errors/ValidationException.
 import { ErrorCatalog } from "../../../Shared/Errors/ErrorCatalog.js";
 import { Prisma } from '@prisma/client';
 import {GetUserQueryDTO} from "../../../Domain/QueryDTO/GetUserQueryDTO.js";
+import {GetUserDTO} from "../../DTO/ToQuery/GetUserDTO.js";
 
 export class GetUserService implements BaseService<GetUserDTO, GetUserViewModel> {
     private UserRepository: UserRepository;
