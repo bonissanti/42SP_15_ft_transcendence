@@ -4,15 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d3134b4-a67d-4c46-80e3-654566a805b8" name="Changes" comment="feat: add `GetAllUsers` method and update constructors for enhanced user handling&#10;&#10;- Introduced `GetAllUsers` method in `GetUserService` to fetch all users.&#10;- Added `GetAll` method in `GetUserQueryHandler` for querying all users.&#10;- Updated `GetUserViewModel` constructor to support nullable numerical values. &#10;- Refactored imports and service assignments in `index.ts`.">
-      <change afterPath="$PROJECT_DIR$/user-service/src/Domain/Command/Validators/ChangeRequestFriendStatusCommandValidator.ts" afterDir="false" />
+    <list default="true" id="6d3134b4-a67d-4c46-80e3-654566a805b8" name="Changes" comment="feat: enhance friendship handling and repository methods&#10;&#10;- Added `FastifyReply` for reply handling in `FriendshipService`.&#10;- Introduced new constructor dependencies and refactored `FriendshipService` handlers.&#10;- Updated friendship repository methods with improved typing and additional utility functions.&#10;- Changed `Friendship` entity to support mutable `status`.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/Application/Services/Concrete/FriendshipService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/Application/Services/Concrete/FriendshipService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/Domain/Command/Handlers/AddRequestFriendCommandHandler.ts" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/Domain/Command/Handlers/AddRequestFriendCommandHandler.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/Domain/Command/Handlers/ChangeRequestFriendStatusCommandHandler.ts" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/Domain/Command/Handlers/ChangeRequestFriendStatusCommandHandler.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/Domain/Command/Validators/AddRequestFriendCommandValidator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/Domain/Command/Validators/AddRequestFriendCommandValidator.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/Domain/Entities/Concrete/Friendship.ts" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/Domain/Entities/Concrete/Friendship.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/Infrastructure/Persistence/Repositories/Concrete/FriendshipRepository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/Infrastructure/Persistence/Repositories/Concrete/FriendshipRepository.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/Presentation/Controllers/FriendshipController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/Presentation/Controllers/FriendshipController.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/Presentation/Routes/FriendshipRoutes/FriendshipRoutes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/Presentation/Routes/FriendshipRoutes/FriendshipRoutes.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,40 +54,40 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Docker.tournament: Compose Deployment.executor": "Run",
-    "HTTP Request.All in rest-api_10.executor": "Run",
-    "HTTP Request.http-requests-log | #1.executor": "Run",
-    "HTTP Request.http-requests-log | #6.executor": "Run",
-    "HTTP Request.http-requests-log | #7.executor": "Run",
-    "HTTP Request.http-requests-log | #8.executor": "Run",
-    "HTTP Request.rest-api_10 | #1.executor": "Run",
-    "HTTP Request.rest-api_11 | #1.executor": "Run",
-    "HTTP Request.rest-api_9 | #1.executor": "Run",
-    "JavaScript Debug.127.0.0.1:8080.executor": "Debug",
-    "JavaScript Debug.127.0.0.1:8081.executor": "Debug",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "full.screen.before.presentation.mode": "false",
-    "git-widget-placeholder": "feature/friendship",
-    "ignore.virus.scanning.warn.message": "true",
-    "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "C:/Estudos/42_transcendence",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "nodejs_interpreter_path": "node",
-    "nodejs_package_manager_path": "npm",
-    "npm.build.executor": "Run",
-    "npm.clean:dist.executor": "Run",
-    "npm.start (1).executor": "Run",
-    "npm.start.executor": "Debug",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "ts.external.directory.path": "/home/bruno/Documents/42SP/42_transcendence/frontend/node_modules/typescript/lib"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Docker.tournament: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.All in rest-api_10.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.http-requests-log | #1.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.http-requests-log | #6.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.http-requests-log | #7.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.http-requests-log | #8.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.rest-api_10 | #1.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.rest-api_11 | #1.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.rest-api_9 | #1.executor&quot;: &quot;Run&quot;,
+    &quot;JavaScript Debug.127.0.0.1:8080.executor&quot;: &quot;Debug&quot;,
+    &quot;JavaScript Debug.127.0.0.1:8081.executor&quot;: &quot;Debug&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;full.screen.before.presentation.mode&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/friendship&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Estudos/42_transcendence&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_interpreter_path&quot;: &quot;node&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.build.executor&quot;: &quot;Run&quot;,
+    &quot;npm.clean:dist.executor&quot;: &quot;Run&quot;,
+    &quot;npm.start (1).executor&quot;: &quot;Run&quot;,
+    &quot;npm.start.executor&quot;: &quot;Debug&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;advanced.settings&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/home/bruno/Documents/42SP/42_transcendence/frontend/node_modules/typescript/lib&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/tournament/src/Application/Queries/Handlers" />
@@ -209,23 +204,9 @@
       <workItem from="1753262409938" duration="1325000" />
       <workItem from="1753293265612" duration="3992000" />
       <workItem from="1753299588068" duration="4795000" />
-      <workItem from="1753309101892" duration="1499000" />
-    </task>
-    <task id="LOCAL-00025" summary="feat: add `InternalBackendApiError`, update `GetUserQuery` and related services&#10;&#10;- Introduced new error type `InternalBackendApiError` in `ErrorCatalog` for backend communication issues.&#10;- Made `Email` and `Username` optional in `GetUserQuery` and adjusted its constructor for better flexibility.&#10;- Updated `GetUserService` to reflect changes in query and handle nullable fields seamlessly.">
-      <option name="closed" value="true" />
-      <created>1752629123566</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1752629123567</updated>
-    </task>
-    <task id="LOCAL-00026" summary="feat: add user existence verification via UUIDs endpoint&#10;&#10;- Introduced `/user/exists` GET route to verify user existence by UUIDs with input validation.&#10;- Added `VerifyIfUsersExistsByUuidsDTO` and `VerificationService` for handling new functionality.&#10;- Updated `UserRepository` with methods to validate user existence by UUID or username arrays.">
-      <option name="closed" value="true" />
-      <created>1752629156569</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1752629156569</updated>
+      <workItem from="1753309101892" duration="2006000" />
+      <workItem from="1753311167866" duration="463000" />
+      <workItem from="1753311643051" duration="338000" />
     </task>
     <task id="LOCAL-00027" summary="feat: add `VerificationService`, `VerifyIfUsersExistsByUuidsDTO`, and update paths in tsconfig&#10;&#10;- Introduced `VerificationService` to handle user existence verification logic.&#10;- Added `VerifyIfUsersExistsByUuidsDTO` for querying user existence by UUIDs.&#10;- Updated TypeScript configuration paths to ensure proper module resolution.">
       <option name="closed" value="true" />
@@ -603,7 +584,23 @@
       <option name="project" value="LOCAL" />
       <updated>1753267661940</updated>
     </task>
-    <option name="localTasksCounter" value="74" />
+    <task id="LOCAL-00074" summary="feat: add `ChangeRequestFriendStatusCommandValidator` and update friendship handlers&#10;&#10;- Introduced `ChangeRequestFriendStatusCommandValidator` for validating friend status change commands.&#10;- Updated `AddRequestFriendCommandHandler` and `ChangeRequestFriendStatusCommandHandler` with corrected method calls and async handling.&#10;- Refactored constructor parameters to fix type mismatches.">
+      <option name="closed" value="true" />
+      <created>1753310841512</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1753310841512</updated>
+    </task>
+    <task id="LOCAL-00075" summary="feat: enhance friendship handling and repository methods&#10;&#10;- Added `FastifyReply` for reply handling in `FriendshipService`.&#10;- Introduced new constructor dependencies and refactored `FriendshipService` handlers.&#10;- Updated friendship repository methods with improved typing and additional utility functions.&#10;- Changed `Friendship` entity to support mutable `status`.">
+      <option name="closed" value="true" />
+      <created>1753310851968</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1753310851968</updated>
+    </task>
+    <option name="localTasksCounter" value="76" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -621,8 +618,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="refactor: replace `HistoryRepository` with `BackendApiClient` in `GenerateMatchmakingQueryHandler` and update validation&#10;&#10;- Updated `Handler` to use `BackendApiClient` for opponent search and user validation.&#10;- Extended input validation to include `totalGames` check.&#10;- Replaced `uuid` with `username` in user validation and opponent search methods." />
-    <MESSAGE value="refactor: update `UserRepository` and `MatchmakingService` for improved matchmaking logic&#10;&#10;- Removed unnecessary `parameterLoses` from `SearchForClosestOpponent`" />
     <MESSAGE value="refactor: simplify `SearchForClosestOpponent` and enhance `MatchmakingService`&#10;&#10;- Removed unnecessary `paremterLoses` parameter from `SearchForClosestOpponent`.&#10;- Refactored `MatchmakingService` to include enhanced query validation and error handling.&#10;- Updated `Generate` method to return detailed matchmaking results using `GetUserMatchmakingViewModel`." />
     <MESSAGE value="refactor: remove unused `GenerateMatchmakingQueryDTO` and `GenerateMatchmakingViewModel` classes" />
     <MESSAGE value="refactor: switch matchmaking input from body to query parameters&#10;&#10;- Updated `GenerateMatchmaking` method in `MatchmakingController` to use query parameters instead of request body.&#10;- Adjusted `MatchmakingRoutes` to reflect the new query-based input.&#10;- Enhanced input validation with querystring schema in `MatchmakingRoutes`." />
@@ -643,10 +638,12 @@
     <MESSAGE value="Merge remote-tracking branch 'origin/master' into fix/login-logout&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;game-service/package-lock.json&#10;#&#9;game-service/package.json&#10;#&#9;game-service/src/index.ts&#10;#&#9;user-service/package-lock.json&#10;#&#9;user-service/package.json&#10;#&#9;user-service/src/Application/DTO/Command/CreateUserAuth0DTO.ts&#10;#&#9;user-service/src/Application/DTO/Command/CreateUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/Command/DeleteUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/Command/EditUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/Command/UserSessionDTO.ts&#10;#&#9;user-service/src/Application/DTO/Query/GetUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/Query/VerifyIfUsersExistsByUuidsDTO.ts&#10;#&#9;user-service/src/Application/DTO/ToCommand/CreateUserAuth0DTO.ts&#10;#&#9;user-service/src/Application/DTO/ToCommand/CreateUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/ToCommand/DeleteUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/ToCommand/EditUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/ToCommand/UserSessionDTO.ts&#10;#&#9;user-service/src/Application/Services/Concrete/CreateUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/DeleteUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/EditUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/GetUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/LoginUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/LogoutUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/VerificationService.ts&#10;#&#9;user-service/src/Domain/Command/CommandObject/CreateUserCommand.ts&#10;#&#9;user-service/src/Domain/Command/CommandObject/DeleteUserCommand.ts&#10;#&#9;user-service/src/Domain/Command/CommandObject/EditUserCommand.ts&#10;#&#9;user-service/src/Domain/Command/CommandObject/UserSessionCommand.ts&#10;#&#9;user-service/src/Domain/DTO/Command/CreateUserAuth0DTO.ts&#10;#&#9;user-service/src/Domain/DTO/Command/CreateUserDTO.ts&#10;#&#9;user-service/src/Domain/DTO/Command/DeleteUserDTO.ts&#10;#&#9;user-service/src/Domain/DTO/Command/EditUserDTO.ts&#10;#&#9;user-service/src/Domain/DTO/Command/UserSessionDTO.ts&#10;#&#9;user-service/src/Domain/Queries/Handlers/GetUserQueryHandler.ts&#10;#&#9;user-service/src/Domain/Queries/QueryObject/GetUserQuery.ts&#10;#&#9;user-service/src/Domain/Queries/QueryObject/VerifyIfUsersExistsByUuidsQuery.ts&#10;#&#9;user-service/src/Infrastructure/Persistence/Repositories/Interface/IBaseRepository.ts&#10;#&#9;user-service/src/Presentation/Controllers/UserController.ts&#10;#&#9;user-service/src/Presentation/Controllers/UserSessionController.ts&#10;#&#9;user-service/src/Presentation/Middleware/AuthMiddleware.ts&#10;#&#9;user-service/src/Presentation/Routes/UserRoutes/UserRoutes.ts&#10;#&#9;user-service/src/Presentation/Routes/UserSessionRoutes/UserSessionRoutes.ts&#10;#&#9;user-service/src/index.ts" />
     <MESSAGE value="refactor: remove redundant `VerifyIfUserExistsByUuidsService` and unused query handler&#10;&#10;- Deleted `VerifyIfUserExistsByUuidsService` method and related query handler for cleanup.&#10;- Added `qs` and `@types/qs` to dependencies for handling query string parsing.&#10;- Updated `package-lock.json` with new dependency installations." />
     <MESSAGE value="feat: add `anonymous` property to user commands and refactor constructors&#10;&#10;- Introduced `anonymous` property in `EditUserCommand` and `CreateUserCommand` for enhanced user data handling.&#10;- Updated constructors and DTO mappings to support the new property.&#10;- Removed unused comment in `BackendApiClient`." />
+    <MESSAGE value="feat: add `GetAllUsers` method and update user handling constructors&#10;&#10;- Added `GetAllUsers` method in `GetUserService` and `GetAll` in `GetUserQueryHandler` to retrieve all users.&#10;- Enhanced `GetUserViewModel` constructor for nullable numerical values.&#10;- Refactored imports and service assignments in `index.ts`." />
+    <MESSAGE value="feat: add `GetAllUsers` method and update user handling constructors&#10;&#10;- Added `GetAllUsers` method in `GetUserService` and `GetAll` in `GetUserQueryHandler` to retrieve all users.&#10;- Enhanced `GetUserViewModel` constructor for nullable numerical values.&#10;- Refactored imports and service assignments in `index.ts`." />
     <MESSAGE value="feat: add `GetAllUsers` method and update constructors for enhanced user handling&#10;&#10;- Introduced `GetAllUsers` method in `GetUserService` to fetch all users.&#10;- Added `GetAll` method in `GetUserQueryHandler` for querying all users.&#10;- Updated `GetUserViewModel` constructor to support nullable numerical values. &#10;- Refactored imports and service assignments in `index.ts`." />
-    <MESSAGE value="feat: add `GetAllUsers` method and update user handling constructors&#10;&#10;- Added `GetAllUsers` method in `GetUserService` and `GetAll` in `GetUserQueryHandler` to retrieve all users.&#10;- Enhanced `GetUserViewModel` constructor for nullable numerical values.&#10;- Refactored imports and service assignments in `index.ts`." />
-    <MESSAGE value="feat: add `GetAllUsers` method and update user handling constructors&#10;&#10;- Added `GetAllUsers` method in `GetUserService` and `GetAll` in `GetUserQueryHandler` to retrieve all users.&#10;- Enhanced `GetUserViewModel` constructor for nullable numerical values.&#10;- Refactored imports and service assignments in `index.ts`." />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: add `GetAllUsers` method and update user handling constructors&#10;&#10;- Added `GetAllUsers` method in `GetUserService` and `GetAll` in `GetUserQueryHandler` to retrieve all users.&#10;- Enhanced `GetUserViewModel` constructor for nullable numerical values.&#10;- Refactored imports and service assignments in `index.ts`." />
+    <MESSAGE value="feat: add `ChangeRequestFriendStatusCommandValidator` and update friendship handlers&#10;&#10;- Introduced `ChangeRequestFriendStatusCommandValidator` for validating friend status change commands.&#10;- Updated `AddRequestFriendCommandHandler` and `ChangeRequestFriendStatusCommandHandler` with corrected method calls and async handling.&#10;- Refactored constructor parameters to fix type mismatches." />
+    <MESSAGE value="feat: enhance friendship handling and repository methods&#10;&#10;- Added `FastifyReply` for reply handling in `FriendshipService`.&#10;- Introduced new constructor dependencies and refactored `FriendshipService` handlers.&#10;- Updated friendship repository methods with improved typing and additional utility functions.&#10;- Changed `Friendship` entity to support mutable `status`." />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: enhance friendship handling and repository methods&#10;&#10;- Added `FastifyReply` for reply handling in `FriendshipService`.&#10;- Introduced new constructor dependencies and refactored `FriendshipService` handlers.&#10;- Updated friendship repository methods with improved typing and additional utility functions.&#10;- Changed `Friendship` entity to support mutable `status`." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
