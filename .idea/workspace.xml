@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d3134b4-a67d-4c46-80e3-654566a805b8" name="Changes" comment="feat: add Redis integration and enhance `LogoutUserService` logic&#10;&#10;- Added `redis` dependency to manage session storage and caching (`package.json`, `package-lock.json`).&#10;- Updated `LogoutUserService` to support passing `request` alongside session data.&#10;- Introduced Redis client packages for modular functionality: `@redis/client`, `@redis/bloom`, `@redis/json`, `@redis/search`, `@redis/time-series`." />
+    <list default="true" id="6d3134b4-a67d-4c46-80e3-654566a805b8" name="Changes" comment="Merge remote-tracking branch 'origin/master' into fix/login-logout&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;game-service/package-lock.json&#10;#&#9;game-service/package.json&#10;#&#9;game-service/src/index.ts&#10;#&#9;user-service/package-lock.json&#10;#&#9;user-service/package.json&#10;#&#9;user-service/src/Application/DTO/Command/CreateUserAuth0DTO.ts&#10;#&#9;user-service/src/Application/DTO/Command/CreateUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/Command/DeleteUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/Command/EditUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/Command/UserSessionDTO.ts&#10;#&#9;user-service/src/Application/DTO/Query/GetUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/Query/VerifyIfUsersExistsByUuidsDTO.ts&#10;#&#9;user-service/src/Application/DTO/ToCommand/CreateUserAuth0DTO.ts&#10;#&#9;user-service/src/Application/DTO/ToCommand/CreateUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/ToCommand/DeleteUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/ToCommand/EditUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/ToCommand/UserSessionDTO.ts&#10;#&#9;user-service/src/Application/Services/Concrete/CreateUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/DeleteUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/EditUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/GetUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/LoginUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/LogoutUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/VerificationService.ts&#10;#&#9;user-service/src/Domain/Command/CommandObject/CreateUserCommand.ts&#10;#&#9;user-service/src/Domain/Command/CommandObject/DeleteUserCommand.ts&#10;#&#9;user-service/src/Domain/Command/CommandObject/EditUserCommand.ts&#10;#&#9;user-service/src/Domain/Command/CommandObject/UserSessionCommand.ts&#10;#&#9;user-service/src/Domain/DTO/Command/CreateUserAuth0DTO.ts&#10;#&#9;user-service/src/Domain/DTO/Command/CreateUserDTO.ts&#10;#&#9;user-service/src/Domain/DTO/Command/DeleteUserDTO.ts&#10;#&#9;user-service/src/Domain/DTO/Command/EditUserDTO.ts&#10;#&#9;user-service/src/Domain/DTO/Command/UserSessionDTO.ts&#10;#&#9;user-service/src/Domain/Queries/Handlers/GetUserQueryHandler.ts&#10;#&#9;user-service/src/Domain/Queries/QueryObject/GetUserQuery.ts&#10;#&#9;user-service/src/Domain/Queries/QueryObject/VerifyIfUsersExistsByUuidsQuery.ts&#10;#&#9;user-service/src/Infrastructure/Persistence/Repositories/Interface/IBaseRepository.ts&#10;#&#9;user-service/src/Presentation/Controllers/UserController.ts&#10;#&#9;user-service/src/Presentation/Controllers/UserSessionController.ts&#10;#&#9;user-service/src/Presentation/Middleware/AuthMiddleware.ts&#10;#&#9;user-service/src/Presentation/Routes/UserRoutes/UserRoutes.ts&#10;#&#9;user-service/src/Presentation/Routes/UserSessionRoutes/UserSessionRoutes.ts&#10;#&#9;user-service/src/index.ts">
+      <change beforePath="$PROJECT_DIR$/game-service/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/game-service/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/package-lock.json" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -67,7 +70,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "Merging fix/login-logout",
+    "git-widget-placeholder": "fix/login-logout",
     "junie.onboarding.icon.badge.shown": "true",
     "last_opened_file_path": "/home/bruno/Documents/42SP/42_transcendence/tournament/src/Application/Queries/Handlers",
     "node.js.detected.package.eslint": "true",
@@ -78,7 +81,7 @@
     "npm.start (1).executor": "Run",
     "npm.start.executor": "Debug",
     "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "/home/bruno/Documents/42SP/42_transcendence/frontend/node_modules/typescript/lib"
+    "ts.external.directory.path": "/home/bruno/Documents/42SP/42_transcendence/user-service/node_modules/typescript/lib"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -195,14 +198,6 @@
       <workItem from="1753220205206" duration="8857000" />
       <workItem from="1753229549471" duration="1180000" />
       <workItem from="1753262409938" duration="1325000" />
-    </task>
-    <task id="LOCAL-00019" summary="refactor: make player UUIDs in `EditTournamentDTO` required and adjust internal repository instantiation&#10;&#10;- Updated `EditTournamentDTO` to require `player3Uuid` and `player4Uuid` as mandatory fields.&#10;- Modified `GetAllTournamentService` and `EditTournamentService` to internally instantiate `TournamentRepository`.&#10;- Improved type safety in `EditTournamentCommandHandler` by removing nullable checks for `ChangeFields` method arguments.">
-      <option name="closed" value="true" />
-      <created>1752535772895</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1752535772895</updated>
     </task>
     <task id="LOCAL-00020" summary="refactor: replace user-related logic with tournament operations and instantiate repository internally&#10;&#10;- Updated `GetUserQueryValidator` to handle `GetTournamentQuery` and `DeleteTournamentCommand` instead of user operations.&#10;- Removed user-related DTOs, entities, and types from `IBaseRepository`.&#10;- Internally instantiated `TournamentRepository` in `GetTournamentService` constructor for consistency.&#10;- Added new entry point `index.ts` to initialize server with `fastify` and configure tournament routes.&#10;- Upgraded `@prisma/client` and `prisma` dependencies to latest versions.">
       <option name="closed" value="true" />
@@ -588,7 +583,15 @@
       <option name="project" value="LOCAL" />
       <updated>1753263483617</updated>
     </task>
-    <option name="localTasksCounter" value="68" />
+    <task id="LOCAL-00068" summary="Merge remote-tracking branch 'origin/master' into fix/login-logout&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;game-service/package-lock.json&#10;#&#9;game-service/package.json&#10;#&#9;game-service/src/index.ts&#10;#&#9;user-service/package-lock.json&#10;#&#9;user-service/package.json&#10;#&#9;user-service/src/Application/DTO/Command/CreateUserAuth0DTO.ts&#10;#&#9;user-service/src/Application/DTO/Command/CreateUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/Command/DeleteUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/Command/EditUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/Command/UserSessionDTO.ts&#10;#&#9;user-service/src/Application/DTO/Query/GetUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/Query/VerifyIfUsersExistsByUuidsDTO.ts&#10;#&#9;user-service/src/Application/DTO/ToCommand/CreateUserAuth0DTO.ts&#10;#&#9;user-service/src/Application/DTO/ToCommand/CreateUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/ToCommand/DeleteUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/ToCommand/EditUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/ToCommand/UserSessionDTO.ts&#10;#&#9;user-service/src/Application/Services/Concrete/CreateUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/DeleteUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/EditUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/GetUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/LoginUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/LogoutUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/VerificationService.ts&#10;#&#9;user-service/src/Domain/Command/CommandObject/CreateUserCommand.ts&#10;#&#9;user-service/src/Domain/Command/CommandObject/DeleteUserCommand.ts&#10;#&#9;user-service/src/Domain/Command/CommandObject/EditUserCommand.ts&#10;#&#9;user-service/src/Domain/Command/CommandObject/UserSessionCommand.ts&#10;#&#9;user-service/src/Domain/DTO/Command/CreateUserAuth0DTO.ts&#10;#&#9;user-service/src/Domain/DTO/Command/CreateUserDTO.ts&#10;#&#9;user-service/src/Domain/DTO/Command/DeleteUserDTO.ts&#10;#&#9;user-service/src/Domain/DTO/Command/EditUserDTO.ts&#10;#&#9;user-service/src/Domain/DTO/Command/UserSessionDTO.ts&#10;#&#9;user-service/src/Domain/Queries/Handlers/GetUserQueryHandler.ts&#10;#&#9;user-service/src/Domain/Queries/QueryObject/GetUserQuery.ts&#10;#&#9;user-service/src/Domain/Queries/QueryObject/VerifyIfUsersExistsByUuidsQuery.ts&#10;#&#9;user-service/src/Infrastructure/Persistence/Repositories/Interface/IBaseRepository.ts&#10;#&#9;user-service/src/Presentation/Controllers/UserController.ts&#10;#&#9;user-service/src/Presentation/Controllers/UserSessionController.ts&#10;#&#9;user-service/src/Presentation/Middleware/AuthMiddleware.ts&#10;#&#9;user-service/src/Presentation/Routes/UserRoutes/UserRoutes.ts&#10;#&#9;user-service/src/Presentation/Routes/UserSessionRoutes/UserSessionRoutes.ts&#10;#&#9;user-service/src/index.ts">
+      <option name="closed" value="true" />
+      <created>1753265731446</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1753265731446</updated>
+    </task>
+    <option name="localTasksCounter" value="69" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
