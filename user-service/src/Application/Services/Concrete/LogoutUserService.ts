@@ -32,7 +32,7 @@ export class LogoutUserService implements BaseService<UserSessionDTO>
             const token = request.cookies.token;
 
             if (token)
-                await TokenBlacklistService.blacklistToken(token);
+                await TokenBlacklistService.blacklistToken(token, 3600);
 
             const command: UserSessionCommand = UserSessionCommand.FromDTO(dto);
             await this.LogoutUserValidator.Validator(command);
