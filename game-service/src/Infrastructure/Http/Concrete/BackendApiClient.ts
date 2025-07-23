@@ -10,7 +10,6 @@ export class BackendApiClient implements IBackendApiClient
 
     constructor()
     {
-        //TODO: voltar para o url do BACKEND depois, esse debaixo foi para testar
         this.baseUrl = process.env.BACKEND_API_URL || 'http://user-service:8080';
     }
 
