@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d3134b4-a67d-4c46-80e3-654566a805b8" name="Changes" comment="feat: add query and handler for verifying user existence by usernames&#10;&#10;- Introduced `VerifyIfUsersExistsByUsernamesQuery` and related DTOs.&#10;- Added `VerifyIfUsersExistsByUsernamesQueryHandler` to handle the query logic.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game-service/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/game-service/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game-service/src/Infrastructure/Persistence/Repositories/Concrete/HistoryRepository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/game-service/src/Infrastructure/Persistence/Repositories/Concrete/HistoryRepository.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game-service/src/Presentation/Controllers/TournamentController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/game-service/src/Presentation/Controllers/TournamentController.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game-service/src/Presentation/Routes/HistoryRoutes/HistoryRoutes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/game-service/src/Presentation/Routes/HistoryRoutes/HistoryRoutes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game-service/src/Presentation/Routes/TournamentRoutes/TournamentRoutes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/game-service/src/Presentation/Routes/TournamentRoutes/TournamentRoutes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/Presentation/Routes/UserRoutes/UserRoutes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/Presentation/Routes/UserRoutes/UserRoutes.ts" afterDir="false" />
-    </list>
+    <list default="true" id="6d3134b4-a67d-4c46-80e3-654566a805b8" name="Changes" comment="feat: add `GetAllUsers` method and update constructors for enhanced user handling&#10;&#10;- Introduced `GetAllUsers` method in `GetUserService` to fetch all users.&#10;- Added `GetAll` method in `GetUserQueryHandler` for querying all users.&#10;- Updated `GetUserViewModel` constructor to support nullable numerical values. &#10;- Refactored imports and service assignments in `index.ts`." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -30,7 +22,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="feature/new-trans" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -75,9 +67,9 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "feature/novos-endpoints-externos",
+    "git-widget-placeholder": "fix/login-logout",
     "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "/home/bruno/Documents/42SP/42_transcendence/user-service/src/Domain/Queries/Handlers",
+    "last_opened_file_path": "/home/bruno/Documents/42SP/42_transcendence/tournament/src/Application/Queries/Handlers",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
@@ -91,15 +83,15 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/user-service/src/Domain/Queries/Handlers" />
-      <recent name="$PROJECT_DIR$/user-service/src/Domain/Queries/QueryObject" />
-      <recent name="$PROJECT_DIR$/user-service/src/Application/DTO/ToQuery" />
       <recent name="$PROJECT_DIR$/tournament/src/Application/Queries/Handlers" />
       <recent name="$PROJECT_DIR$/tournament/src/Application/DTO/ToQuery" />
+      <recent name="$PROJECT_DIR$/tournament/src/Application/Services/Concrete" />
+      <recent name="$PROJECT_DIR$/tournament/src/Domain/DTO/Command" />
+      <recent name="$PROJECT_DIR$/tournament/src/Presentation/Controllers" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/user-service/src/Application" />
       <recent name="$PROJECT_DIR$/user-service/src/Domain" />
+      <recent name="$PROJECT_DIR$/user-service/src/Application" />
       <recent name="$PROJECT_DIR$/devops" />
       <recent name="$PROJECT_DIR$/tournament/src/Domain/Queries/QueryObject" />
       <recent name="$PROJECT_DIR$/tournament/src/Domain/Command/Handlers" />
@@ -199,8 +191,74 @@
       <workItem from="1752945751687" duration="1427000" />
       <workItem from="1752953037175" duration="4719000" />
       <workItem from="1752957795072" duration="1303000" />
-      <workItem from="1753022738179" duration="11636000" />
-      <workItem from="1753040238707" duration="1776000" />
+      <workItem from="1753043060074" duration="4990000" />
+      <workItem from="1753220205206" duration="8857000" />
+      <workItem from="1753229549471" duration="1180000" />
+      <workItem from="1753262409938" duration="1325000" />
+    </task>
+    <task id="LOCAL-00025" summary="feat: add `InternalBackendApiError`, update `GetUserQuery` and related services&#10;&#10;- Introduced new error type `InternalBackendApiError` in `ErrorCatalog` for backend communication issues.&#10;- Made `Email` and `Username` optional in `GetUserQuery` and adjusted its constructor for better flexibility.&#10;- Updated `GetUserService` to reflect changes in query and handle nullable fields seamlessly.">
+      <option name="closed" value="true" />
+      <created>1752629123566</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1752629123567</updated>
+    </task>
+    <task id="LOCAL-00026" summary="feat: add user existence verification via UUIDs endpoint&#10;&#10;- Introduced `/user/exists` GET route to verify user existence by UUIDs with input validation.&#10;- Added `VerifyIfUsersExistsByUuidsDTO` and `VerificationService` for handling new functionality.&#10;- Updated `UserRepository` with methods to validate user existence by UUID or username arrays.">
+      <option name="closed" value="true" />
+      <created>1752629156569</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1752629156569</updated>
+    </task>
+    <task id="LOCAL-00027" summary="feat: add `VerificationService`, `VerifyIfUsersExistsByUuidsDTO`, and update paths in tsconfig&#10;&#10;- Introduced `VerificationService` to handle user existence verification logic.&#10;- Added `VerifyIfUsersExistsByUuidsDTO` for querying user existence by UUIDs.&#10;- Updated TypeScript configuration paths to ensure proper module resolution.">
+      <option name="closed" value="true" />
+      <created>1752629165467</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1752629165467</updated>
+    </task>
+    <task id="LOCAL-00028" summary="feat: add `VerificationService`, `VerifyIfUsersExistsByUuidsDTO`, and update paths in tsconfig&#10;&#10;- Introduced `VerificationService` to handle user existence verification logic.&#10;- Added `VerifyIfUsersExistsByUuidsDTO` for querying user existence by UUIDs.&#10;- Updated TypeScript configuration paths to ensure proper module resolution.">
+      <option name="closed" value="true" />
+      <created>1752629170866</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1752629170866</updated>
+    </task>
+    <task id="LOCAL-00029" summary="refactor: relocate query/command handlers and update import statements&#10;&#10;- Moved `BaseHandlerQuery` and `BaseHandlerCommand` from `Application` to `Domain` layer.&#10;- Updated `NotificationError` imports to remove `.js` extensions for consistency.">
+      <option name="closed" value="true" />
+      <created>1752706847912</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1752706847912</updated>
+    </task>
+    <task id="LOCAL-00030" summary="feat: implement `CreateHistory` command handling with validation and repository integration&#10;&#10;- Added `CreateHistoryCommandHandler` for processing `CreateHistoryCommand`.&#10;- Introduced `CreateHistoryDTO` and related `fromDTO` conversion method.&#10;- Created `CreateHistoryValidator` to validate command inputs and ensure user existence via `BackendApiClient`.&#10;- Updated relevant import paths and repository logic for new functionality.">
+      <option name="closed" value="true" />
+      <created>1752706859695</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1752706859695</updated>
+    </task>
+    <task id="LOCAL-00031" summary="refactor: relocate tournament commands/handlers/validators to `Domain` layer and update imports  &#10;&#10;- Moved `CreateTournamentValidator`, `DeleteTournamentCommand`, `CreateTournamentCommand`, and related handlers to the `Domain` layer.  &#10;- Updated import paths throughout the affected files for consistency.  &#10;- Adjusted error handling in `CreateTournamentValidator` to use `InternalBackendApiErrorVerifyUserExists`.">
+      <option name="closed" value="true" />
+      <created>1752706870516</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1752706870516</updated>
+    </task>
+    <task id="LOCAL-00032" summary="refactor: relocate `EditTournament` and `DeleteTournament` commands/handlers/validators to `Domain` layer&#10;&#10;- Moved `EditTournamentCommand`, `EditTournamentCommandHandler`, `EditTournamentCommandValidator`, `DeleteTournamentCommand`, `DeleteUserCommandValidator`, and their handlers to the `Domain` layer.&#10;- Updated import paths across affected files for consistency and alignment with project structure.">
+      <option name="closed" value="true" />
+      <created>1752706883809</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1752706883809</updated>
     </task>
     <task id="LOCAL-00033" summary="feat: add new errors to `ErrorCatalog` and enhance `GetAllTournamentQueryHandler`&#10;&#10;- Added `InvalidNumberOfParticipantsHistory` and `HistoryNotFound` errors in `ErrorCatalog`.&#10;- Updated `InternalBackendApiError` message for `verifyUserExists` endpoint.&#10;- Introduced `GetAllHistoryDTO` for handling username-based query logic.&#10;- Adjusted import paths in `GetAllTournamentQueryHandler` for consistency.">
       <option name="closed" value="true" />
@@ -386,215 +444,151 @@
       <option name="project" value="LOCAL" />
       <updated>1752947165530</updated>
     </task>
-    <task id="LOCAL-00056" summary="CHORE: arquivos trazidos do ultimo merge">
+    <task id="LOCAL-00056" summary="feat: add token generation utility and improve coding style consistency&#10;&#10;- Added `generateToken` function in `AuthMiddleware` for JWT creation with a 1-hour expiration.&#10;- Enhanced code formatting across `AuthMiddleware` and `BaseController` for better readability.&#10;- Adjusted imports and structure of handler files during package reorganization.">
       <option name="closed" value="true" />
-      <created>1752968641057</created>
+      <created>1753045816435</created>
       <option name="number" value="00056" />
       <option name="presentableId" value="LOCAL-00056" />
       <option name="project" value="LOCAL" />
-      <updated>1752968641057</updated>
+      <updated>1753045816436</updated>
     </task>
-    <task id="LOCAL-00057" summary="CHORE: arquivos trazidos do ultimo merge">
+    <task id="LOCAL-00057" summary="feat: implement JWT-based login flow with improved DTO and ViewModel structure&#10;&#10;- Added `Login` method in `LoginUserService` to handle user login with JWT generation.&#10;- Introduced `LoginUserViewModel` for structured token response.&#10;- Refactored DTO imports and file paths for better organization.&#10;- Updated `UserSessionRoutes` and `UserSessionController` to integrate new login logic.">
       <option name="closed" value="true" />
-      <created>1752968647770</created>
+      <created>1753045833770</created>
       <option name="number" value="00057" />
       <option name="presentableId" value="LOCAL-00057" />
       <option name="project" value="LOCAL" />
-      <updated>1752968647770</updated>
+      <updated>1753045833770</updated>
     </task>
-    <task id="LOCAL-00058" summary="refactor: reorganize folder structure and update imports across `user-service`&#10;&#10;- Moved `Command`, `Validators`, and `DTO` files to appropriate `Domain`/`Application` subdirectories.&#10;- Adjusted imports to align with the new structure.&#10;- Removed debug `console.log` statements from `CreateUserCommandHandler`.">
+    <task id="LOCAL-00058" summary="Merge: arquivos trazidos do merge">
       <option name="closed" value="true" />
-      <created>1752968677001</created>
+      <created>1753045857572</created>
       <option name="number" value="00058" />
       <option name="presentableId" value="LOCAL-00058" />
       <option name="project" value="LOCAL" />
-      <updated>1752968677001</updated>
+      <updated>1753045857572</updated>
     </task>
-    <task id="LOCAL-00059" summary="refactor: reorganize DTO, Command, and Validator folders in `user-service`&#10;&#10;- Moved `DTO` files to `Application/DTO/ToCommand`.&#10;- Relocated `Command` and `Validator` files under `Domain/Command`.&#10;- Updated corresponding import paths across affected services and handlers.">
+    <task id="LOCAL-00059" summary="feat: add `TokenBlacklistService` and integrate Redis dependency&#10;&#10;- Created `TokenBlacklistService` for managing blacklisted JWT tokens.&#10;- Added Redis client as a dependency for handling token storage.&#10;- Updated `package.json` to include `redis` dependency.">
       <option name="closed" value="true" />
-      <created>1752968691533</created>
+      <created>1753048016876</created>
       <option name="number" value="00059" />
       <option name="presentableId" value="LOCAL-00059" />
       <option name="project" value="LOCAL" />
-      <updated>1752968691533</updated>
+      <updated>1753048016876</updated>
     </task>
-    <task id="LOCAL-00060" summary="refactor: reorganize and update imports for `DeleteUserService` and `EditUserCommand` components&#10;&#10;- Moved `DTO`, `Command`, and `Validator` files to appropriate `Application` and `Domain` subdirectories.&#10;- Adjusted import paths in corresponding services and handlers.">
+    <task id="LOCAL-00060" summary="feat: enhance authentication and security with token validation and CORS&#10;&#10;- Integrated `TokenBlacklistService` in `AuthMiddleware` for token revocation checks.&#10;- Implemented `helmet` for improved security headers.&#10;- Added `fastifyCors` for handling cross-origin requests.&#10;- Updated error handling and token validation logic in `AuthMiddleware`.">
       <option name="closed" value="true" />
-      <created>1752968704391</created>
+      <created>1753228420653</created>
       <option name="number" value="00060" />
       <option name="presentableId" value="LOCAL-00060" />
       <option name="project" value="LOCAL" />
-      <updated>1752968704391</updated>
+      <updated>1753228420654</updated>
     </task>
-    <task id="LOCAL-00061" summary="refactor: restructure and update imports in `EditUserService` and related components&#10;&#10;- Moved `DTO`, `Command`, and `Validators` to appropriate `Application` and `Domain` subdirectories.&#10;- Adjusted import paths across affected files.&#10;- Added `NegativePoints` error to `ErrorCatalog`.">
+    <task id="LOCAL-00061" summary="feat: enhance logout and login services with token handling and security improvements&#10;&#10;- Integrated `TokenBlacklistService` to revoke tokens during logout.&#10;- Enhanced `LogoutUserService` to handle token blacklisting from cookies.&#10;- Updated `LoginUserService` with secure cookie settings for JWT storage.&#10;- Added `JWTPayload` interface for better token structure.&#10;- Integrated `helmet`, `cookie`, and `fastifyCors` for improved security and CORS handling.">
       <option name="closed" value="true" />
-      <created>1752968716512</created>
+      <created>1753228669704</created>
       <option name="number" value="00061" />
       <option name="presentableId" value="LOCAL-00061" />
       <option name="project" value="LOCAL" />
-      <updated>1752968716513</updated>
+      <updated>1753228669704</updated>
     </task>
-    <task id="LOCAL-00062" summary="refactor: reorganize and update imports in `GetUserService` and related components&#10;&#10;- Moved `DTO`, `Validators`, and `Query` files to appropriate `Application` and `Domain` subdirectories.&#10;- Updated import paths across affected services, handlers, and view models.">
+    <task id="LOCAL-00062" summary="feat: add Fastify plugins to improve security and CORS handling&#10;&#10;- Integrated `@fastify/cookie`, `@fastify/cors`, and `@fastify/helmet` for enhanced security and functionality.&#10;- Added `@types/sanitize-html` to devDependencies for improved HTML sanitization type support.">
       <option name="closed" value="true" />
-      <created>1752968960416</created>
+      <created>1753228681986</created>
       <option name="number" value="00062" />
       <option name="presentableId" value="LOCAL-00062" />
       <option name="project" value="LOCAL" />
-      <updated>1752968960416</updated>
+      <updated>1753228681986</updated>
     </task>
-    <task id="LOCAL-00063" summary="refactor: reorganize and update imports for `LoginSessionCommand` components&#10;&#10;- Relocated `ValueObjects` and `DTO` files to appropriate `Application` and `Domain` subdirectories.&#10;- Updated import paths in relevant validators, handlers, and repository interfaces.&#10;- Replaced `VerificationService` with `UserService` in `index.ts`.">
+    <task id="LOCAL-00063" summary="feat: enhance login flow with secure cookie-based JWT storage&#10;&#10;- Added HTTP-only, secure, and same-site cookie settings for storing JWTs in `UserSessionRoutes`.&#10;- Updated `LoginUserService` to pass `reply` for cookie handling.&#10;- Improved authentication response structure with user details.">
       <option name="closed" value="true" />
-      <created>1752968970768</created>
+      <created>1753228691225</created>
       <option name="number" value="00063" />
       <option name="presentableId" value="LOCAL-00063" />
       <option name="project" value="LOCAL" />
-      <updated>1752968970768</updated>
+      <updated>1753228691226</updated>
     </task>
-    <task id="LOCAL-00064" summary="refactor: reorganize and update imports for `LogoutUserService` and `LoginUserService`&#10;&#10;- Moved `DTO`, `Command`, and `Validator` files to appropriate `Application` and `Domain` subdirectories.&#10;- Updated import paths across affected services and handlers.">
+    <task id="LOCAL-00064" summary="feat: add `SanitizeHelper` utility for data validation&#10;&#10;- Introduced `SanitizeHelper` with methods for boolean and number sanitization.&#10;- Added static utility functions to enhance input validation consistency.">
       <option name="closed" value="true" />
-      <created>1752968979126</created>
+      <created>1753229055703</created>
       <option name="number" value="00064" />
       <option name="presentableId" value="LOCAL-00064" />
       <option name="project" value="LOCAL" />
-      <updated>1752968979126</updated>
+      <updated>1753229055703</updated>
     </task>
-    <task id="LOCAL-00065" summary="refactor: add `UpdateStatsService` functionality and reorganize related files&#10;&#10;- Introduced `UserService`'s `UpdateStatsService` and `VerifyIfUserExistsByUuidsService`.&#10;- Implemented `UpdateStatsCommand`, `DTO`, `Validator`, and `Handler` classes for user stats updates.&#10;- Organized `DTO`, `Command`, and `Validator` files into appropriate `Application` and `Domain` subdirectories. &#10;- Updated import paths within affected components.">
+    <task id="LOCAL-00065" summary="feat: extend `SanitizeHelper` with date-sanitization utility&#10;&#10;- Added `SanitizerDate` method for validating and sanitizing date inputs.&#10;- Enhanced `SanitizerNumber` to handle null and undefined values more robustly.">
       <option name="closed" value="true" />
-      <created>1752968990303</created>
+      <created>1753230656410</created>
       <option name="number" value="00065" />
       <option name="presentableId" value="LOCAL-00065" />
       <option name="project" value="LOCAL" />
-      <updated>1752968990303</updated>
+      <updated>1753230656410</updated>
     </task>
-    <task id="LOCAL-00066" summary="refactor: replace `VerificationService` with `UserService` and reorganize imports&#10;&#10;- Removed `VerificationService` and replaced it with `UserService`.&#10;- Added new methods to `UserRepository` for handling username-based operations.&#10;- Implemented `UpdateStats` functionality in `UserController` and updated routes.&#10;- Organized `DTO` and `ViewModel` paths to follow `Application` hierarchy.&#10;- Updated import paths across affected files.">
+    <task id="LOCAL-00066" summary="refactor: rename and restructure `LogoutUserService` methods&#10;&#10;- Renamed `Execute` method to `Logout` for clarity and consistency.&#10;- Added unimplemented `Execute` placeholder to support future modifications. &#10;- Removed redundant import from `game-service/src/index.ts`.">
       <option name="closed" value="true" />
-      <created>1752968998968</created>
+      <created>1753263472553</created>
       <option name="number" value="00066" />
       <option name="presentableId" value="LOCAL-00066" />
       <option name="project" value="LOCAL" />
-      <updated>1752968998968</updated>
+      <updated>1753263472554</updated>
     </task>
-    <task id="LOCAL-00067" summary="feat: add anonymous user support in `CreateUserCommand` flow&#10;&#10;- Introduced `annonymous` property in `CreateUserCommand` and `CreateUserDTO`.&#10;- Added `AddEmailWithHash` method in `EmailVO` to handle hashed email logic for anonymous users.&#10;- Updated `CreateUserCommandHandler` to use hashed emails when the user is anonymous.&#10;- Modified `UserController` and related components to handle the new property.">
+    <task id="LOCAL-00067" summary="feat: add Redis integration and enhance `LogoutUserService` logic&#10;&#10;- Added `redis` dependency to manage session storage and caching (`package.json`, `package-lock.json`).&#10;- Updated `LogoutUserService` to support passing `request` alongside session data.&#10;- Introduced Redis client packages for modular functionality: `@redis/client`, `@redis/bloom`, `@redis/json`, `@redis/search`, `@redis/time-series`.">
       <option name="closed" value="true" />
-      <created>1752969944519</created>
+      <created>1753263483617</created>
       <option name="number" value="00067" />
       <option name="presentableId" value="LOCAL-00067" />
       <option name="project" value="LOCAL" />
-      <updated>1752969944519</updated>
+      <updated>1753263483617</updated>
     </task>
-    <task id="LOCAL-00068" summary="feat: add anonymous user support to `EditUserCommand` flow&#10;&#10;- Introduced `anonymous` property in `EditUserCommand` and `EditUserDTO`.&#10;- Updated `EditUserCommandHandler` to handle hashed emails for anonymous users.&#10;- Modified `UserController` and related components to support the new property.">
+    <task id="LOCAL-00068" summary="Merge remote-tracking branch 'origin/master' into fix/login-logout&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;game-service/package-lock.json&#10;#&#9;game-service/package.json&#10;#&#9;game-service/src/index.ts&#10;#&#9;user-service/package-lock.json&#10;#&#9;user-service/package.json&#10;#&#9;user-service/src/Application/DTO/Command/CreateUserAuth0DTO.ts&#10;#&#9;user-service/src/Application/DTO/Command/CreateUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/Command/DeleteUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/Command/EditUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/Command/UserSessionDTO.ts&#10;#&#9;user-service/src/Application/DTO/Query/GetUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/Query/VerifyIfUsersExistsByUuidsDTO.ts&#10;#&#9;user-service/src/Application/DTO/ToCommand/CreateUserAuth0DTO.ts&#10;#&#9;user-service/src/Application/DTO/ToCommand/CreateUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/ToCommand/DeleteUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/ToCommand/EditUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/ToCommand/UserSessionDTO.ts&#10;#&#9;user-service/src/Application/Services/Concrete/CreateUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/DeleteUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/EditUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/GetUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/LoginUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/LogoutUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/VerificationService.ts&#10;#&#9;user-service/src/Domain/Command/CommandObject/CreateUserCommand.ts&#10;#&#9;user-service/src/Domain/Command/CommandObject/DeleteUserCommand.ts&#10;#&#9;user-service/src/Domain/Command/CommandObject/EditUserCommand.ts&#10;#&#9;user-service/src/Domain/Command/CommandObject/UserSessionCommand.ts&#10;#&#9;user-service/src/Domain/DTO/Command/CreateUserAuth0DTO.ts&#10;#&#9;user-service/src/Domain/DTO/Command/CreateUserDTO.ts&#10;#&#9;user-service/src/Domain/DTO/Command/DeleteUserDTO.ts&#10;#&#9;user-service/src/Domain/DTO/Command/EditUserDTO.ts&#10;#&#9;user-service/src/Domain/DTO/Command/UserSessionDTO.ts&#10;#&#9;user-service/src/Domain/Queries/Handlers/GetUserQueryHandler.ts&#10;#&#9;user-service/src/Domain/Queries/QueryObject/GetUserQuery.ts&#10;#&#9;user-service/src/Domain/Queries/QueryObject/VerifyIfUsersExistsByUuidsQuery.ts&#10;#&#9;user-service/src/Infrastructure/Persistence/Repositories/Interface/IBaseRepository.ts&#10;#&#9;user-service/src/Presentation/Controllers/UserController.ts&#10;#&#9;user-service/src/Presentation/Controllers/UserSessionController.ts&#10;#&#9;user-service/src/Presentation/Middleware/AuthMiddleware.ts&#10;#&#9;user-service/src/Presentation/Routes/UserRoutes/UserRoutes.ts&#10;#&#9;user-service/src/Presentation/Routes/UserSessionRoutes/UserSessionRoutes.ts&#10;#&#9;user-service/src/index.ts">
       <option name="closed" value="true" />
-      <created>1752970349408</created>
+      <created>1753265731446</created>
       <option name="number" value="00068" />
       <option name="presentableId" value="LOCAL-00068" />
       <option name="project" value="LOCAL" />
-      <updated>1752970349408</updated>
+      <updated>1753265731446</updated>
     </task>
-    <task id="LOCAL-00069" summary="feat: add support for multi-player updates in match history and stats flow&#10;&#10;- Extended `CreateHistoryCommand` to handle up to four players.&#10;- Updated `CreateHistoryCommandHandler` to manage multi-player entities and stats.&#10;- Replaced `AddWinLoseForUser` with `UpdateStatsForUsers` in `BackendApiClient`.&#10;- Introduced `UpdateStatsExternalDTO` for streamlined off-platform stats updates.">
+    <task id="LOCAL-00069" summary="refactor: remove redundant `VerifyIfUserExistsByUuidsService` and unused query handler&#10;&#10;- Deleted `VerifyIfUserExistsByUuidsService` method and related query handler for cleanup.&#10;- Added `qs` and `@types/qs` to dependencies for handling query string parsing.&#10;- Updated `package-lock.json` with new dependency installations.">
       <option name="closed" value="true" />
-      <created>1753026515192</created>
+      <created>1753266055110</created>
       <option name="number" value="00069" />
       <option name="presentableId" value="LOCAL-00069" />
       <option name="project" value="LOCAL" />
-      <updated>1753026515192</updated>
+      <updated>1753266055110</updated>
     </task>
-    <task id="LOCAL-00070" summary="feat: extend history functionality to support up to four players&#10;&#10;- Updated `CreateHistoryValidator` to validate multi-player scenarios, including duplicate players and negative points.&#10;- Enhanced `CreateHistoryDTO` and `History` entity to accommodate player 3 and player 4 details.&#10;- Adjusted `HistoryController` to handle additional player data.">
+    <task id="LOCAL-00070" summary="refactor: remove redundant `VerifyIfUserExistsByUuidsService` and unused query handler&#10;&#10;- Deleted `VerifyIfUserExistsByUuidsService` method and related query handler for cleanup.&#10;- Added `qs` and `@types/qs` to dependencies for handling query string parsing.&#10;- Updated `package-lock.json` with new dependency installations.">
       <option name="closed" value="true" />
-      <created>1753026522967</created>
+      <created>1753266072840</created>
       <option name="number" value="00070" />
       <option name="presentableId" value="LOCAL-00070" />
       <option name="project" value="LOCAL" />
-      <updated>1753026522967</updated>
+      <updated>1753266072840</updated>
     </task>
-    <task id="LOCAL-00071" summary="feat: extend multi-player support in history and stats flow&#10;&#10;- Updated `HistoryRepository` and related methods to handle player 3 and player 4 data.&#10;- Added `UpdateStatsExternalDTO` to support multi-player stats updates.&#10;- Modified `UpdateStatsDTO` and Prisma schema to incorporate additional player fields.">
+    <task id="LOCAL-00071" summary="feat: add `anonymous` property to user commands and refactor constructors&#10;&#10;- Introduced `anonymous` property in `EditUserCommand` and `CreateUserCommand` for enhanced user data handling.&#10;- Updated constructors and DTO mappings to support the new property.&#10;- Removed unused comment in `BackendApiClient`.">
       <option name="closed" value="true" />
-      <created>1753026536154</created>
+      <created>1753267643584</created>
       <option name="number" value="00071" />
       <option name="presentableId" value="LOCAL-00071" />
       <option name="project" value="LOCAL" />
-      <updated>1753026536154</updated>
+      <updated>1753267643584</updated>
     </task>
-    <task id="LOCAL-00072" summary="feat: add support for nullable UUIDs and refine multi-player stats updates&#10;&#10;- Updated `UserController` and routes to handle nullable UUIDs in the user existence check.&#10;- Added schema validation for `updateStats` endpoint to support nullable data for players 3 and 4.&#10;- Refined `UserRepository` to filter and validate UUIDs before querying the database.">
+    <task id="LOCAL-00072" summary="feat: add `GetAllUsers` method and update constructors for enhanced user handling&#10;&#10;- Introduced `GetAllUsers` method in `GetUserService` to fetch all users.&#10;- Added `GetAll` method in `GetUserQueryHandler` for querying all users.&#10;- Updated `GetUserViewModel` constructor to support nullable numerical values. &#10;- Refactored imports and service assignments in `index.ts`.">
       <option name="closed" value="true" />
-      <created>1753026544160</created>
+      <created>1753267652680</created>
       <option name="number" value="00072" />
       <option name="presentableId" value="LOCAL-00072" />
       <option name="project" value="LOCAL" />
-      <updated>1753026544161</updated>
+      <updated>1753267652680</updated>
     </task>
-    <task id="LOCAL-00073" summary="feat: add nullable UUID support in user existence check&#10;&#10;- Updated `VerifyIfUsersExistsByUuidsQuery` and `DTO` to accept nullable UUIDs.&#10;- Enhanced type safety in user verification queries.">
+    <task id="LOCAL-00073" summary="feat: add `GetAllUsers` method and update constructors for enhanced user handling&#10;&#10;- Introduced `GetAllUsers` method in `GetUserService` to fetch all users.&#10;- Added `GetAll` method in `GetUserQueryHandler` for querying all users.&#10;- Updated `GetUserViewModel` constructor to support nullable numerical values. &#10;- Refactored imports and service assignments in `index.ts`.">
       <option name="closed" value="true" />
-      <created>1753026552897</created>
+      <created>1753267661939</created>
       <option name="number" value="00073" />
       <option name="presentableId" value="LOCAL-00073" />
       <option name="project" value="LOCAL" />
-      <updated>1753026552897</updated>
+      <updated>1753267661940</updated>
     </task>
-    <task id="LOCAL-00074" summary="feat: add query and handler for verifying user existence by username&#10;&#10;- Introduced `VerifyIfUserExistsByUsernameQuery` to facilitate user existence checks.&#10;- Added `VerifyUserExistsByUsernameQueryHandler` for handling the query logic.">
-      <option name="closed" value="true" />
-      <created>1753031461755</created>
-      <option name="number" value="00074" />
-      <option name="presentableId" value="LOCAL-00074" />
-      <option name="project" value="LOCAL" />
-      <updated>1753031461755</updated>
-    </task>
-    <task id="LOCAL-00075" summary="refactor: replace UUIDs with usernames in tournament creation flow&#10;&#10;- Updated `CreateTournamentCommand` to use usernames instead of UUIDs.&#10;- Renamed and modified `VerifyIfUsersExists` to `VerifyIfUsersExistsByUsername` in `BackendApiClient`.&#10;- Adjusted related handlers, validators, and DTO methods for username-based operations.">
-      <option name="closed" value="true" />
-      <created>1753035663840</created>
-      <option name="number" value="00075" />
-      <option name="presentableId" value="LOCAL-00075" />
-      <option name="project" value="LOCAL" />
-      <updated>1753035663840</updated>
-    </task>
-    <task id="LOCAL-00076" summary="refactor: replace UUIDs with usernames in tournament creation flow&#10;&#10;- Updated `CreateTournamentCommand` to use usernames instead of UUIDs.&#10;- Renamed and modified `VerifyIfUsersExists` to `VerifyIfUsersExistsByUsername` in `BackendApiClient`.&#10;- Adjusted related handlers, validators, and DTO methods for username-based operations.">
-      <option name="closed" value="true" />
-      <created>1753035668644</created>
-      <option name="number" value="00076" />
-      <option name="presentableId" value="LOCAL-00076" />
-      <option name="project" value="LOCAL" />
-      <updated>1753035668644</updated>
-    </task>
-    <task id="LOCAL-00077" summary="refactor: replace tournament UUIDs with usernames&#10;&#10;- Updated `EditTournamentDTO` and Prisma schema to use usernames instead of UUIDs.&#10;- Renamed `VerifyIfUsersExists` to `VerifyIfUsersExistsByUsername` in `BackendApiClient`.&#10;- Improved error handling in `GetUserQueryValidator` by throwing `ValidationException` on multiple errors.">
-      <option name="closed" value="true" />
-      <created>1753035748320</created>
-      <option name="number" value="00077" />
-      <option name="presentableId" value="LOCAL-00077" />
-      <option name="project" value="LOCAL" />
-      <updated>1753035748320</updated>
-    </task>
-    <task id="LOCAL-00078" summary="refactor: update controllers and services to use usernames instead of UUIDs&#10;&#10;- Renamed and modified user existence verification methods to use usernames.&#10;- Added `VerifyIfUserExistsByUsername` and `VerifyIfUsersExistsByUsernames` methods in `UserController`.&#10;- Updated `UpdateStatsDTO` and related logic to handle additional players' usernames and points.&#10;- Replaced UUIDs with usernames across tournament-related controllers, entities, and repositories.">
-      <option name="closed" value="true" />
-      <created>1753035756914</created>
-      <option name="number" value="00078" />
-      <option name="presentableId" value="LOCAL-00078" />
-      <option name="project" value="LOCAL" />
-      <updated>1753035756914</updated>
-    </task>
-    <task id="LOCAL-00079" summary="feat: add username-based user existence verification services and routes&#10;&#10;- Added `VerifyIfUserExistsByUsernameService` and `VerifyIfUsersExistsByUsernamesService` in `UserService`.&#10;- Introduced corresponding routes for `/users/exists/usernames` and `/users/exists/:username`.&#10;- Updated `UserRepository` to handle nullable or invalid usernames gracefully.">
-      <option name="closed" value="true" />
-      <created>1753035765399</created>
-      <option name="number" value="00079" />
-      <option name="presentableId" value="LOCAL-00079" />
-      <option name="project" value="LOCAL" />
-      <updated>1753035765399</updated>
-    </task>
-    <task id="LOCAL-00080" summary="feat: add query and handler for verifying user existence by usernames&#10;&#10;- Introduced `VerifyIfUsersExistsByUsernamesQuery` and related DTOs.&#10;- Added `VerifyIfUsersExistsByUsernamesQueryHandler` to handle the query logic.">
-      <option name="closed" value="true" />
-      <created>1753035772102</created>
-      <option name="number" value="00080" />
-      <option name="presentableId" value="LOCAL-00080" />
-      <option name="project" value="LOCAL" />
-      <updated>1753035772102</updated>
-    </task>
-    <task id="LOCAL-00081" summary="feat: add query and handler for verifying user existence by usernames&#10;&#10;- Introduced `VerifyIfUsersExistsByUsernamesQuery` and related DTOs.&#10;- Added `VerifyIfUsersExistsByUsernamesQueryHandler` to handle the query logic.">
-      <option name="closed" value="true" />
-      <created>1753035777236</created>
-      <option name="number" value="00081" />
-      <option name="presentableId" value="LOCAL-00081" />
-      <option name="project" value="LOCAL" />
-      <updated>1753035777236</updated>
-    </task>
-    <option name="localTasksCounter" value="82" />
+    <option name="localTasksCounter" value="74" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -612,36 +606,41 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <MESSAGE value="refactor: replace `HistoryRepository` with `BackendApiClient` in `GenerateMatchmakingQueryHandler` and update validation&#10;&#10;- Updated `Handler` to use `BackendApiClient` for opponent search and user validation.&#10;- Extended input validation to include `totalGames` check.&#10;- Replaced `uuid` with `username` in user validation and opponent search methods." />
+    <MESSAGE value="refactor: update `UserRepository` and `MatchmakingService` for improved matchmaking logic&#10;&#10;- Removed unnecessary `parameterLoses` from `SearchForClosestOpponent`" />
+    <MESSAGE value="refactor: simplify `SearchForClosestOpponent` and enhance `MatchmakingService`&#10;&#10;- Removed unnecessary `paremterLoses` parameter from `SearchForClosestOpponent`.&#10;- Refactored `MatchmakingService` to include enhanced query validation and error handling.&#10;- Updated `Generate` method to return detailed matchmaking results using `GetUserMatchmakingViewModel`." />
     <MESSAGE value="refactor: remove unused `GenerateMatchmakingQueryDTO` and `GenerateMatchmakingViewModel` classes" />
     <MESSAGE value="refactor: switch matchmaking input from body to query parameters&#10;&#10;- Updated `GenerateMatchmaking` method in `MatchmakingController` to use query parameters instead of request body.&#10;- Adjusted `MatchmakingRoutes` to reflect the new query-based input.&#10;- Enhanced input validation with querystring schema in `MatchmakingRoutes`." />
-    <MESSAGE value="CHORE: arquivos trazidos do ultimo merge" />
-    <MESSAGE value="refactor: reorganize folder structure and update imports across `user-service`&#10;&#10;- Moved `Command`, `Validators`, and `DTO` files to appropriate `Domain`/`Application` subdirectories.&#10;- Adjusted imports to align with the new structure.&#10;- Removed debug `console.log` statements from `CreateUserCommandHandler`." />
-    <MESSAGE value="refactor: reorganize DTO, Command, and Validator folders in `user-service`&#10;&#10;- Moved `DTO` files to `Application/DTO/ToCommand`.&#10;- Relocated `Command` and `Validator` files under `Domain/Command`.&#10;- Updated corresponding import paths across affected services and handlers." />
-    <MESSAGE value="refactor: reorganize and update imports for `DeleteUserService` and `EditUserCommand` components&#10;&#10;- Moved `DTO`, `Command`, and `Validator` files to appropriate `Application` and `Domain` subdirectories.&#10;- Adjusted import paths in corresponding services and handlers." />
-    <MESSAGE value="refactor: restructure and update imports in `EditUserService` and related components&#10;&#10;- Moved `DTO`, `Command`, and `Validators` to appropriate `Application` and `Domain` subdirectories.&#10;- Adjusted import paths across affected files.&#10;- Added `NegativePoints` error to `ErrorCatalog`." />
-    <MESSAGE value="refactor: reorganize and update imports in `GetUserService` and related components&#10;&#10;- Moved `DTO`, `Validators`, and `Query` files to appropriate `Application` and `Domain` subdirectories.&#10;- Updated import paths across affected services, handlers, and view models." />
-    <MESSAGE value="refactor: reorganize and update imports for `LoginSessionCommand` components&#10;&#10;- Relocated `ValueObjects` and `DTO` files to appropriate `Application` and `Domain` subdirectories.&#10;- Updated import paths in relevant validators, handlers, and repository interfaces.&#10;- Replaced `VerificationService` with `UserService` in `index.ts`." />
-    <MESSAGE value="refactor: reorganize and update imports for `LogoutUserService` and `LoginUserService`&#10;&#10;- Moved `DTO`, `Command`, and `Validator` files to appropriate `Application` and `Domain` subdirectories.&#10;- Updated import paths across affected services and handlers." />
-    <MESSAGE value="refactor: add `UpdateStatsService` functionality and reorganize related files&#10;&#10;- Introduced `UserService`'s `UpdateStatsService` and `VerifyIfUserExistsByUuidsService`.&#10;- Implemented `UpdateStatsCommand`, `DTO`, `Validator`, and `Handler` classes for user stats updates.&#10;- Organized `DTO`, `Command`, and `Validator` files into appropriate `Application` and `Domain` subdirectories. &#10;- Updated import paths within affected components." />
-    <MESSAGE value="refactor: replace `VerificationService` with `UserService` and reorganize imports&#10;&#10;- Removed `VerificationService` and replaced it with `UserService`.&#10;- Added new methods to `UserRepository` for handling username-based operations.&#10;- Implemented `UpdateStats` functionality in `UserController` and updated routes.&#10;- Organized `DTO` and `ViewModel` paths to follow `Application` hierarchy.&#10;- Updated import paths across affected files." />
-    <MESSAGE value="feat: add anonymous user support in `CreateUserCommand` flow&#10;&#10;- Introduced `annonymous` property in `CreateUserCommand` and `CreateUserDTO`.&#10;- Added `AddEmailWithHash` method in `EmailVO` to handle hashed email logic for anonymous users.&#10;- Updated `CreateUserCommandHandler` to use hashed emails when the user is anonymous.&#10;- Modified `UserController` and related components to handle the new property." />
-    <MESSAGE value="feat: add anonymous user support to `EditUserCommand` flow&#10;&#10;- Introduced `anonymous` property in `EditUserCommand` and `EditUserDTO`.&#10;- Updated `EditUserCommandHandler` to handle hashed emails for anonymous users.&#10;- Modified `UserController` and related components to support the new property." />
-    <MESSAGE value="feat: add support for multi-player updates in match history and stats flow&#10;&#10;- Extended `CreateHistoryCommand` to handle up to four players.&#10;- Updated `CreateHistoryCommandHandler` to manage multi-player entities and stats.&#10;- Replaced `AddWinLoseForUser` with `UpdateStatsForUsers` in `BackendApiClient`.&#10;- Introduced `UpdateStatsExternalDTO` for streamlined off-platform stats updates." />
-    <MESSAGE value="feat: extend history functionality to support up to four players&#10;&#10;- Updated `CreateHistoryValidator` to validate multi-player scenarios, including duplicate players and negative points.&#10;- Enhanced `CreateHistoryDTO` and `History` entity to accommodate player 3 and player 4 details.&#10;- Adjusted `HistoryController` to handle additional player data." />
-    <MESSAGE value="feat: extend multi-player support in history and stats flow&#10;&#10;- Updated `HistoryRepository` and related methods to handle player 3 and player 4 data.&#10;- Added `UpdateStatsExternalDTO` to support multi-player stats updates.&#10;- Modified `UpdateStatsDTO` and Prisma schema to incorporate additional player fields." />
-    <MESSAGE value="feat: add support for nullable UUIDs and refine multi-player stats updates&#10;&#10;- Updated `UserController` and routes to handle nullable UUIDs in the user existence check.&#10;- Added schema validation for `updateStats` endpoint to support nullable data for players 3 and 4.&#10;- Refined `UserRepository` to filter and validate UUIDs before querying the database." />
-    <MESSAGE value="feat: add nullable UUID support in user existence check&#10;&#10;- Updated `VerifyIfUsersExistsByUuidsQuery` and `DTO` to accept nullable UUIDs.&#10;- Enhanced type safety in user verification queries." />
-    <MESSAGE value="feat: add query and handler for verifying user existence by username&#10;&#10;- Introduced `VerifyIfUserExistsByUsernameQuery` to facilitate user existence checks.&#10;- Added `VerifyUserExistsByUsernameQueryHandler` for handling the query logic." />
-    <MESSAGE value="refactor: replace UUIDs with usernames in tournament creation flow&#10;&#10;- Updated `CreateTournamentCommand` to use usernames instead of UUIDs.&#10;- Renamed and modified `VerifyIfUsersExists` to `VerifyIfUsersExistsByUsername` in `BackendApiClient`.&#10;- Adjusted related handlers, validators, and DTO methods for username-based operations." />
-    <MESSAGE value="refactor: replace tournament UUIDs with usernames&#10;&#10;- Updated `EditTournamentDTO` and Prisma schema to use usernames instead of UUIDs.&#10;- Renamed `VerifyIfUsersExists` to `VerifyIfUsersExistsByUsername` in `BackendApiClient`.&#10;- Improved error handling in `GetUserQueryValidator` by throwing `ValidationException` on multiple errors." />
-    <MESSAGE value="refactor: update controllers and services to use usernames instead of UUIDs&#10;&#10;- Renamed and modified user existence verification methods to use usernames.&#10;- Added `VerifyIfUserExistsByUsername` and `VerifyIfUsersExistsByUsernames` methods in `UserController`.&#10;- Updated `UpdateStatsDTO` and related logic to handle additional players' usernames and points.&#10;- Replaced UUIDs with usernames across tournament-related controllers, entities, and repositories." />
-    <MESSAGE value="feat: add username-based user existence verification services and routes&#10;&#10;- Added `VerifyIfUserExistsByUsernameService` and `VerifyIfUsersExistsByUsernamesService` in `UserService`.&#10;- Introduced corresponding routes for `/users/exists/usernames` and `/users/exists/:username`.&#10;- Updated `UserRepository` to handle nullable or invalid usernames gracefully." />
-    <MESSAGE value="feat: add query and handler for verifying user existence by usernames&#10;&#10;- Introduced `VerifyIfUsersExistsByUsernamesQuery` and related DTOs.&#10;- Added `VerifyIfUsersExistsByUsernamesQueryHandler` to handle the query logic." />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: add query and handler for verifying user existence by usernames&#10;&#10;- Introduced `VerifyIfUsersExistsByUsernamesQuery` and related DTOs.&#10;- Added `VerifyIfUsersExistsByUsernamesQueryHandler` to handle the query logic." />
+    <MESSAGE value="refactor: switch tournament DTOs and routes to use usernames instead of UUIDs&#10;&#10;- Updated `EditTournamentDTO` and related controllers to replace UUIDs with usernames.&#10;- Modified tournament-related routes and schema validation to reflect the change.&#10;- Fixed typo in `tournamentUuid` field within `EditTournamentDTO` initialization." />
+    <MESSAGE value="feat: add token generation utility and improve coding style consistency&#10;&#10;- Added `generateToken` function in `AuthMiddleware` for JWT creation with a 1-hour expiration.&#10;- Enhanced code formatting across `AuthMiddleware` and `BaseController` for better readability.&#10;- Adjusted imports and structure of handler files during package reorganization." />
+    <MESSAGE value="feat: implement JWT-based login flow with improved DTO and ViewModel structure&#10;&#10;- Added `Login` method in `LoginUserService` to handle user login with JWT generation.&#10;- Introduced `LoginUserViewModel` for structured token response.&#10;- Refactored DTO imports and file paths for better organization.&#10;- Updated `UserSessionRoutes` and `UserSessionController` to integrate new login logic." />
+    <MESSAGE value="Merge: arquivos trazidos do merge" />
+    <MESSAGE value="feat: add `TokenBlacklistService` and integrate Redis dependency&#10;&#10;- Created `TokenBlacklistService` for managing blacklisted JWT tokens.&#10;- Added Redis client as a dependency for handling token storage.&#10;- Updated `package.json` to include `redis` dependency." />
+    <MESSAGE value="feat: enhance authentication and security with token validation and CORS&#10;&#10;- Integrated `TokenBlacklistService` in `AuthMiddleware` for token revocation checks.&#10;- Implemented `helmet` for improved security headers.&#10;- Added `fastifyCors` for handling cross-origin requests.&#10;- Updated error handling and token validation logic in `AuthMiddleware`." />
+    <MESSAGE value="feat: improve authentication and security in user session flows&#10;&#10;- Added token blacklisting in `LogoutUserService` via `TokenBlacklistService`.&#10;- Implemented secure HTTP-only cookies for JWT storage in `LoginUserService`.&#10;- Introduced `JWTPayload` interface for structured JWT claims.&#10;- Enhanced app security with `helmet`, `cookie`, and CORS support in `index.ts`." />
+    <MESSAGE value="feat: enhance logout and login services with token handling and security improvements&#10;&#10;- Integrated `TokenBlacklistService` to revoke tokens during logout.&#10;- Enhanced `LogoutUserService` to handle token blacklisting from cookies.&#10;- Updated `LoginUserService` with secure cookie settings for JWT storage.&#10;- Added `JWTPayload` interface for better token structure.&#10;- Integrated `helmet`, `cookie`, and `fastifyCors` for improved security and CORS handling." />
+    <MESSAGE value="feat: add Fastify plugins to improve security and CORS handling&#10;&#10;- Integrated `@fastify/cookie`, `@fastify/cors`, and `@fastify/helmet` for enhanced security and functionality.&#10;- Added `@types/sanitize-html` to devDependencies for improved HTML sanitization type support." />
+    <MESSAGE value="feat: enhance login flow with secure cookie-based JWT storage&#10;&#10;- Added HTTP-only, secure, and same-site cookie settings for storing JWTs in `UserSessionRoutes`.&#10;- Updated `LoginUserService` to pass `reply` for cookie handling.&#10;- Improved authentication response structure with user details." />
+    <MESSAGE value="feat: add `SanitizeHelper` utility for data validation&#10;&#10;- Introduced `SanitizeHelper` with methods for boolean and number sanitization.&#10;- Added static utility functions to enhance input validation consistency." />
+    <MESSAGE value="feat: extend `SanitizeHelper` with date-sanitization utility&#10;&#10;- Added `SanitizerDate` method for validating and sanitizing date inputs.&#10;- Enhanced `SanitizerNumber` to handle null and undefined values more robustly." />
+    <MESSAGE value="refactor: rename and restructure `LogoutUserService` methods&#10;&#10;- Renamed `Execute` method to `Logout` for clarity and consistency.&#10;- Added unimplemented `Execute` placeholder to support future modifications. &#10;- Removed redundant import from `game-service/src/index.ts`." />
+    <MESSAGE value="feat: add Redis integration and enhance `LogoutUserService` logic&#10;&#10;- Added `redis` dependency to manage session storage and caching (`package.json`, `package-lock.json`).&#10;- Updated `LogoutUserService` to support passing `request` alongside session data.&#10;- Introduced Redis client packages for modular functionality: `@redis/client`, `@redis/bloom`, `@redis/json`, `@redis/search`, `@redis/time-series`." />
+    <MESSAGE value="Merge remote-tracking branch 'origin/master' into fix/login-logout&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;game-service/package-lock.json&#10;#&#9;game-service/package.json&#10;#&#9;game-service/src/index.ts&#10;#&#9;user-service/package-lock.json&#10;#&#9;user-service/package.json&#10;#&#9;user-service/src/Application/DTO/Command/CreateUserAuth0DTO.ts&#10;#&#9;user-service/src/Application/DTO/Command/CreateUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/Command/DeleteUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/Command/EditUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/Command/UserSessionDTO.ts&#10;#&#9;user-service/src/Application/DTO/Query/GetUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/Query/VerifyIfUsersExistsByUuidsDTO.ts&#10;#&#9;user-service/src/Application/DTO/ToCommand/CreateUserAuth0DTO.ts&#10;#&#9;user-service/src/Application/DTO/ToCommand/CreateUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/ToCommand/DeleteUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/ToCommand/EditUserDTO.ts&#10;#&#9;user-service/src/Application/DTO/ToCommand/UserSessionDTO.ts&#10;#&#9;user-service/src/Application/Services/Concrete/CreateUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/DeleteUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/EditUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/GetUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/LoginUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/LogoutUserService.ts&#10;#&#9;user-service/src/Application/Services/Concrete/VerificationService.ts&#10;#&#9;user-service/src/Domain/Command/CommandObject/CreateUserCommand.ts&#10;#&#9;user-service/src/Domain/Command/CommandObject/DeleteUserCommand.ts&#10;#&#9;user-service/src/Domain/Command/CommandObject/EditUserCommand.ts&#10;#&#9;user-service/src/Domain/Command/CommandObject/UserSessionCommand.ts&#10;#&#9;user-service/src/Domain/DTO/Command/CreateUserAuth0DTO.ts&#10;#&#9;user-service/src/Domain/DTO/Command/CreateUserDTO.ts&#10;#&#9;user-service/src/Domain/DTO/Command/DeleteUserDTO.ts&#10;#&#9;user-service/src/Domain/DTO/Command/EditUserDTO.ts&#10;#&#9;user-service/src/Domain/DTO/Command/UserSessionDTO.ts&#10;#&#9;user-service/src/Domain/Queries/Handlers/GetUserQueryHandler.ts&#10;#&#9;user-service/src/Domain/Queries/QueryObject/GetUserQuery.ts&#10;#&#9;user-service/src/Domain/Queries/QueryObject/VerifyIfUsersExistsByUuidsQuery.ts&#10;#&#9;user-service/src/Infrastructure/Persistence/Repositories/Interface/IBaseRepository.ts&#10;#&#9;user-service/src/Presentation/Controllers/UserController.ts&#10;#&#9;user-service/src/Presentation/Controllers/UserSessionController.ts&#10;#&#9;user-service/src/Presentation/Middleware/AuthMiddleware.ts&#10;#&#9;user-service/src/Presentation/Routes/UserRoutes/UserRoutes.ts&#10;#&#9;user-service/src/Presentation/Routes/UserSessionRoutes/UserSessionRoutes.ts&#10;#&#9;user-service/src/index.ts" />
+    <MESSAGE value="refactor: remove redundant `VerifyIfUserExistsByUuidsService` and unused query handler&#10;&#10;- Deleted `VerifyIfUserExistsByUuidsService` method and related query handler for cleanup.&#10;- Added `qs` and `@types/qs` to dependencies for handling query string parsing.&#10;- Updated `package-lock.json` with new dependency installations." />
+    <MESSAGE value="feat: add `anonymous` property to user commands and refactor constructors&#10;&#10;- Introduced `anonymous` property in `EditUserCommand` and `CreateUserCommand` for enhanced user data handling.&#10;- Updated constructors and DTO mappings to support the new property.&#10;- Removed unused comment in `BackendApiClient`." />
+    <MESSAGE value="feat: add `GetAllUsers` method and update constructors for enhanced user handling&#10;&#10;- Introduced `GetAllUsers` method in `GetUserService` to fetch all users.&#10;- Added `GetAll` method in `GetUserQueryHandler` for querying all users.&#10;- Updated `GetUserViewModel` constructor to support nullable numerical values. &#10;- Refactored imports and service assignments in `index.ts`." />
+    <MESSAGE value="feat: add `GetAllUsers` method and update user handling constructors&#10;&#10;- Added `GetAllUsers` method in `GetUserService` and `GetAll` in `GetUserQueryHandler` to retrieve all users.&#10;- Enhanced `GetUserViewModel` constructor for nullable numerical values.&#10;- Refactored imports and service assignments in `index.ts`." />
+    <MESSAGE value="feat: add `GetAllUsers` method and update user handling constructors&#10;&#10;- Added `GetAllUsers` method in `GetUserService` and `GetAll` in `GetUserQueryHandler` to retrieve all users.&#10;- Enhanced `GetUserViewModel` constructor for nullable numerical values.&#10;- Refactored imports and service assignments in `index.ts`." />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add `GetAllUsers` method and update user handling constructors&#10;&#10;- Added `GetAllUsers` method in `GetUserService` and `GetAll` in `GetUserQueryHandler` to retrieve all users.&#10;- Enhanced `GetUserViewModel` constructor for nullable numerical values.&#10;- Refactored imports and service assignments in `index.ts`." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/game-service/src/Presentation/Controllers/TournamentController.ts</url>
+          <line>41</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/game-service/src/Presentation/Routes/TournamentRoutes/TournamentRoutes.ts</url>
           <line>28</line>
@@ -654,8 +653,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/game-service/src/Presentation/Controllers/HistoryController.ts</url>
-          <line>39</line>
+          <line>35</line>
           <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/game-service/src/Presentation/Routes/HistoryRoutes/HistoryRoutes.ts</url>
+          <line>22</line>
+          <option name="timeStamp" value="9" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/game-service/dist/Application/Services/Concrete/MatchmakingService.js</url>

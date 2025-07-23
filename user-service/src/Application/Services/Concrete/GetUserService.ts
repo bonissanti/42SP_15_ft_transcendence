@@ -1,5 +1,4 @@
 import { BaseService } from "../Interfaces/BaseService.js";
-import { GetUserDTO } from "../../DTO/ToQuery/GetUserDTO.js";
 import { NotificationError } from "../../../Shared/Errors/NotificationError.js";
 import { FastifyReply } from "fastify";
 import { GetUserQuery } from "../../../Domain/Queries/QueryObject/GetUserQuery.js";
@@ -10,7 +9,8 @@ import { Result } from "../../../Shared/Utils/Result.js";
 import { ValidationException } from "../../../Shared/Errors/ValidationException.js";
 import { ErrorCatalog } from "../../../Shared/Errors/ErrorCatalog.js";
 import { Prisma } from '@prisma/client';
-import { GetUserQueryDTO } from "src/Domain/QueryDTO/GetUserQueryDTO.js";
+import {GetUserQueryDTO} from "../../../Domain/QueryDTO/GetUserQueryDTO.js";
+import {GetUserDTO} from "../../DTO/ToQuery/GetUserDTO.js";
 
 export class GetUserService implements BaseService<GetUserDTO, GetUserViewModel> {
     private UserRepository: UserRepository;
@@ -50,20 +50,21 @@ export class GetUserService implements BaseService<GetUserDTO, GetUserViewModel>
         }
     }
 
-    public async GetAllUsers(): Promise<Result<GetUserViewModel[]>> {
+    public async GetAllUsers(): Promise<Result<GetUserViewModel[]>>
+    {
         try {
-          const getUserQueryDTOs: GetUserQueryDTO[] = await this.GetUserQueryHandler.GetAll();
-          const getUserViewModels: GetUserViewModel[] = getUserQueryDTOs.map(dto => GetUserViewModel.FromQueryDTO(dto));
-          
-          return Result.SucessWithData<GetUserViewModel[]>("Users found", getUserViewModels);
+            const getUserQueryDTOs: GetUserQueryDTO[] = await this.GetUserQueryHandler.GetAll();
+            const getUserViewModels: GetUserViewModel[] = getUserQueryDTOs.map(dto => GetUserViewModel.FromQueryDTO(dto));
+
+            return Result.SucessWithData<GetUserViewModel[]>("Users found", getUserViewModels);
         } catch (error) {
-          if (error instanceof ValidationException) {
-            const message: string = error.SetErrors();
-            return Result.Failure<GetUserViewModel[]>(message);
-          } else if (error instanceof Prisma.PrismaClientKnownRequestError) {
-            return Result.Failure(ErrorCatalog.DatabaseViolated.SetError());
-          }
-          return Result.Failure(ErrorCatalog.InternalServerError.SetError());
+            if (error instanceof ValidationException) {
+                const message: string = error.SetErrors();
+                return Result.Failure<GetUserViewModel[]>(message);
+            } else if (error instanceof Prisma.PrismaClientKnownRequestError) {
+                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError());
+            }
+            return Result.Failure(ErrorCatalog.InternalServerError.SetError());
         }
     }
 }

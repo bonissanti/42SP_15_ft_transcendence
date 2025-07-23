@@ -3,9 +3,9 @@ import {CreateUserDTO} from "../../../Application/DTO/ToCommand/CreateUserDTO.js
 import {authenticateJWT} from "../../Middleware/AuthMiddleware.js";
 import {EditUserDTO} from "../../../Application/DTO/ToCommand/EditUserDTO.js";
 import {DeleteUserDTO} from "../../../Application/DTO/ToCommand/DeleteUserDTO.js";
-import {GetUserDTO} from "../../../Application/DTO/ToQuery/GetUserDTO.js";
 import {UserController} from "../../Controllers/UserController.js";
 import {UpdateStatsDTO} from "../../../Application/DTO/ToCommand/UpdateStatsDTO.js";
+import {GetUserDTO} from "../../../Application/DTO/ToQuery/GetUserDTO.js";
 
 const opts = {
     schema: {
@@ -109,13 +109,13 @@ export const UserRoutes = async (server: any, userController: UserController) =>
 
     server.get('/users/me', { preHandler: authenticateJWT }, async (request: FastifyRequest, reply: FastifyReply) => {
         const userPayload = request.user as { uuid: string };
-        
+
         if (!userPayload || !userPayload.uuid) {
             return reply.status(400).send({ message: "UUID do usuário inválido." });
         }
 
         const getUserDTO = new GetUserDTO(userPayload.uuid);
-        
+
         const modifiedRequest = {
             ...request,
             query: getUserDTO

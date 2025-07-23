@@ -1,14 +1,11 @@
 import {BaseService} from "../Interfaces/BaseService.js";
 import {UserRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/UserRepository.js";
 import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
-import {VerifyIfUsersExistsByUuidsDTO} from "../../DTO/ToQuery/VerifyIfUsersExistsByUuidsDTO.js";
 import {FastifyReply} from "fastify";
 import {Result} from "../../../Shared/Utils/Result.js";
 import {ValidationException} from "../../../Shared/Errors/ValidationException.js";
 import {Prisma} from "@prisma/client";
 import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog.js";
-import {VerifyIfUsersExistsByUuidsQuery} from "../../../Domain/Queries/QueryObject/VerifyIfUsersExistsByUuidsQuery.js";
-import {VerifyIfUsersExistsByUuidsQueryHandler} from "../../../Domain/Queries/Handlers/VerifyIfUsersExistsByUuidsQueryHandler.js";
 import {UpdateStatsCommand} from "../../../Domain/Command/CommandObject/UpdateStatsCommand.js";
 import {UpdateStatsDTO} from "../../DTO/ToCommand/UpdateStatsDTO.js";
 import {UpdateStatsCommandValidator} from "../../../Domain/Command/Validators/UpdateStatsCommandValidator.js";
@@ -22,6 +19,11 @@ import {
 import {
     VerifyIfUsersExistsByUsernamesQueryHandler
 } from "../../../Domain/Queries/Handlers/VerifyIfUsersExistsByUsernamesQueryHandler.js";
+import {VerifyIfUsersExistsByUuidsQuery} from "../../../Domain/Queries/QueryObject/VerifyIfUsersExistsByUuidsQuery.js";
+import {
+    VerifyIfUsersExistsByUuidsQueryHandler
+} from "../../../Domain/Queries/Handlers/VerifyIfUsersExistsByUuidsQueryHandler.js";
+import {VerifyIfUsersExistsByUuidsDTO} from "../../DTO/ToQuery/VerifyIfUsersExistsByUuidsDTO.js";
 
 export class UserService implements BaseService<any,  boolean>
 {
