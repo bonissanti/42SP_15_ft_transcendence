@@ -11,10 +11,10 @@ model Tournament {
     id              String @id @default(uuid())
     tournamentUuid  String @unique
     tournamentName  String
-    player1Username String @unique
-    player2Username String @unique
-    player3Username String @unique
-    player4Username String @unique
+    player1Username String
+    player2Username String
+    player3Username String
+    player4Username String
 
     @@map("game-service")
 }

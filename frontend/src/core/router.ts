@@ -47,12 +47,24 @@ export function stopStatusListeners() {
 
 export async function router() {
   const path = window.location.pathname;
+  const gameRoutes = [
+    '/pong/singleplayer',
+    '/pong/multiplayer',
+    '/pong/remote-multiplayer',
+    '/pong/tournament',
+    '/rps'
+  ];
+
+  if (gameRoutes.includes(path)) {
+    document.body.classList.add('in-game');
+  } else {
+    document.body.classList.remove('in-game');
+  }
 
   stopPongGame();
-  stopStatusListeners(); 
+  stopStatusListeners();
 
   appContainer.innerHTML = `<h1>Carregando...</h1>`;
-
   const token = localStorage.getItem('jwtToken');
   const isProtectedRoute = !['/login'].includes(path);
 

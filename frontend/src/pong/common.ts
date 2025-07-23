@@ -108,27 +108,29 @@ export function resetBall() {
 
 
 export function draw() {
+    console.log('Paddles:', paddles.length);
     if (!canvas || !ctx) return;
-
+    
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-
+    
     if (isWaiting) {
-        ctx.fillStyle = 'white';
-        ctx.font = '30px Arial';
-        ctx.textAlign = 'center';
-        ctx.fillText('Aguardando oponentes...', canvas.width / 2, canvas.height / 2);
-        return;
+      ctx.fillStyle = 'white';
+      ctx.font = '30px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('Aguardando oponentes...', canvas.width / 2, canvas.height / 2);
+      return;
     }
-
+    
     if (!ball || paddles.length === 0) return;
-
+    
     ctx.fillStyle = 'white';
     ctx.beginPath();
     ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
     ctx.fill();
-
+    
     paddles.forEach((p, index) => {
+        console.log('Index: ', index);
         ctx.fillStyle = p.lost ? 'red' : 'white';
         ctx.fillRect(p.x, p.y, p.width, p.height);
 

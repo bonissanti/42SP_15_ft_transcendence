@@ -32,6 +32,8 @@ export interface ClientData {
   inputs: PlayerInputs;
   id: string;
   profilePic: string;
+  isReady?: boolean;
+  gameMode?: 'remote' | 'tournament';
 }
 
 export interface Game {
@@ -39,4 +41,6 @@ export interface Game {
   gameState: GameState;
   gameLoopInterval: NodeJS.Timeout | null;
   speedUpInterval: NodeJS.Timeout | null;
+  tournamentId?: string;
+  isFinal?: boolean; 
 }
