@@ -34,7 +34,7 @@ export class AddRequestFriendCommandValidator implements BaseValidator<AddReques
         if (command.status !== StatusRequest.PENDING)
             this.NotificationError.AddError(ErrorCatalog.InvalidStatusFriendRequest)
 
-        if (await this.FriendshipRepository.VerifyIfFriendshipExists(command.senderUuid, command.receiverUuid))
+        if (await this.FriendshipRepository.VerifyIfFriendshipExistsByUsersUuid(command.senderUuid, command.receiverUuid))
             this.NotificationError.AddError(ErrorCatalog.FriendshipAlreadyExists);
 
         if (this.NotificationError.NumberOfErrors() > 0){
