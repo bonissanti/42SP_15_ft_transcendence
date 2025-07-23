@@ -32,7 +32,7 @@ export class UserSessionController extends BaseController
     public async LogoutUser(request: FastifyRequest<{ Body: UserSessionDTO }>, reply: FastifyReply) : Promise<Result>
     {
         const body = request.body;
-        const result: Result = await this.logoutUserService.Execute(body);
+        const result: Result = await this.logoutUserService.Logout(body, request);
 
         return(this.handleResult(result, reply, this.notificationError));
     }
