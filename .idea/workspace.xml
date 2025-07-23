@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d3134b4-a67d-4c46-80e3-654566a805b8" name="Changes" comment="feat: enhance login flow with secure cookie-based JWT storage&#10;&#10;- Added HTTP-only, secure, and same-site cookie settings for storing JWTs in `UserSessionRoutes`.&#10;- Updated `LoginUserService` to pass `reply` for cookie handling.&#10;- Improved authentication response structure with user details." />
+    <list default="true" id="6d3134b4-a67d-4c46-80e3-654566a805b8" name="Changes" comment="feat: add `SanitizeHelper` utility for data validation&#10;&#10;- Introduced `SanitizeHelper` with methods for boolean and number sanitization.&#10;- Added static utility functions to enhance input validation consistency.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/Application/Helper/SanitizeHelper.ts" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/Application/Helper/SanitizeHelper.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -50,37 +53,37 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Docker.tournament: Compose Deployment.executor": "Run",
-    "HTTP Request.All in rest-api_10.executor": "Run",
-    "HTTP Request.http-requests-log | #1.executor": "Run",
-    "HTTP Request.http-requests-log | #6.executor": "Run",
-    "HTTP Request.http-requests-log | #7.executor": "Run",
-    "HTTP Request.http-requests-log | #8.executor": "Run",
-    "HTTP Request.rest-api_10 | #1.executor": "Run",
-    "HTTP Request.rest-api_11 | #1.executor": "Run",
-    "HTTP Request.rest-api_9 | #1.executor": "Run",
-    "JavaScript Debug.127.0.0.1:8080.executor": "Debug",
-    "JavaScript Debug.127.0.0.1:8081.executor": "Debug",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "fix/login-logout",
-    "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "/home/bruno/Documents/42SP/42_transcendence/tournament/src/Application/Queries/Handlers",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "npm.build.executor": "Run",
-    "npm.clean:dist.executor": "Run",
-    "npm.start (1).executor": "Run",
-    "npm.start.executor": "Debug",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "/home/bruno/Documents/42SP/42_transcendence/user-service/node_modules/typescript/lib"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Docker.tournament: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.All in rest-api_10.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.http-requests-log | #1.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.http-requests-log | #6.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.http-requests-log | #7.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.http-requests-log | #8.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.rest-api_10 | #1.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.rest-api_11 | #1.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.rest-api_9 | #1.executor&quot;: &quot;Run&quot;,
+    &quot;JavaScript Debug.127.0.0.1:8080.executor&quot;: &quot;Debug&quot;,
+    &quot;JavaScript Debug.127.0.0.1:8081.executor&quot;: &quot;Debug&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;fix/login-logout&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/bruno/Documents/42SP/42_transcendence/tournament/src/Application/Queries/Handlers&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.build.executor&quot;: &quot;Run&quot;,
+    &quot;npm.clean:dist.executor&quot;: &quot;Run&quot;,
+    &quot;npm.start (1).executor&quot;: &quot;Run&quot;,
+    &quot;npm.start.executor&quot;: &quot;Debug&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/home/bruno/Documents/42SP/42_transcendence/user-service/node_modules/typescript/lib&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/tournament/src/Application/Queries/Handlers" />
@@ -192,15 +195,8 @@
       <workItem from="1752953037175" duration="4719000" />
       <workItem from="1752957795072" duration="1303000" />
       <workItem from="1753043060074" duration="4990000" />
-      <workItem from="1753220205206" duration="8487000" />
-    </task>
-    <task id="LOCAL-00015" summary="feat: implement tournament command handlers, validators, and services&#10;&#10;- Added `CreateTournamentCommandHandler`, `EditTournamentCommandHandler`, and `DeleteTournamentCommandHandler` for tournament operations.&#10;- Implemented `EditTournamentCommandValidator` and `DeleteTournamentCommandValidator` for validation.&#10;- Created services: `CreateTournamentService`, `EditTournamentService`, and `DeleteTournamentService` to handle logic and execution flow. &#10;- Enhanced `BaseHandlerQuery` to support result typing.&#10;- Introduced DTOs and command objects for tournament operations.">
-      <option name="closed" value="true" />
-      <created>1752358575693</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1752358575694</updated>
+      <workItem from="1753220205206" duration="8857000" />
+      <workItem from="1753229549471" duration="1018000" />
     </task>
     <task id="LOCAL-00016" summary="feat: implement query handlers, DTOs, and services for `GetAllTournaments` and improve existing tournament query operations&#10;&#10;- Added `GetAllTournamentQueryHandler` to handle all tournaments query logic.&#10;- Implemented new DTOs: `GetAllTournamentsDTO`, `GetAllTournamentsQueryDTO`, and `GetAllTournamentsViewModel`.&#10;- Created `GetAllTournamentService` to manage query execution and result transformation.&#10;- Enhanced existing `GetTournamentQuery` with `fromDTO` method and resolved typos in `GetTournamentDTO`. &#10;- Refactored `GetUserQueryHandler` to `GetTournamentQueryHandler` and updated corresponding methods and repositories.">
       <option name="closed" value="true" />
@@ -586,7 +582,15 @@
       <option name="project" value="LOCAL" />
       <updated>1753228691226</updated>
     </task>
-    <option name="localTasksCounter" value="64" />
+    <task id="LOCAL-00064" summary="feat: add `SanitizeHelper` utility for data validation&#10;&#10;- Introduced `SanitizeHelper` with methods for boolean and number sanitization.&#10;- Added static utility functions to enhance input validation consistency.">
+      <option name="closed" value="true" />
+      <created>1753229055703</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1753229055703</updated>
+    </task>
+    <option name="localTasksCounter" value="65" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -604,7 +608,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="feat: implement `GetAllHistories` in `HistoryService` and update `GetAllTournamentsDTO`&#10;&#10;- Added `GetAll` method in `HistoryService` to retrieve tournament histories based on username.&#10;- Updated `GetAllTournamentsDTO` to replace `userUuid` with `username`." />
     <MESSAGE value="feat: integrate `BackendApiClient` for user validation and win/lose tracking&#10;&#10;- Added `BackendApiClient` to `CreateHistoryCommandHandler` for tracking user win/lose metrics.&#10;- Renamed methods in `BackendApiClient` for consistency (`verifyUserExists` to `VerifyIfUsersExists`).&#10;- Introduced `AddWinLoseForUser` method in `BackendApiClient`.&#10;- Updated validators to use the newly renamed methods." />
     <MESSAGE value="feat: add matchmaking-related DTOs, query objects, and new validation errors&#10;&#10;- Introduced `GenerateMatchmakingDTO`, `GenerateMatchmakingQuery`, and `GenerateMatchmakingQueryDTO` for matchmaking logic.&#10;- Added `NegativeWins` error to `ErrorCatalog` for validation of win values.&#10;- Updated `ErrorCatalog` messages for consistency in backend API error naming." />
     <MESSAGE value="refactor: rename method in `IBackendApiClient` and update logs for clarity&#10;&#10;- Renamed `verifyUserExists` to `VerifyIfUsersExists` in `IBackendApiClient` for consistency.&#10;- Enhanced error logging in `index.ts` for better debugging. &#10;- Minor formatting updates in `HistoryRepository`." />
@@ -629,7 +632,8 @@
     <MESSAGE value="feat: enhance logout and login services with token handling and security improvements&#10;&#10;- Integrated `TokenBlacklistService` to revoke tokens during logout.&#10;- Enhanced `LogoutUserService` to handle token blacklisting from cookies.&#10;- Updated `LoginUserService` with secure cookie settings for JWT storage.&#10;- Added `JWTPayload` interface for better token structure.&#10;- Integrated `helmet`, `cookie`, and `fastifyCors` for improved security and CORS handling." />
     <MESSAGE value="feat: add Fastify plugins to improve security and CORS handling&#10;&#10;- Integrated `@fastify/cookie`, `@fastify/cors`, and `@fastify/helmet` for enhanced security and functionality.&#10;- Added `@types/sanitize-html` to devDependencies for improved HTML sanitization type support." />
     <MESSAGE value="feat: enhance login flow with secure cookie-based JWT storage&#10;&#10;- Added HTTP-only, secure, and same-site cookie settings for storing JWTs in `UserSessionRoutes`.&#10;- Updated `LoginUserService` to pass `reply` for cookie handling.&#10;- Improved authentication response structure with user details." />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: enhance login flow with secure cookie-based JWT storage&#10;&#10;- Added HTTP-only, secure, and same-site cookie settings for storing JWTs in `UserSessionRoutes`.&#10;- Updated `LoginUserService` to pass `reply` for cookie handling.&#10;- Improved authentication response structure with user details." />
+    <MESSAGE value="feat: add `SanitizeHelper` utility for data validation&#10;&#10;- Introduced `SanitizeHelper` with methods for boolean and number sanitization.&#10;- Added static utility functions to enhance input validation consistency." />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add `SanitizeHelper` utility for data validation&#10;&#10;- Introduced `SanitizeHelper` with methods for boolean and number sanitization.&#10;- Added static utility functions to enhance input validation consistency." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
