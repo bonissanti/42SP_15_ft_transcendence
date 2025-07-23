@@ -4,7 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d3134b4-a67d-4c46-80e3-654566a805b8" name="Changes" comment="feat: add `GetAllUsers` method and update constructors for enhanced user handling&#10;&#10;- Introduced `GetAllUsers` method in `GetUserService` to fetch all users.&#10;- Added `GetAll` method in `GetUserQueryHandler` for querying all users.&#10;- Updated `GetUserViewModel` constructor to support nullable numerical values. &#10;- Refactored imports and service assignments in `index.ts`." />
+    <list default="true" id="6d3134b4-a67d-4c46-80e3-654566a805b8" name="Changes" comment="feat: add `GetAllUsers` method and update constructors for enhanced user handling&#10;&#10;- Introduced `GetAllUsers` method in `GetUserService` to fetch all users.&#10;- Added `GetAll` method in `GetUserQueryHandler` for querying all users.&#10;- Updated `GetUserViewModel` constructor to support nullable numerical values. &#10;- Refactored imports and service assignments in `index.ts`.">
+      <change afterPath="$PROJECT_DIR$/user-service/src/Domain/Command/Validators/ChangeRequestFriendStatusCommandValidator.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/Application/Services/Concrete/FriendshipService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/Application/Services/Concrete/FriendshipService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/Domain/Command/Handlers/AddRequestFriendCommandHandler.ts" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/Domain/Command/Handlers/AddRequestFriendCommandHandler.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/Domain/Command/Handlers/ChangeRequestFriendStatusCommandHandler.ts" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/Domain/Command/Handlers/ChangeRequestFriendStatusCommandHandler.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/Domain/Command/Validators/AddRequestFriendCommandValidator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/Domain/Command/Validators/AddRequestFriendCommandValidator.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/Domain/Entities/Concrete/Friendship.ts" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/Domain/Entities/Concrete/Friendship.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/Infrastructure/Persistence/Repositories/Concrete/FriendshipRepository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/Infrastructure/Persistence/Repositories/Concrete/FriendshipRepository.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -22,7 +31,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="feature/new-trans" />
+        <entry key="$PROJECT_DIR$" value="fix/login-logout" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -67,20 +76,21 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "origin/feature/friendship",
+    "full.screen.before.presentation.mode": "false",
+    "git-widget-placeholder": "feature/friendship",
     "ignore.virus.scanning.warn.message": "true",
     "junie.onboarding.icon.badge.shown": "true",
     "last_opened_file_path": "C:/Estudos/42_transcendence",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
-    "nodejs_interpreter_path": "C:/nvm4w/nodejs/node",
+    "nodejs_interpreter_path": "node",
     "nodejs_package_manager_path": "npm",
     "npm.build.executor": "Run",
     "npm.clean:dist.executor": "Run",
     "npm.start (1).executor": "Run",
     "npm.start.executor": "Debug",
-    "settings.editor.selected.configurable": "settings.nodejs",
-    "ts.external.directory.path": "C:\\Users\\BrunoRodriguesOnissa\\AppData\\Local\\Programs\\WebStorm\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external"
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "ts.external.directory.path": "/home/bruno/Documents/42SP/42_transcendence/frontend/node_modules/typescript/lib"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -199,6 +209,7 @@
       <workItem from="1753262409938" duration="1325000" />
       <workItem from="1753293265612" duration="3992000" />
       <workItem from="1753299588068" duration="4795000" />
+      <workItem from="1753309101892" duration="1499000" />
     </task>
     <task id="LOCAL-00025" summary="feat: add `InternalBackendApiError`, update `GetUserQuery` and related services&#10;&#10;- Introduced new error type `InternalBackendApiError` in `ErrorCatalog` for backend communication issues.&#10;- Made `Email` and `Username` optional in `GetUserQuery` and adjusted its constructor for better flexibility.&#10;- Updated `GetUserService` to reflect changes in query and handle nullable fields seamlessly.">
       <option name="closed" value="true" />

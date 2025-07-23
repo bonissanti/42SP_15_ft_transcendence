@@ -1,7 +1,7 @@
 export class Friendship
 {
     public readonly uuid: string;
-    public readonly status: StatusRequest;
+    public status: StatusRequest;
     public readonly receiverUuid: string;
     public readonly senderUuid: string;
     public readonly createdAt: number;

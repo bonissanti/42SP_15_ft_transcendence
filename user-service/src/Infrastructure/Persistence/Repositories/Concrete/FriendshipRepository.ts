@@ -15,26 +15,26 @@ export class FriendshipRepository implements IBaseRepository<ListFriendshipQuery
         });
     }
 
-    public async Update(friendshipUuid: string, status: StatusRequest)
+    public async Update(friendshipUuid: string, entity: Friendship): Promise<void>
     {
         await prisma.friendship.update({
             where: {uuid: friendshipUuid},
             data: {
-                Status: status,
+                Status: entity.status,
             }
         });
     }
 
-    public async Delete(friendshipUuid: string)
+    public async Delete(friendshipUuid: string): Promise<void>
     {
         await prisma.friendship.delete({
             where: {uuid: friendshipUuid}
         });
     }
 
-    public async GetFriendshipByUserAndStatus(userUuid: string, status: StatusRequest)
+    public async GetFriendshipByUserAndStatus(userUuid: string, status: StatusRequest): Promise<Friendship[]>
     {
-        await prisma.friendship.findMany({
+        const friendship: Friendship = await prisma.friendship.findMany({
             where: {
                 OR: [
                     {senderUuid: userUuid, status: status},
@@ -42,16 +42,21 @@ export class FriendshipRepository implements IBaseRepository<ListFriendshipQuery
                 ]
             }
         });
+
+        if (friendship)
+            return [];
+
+        return friendship;
     }
 
-    public async GetByFriendshipUuid(friendshipUuid: string)
+    public async GetByFriendshipUuid(friendshipUuid: string): Promise<Friendship>
     {
-        await prisma.friendship.findUnique({
+        return await prisma.friendship.findUnique({
             where: {uuid: friendshipUuid}
         });
     }
 
-    public async VerifyIfFriendshipExists(person1Uuid: string, person2Uuid: string): Promise<boolean>
+    public async VerifyIfFriendshipExistsByUsersUuid(person1Uuid: string, person2Uuid: string): Promise<boolean>
     {
         const friendship = await prisma.friendship.findUnique({
             where:{
@@ -62,6 +67,15 @@ export class FriendshipRepository implements IBaseRepository<ListFriendshipQuery
             }
         })
 
-        return friendship === null;
+        return friendship !== null;
+    }
+
+    public async VerifyIfFriendshipExistsByFriendshipUuid(friendshipUuid: string): Promise<boolean>
+    {
+        const friendship = await prisma.friendship.findUnique({
+            where: {uuid: friendshipUuid}
+        });
+
+        return friendship !== null;
     }
 }
