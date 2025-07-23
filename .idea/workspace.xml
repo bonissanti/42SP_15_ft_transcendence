@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d3134b4-a67d-4c46-80e3-654566a805b8" name="Changes" comment="feat: extend `SanitizeHelper` with date-sanitization utility&#10;&#10;- Added `SanitizerDate` method for validating and sanitizing date inputs.&#10;- Enhanced `SanitizerNumber` to handle null and undefined values more robustly.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game-service/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/game-service/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game-service/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/game-service/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/Application/Services/Concrete/LogoutUserService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/Application/Services/Concrete/LogoutUserService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/Presentation/Controllers/UserSessionController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/Presentation/Controllers/UserSessionController.ts" afterDir="false" />
-    </list>
+    <list default="true" id="6d3134b4-a67d-4c46-80e3-654566a805b8" name="Changes" comment="feat: add Redis integration and enhance `LogoutUserService` logic&#10;&#10;- Added `redis` dependency to manage session storage and caching (`package.json`, `package-lock.json`).&#10;- Updated `LogoutUserService` to support passing `request` alongside session data.&#10;- Introduced Redis client packages for modular functionality: `@redis/client`, `@redis/bloom`, `@redis/json`, `@redis/search`, `@redis/time-series`." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -202,23 +194,7 @@
       <workItem from="1753043060074" duration="4990000" />
       <workItem from="1753220205206" duration="8857000" />
       <workItem from="1753229549471" duration="1180000" />
-      <workItem from="1753262409938" duration="866000" />
-    </task>
-    <task id="LOCAL-00017" summary="refactor: replace session commands with tournament-based operations and refactor structure&#10;&#10;- Removed `LoginSessionCommandHandler`, `LogoutSessionCommandHandler`, and related validators.&#10;- Added `TournamentController` with methods for managing tournament operations.&#10;- Introduced `TournamentRepository` and `Tournament` entity to handle tournament persistence and data transformation.&#10;- Updated `GetUserQueryValidator` to reference tournaments instead of users.&#10;- Simplified workspace configuration and adjusted file paths for consistency.">
-      <option name="closed" value="true" />
-      <created>1752358596569</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1752358596569</updated>
-    </task>
-    <task id="LOCAL-00018" summary="feat: add `tournament` service to docker-compose and refactor tournament services&#10;&#10;- Added `tournament` service configuration, including environment variables, ports, and volumes.&#10;- Adjusted `EditTournamentCommand` to require all player UUIDs as non-optional.&#10;- Refactored `CreateTournamentService` and `DeleteTournamentService` to instantiate `TournamentRepository` internally instead of passing it as a parameter.&#10;- Fixed missing newline in `BaseEntity` interface.">
-      <option name="closed" value="true" />
-      <created>1752535761963</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1752535761963</updated>
+      <workItem from="1753262409938" duration="1325000" />
     </task>
     <task id="LOCAL-00019" summary="refactor: make player UUIDs in `EditTournamentDTO` required and adjust internal repository instantiation&#10;&#10;- Updated `EditTournamentDTO` to require `player3Uuid` and `player4Uuid` as mandatory fields.&#10;- Modified `GetAllTournamentService` and `EditTournamentService` to internally instantiate `TournamentRepository`.&#10;- Improved type safety in `EditTournamentCommandHandler` by removing nullable checks for `ChangeFields` method arguments.">
       <option name="closed" value="true" />
@@ -596,7 +572,23 @@
       <option name="project" value="LOCAL" />
       <updated>1753230656410</updated>
     </task>
-    <option name="localTasksCounter" value="66" />
+    <task id="LOCAL-00066" summary="refactor: rename and restructure `LogoutUserService` methods&#10;&#10;- Renamed `Execute` method to `Logout` for clarity and consistency.&#10;- Added unimplemented `Execute` placeholder to support future modifications. &#10;- Removed redundant import from `game-service/src/index.ts`.">
+      <option name="closed" value="true" />
+      <created>1753263472553</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1753263472554</updated>
+    </task>
+    <task id="LOCAL-00067" summary="feat: add Redis integration and enhance `LogoutUserService` logic&#10;&#10;- Added `redis` dependency to manage session storage and caching (`package.json`, `package-lock.json`).&#10;- Updated `LogoutUserService` to support passing `request` alongside session data.&#10;- Introduced Redis client packages for modular functionality: `@redis/client`, `@redis/bloom`, `@redis/json`, `@redis/search`, `@redis/time-series`.">
+      <option name="closed" value="true" />
+      <created>1753263483617</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1753263483617</updated>
+    </task>
+    <option name="localTasksCounter" value="68" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -614,8 +606,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="feat: add matchmaking-related DTOs, query objects, and new validation errors&#10;&#10;- Introduced `GenerateMatchmakingDTO`, `GenerateMatchmakingQuery`, and `GenerateMatchmakingQueryDTO` for matchmaking logic.&#10;- Added `NegativeWins` error to `ErrorCatalog` for validation of win values.&#10;- Updated `ErrorCatalog` messages for consistency in backend API error naming." />
-    <MESSAGE value="refactor: rename method in `IBackendApiClient` and update logs for clarity&#10;&#10;- Renamed `verifyUserExists` to `VerifyIfUsersExists` in `IBackendApiClient` for consistency.&#10;- Enhanced error logging in `index.ts` for better debugging. &#10;- Minor formatting updates in `HistoryRepository`." />
     <MESSAGE value="feat: implement matchmaking controller, view model, and query handlers&#10;&#10;- Added `MatchmakingController` with matchmaking logic and integration via `GenerateMatchmakingDTO`.&#10;- Introduced `GenerateMatchmakingViewModel` to structure matchmaking data.&#10;- Implemented `GenerateMatchmakingQueryHandler` and `GenerateMatchmakingQueryValidator` for query processing and validation." />
     <MESSAGE value="feat: add matchmaking service, user search method, and update routes&#10;&#10;- Implemented `MatchmakingService` with preliminary `Generate` logic.&#10;- Added `SearchForClosestOpponent` method in `UserRepository` for matchmaking user search based on win ratio and matches played.&#10;- Updated `UserRoutes` with corrected endpoint `/users/exists`.&#10;- Extended `NotificationError` with `SetAllErrorsToString` method for better error handling." />
     <MESSAGE value="chore: add missing newline and leave TODO for additional validators&#10;&#10;- Fixed missing newline in `GenerateMatchmakingQueryValidator.ts`.&#10;- Added a TODO placeholder to include validators for additional getters." />
@@ -639,7 +629,9 @@
     <MESSAGE value="feat: enhance login flow with secure cookie-based JWT storage&#10;&#10;- Added HTTP-only, secure, and same-site cookie settings for storing JWTs in `UserSessionRoutes`.&#10;- Updated `LoginUserService` to pass `reply` for cookie handling.&#10;- Improved authentication response structure with user details." />
     <MESSAGE value="feat: add `SanitizeHelper` utility for data validation&#10;&#10;- Introduced `SanitizeHelper` with methods for boolean and number sanitization.&#10;- Added static utility functions to enhance input validation consistency." />
     <MESSAGE value="feat: extend `SanitizeHelper` with date-sanitization utility&#10;&#10;- Added `SanitizerDate` method for validating and sanitizing date inputs.&#10;- Enhanced `SanitizerNumber` to handle null and undefined values more robustly." />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: extend `SanitizeHelper` with date-sanitization utility&#10;&#10;- Added `SanitizerDate` method for validating and sanitizing date inputs.&#10;- Enhanced `SanitizerNumber` to handle null and undefined values more robustly." />
+    <MESSAGE value="refactor: rename and restructure `LogoutUserService` methods&#10;&#10;- Renamed `Execute` method to `Logout` for clarity and consistency.&#10;- Added unimplemented `Execute` placeholder to support future modifications. &#10;- Removed redundant import from `game-service/src/index.ts`." />
+    <MESSAGE value="feat: add Redis integration and enhance `LogoutUserService` logic&#10;&#10;- Added `redis` dependency to manage session storage and caching (`package.json`, `package-lock.json`).&#10;- Updated `LogoutUserService` to support passing `request` alongside session data.&#10;- Introduced Redis client packages for modular functionality: `@redis/client`, `@redis/bloom`, `@redis/json`, `@redis/search`, `@redis/time-series`." />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add Redis integration and enhance `LogoutUserService` logic&#10;&#10;- Added `redis` dependency to manage session storage and caching (`package.json`, `package-lock.json`).&#10;- Updated `LogoutUserService` to support passing `request` alongside session data.&#10;- Introduced Redis client packages for modular functionality: `@redis/client`, `@redis/bloom`, `@redis/json`, `@redis/search`, `@redis/time-series`." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
