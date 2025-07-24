@@ -3,6 +3,8 @@ import {
   getCanvas, getBall, getPlayer1, getPlayer2, setAnimationFrameId,
   PADDLE_SPEED, WIN_SCORE
 } from './common';
+import { sendMatchHistory, getUserProfile, getCachoraoProfile } from './common';
+
 
 let speedIntervalId: number | null = null;
 
@@ -49,48 +51,31 @@ function increaseBallSpeed() {
   }
 }
 
-async function getUserProfile(): Promise<{ username: string, profilePic: string }> {
-  try {
-    const token = localStorage.getItem('jwtToken');
-    if (!token) {
-      return { username: 'Jogador 1', profilePic: 'https://placehold.co/128x128/000000/FFFFFF?text=P1' };
-    }
-
-    const response = await fetch('/api/users/me', {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-    
-    if (!response.ok) {
-      return { username: 'Jogador 1', profilePic: 'https://placehold.co/128x128/000000/FFFFFF?text=P1' };
-    }
-    
-    const user = await response.json();
-    return { 
-      username: user.Username || 'Jogador 1',
-      profilePic: user.ProfilePic || 'https://placehold.co/128x128/000000/FFFFFF?text=P1'
-    };
-  } catch (error) {
-    return { username: 'Jogador 1', profilePic: 'https://placehold.co/128x128/000000/FFFFFF?text=P1' };
-  }
-}
-
 async function checkWinCondition() {
   const p1 = getPlayer1();
   const p2 = getPlayer2();
-  
+
   if (p1.score >= WIN_SCORE || p2.score >= WIN_SCORE) {
     stopMultiplayerGame();
-    
-    const { username, profilePic } = await getUserProfile();
-    
+
+    const [playerProfile, cachoraoProfile] = await Promise.all([
+      getUserProfile(),
+      getCachoraoProfile()
+    ]);
+
+    let winnerProfile;
+
     if (p1.score >= WIN_SCORE) {
-      const path = `/winner?username=${encodeURIComponent(username)}&profilePic=${encodeURIComponent(profilePic)}`;
-      history.pushState({}, '', path);
-      window.dispatchEvent(new PopStateEvent('popstate'));
+      winnerProfile = playerProfile;
+      await sendMatchHistory("multiplayer", playerProfile.username, p1.score, cachoraoProfile.username, p2.score);
     } else {
-      history.pushState({}, '', '/defeat');
-      window.dispatchEvent(new PopStateEvent('popstate'));
+      winnerProfile = cachoraoProfile;
+      await sendMatchHistory("multiplayer", cachoraoProfile.username, p2.score, playerProfile.username, p1.score);
     }
+
+    const path = `/winner?username=${encodeURIComponent(winnerProfile.username)}&profilePic=${encodeURIComponent(winnerProfile.profilePic)}`;
+    history.pushState({}, '', path);
+    window.dispatchEvent(new PopStateEvent('popstate'));
   }
 }
 
@@ -122,10 +107,16 @@ function resetPoints() {
 
 export async function initMultiplayerGame() {
   if (!initSharedState()) return;
-  const { username } = await getUserProfile();
-  const playerNames = [username, 'Qualquer um'];
+  
+  const [playerProfile, cachoraoProfile] = await Promise.all([
+    getUserProfile(),
+    getCachoraoProfile()
+  ]);
+  
+  const playerNames = [playerProfile.username, cachoraoProfile.username];
   const { setPlayerNames } = await import('./common');
   setPlayerNames(playerNames);
+  
   resetPaddles();
   resetPoints();
   resetBall();

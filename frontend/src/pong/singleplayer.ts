@@ -4,6 +4,8 @@ import {
   PADDLE_SPEED, AI_SPEED, WIN_SCORE
 } from './common';
 
+import { sendMatchHistory, getUserProfile, getCachoraoProfile } from './common';
+
 let speedIntervalId: number | null = null;
 
 function predictBallImpact(ball: any, canvas: any): number {
@@ -87,56 +89,6 @@ function increaseBallSpeed() {
   }
 }
 
-async function getUserProfile(): Promise<{ username: string, profilePic: string }> {
-  try {
-    const token = localStorage.getItem('jwtToken');
-    if (!token) {
-      return { username: 'Jogador 1', profilePic: 'https://placehold.co/128x128/000000/FFFFFF?text=P1' };
-    }
-
-    const response = await fetch('/api/users/me', {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-    
-    if (!response.ok) {
-      return { username: 'Jogador 1', profilePic: 'https://placehold.co/128x128/000000/FFFFFF?text=P1' };
-    }
-    
-    const user = await response.json();
-    return { 
-      username: user.Username || 'Jogador 1',
-      profilePic: user.ProfilePic || 'https://placehold.co/128x128/000000/FFFFFF?text=P1'
-    };
-  } catch (error) {
-    return { username: 'Jogador 1', profilePic: 'https://placehold.co/128x128/000000/FFFFFF?text=P1' };
-  }
-}
-
-async function getCachoraoProfile(): Promise<{ username: string, profilePic: string }> {
-  try {
-    const response = await fetch('/api/users/exists/cachorrao');
-    
-    if (!response.ok) {
-      return { username: 'Cachorrao', profilePic: '/img/cachorrao.jpg' };
-    }
-    
-    const userResponse = await fetch('/api/users?username=cachorrao');
-    
-    if (!userResponse.ok) {
-      return { username: 'Cachorrao', profilePic: '/img/cachorrao.jpg' };
-    }
-    
-    const user = await userResponse.json();
-    return { 
-      username: user.Username || 'Cachorrao',
-      profilePic: user.ProfilePic || '/img/cachorrao.jpg'
-    };
-  } catch (error) {
-    console.error('Erro ao buscar perfil do Cachorrao:', error);
-    return { username: 'Cachorrao', profilePic: '/img/cachorrao.jpg' };
-  }
-}
-
 async function checkWinCondition() {
   const p1 = getPlayer1();
   const p2 = getPlayer2();
@@ -150,11 +102,19 @@ async function checkWinCondition() {
     ]);
     
     let winnerProfile;
+    let winnerUsername: string;
+    let loserUsername: string;
     
     if (p1.score >= WIN_SCORE) {
       winnerProfile = playerProfile;
+      winnerUsername = playerProfile.username;
+      loserUsername = cachoraoProfile.username;
+      await sendMatchHistory("singleplayer", winnerUsername, p1.score, loserUsername, p2.score);
     } else {
       winnerProfile = cachoraoProfile;
+      winnerUsername = cachoraoProfile.username;
+      loserUsername = playerProfile.username;
+      await sendMatchHistory("singleplayer", winnerUsername, p2.score, loserUsername, p1.score);
     }
     
     const path = `/winner?username=${encodeURIComponent(winnerProfile.username)}&profilePic=${encodeURIComponent(winnerProfile.profilePic)}`;
