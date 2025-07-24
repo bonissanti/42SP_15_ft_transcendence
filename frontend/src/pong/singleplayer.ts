@@ -4,7 +4,35 @@ import {
   PADDLE_SPEED, AI_SPEED, WIN_SCORE
 } from './common';
 
+import { sendMatchHistory, getUserProfile, getCachoraoProfile } from './common';
+
 let speedIntervalId: number | null = null;
+
+function predictBallImpact(ball: any, canvas: any): number {
+  let ballX = ball.x;
+  let ballY = ball.y;
+  let speedX = ball.speedX;
+  let speedY = ball.speedY;
+  
+  if (speedX <= 0) {
+    return ballY;
+  }
+  
+  const aiX = canvas.width - 20 - 15;
+  
+  while (ballX < aiX) {
+    ballX += speedX;
+    ballY += speedY;
+    
+    if (ballY - ball.radius <= 0 || ballY + ball.radius >= canvas.height) {
+      speedY *= -1;
+    }
+    
+    if (ballX >= canvas.width) break;
+  }
+  
+  return ballY;
+}
 
 function updateSinglePlayer() {
   const ball = getBall();
@@ -37,10 +65,20 @@ function updateSinglePlayer() {
   if (keys['w'] && p1.y > 0) p1.y -= PADDLE_SPEED;
   if (keys['s'] && p1.y < canvas.height - p1.height) p1.y += PADDLE_SPEED;
 
-  const targetY = ball.y - p2.height / 2;
-  const speed = AI_SPEED * (Math.random() * 0.5 + 0.75);
-  if (p2.y < targetY && p2.y < canvas.height - p2.height) p2.y += speed;
-  if (p2.y > targetY && p2.y > 0) p2.y -= speed;
+  const predictedY = predictBallImpact(ball, canvas);
+  const targetY = predictedY - p2.height / 2;
+
+  const errorMargin = (Math.random() - 0.5) * 20;
+  const finalTargetY = targetY + errorMargin;
+  
+  const distance = Math.abs(p2.y + p2.height / 2 - finalTargetY);
+  const aiSpeed = AI_SPEED * Math.min(1.5, distance / 50);
+  
+  if (p2.y + p2.height / 2 < finalTargetY && p2.y < canvas.height - p2.height) {
+    p2.y += aiSpeed;
+  } else if (p2.y + p2.height / 2 > finalTargetY && p2.y > 0) {
+    p2.y -= aiSpeed;
+  }
 }
 
 function increaseBallSpeed() {
@@ -51,14 +89,58 @@ function increaseBallSpeed() {
   }
 }
 
-function checkWinCondition() {
+async function checkWinCondition() {
   const p1 = getPlayer1();
   const p2 = getPlayer2();
+  
   if (p1.score >= WIN_SCORE || p2.score >= WIN_SCORE) {
-    alert(p1.score >= WIN_SCORE ? 'Você ganhou!' : 'Você perdeu!');
     stopSinglePlayerGame();
-    window.location.href = '/';
+    
+    const [playerProfile, cachoraoProfile] = await Promise.all([
+      getUserProfile(),
+      getCachoraoProfile()
+    ]);
+    
+    let winnerProfile;
+    let winnerUsername: string;
+    let loserUsername: string;
+    
+    if (p1.score >= WIN_SCORE) {
+      winnerProfile = playerProfile;
+      winnerUsername = playerProfile.username;
+      loserUsername = cachoraoProfile.username;
+      await sendMatchHistory("singleplayer", winnerUsername, p1.score, loserUsername, p2.score);
+    } else {
+      winnerProfile = cachoraoProfile;
+      winnerUsername = cachoraoProfile.username;
+      loserUsername = playerProfile.username;
+      await sendMatchHistory("singleplayer", winnerUsername, p2.score, loserUsername, p1.score);
+    }
+    
+    const path = `/winner?username=${encodeURIComponent(winnerProfile.username)}&profilePic=${encodeURIComponent(winnerProfile.profilePic)}`;
+    history.pushState({}, '', path);
+    window.dispatchEvent(new PopStateEvent('popstate'));
   }
+}
+
+function resetPaddles() {
+  const p1 = getPlayer1();
+  const p2 = getPlayer2();
+  if (p1) {
+    p1.y = (getCanvas()?.height || 0) / 2 - p1.height / 2;
+    p1.score = 0;
+  }
+  if (p2) {
+    p2.y = (getCanvas()?.height || 0) / 2 - p2.height / 2;
+    p2.score = 0;
+  }
+}
+
+function resetPoints() {
+  const p1 = getPlayer1();
+  const p2 = getPlayer2();
+  if (p1) p1.score = 0;
+  if (p2) p2.score = 0;
 }
 
 function gameLoop() {
@@ -67,8 +149,20 @@ function gameLoop() {
   setAnimationFrameId(requestAnimationFrame(gameLoop));
 }
 
-export function initSinglePlayerGame() {
+export async function initSinglePlayerGame() {
   if (!initSharedState()) return;
+  
+  const [playerProfile, cachoraoProfile] = await Promise.all([
+    getUserProfile(),
+    getCachoraoProfile()
+  ]);
+  
+  const playerNames = [playerProfile.username, cachoraoProfile.username];
+  const { setPlayerNames } = await import('./common');
+  setPlayerNames(playerNames);
+  
+  resetPaddles();
+  resetPoints();
   resetBall();
   speedIntervalId = setInterval(increaseBallSpeed, 3000);
   gameLoop();

@@ -3,6 +3,8 @@ import {
   getCanvas, getBall, getPlayer1, getPlayer2, setAnimationFrameId,
   PADDLE_SPEED, WIN_SCORE
 } from './common';
+import { sendMatchHistory, getUserProfile, getCachoraoProfile } from './common';
+
 
 let speedIntervalId: number | null = null;
 
@@ -49,13 +51,31 @@ function increaseBallSpeed() {
   }
 }
 
-function checkWinCondition() {
+async function checkWinCondition() {
   const p1 = getPlayer1();
   const p2 = getPlayer2();
+
   if (p1.score >= WIN_SCORE || p2.score >= WIN_SCORE) {
-    alert(p1.score >= WIN_SCORE ? 'Jogador 1 ganhou!' : 'Jogador 2 ganhou!');
     stopMultiplayerGame();
-    window.location.href = '/';
+
+    const [playerProfile, cachoraoProfile] = await Promise.all([
+      getUserProfile(),
+      getCachoraoProfile()
+    ]);
+
+    let winnerProfile;
+
+    if (p1.score >= WIN_SCORE) {
+      winnerProfile = playerProfile;
+      await sendMatchHistory("multiplayer", playerProfile.username, p1.score, cachoraoProfile.username, p2.score);
+    } else {
+      winnerProfile = cachoraoProfile;
+      await sendMatchHistory("multiplayer", cachoraoProfile.username, p2.score, playerProfile.username, p1.score);
+    }
+
+    const path = `/winner?username=${encodeURIComponent(winnerProfile.username)}&profilePic=${encodeURIComponent(winnerProfile.profilePic)}`;
+    history.pushState({}, '', path);
+    window.dispatchEvent(new PopStateEvent('popstate'));
   }
 }
 
@@ -65,8 +85,40 @@ function gameLoop() {
   setAnimationFrameId(requestAnimationFrame(gameLoop));
 }
 
-export function initMultiplayerGame() {
+function resetPaddles() {
+  const p1 = getPlayer1();
+  const p2 = getPlayer2();
+  if (p1) {
+    p1.y = (getCanvas()?.height || 0) / 2 - p1.height / 2;
+    p1.score = 0;
+  }
+  if (p2) {
+    p2.y = (getCanvas()?.height || 0) / 2 - p2.height / 2;
+    p2.score = 0;
+  }
+}
+
+function resetPoints() {
+  const p1 = getPlayer1();
+  const p2 = getPlayer2();
+  if (p1) p1.score = 0;
+  if (p2) p2.score = 0;
+}
+
+export async function initMultiplayerGame() {
   if (!initSharedState()) return;
+  
+  const [playerProfile, cachoraoProfile] = await Promise.all([
+    getUserProfile(),
+    getCachoraoProfile()
+  ]);
+  
+  const playerNames = [playerProfile.username, cachoraoProfile.username];
+  const { setPlayerNames } = await import('./common');
+  setPlayerNames(playerNames);
+  
+  resetPaddles();
+  resetPoints();
   resetBall();
   speedIntervalId = setInterval(increaseBallSpeed, 3000);
   gameLoop();
