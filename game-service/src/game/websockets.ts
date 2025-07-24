@@ -187,7 +187,7 @@ async function sendTournamentHistory(tournamentId: string, finalWinnerId: string
 
 
     const historyData = {
-        tournamentName: tournament.tournamentName,
+        tournamentName: "tournament",
         player1Username: winner?.username || '',
         player1Points: 1,
         player2Username: runnerUp?.username || '',
