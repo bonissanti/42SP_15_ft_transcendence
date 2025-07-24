@@ -120,8 +120,12 @@ function resetPoints() {
   if (p2) p2.score = 0;
 }
 
-export function initMultiplayerGame() {
+export async function initMultiplayerGame() {
   if (!initSharedState()) return;
+  const { username } = await getUserProfile();
+  const playerNames = [username, 'Qualquer um'];
+  const { setPlayerNames } = await import('./common');
+  setPlayerNames(playerNames);
   resetPaddles();
   resetPoints();
   resetBall();

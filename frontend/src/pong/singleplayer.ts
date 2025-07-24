@@ -6,6 +6,32 @@ import {
 
 let speedIntervalId: number | null = null;
 
+function predictBallImpact(ball: any, canvas: any): number {
+  let ballX = ball.x;
+  let ballY = ball.y;
+  let speedX = ball.speedX;
+  let speedY = ball.speedY;
+  
+  if (speedX <= 0) {
+    return ballY;
+  }
+  
+  const aiX = canvas.width - 20 - 15;
+  
+  while (ballX < aiX) {
+    ballX += speedX;
+    ballY += speedY;
+    
+    if (ballY - ball.radius <= 0 || ballY + ball.radius >= canvas.height) {
+      speedY *= -1;
+    }
+    
+    if (ballX >= canvas.width) break;
+  }
+  
+  return ballY;
+}
+
 function updateSinglePlayer() {
   const ball = getBall();
   const p1 = getPlayer1();
@@ -37,10 +63,20 @@ function updateSinglePlayer() {
   if (keys['w'] && p1.y > 0) p1.y -= PADDLE_SPEED;
   if (keys['s'] && p1.y < canvas.height - p1.height) p1.y += PADDLE_SPEED;
 
-  const targetY = ball.y - p2.height / 2;
-  const speed = AI_SPEED * (Math.random() * 0.5 + 0.75);
-  if (p2.y < targetY && p2.y < canvas.height - p2.height) p2.y += speed;
-  if (p2.y > targetY && p2.y > 0) p2.y -= speed;
+  const predictedY = predictBallImpact(ball, canvas);
+  const targetY = predictedY - p2.height / 2;
+
+  const errorMargin = (Math.random() - 0.5) * 20;
+  const finalTargetY = targetY + errorMargin;
+  
+  const distance = Math.abs(p2.y + p2.height / 2 - finalTargetY);
+  const aiSpeed = AI_SPEED * Math.min(1.5, distance / 50);
+  
+  if (p2.y + p2.height / 2 < finalTargetY && p2.y < canvas.height - p2.height) {
+    p2.y += aiSpeed;
+  } else if (p2.y + p2.height / 2 > finalTargetY && p2.y > 0) {
+    p2.y -= aiSpeed;
+  }
 }
 
 function increaseBallSpeed() {
@@ -96,12 +132,6 @@ async function checkWinCondition() {
   }
 }
 
-function gameLoop() {
-  updateSinglePlayer();
-  draw();
-  setAnimationFrameId(requestAnimationFrame(gameLoop));
-}
-
 function resetPaddles() {
   const p1 = getPlayer1();
   const p2 = getPlayer2();
@@ -122,8 +152,18 @@ function resetPoints() {
   if (p2) p2.score = 0;
 }
 
-export function initSinglePlayerGame() {
+function gameLoop() {
+  updateSinglePlayer();
+  draw();
+  setAnimationFrameId(requestAnimationFrame(gameLoop));
+}
+
+export async function initSinglePlayerGame() {
   if (!initSharedState()) return;
+  const { username } = await getUserProfile();
+  const playerNames = [username, 'AGI'];
+  const { setPlayerNames } = await import('./common');
+  setPlayerNames(playerNames);
   resetPaddles();
   resetPoints();
   resetBall();
