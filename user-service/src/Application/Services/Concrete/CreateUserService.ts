@@ -16,14 +16,14 @@ export class CreateUserService implements BaseService<CreateUserDTO> {
     private CreateUserHandler: CreateUserCommandHandler;
     private CreateUserValidator: CreateUserCommandValidator;
 
-    constructor(userRepository: UserRepository, notificationError: NotificationError)
-    {
+    constructor(userRepository: UserRepository, notificationError: NotificationError) {
         this.UserRepository = userRepository;
         this.CreateUserValidator = new CreateUserCommandValidator(this.UserRepository, notificationError);
         this.CreateUserHandler = new CreateUserCommandHandler(this.UserRepository, notificationError);
     }
 
-    public async Execute(dto: CreateUserDTO, reply: FastifyReply): Promise<Result> {
+    public async Execute(dto: CreateUserDTO, reply: FastifyReply): Promise<Result>
+    {
         try
         {
             const command: CreateUserCommand = CreateUserCommand.FromDTO(dto);
@@ -31,8 +31,7 @@ export class CreateUserService implements BaseService<CreateUserDTO> {
             await this.CreateUserHandler.Handle(command);
 
             return Result.Sucess("User created successfully");
-        }
-        catch (error)
+        } catch (error)
         {
             if (error instanceof ValidationException)
             {
@@ -52,8 +51,10 @@ export class CreateUserService implements BaseService<CreateUserDTO> {
                         return Result.Failure("Code:409 Message:Este email já está em uso.");
                     }
                 }
+
                 return Result.Failure(ErrorCatalog.DatabaseViolated.SetError());
             }
+
             return Result.Failure(ErrorCatalog.InternalServerError.SetError());
         }
     }

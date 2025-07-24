@@ -1,5 +1,6 @@
 import {EditUserDTO} from "../../../Application/DTO/ToCommand/EditUserDTO.js";
 
+
 export class EditUserCommand
 {
     public readonly Uuid: string;

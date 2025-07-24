@@ -9,6 +9,8 @@ import {ValidationException} from "../../../Shared/Errors/ValidationException.js
 import {PrismaClientKnownRequestError} from "@prisma/client/runtime/library";
 import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog.js";
 import { Result } from "../../../Shared/Utils/Result.js";
+import {FastifyRequest} from "fastify";
+import {TokenBlacklistService} from "./TokenBlacklistService.js";
 
 export class LogoutUserService implements BaseService<UserSessionDTO>
 {
@@ -23,10 +25,15 @@ export class LogoutUserService implements BaseService<UserSessionDTO>
         this.LogoutUserHandler = new LogoutSessionCommandHandler(this.UserRepository);
     }
 
-    public async Execute(dto: UserSessionDTO): Promise<Result<void>>
+    public async Logout(dto: UserSessionDTO, request: FastifyRequest): Promise<Result<void>>
     {
         try
         {
+            const token = request.cookies.token;
+
+            if (token)
+                await TokenBlacklistService.blacklistToken(token, 3600);
+
             const command: UserSessionCommand = UserSessionCommand.FromDTO(dto);
             await this.LogoutUserValidator.Validator(command);
             await this.LogoutUserHandler.Handle(command);
@@ -49,5 +56,10 @@ export class LogoutUserService implements BaseService<UserSessionDTO>
             }
             return Result.Failure(ErrorCatalog.InternalServerError.SetError());
         }
+    }
+
+    Execute(dto: UserSessionDTO): Promise<Result<void>>
+    {
+        throw new Error("Method not implemented.");
     }
 }

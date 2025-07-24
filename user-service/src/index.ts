@@ -1,6 +1,9 @@
 import fastify, { FastifyInstance } from 'fastify';
+import helmet from "@fastify/helmet";
 import fastifyJwt from "@fastify/jwt";
 import fastifyStatic from '@fastify/static';
+import cookie from "@fastify/cookie";
+import { fastifyCors } from "@fastify/cors";
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -33,109 +36,122 @@ declare module 'fastify' {
 const server: FastifyInstance = fastify();
 
 server.register(fastifyJwt, {
-  secret: process.env.JWT_SECRET || 'transcendence' 
+  secret: process.env.JWT_SECRET || 'transcendence'
 });
 
-await server.register(fastifyStatic, {
+server.register(helmet, {
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      script: ["'self'"]
+    }
+  }
+});
+
+server.register(cookie);
+server.register(fastifyCors, {
+  origin: ['http://localhost:5173'],
+  credentials: true
+});
+
+server.register(fastifyStatic, {
   root: path.join(__dirname, '..', 'img'),
   prefix: '/img/',
 });
 
-server.get('/', async (request, reply) => {
+server.get('/', async () => {
   return 'Rodando!';
 });
 
-server.get('/health', async (request, reply) => {
+server.get('/health', async () => {
   return { status: 'ok', time: new Date() };
 });
 
 async function createDefaultUser(prisma: PrismaClient, userRepository: UserRepository, createUserService: CreateUserService) {
-    try {
-        const existingUser = await userRepository.VerifyIfUserExistsByUsername('cachorrao');
-        
-        if (!existingUser) {
-            console.log('🐕 Criando usuário padrão "cachorrao"...');
-            
-            const createUserDTO = new CreateUserDTO(
-                'cachorraofoda@gmail.com',
-                'blablabla',              
-                'cachorrao',              
-                false,                    
-                '/img/cachorrao.jpg',      
-                null                      
-            );
+  try {
+    const existingUser = await userRepository.VerifyIfUserExistsByUsername('cachorrao');
 
-            const mockReply = {
-                status: (code: number) => ({
-                    send: (data: any) => {
-                        if (code === 200) {
-                            console.log('✅ Cachorrao criado com sucesso:', data);
-                        } else {
-                            console.error('❌ Erro ao criar Cachorrao:', data);
-                        }
-                        return mockReply;
-                    }
-                })
-            } as any;
+    if (!existingUser) {
+      console.log('🐕 Criando usuário padrão "cachorrao"...');
 
-            await createUserService.Execute(createUserDTO, mockReply);
-            
-        } else {
-            console.log('ℹ️ Cachorrao já existe no banco de dados.');
-        }
-    } catch (error) {
-        console.error('❌ Erro ao verificar/criar usuário padrão:', error);
+      const createUserDTO = new CreateUserDTO(
+        'cachorraofoda@gmail.com',
+        'blablabla',
+        'cachorrao',
+        false,
+        '/img/cachorrao.jpg',
+        null
+      );
+
+      const mockReply = {
+        status: (code: number) => ({
+          send: (data: any) => {
+            if (code === 200) {
+              console.log('✅ Cachorrao criado com sucesso:', data);
+            } else {
+              console.error('❌ Erro ao criar Cachorrao:', data);
+            }
+            return mockReply;
+          }
+        })
+      } as any;
+
+      await createUserService.Execute(createUserDTO, mockReply);
+    } else {
+      console.log('ℹ️ Cachorrao já existe no banco de dados.');
     }
+  } catch (error) {
+    console.error('❌ Erro ao verificar/criar usuário padrão:', error);
+  }
 }
 
 async function main() {
-    const prisma = new PrismaClient();
-    const userRepository = new UserRepository(prisma);
-    const notificationError = new NotificationError();
+  const prisma = new PrismaClient();
+  const userRepository = new UserRepository(prisma);
+  const notificationError = new NotificationError();
 
-    server.decorate('userRepository', userRepository);
+  server.decorate('userRepository', userRepository);
 
-    const createUserService = new CreateUserService(userRepository, notificationError);
-    const editUserService = new EditUserService(userRepository, notificationError);
-    const deleteUserService = new DeleteUserService(userRepository, notificationError);
-    const getUserService = new GetUserService(userRepository, notificationError);
-    const verificationService = new UserService(userRepository, notificationError);
-    const loginUserService = new LoginUserService(userRepository, notificationError);
-    const logoutUserService = new LogoutUserService(userRepository, notificationError);
+  const createUserService = new CreateUserService(userRepository, notificationError);
+  const editUserService = new EditUserService(userRepository, notificationError);
+  const deleteUserService = new DeleteUserService(userRepository, notificationError);
+  const getUserService = new GetUserService(userRepository, notificationError);
+  const verificationService = new UserService(userRepository, notificationError);
+  const loginUserService = new LoginUserService(userRepository, notificationError);
+  const logoutUserService = new LogoutUserService(userRepository, notificationError);
 
-    const userController = new UserController(
-        createUserService,
-        editUserService,
-        deleteUserService,
-        getUserService,
-        userRepository,
-        verificationService
-    );
+  const userController = new UserController(
+    createUserService,
+    editUserService,
+    deleteUserService,
+    getUserService,
+    userRepository,
+    verificationService
+  );
 
-    const userSessionController = new UserSessionController(
-        loginUserService,
-        logoutUserService
-    );
+  const userSessionController = new UserSessionController(
+    loginUserService,
+    logoutUserService
+  );
 
-    await UserRoutes(server, userController);
-    await UserSessionRoutes(server, userSessionController, userRepository);
+  await UserRoutes(server, userController);
+  await UserSessionRoutes(server, userSessionController, userRepository);
+  await createDefaultUser(prisma, userRepository, createUserService);
 
-    await createDefaultUser(prisma, userRepository, createUserService);
+  server.setErrorHandler(async (error, request, reply) => {
+    console.error("Internal server error:", error);
+    reply.status(500).send({ message: "Ocorreu um erro interno." });
+  });
 
-    server.setErrorHandler(async (error, request, reply) => {
-        console.error("Internal server error:", error);
-        reply.status(500).send({ message: "Ocorreu um erro interno." });
-    });
-
-    try {
-        const address = await server.listen({ port: 8080, host: '0.0.0.0' });
-        console.log(`Server listening at ${address}`);
-        console.log(`📁 Arquivos estáticos disponíveis em: ${address}/img/`);
-    } catch (err) {
-        console.error("Falha ao iniciar o servidor:", err);
-        await prisma.$disconnect();
-        process.exit(1);
-    }
+  try {
+    const address = await server.listen({ port: 8080, host: '0.0.0.0' });
+    console.log(`🚀 Server listening at ${address}`);
+    console.log(`📁 Arquivos estáticos disponíveis em: ${address}/img/`);
+  } catch (err) {
+    console.error("❌ Falha ao iniciar o servidor:", err);
+    await prisma.$disconnect();
+    process.exit(1);
+  }
 }
 
 main();

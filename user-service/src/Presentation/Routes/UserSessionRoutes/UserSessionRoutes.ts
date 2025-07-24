@@ -3,13 +3,14 @@ import { UserSessionController } from '../../Controllers/UserSessionController.j
 import { UserRepository } from '../../../Infrastructure/Persistence/Repositories/Concrete/UserRepository.js';
 import { verifyGoogleCredential, findOrCreateUser, handleAuthError } from './GoogleAuthHelpers.js';
 import {UserSessionDTO} from "../../../Application/DTO/ToCommand/UserSessionDTO.js";
+import {authenticateJWT} from "../../Middleware/AuthMiddleware.js";
 
 export const UserSessionRoutes = async (server: any, userSessionController: UserSessionController, userRepository: UserRepository): Promise<void> => {
     server.post('/login', async (request: FastifyRequest<{ Body: UserSessionDTO}>, reply: FastifyReply) => {
         return userSessionController.LoginUser(request, reply);
     });
 
-    server.post('/logout', async (request: FastifyRequest<{ Body: UserSessionDTO}>, reply: FastifyReply) => {
+    server.post('/logout', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Body: UserSessionDTO}>, reply: FastifyReply) => {
         return userSessionController.LogoutUser(request, reply);
     });
 
@@ -28,8 +29,15 @@ export const UserSessionRoutes = async (server: any, userSessionController: User
                 return reply.status(500).send({ message: "Failed to process user in game-service-bkp." });
             }
 
-            const token = server.jwt.sign({ uuid: user.uuid, isAuthenticated: true });
-            return reply.send({ token });
+            const token = server.jwt.sign({ uuid: user.uuid, isAuthenticated: true }, { expiresIn: '1h' });
+            reply.setCookie('token', token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'strict',
+                path: '/'
+            });
+
+            return reply.send({ message: 'Authentication successful.', user: { uuid: user.uuid} });
 
         } catch (error: any) {
             return handleAuthError(error, server, reply);
