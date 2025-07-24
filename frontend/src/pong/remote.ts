@@ -89,8 +89,7 @@ export async function initRemoteGame() {
   const payload = JSON.parse(atob(token.split('.')[1]));
   const userId = payload.uuid;
 
-  ws = new WebSocket(`ws://localhost:3001?userId=${userId}&username=${encodeURIComponent(username)}&profilePic=${encodeURIComponent(profilePic)}&mode=remote`);
-
+  ws = new WebSocket(`ws://localhost:3001?userId=${userId}&username=${encodeURIComponent(username)}&profilePic=${encodeURIComponent(profilePic)}&mode=remote&token=${encodeURIComponent(token)}`);
 
   ws.onopen = () => {
       console.log(`WebSocket conectado como ${username}.`);

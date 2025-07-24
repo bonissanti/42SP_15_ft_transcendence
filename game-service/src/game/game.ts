@@ -12,6 +12,10 @@ import {
 import { games, clients, stopGame } from './websockets';
 import { WebSocket } from 'ws';
 
+interface GameWithElimination extends Game {
+  eliminationOrder: string[];
+}
+
 export function startOneVsOneGame(playerIds: string[], tournamentId?: string, isFinal = false): string | null {
     if (playerIds.length !== 2) {
         console.error("Jogo 1x1 precisa de 2 jogadores.");
@@ -159,8 +163,6 @@ function checkWinAndStopGame(gameId: string) {
     }
 }
 
-
-
 function createInitialGameState(): GameState {
   return {
     paddles: [
@@ -194,16 +196,110 @@ function collides(b: Ball, p: Paddle): boolean {
     return p_left < b_right && p_right > b_left && p_top < b_bottom && p_bottom > b_top;
 }
 
+async function sendRemoteMatchHistory(gameId: string, playerIds: string[], eliminationOrder: string[]) {
+    try {
+        const playerClients = playerIds.map(id => clients.get(id));
+        
+        
+        const winnerIndex = playerIds.findIndex(id => !eliminationOrder.includes(id));
+        const winnerId = winnerIndex !== -1 ? playerIds[winnerIndex] : eliminationOrder[eliminationOrder.length - 1];
+        
+        const positions: { [key: string]: { username: string, points: number } } = {};
+        
+        const winnerClient = clients.get(winnerId);
+        if (winnerClient) {
+            positions['player1'] = { username: winnerClient.username, points: 1 };
+        }
+        
+        if (eliminationOrder.length >= 1) {
+            const secondPlaceId = eliminationOrder[eliminationOrder.length - 1];
+            const secondPlaceClient = clients.get(secondPlaceId);
+            if (secondPlaceClient) {
+                positions['player2'] = { username: secondPlaceClient.username, points: 2 };
+            }
+        }
+        
+        if (eliminationOrder.length >= 2) {
+            const thirdPlaceId = eliminationOrder[eliminationOrder.length - 2];
+            const thirdPlaceClient = clients.get(thirdPlaceId);
+            if (thirdPlaceClient) {
+                positions['player3'] = { username: thirdPlaceClient.username, points: 3 };
+            }
+        }
+        
+        if (eliminationOrder.length >= 3) {
+            const fourthPlaceId = eliminationOrder[0];
+            const fourthPlaceClient = clients.get(fourthPlaceId);
+            if (fourthPlaceClient) {
+                positions['player4'] = { username: fourthPlaceClient.username, points: 4 };
+            }
+        }
+
+        const historyData = {
+            tournamentName: 'remote',
+            player1Username: positions['player1']?.username || null,
+            player1Points: positions['player1']?.points || null,
+            player2Username: positions['player2']?.username || null,
+            player2Points: positions['player2']?.points || null,
+            player3Username: positions['player3']?.username || null,
+            player3Points: positions['player3']?.points || null,
+            player4Username: positions['player4']?.username || null,
+            player4Points: positions['player4']?.points || null,
+        };
+
+        let jwtToken: string | null = null;
+        for (const playerId of playerIds) {
+            const client = clients.get(playerId);
+            if (client && client.jwtToken) {
+                jwtToken = client.jwtToken;
+                break;
+            }
+        }
+
+        console.log('Tokens disponíveis:', playerIds.map(id => ({
+            id,
+            hasToken: !!clients.get(id)?.jwtToken,
+            tokenPreview: clients.get(id)?.jwtToken?.substring(0, 20) + '...'
+        })));
+
+        if (!jwtToken) {
+            console.error('Nenhum token JWT disponível para salvar o histórico do jogo remoto');
+            return;
+        }
+
+        console.log('Enviando histórico do jogo remoto:', historyData);
+
+        const response = await fetch('http://game-service:3001/history', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            body: JSON.stringify(historyData)
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Falha ao salvar o histórico do jogo remoto:', response.status, errorText);
+        } else {
+            console.log('Histórico do jogo remoto salvo com sucesso');
+        }
+    } catch (error) {
+        console.error('Erro ao salvar o histórico do jogo remoto:', error);
+    }
+}
+
 export function startGame(playerIds: string[]) {
     const gameId = playerIds.join('-');
     const gameState = createInitialGameState();
     resetBall(gameState);
 
-    const newGame: Game = {
+    const newGame: GameWithElimination = {
         playerIds,
         gameState,
         gameLoopInterval: null,
         speedUpInterval: null,
+        eliminationOrder: []
     };
     games.set(gameId, newGame);
 
@@ -230,10 +326,10 @@ export function startGame(playerIds: string[]) {
 }
 
 export function updateGame(gameId: string) {
-    const game = games.get(gameId);
+    const game = games.get(gameId) as GameWithElimination;
     if (!game) return;
 
-    const { gameState, playerIds } = game;
+    const { gameState, playerIds, eliminationOrder } = game;
     const { ball, paddles } = gameState;
 
     const playerClients = playerIds.map(id => clients.get(id));
@@ -315,6 +411,12 @@ export function updateGame(gameId: string) {
     paddles.forEach((paddle, index) => {
         if (paddle.score >= LOSE_SCORE && !paddle.lost) {
             paddle.lost = true;
+            const eliminatedPlayerId = playerIds[index];
+            if (!eliminationOrder.includes(eliminatedPlayerId)) {
+                eliminationOrder.push(eliminatedPlayerId);
+                console.log(`Jogador ${clients.get(eliminatedPlayerId)?.username} eliminado (posição ${eliminationOrder.length + 1})`);
+            }
+            
             if(index < 2) { paddle.x = 0; paddle.width = CANVAS_WIDTH; }
             else { paddle.y = 0; paddle.height = CANVAS_HEIGHT; }
         }
@@ -329,6 +431,8 @@ export function updateGame(gameId: string) {
         const winnerData = winnerClient 
             ? { id: winnerClient.id, username: winnerClient.username, profilePic: winnerClient.profilePic }
             : null;
+
+        sendRemoteMatchHistory(gameId, playerIds, eliminationOrder);
 
         playerClients.forEach((client) => {
             if(client) client.ws.send(JSON.stringify({ type: 'game_over', winner: winnerData }));

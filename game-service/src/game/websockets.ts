@@ -5,6 +5,8 @@ import { startGame, startOneVsOneGame } from './game';
 
 export const clients = new Map<string, ClientData>();
 export const games = new Map<string, Game>();
+export const gameTokens = new Map<string, string>();
+
 
 const remoteLobby: ClientData[] = [];
 const tournamentLobby: ClientData[] = [];
@@ -38,7 +40,7 @@ function cleanupClient(userId: string) {
             tournamentLobby.splice(lobbyIndex, 1);
             broadcastLobbyUpdate('tournament');
         }
-        
+
         for (const [tournamentId, tournament] of tournaments.entries()) {
             const winnerIndex = tournament.winners.findIndex(w => w.id === userId);
             if (winnerIndex > -1) {
@@ -93,9 +95,9 @@ export function stopGame(gameId: string) {
         if (isFinal) {
             const winnerData = winnerClient ? { id: winnerClient.id, username: winnerClient.username, profilePic: winnerClient.profilePic } : null;
             const finalOverMessage = JSON.stringify({ type: 'game_over', winner: winnerData, tournamentName: tournament.tournamentName });
-            
+
             sendTournamentHistory(tournamentId, winnerId, loserId);
-            
+
             playerIds.forEach(id => {
                 const client = clients.get(id);
                 if (client && client.ws.readyState === WebSocket.OPEN) {
@@ -104,10 +106,10 @@ export function stopGame(gameId: string) {
             });
             tournaments.delete(tournamentId);
         } else {
-            if(loserClient){
+            if (loserClient) {
                 tournament.eliminationOrder.push(loserClient.username);
             }
-            
+
             if (loserClient && loserClient.ws.readyState === WebSocket.OPEN) {
                 loserClient.ws.send(JSON.stringify({ type: 'semifinal_loss' }));
             }
@@ -137,6 +139,7 @@ export function stopGame(gameId: string) {
     }
 
     games.delete(gameId);
+    gameTokens.delete(gameId);
     console.log(`Jogo ${gameId} finalizado e removido.`);
 }
 
@@ -318,50 +321,63 @@ export function setupWebSocket(server: any) {
             }
         }
 
-        ws.on('message', (message: any) => {
-            try {
-                const data = JSON.parse(message.toString());
-                const clientData = clients.get(userId);
-                if (!clientData) return;
+        ws.on('close', () => {
+            console.log(`Jogador ${clients.get(userId)?.username} (${userId}) desconectado.`);
+            
+            const originalClient = clients.get(userId);
+            const originalToken = originalClient?.jwtToken || '';
 
-                if (data.type === 'keys') {
-                    clientData.inputs = data.keys;
-                }
-                
-                if (data.type === 'final_ready_click') {
-                    clientData.isReady = true;
-
-                    let tournamentId: string | null = null;
-                    let tournament: any = null;
-
-                    for (const [id, t] of tournaments.entries()) {
-                        if (t.winners.some((w: ClientData) => w.id === userId)) {
-                            tournamentId = id;
-                            tournament = t;
-                            break;
-                        }
-                    }
-
-                    if (tournament && tournamentId) {
-                        const otherPlayer = tournament.winners.find((w: ClientData) => w.id !== userId);
-                        if (otherPlayer && otherPlayer.ws.readyState === WebSocket.OPEN) {
-                            otherPlayer.ws.send(JSON.stringify({ type: 'opponent_ready' }));
-                        }
-                        
-                        const readyPlayers = tournament.winners.filter((w: ClientData) => w.isReady);
-                        if (readyPlayers.length === 2) {
-                            console.log(`Iniciando final do torneio ${tournamentId} com: ${readyPlayers.map((p: ClientData) => p.username).join(' vs ')}`);
+            for (const [gameId, game] of games.entries()) {
+                if (game.playerIds.includes(userId)) {
+                    const playerIndex = game.playerIds.indexOf(userId);
+                    
+                    if (game.playerIds.length === 4 && !game.tournamentId) {
+                        if (game.gameState.paddles[playerIndex]) {
+                            game.gameState.paddles[playerIndex].lost = true;
+                            game.gameState.paddles[playerIndex].score = 5;
                             
-                            const finalGameId = startOneVsOneGame(readyPlayers.map((p: ClientData) => p.id), tournamentId, true);
-                            if (finalGameId) {
-                                const game = games.get(finalGameId);
-                                if (game) game.isFinal = true;
+                            if (playerIndex < 2) { 
+                                game.gameState.paddles[playerIndex].x = 0;
+                                game.gameState.paddles[playerIndex].width = 800;
+                            } else { 
+                                game.gameState.paddles[playerIndex].y = 0;
+                                game.gameState.paddles[playerIndex].height = 600;
                             }
+                            
+                            const dummyWs = { 
+                                readyState: WebSocket.CLOSED,
+                                send: () => {},
+                                close: () => {}
+                            } as any;
+                            
+                            const disconnectedClient: ClientData = {
+                                ws: dummyWs,
+                                username: username,
+                                inputs: {},
+                                id: userId,
+                                profilePic: profilePic,
+                                isReady: false,
+                                gameMode: 'remote',
+                                jwtToken: originalToken
+                            };  
+                            clients.set(userId, disconnectedClient);
+                            console.log(`Jogador ${userId} marcado como perdedor no jogo ${gameId}, jogo continua`);
                         }
+                    } else {
+                        stopGame(gameId);
+                        const remainingPlayers = game.playerIds.filter(id => id !== userId && clients.has(id));
+                        remainingPlayers.forEach(id => {
+                            const remainingClient = clients.get(id);
+                            if (remainingClient && remainingClient.ws.readyState === WebSocket.OPEN) {
+                                remainingClient.ws.send(JSON.stringify({ type: 'opponent_disconnected' }));
+                            }
+                        });
+
+                        cleanupClient(userId);
                     }
+                } else {
+                    cleanupClient(userId);
                 }
-            } catch (e) {
-                console.error("Mensagem inválida recebida: ", message.toString());
             }
         });
 
