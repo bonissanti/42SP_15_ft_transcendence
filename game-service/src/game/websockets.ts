@@ -13,6 +13,8 @@ const tournaments = new Map<string, {
     gameIds: string[];
     winners: ClientData[];
     finalistsReady: number;
+    tournamentName: string;
+    eliminationOrder: string[];
 }>();
 
 function broadcastLobbyUpdate(mode: 'remote' | 'tournament') {
@@ -78,11 +80,11 @@ export function stopGame(gameId: string) {
         let winnerId: string, loserId: string;
 
         if (p1.score >= WIN_SCORE) {
-            winnerId = playerIds[1];
-            loserId = playerIds[0];
-        } else {
             winnerId = playerIds[0];
             loserId = playerIds[1];
+        } else {
+            winnerId = playerIds[1];
+            loserId = playerIds[0];
         }
 
         const winnerClient = clients.get(winnerId);
@@ -90,7 +92,10 @@ export function stopGame(gameId: string) {
 
         if (isFinal) {
             const winnerData = winnerClient ? { id: winnerClient.id, username: winnerClient.username, profilePic: winnerClient.profilePic } : null;
-            const finalOverMessage = JSON.stringify({ type: 'game_over', winner: winnerData });
+            const finalOverMessage = JSON.stringify({ type: 'game_over', winner: winnerData, tournamentName: tournament.tournamentName });
+            
+            sendTournamentHistory(tournamentId, winnerId, loserId);
+            
             playerIds.forEach(id => {
                 const client = clients.get(id);
                 if (client && client.ws.readyState === WebSocket.OPEN) {
@@ -99,13 +104,12 @@ export function stopGame(gameId: string) {
             });
             tournaments.delete(tournamentId);
         } else {
+            if(loserClient){
+                tournament.eliminationOrder.push(loserClient.username);
+            }
+            
             if (loserClient && loserClient.ws.readyState === WebSocket.OPEN) {
                 loserClient.ws.send(JSON.stringify({ type: 'semifinal_loss' }));
-                setTimeout(() => {
-                    if (loserClient.ws.readyState === WebSocket.OPEN) {
-                        loserClient.ws.close();
-                    }
-                }, 100);
             }
             if (winnerClient) {
                 tournament.winners.push(winnerClient);
@@ -136,6 +140,97 @@ export function stopGame(gameId: string) {
     console.log(`Jogo ${gameId} finalizado e removido.`);
 }
 
+
+async function createTournamentInService(players: ClientData[], tournamentName: string, jwtToken: string) {
+    try {
+        const body = {
+            tournamentName: tournamentName,
+            player1Username: players[0]?.username || '',
+            player2Username: players[1]?.username || '',
+            player3Username: players[2]?.username || '',
+            player4Username: players[3]?.username || '',
+        };
+
+        console.log("Creating tournament with data:", body);
+        
+        const response = await fetch('http://game-service:3001/tournament', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            body: JSON.stringify(body)
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Failed to create tournament:', response.status, errorText);
+        } else {
+            console.log('Tournament created successfully!');
+        }
+    } catch (error) {
+        console.error('Error creating tournament:', error);
+    }
+}
+
+async function sendTournamentHistory(tournamentId: string, finalWinnerId: string, finalLoserId: string) {
+    const tournament = tournaments.get(tournamentId);
+    if (!tournament) return;
+
+    const winner = clients.get(finalWinnerId);
+    const runnerUp = clients.get(finalLoserId);
+    const thirdPlaceUsername = tournament.eliminationOrder[1] || '';
+    const fourthPlaceUsername = tournament.eliminationOrder[0] || '';
+
+
+    const historyData = {
+        tournamentName: tournament.tournamentName,
+        player1Username: winner?.username || '',
+        player1Points: 1,
+        player2Username: runnerUp?.username || '',
+        player2Points: 2,
+        player3Username: thirdPlaceUsername,
+        player3Points: 3,
+        player4Username: fourthPlaceUsername,
+        player4Points: 4
+    };
+
+    let jwtToken: string | null = null;
+    const finalPlayers = [winner, runnerUp];
+    for (const player of finalPlayers) {
+        if (player && player.jwtToken) {
+            jwtToken = player.jwtToken;
+            break;
+        }
+    }
+
+    if (!jwtToken) {
+        console.error('Nenhum token JWT disponível para salvar o histórico do torneio');
+        return;
+    }
+
+    try {
+        const response = await fetch('http://game-service:3001/history', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            body: JSON.stringify(historyData)
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Falha ao salvar o histórico do torneio:', response.status, errorText);
+        } else {
+            console.log('Histórico do torneio salvo com sucesso:', historyData);
+        }
+    } catch (error) {
+        console.error('Erro ao salvar o histórico do torneio:', error);
+    }
+}
+
+
 export function setupWebSocket(server: any) {
     const wss = new WebSocketServer({ noServer: true });
 
@@ -152,6 +247,8 @@ export function setupWebSocket(server: any) {
         const profilePic = url.searchParams.get('profilePic') || 'https://placehold.co/128x128/000000/FFFFFF?text=User';
         const gameModeParam = url.searchParams.get('mode') || 'remote';
         const gameMode: 'remote' | 'tournament' = (gameModeParam === 'tournament') ? 'tournament' : 'remote';
+        const jwtToken = url.searchParams.get('token') || '';
+        const tournamentName = url.searchParams.get('tournamentName') || `Tournament-${Date.now()}`;
 
         if (!userId) {
             ws.send(JSON.stringify({ type: 'error', message: 'ID de usuário inválido.' }));
@@ -177,7 +274,8 @@ export function setupWebSocket(server: any) {
             id: userId, 
             profilePic, 
             isReady: false,
-            gameMode
+            gameMode,
+            jwtToken
         };
         clients.set(userId, clientData);
         
@@ -188,7 +286,15 @@ export function setupWebSocket(server: any) {
             if (tournamentLobby.length >= 4) {
                 const tournamentId = `tourney-${Date.now()}`;
                 const gamePlayers = tournamentLobby.splice(0, 4);
-                tournaments.set(tournamentId, { gameIds: [], winners: [], finalistsReady: 0 });
+                tournaments.set(tournamentId, { 
+                    gameIds: [], 
+                    winners: [], 
+                    finalistsReady: 0,
+                    tournamentName: tournamentName,
+                    eliminationOrder: []
+                });
+
+                createTournamentInService(gamePlayers, tournamentName, jwtToken);
 
                 const group1 = [gamePlayers[0], gamePlayers[1]];
                 const group2 = [gamePlayers[2], gamePlayers[3]];
@@ -292,7 +398,8 @@ export function setupWebSocket(server: any) {
                                 id: userId,
                                 profilePic: profilePic,
                                 isReady: false,
-                                gameMode: 'remote'
+                                gameMode: 'remote',
+                                jwtToken: ''
                             };  
                             clients.set(userId, disconnectedClient);
                             console.log(`Jogador ${userId} marcado como perdedor no jogo ${gameId}, jogo continua`);

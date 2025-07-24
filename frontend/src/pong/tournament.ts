@@ -125,6 +125,7 @@ function gameLoopTournament() {
   setAnimationFrameId(animationFrameId);
 }
 
+
 export async function initTournamentGame() {
     stopTournamentGame();
     if (!initSharedState()) return;
@@ -142,11 +143,12 @@ export async function initTournamentGame() {
     const payload = JSON.parse(atob(token.split('.')[1]));
     const userId = payload.uuid;
 
-    ws = new WebSocket(`ws://localhost:3001?userId=${userId}&username=${encodeURIComponent(username)}&profilePic=${encodeURIComponent(profilePic)}&mode=tournament`);
+    ws = new WebSocket(`ws://localhost:3001?userId=${userId}&username=${encodeURIComponent(username)}&profilePic=${encodeURIComponent(profilePic)}&mode=tournament&token=${encodeURIComponent(token)}&tournamentName=${encodeURIComponent(tournamentName)}`);
 
     ws.onopen = () => {
         console.log(`WebSocket conectado como ${username}. Aguardando jogadores...`);
     };
+
 
     ws.onmessage = (event) => {
         const message = JSON.parse(event.data);

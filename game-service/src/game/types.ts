@@ -34,6 +34,7 @@ export interface ClientData {
   profilePic: string;
   isReady?: boolean;
   gameMode?: 'remote' | 'tournament';
+  jwtToken?: string;
 }
 
 export interface Game {
