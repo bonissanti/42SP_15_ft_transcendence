@@ -49,13 +49,48 @@ function increaseBallSpeed() {
   }
 }
 
-function checkWinCondition() {
+async function getUserProfile(): Promise<{ username: string, profilePic: string }> {
+  try {
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+      return { username: 'Jogador 1', profilePic: 'https://placehold.co/128x128/000000/FFFFFF?text=P1' };
+    }
+
+    const response = await fetch('/api/users/me', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    
+    if (!response.ok) {
+      return { username: 'Jogador 1', profilePic: 'https://placehold.co/128x128/000000/FFFFFF?text=P1' };
+    }
+    
+    const user = await response.json();
+    return { 
+      username: user.Username || 'Jogador 1',
+      profilePic: user.ProfilePic || 'https://placehold.co/128x128/000000/FFFFFF?text=P1'
+    };
+  } catch (error) {
+    return { username: 'Jogador 1', profilePic: 'https://placehold.co/128x128/000000/FFFFFF?text=P1' };
+  }
+}
+
+async function checkWinCondition() {
   const p1 = getPlayer1();
   const p2 = getPlayer2();
+  
   if (p1.score >= WIN_SCORE || p2.score >= WIN_SCORE) {
-    alert(p1.score >= WIN_SCORE ? 'Jogador 1 ganhou!' : 'Jogador 2 ganhou!');
     stopMultiplayerGame();
-    window.location.href = '/';
+    
+    const { username, profilePic } = await getUserProfile();
+    
+    if (p1.score >= WIN_SCORE) {
+      const path = `/winner?username=${encodeURIComponent(username)}&profilePic=${encodeURIComponent(profilePic)}`;
+      history.pushState({}, '', path);
+      window.dispatchEvent(new PopStateEvent('popstate'));
+    } else {
+      history.pushState({}, '', '/defeat');
+      window.dispatchEvent(new PopStateEvent('popstate'));
+    }
   }
 }
 
@@ -65,8 +100,30 @@ function gameLoop() {
   setAnimationFrameId(requestAnimationFrame(gameLoop));
 }
 
+function resetPaddles() {
+  const p1 = getPlayer1();
+  const p2 = getPlayer2();
+  if (p1) {
+    p1.y = (getCanvas()?.height || 0) / 2 - p1.height / 2;
+    p1.score = 0;
+  }
+  if (p2) {
+    p2.y = (getCanvas()?.height || 0) / 2 - p2.height / 2;
+    p2.score = 0;
+  }
+}
+
+function resetPoints() {
+  const p1 = getPlayer1();
+  const p2 = getPlayer2();
+  if (p1) p1.score = 0;
+  if (p2) p2.score = 0;
+}
+
 export function initMultiplayerGame() {
   if (!initSharedState()) return;
+  resetPaddles();
+  resetPoints();
   resetBall();
   speedIntervalId = setInterval(increaseBallSpeed, 3000);
   gameLoop();
