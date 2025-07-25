@@ -21,7 +21,6 @@ import { GetUserService } from './Application/Services/Concrete/GetUserService.j
 import { NotificationError } from './Shared/Errors/NotificationError.js';
 import { LoginUserService } from './Application/Services/Concrete/LoginUserService.js';
 import { LogoutUserService } from './Application/Services/Concrete/LogoutUserService.js';
-import { UserService } from "./Application/Services/Concrete/UserService.js";
 import { CreateUserDTO } from "./Application/DTO/ToCommand/CreateUserDTO.js";
 import {UserService} from "./Application/Services/Concrete/UserService.js";
 import {FriendshipRepository} from "./Infrastructure/Persistence/Repositories/Concrete/FriendshipRepository.js";
@@ -54,21 +53,21 @@ server.register(helmet, {
 
 server.register(cookie);
 server.register(fastifyCors, {
-  origin: ['http://localhost:5173'],
-  credentials: true
+    origin: ['http://localhost:5173'],
+    credentials: true
 });
 
 server.register(fastifyStatic, {
-  root: path.join(__dirname, '..', 'img'),
-  prefix: '/img/',
+    root: path.join(__dirname, '..', 'img'),
+    prefix: '/img/',
 });
 
 server.get('/', async () => {
-  return 'Rodando!';
+    return 'Rodando!';
 });
 
 server.get('/health', async () => {
-  return { status: 'ok', time: new Date() };
+    return { status: 'ok', time: new Date() };
 });
 
 async function createDefaultUser(prisma: PrismaClient, userRepository: UserRepository, createUserService: CreateUserService) {
@@ -146,20 +145,21 @@ async function main() {
     await FriendshipRoutes(server, friendshipController);
     await createDefaultUser(prisma, userRepository, createUserService);
 
-  server.setErrorHandler(async (error, request, reply) => {
-    console.error("Internal server error:", error);
-    reply.status(500).send({ message: "Ocorreu um erro interno." });
-  });
+    server.setErrorHandler(async (error, request, reply) => {
+        console.error("Internal server error:", error);
+        reply.status(500).send({ message: "Ocorreu um erro interno." });
+    });
 
   try {
-    const address = await server.listen({ port: 8080, host: '0.0.0.0' });
-    console.log(`🚀 Server listening at ${address}`);
-    console.log(`📁 Arquivos estáticos disponíveis em: ${address}/img/`);
-  } catch (err) {
-    console.error("❌ Falha ao iniciar o servidor:", err);
-    await prisma.$disconnect();
-    process.exit(1);
-  }
+        const address = await server.listen({ port: 8080, host: '0.0.0.0' });
+        console.log(`🚀 Server listening at ${address}`);
+        console.log(`📁 Arquivos estáticos disponíveis em: ${address}/img/`);
+    }
+    catch (err) {
+        console.error("❌ Falha ao iniciar o servidor:", err);
+        await prisma.$disconnect();
+        process.exit(1);
+    }
 }
 
 main();
