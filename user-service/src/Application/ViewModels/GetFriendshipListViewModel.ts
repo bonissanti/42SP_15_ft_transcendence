@@ -1,7 +1,7 @@
-import {StatusRequest} from "../../Application/Enums/StatusRequest.js";
+import {StatusRequest} from "../Enums/StatusRequest.js";
+import {GetFriendshipListQueryDTO} from "../../Domain/QueryDTO/GetFriendshipListQueryDTO.js";
 
-export class GetFriendshipListQueryDTO
-{
+export class GetFriendshipListViewModel {
     public readonly uuid: string;
     public readonly status: StatusRequest;
     public readonly friendUuid: string;
@@ -20,8 +20,7 @@ export class GetFriendshipListQueryDTO
         wins: number,
         loses: number,
         matchesPlayed: number
-    )
-    {
+    ) {
         this.uuid = uuid;
         this.status = status;
         this.friendUuid = friendUuid;
@@ -30,5 +29,20 @@ export class GetFriendshipListQueryDTO
         this.wins = wins;
         this.loses = loses;
         this.matchesPlayed = matchesPlayed;
+
+    }
+
+    public static fromQueryDTO(queryDTO: GetFriendshipListQueryDTO[]): GetFriendshipListViewModel[]
+    {
+        return queryDTO.map(friends => new GetFriendshipListViewModel(
+            friends.uuid,
+            friends.status,
+            friends.friendUuid,
+            friends.friendUsername,
+            friends.friendProfilePic,
+            friends.wins,
+            friends.loses,
+            friends.matchesPlayed
+        ));
     }
 }

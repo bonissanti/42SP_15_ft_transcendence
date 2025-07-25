@@ -12,9 +12,9 @@ export class GetFriendshipListQueryValidator implements BaseValidator<GetFriends
     {
     }
 
-    public Validator(query: GetFriendshipListQuery, notificationError: NotificationError)
+    public async Validator(query: GetFriendshipListQuery)
     {
-        if (!this.userRepository.VerifyIfUserExistsByUUID(query.uuid))
+        if (!await this.userRepository.VerifyIfUserExistsByUUID(query.uuid))
             this.notificationError.AddError(ErrorCatalog.UserNotFound);
 
         if (this.notificationError.NumberOfErrors() > 0)

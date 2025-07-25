@@ -2,6 +2,7 @@ import {BaseHandlerQuery} from "./BaseHandlerQuery.js";
 import {GetFriendshipListQuery} from "../QueryObject/GetFriendshipListQuery.js";
 import {FriendshipRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/FriendshipRepository.js";
 import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
+import {GetFriendshipListQueryDTO} from "../../QueryDTO/GetFriendshipListQueryDTO.js";
 
 export class GetFriendshipListQueryHandler implements BaseHandlerQuery<GetFriendshipListQuery, GetFriendshipListQueryDTO[]>
 {
