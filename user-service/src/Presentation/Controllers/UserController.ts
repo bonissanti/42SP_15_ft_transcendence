@@ -134,14 +134,15 @@ export class UserController extends BaseController {
   public async UpdateStats(request: FastifyRequest<{ Body: UpdateStatsDTO }>, reply: FastifyReply): Promise<Result> {
     const query = request.body;
     const statsDTO: UpdateStatsDTO = new UpdateStatsDTO(
-      query.player1Username,
-      query.player1Points,
-      query.player2Username,
-      query.player2Points,
-      query.player3Username,
-      query.player3Points,
-      query.player4Username,
-      query.player4Points,
+        query.gameType,
+        query.player1Username,
+        query.player2Username,
+        query.player3Username,
+        query.player4Username,
+        query.player1Points,
+        query.player2Points,
+        query.player3Points,
+        query.player4Points,
     );
     const result: Result<void> = await this.userService.UpdateStatsService(statsDTO, reply);
     return this.handleResult(result, reply, this.notificationError);

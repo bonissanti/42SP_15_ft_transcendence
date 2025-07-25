@@ -1,5 +1,5 @@
 import {Friendship} from "../../../../Domain/Entities/Concrete/Friendship.js";
-import {StatusRequest} from "../../../../Application/Enums/StatusRequest.js";
+import {StatusRequestEnum} from "../../../../Application/Enums/StatusRequestEnum.js";
 import {GetFriendshipListQueryDTO} from "../../../../Domain/QueryDTO/GetFriendshipListQueryDTO.js";
 import {IBaseRepository} from "../Interface/IBaseRepository.js";
 import {PrismaClient, StatusRequest as PrismaStatusRequest} from "@prisma/client";
@@ -41,7 +41,7 @@ export class FriendshipRepository implements IBaseRepository<GetFriendshipListQu
         });
     }
 
-    public async GetFriendshipByUserAndStatus(userUuid: string, status: StatusRequest): Promise<GetFriendshipListQueryDTO[]>
+    public async GetFriendshipByUserAndStatus(userUuid: string, status: StatusRequestEnum): Promise<GetFriendshipListQueryDTO[]>
     {
         const friendships = await this.prisma.friendship.findMany({
             where: {
@@ -78,7 +78,7 @@ export class FriendshipRepository implements IBaseRepository<GetFriendshipListQu
 
         return Friendship.fromDatabase(
             friendship.uuid,
-            friendship.status as StatusRequest,
+            friendship.status as StatusRequestEnum,
             friendship.receiverUuid,
             friendship.senderUuid,
             friendship.createdAt

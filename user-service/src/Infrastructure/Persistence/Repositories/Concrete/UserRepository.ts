@@ -47,6 +47,28 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
         });
     }
 
+    public async UpdateInBatch(users: User[]): Promise<void>
+    {
+        const updateBatch = users.map(user =>
+            this.prisma.user.update({
+                where: {uuid: user.Uuid},
+                data: {
+                    email: user?.Email.getEmail(),
+                    password: user?.PasswordHash.getPasswordHash(),
+                    username: user?.Username,
+                    profilePic: user?.ProfilePic,
+                    lastLogin: user?.LastLogin,
+                    auth0Id: user?.Auth0Id,
+                    isOnline: user?.isOnline,
+                    matchesPlayed: user?.matchesPlayed,
+                    wins: user?.wins,
+                    loses: user?.loses,
+                }
+            })
+        );
+        await this.prisma.$transaction(updateBatch);
+    }
+
     public async Delete(_uuid: string): Promise<void> {
         await this.prisma.user.delete({
             where: {uuid: _uuid},

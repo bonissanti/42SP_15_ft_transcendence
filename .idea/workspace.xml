@@ -94,7 +94,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
     "RunOnceActivity.git.unshallow": "true",
     "full.screen.before.presentation.mode": "false",
-    "git-widget-placeholder": "Merging feature/friendship",
+    "git-widget-placeholder": "feature/novos-ajustes-services",
     "ignore.virus.scanning.warn.message": "true",
     "junie.onboarding.icon.badge.shown": "true",
     "last_opened_file_path": "C:/Estudos/42_transcendence",
@@ -107,7 +107,7 @@
     "npm.start (1).executor": "Run",
     "npm.start.executor": "Debug",
     "settings.editor.selected.configurable": "advanced.settings",
-    "ts.external.directory.path": "/home/bruno/Documents/42SP/42_transcendence/user-service/node_modules/typescript/lib"
+    "ts.external.directory.path": "C:\\Users\\Administrador\\AppData\\Local\\Programs\\WebStorm\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -186,7 +186,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-WS-251.26927.40" />
+        <option value="bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-WS-251.27812.2" />
       </set>
     </attachedChunks>
   </component>
