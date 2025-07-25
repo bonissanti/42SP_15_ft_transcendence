@@ -1,6 +1,6 @@
 export enum StatusRequest
 {
-    PENDING,
-    REJECTED,
-    ACCEPTED
+    PENDING = "PENDING",
+    REJECTED = "REJECTED",
+    ACCEPTED = "ACCEPTED"
 }

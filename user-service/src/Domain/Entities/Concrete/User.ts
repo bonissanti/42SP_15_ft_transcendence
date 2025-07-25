@@ -79,4 +79,30 @@ export class User implements BaseEntity
 
         this.LastLogin = new Date();
     }
+
+    public static fromDatabase(
+        email: EmailVO,
+        password: PasswordHashVO,
+        userName: string,
+        profilePic: string | null,
+        lastLogin: Date | null,
+        isOnline: boolean,
+        matchesPlayed: number,
+        wins: number,
+        loses: number
+    ): User
+    {
+        const user = Object.create(User.prototype);
+        user.Email = email;
+        user.PasswordHash = password;
+        user.Username = userName;
+        user.ProfilePic = profilePic;
+        user.LastLogin = lastLogin;
+        user.isOnline = isOnline;
+        user.matchesPlayed = matchesPlayed;
+        user.wins = wins;
+        user.loses = loses;
+        return user;
+
+    }
 }
