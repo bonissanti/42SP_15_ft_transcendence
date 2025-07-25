@@ -2,6 +2,7 @@ import {StatusRequest} from "../../Enums/StatusRequest.js";
 
 export class AddRequestFriendDTO
 {
+    public readonly status: StatusRequest;
     public readonly receiverUuid: string;
     public readonly senderUuid: string;
 

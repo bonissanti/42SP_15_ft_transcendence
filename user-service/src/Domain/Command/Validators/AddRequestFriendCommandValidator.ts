@@ -28,7 +28,7 @@ export class AddRequestFriendCommandValidator implements BaseValidator<AddReques
             this.NotificationError.AddError(ErrorCatalog.RequestToSamePerson);
 
         const users: string[] = [command.senderUuid, command.receiverUuid];
-        if (await this.UserRepository.VerifyIfUsersExistsByUUIDs(users))
+        if (!await this.UserRepository.VerifyIfUsersExistsByUUIDs(users))
             this.NotificationError.AddError(ErrorCatalog.UserNotFound)
 
         if (command.status !== StatusRequest.PENDING)

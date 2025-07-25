@@ -1,4 +1,5 @@
 import {ChangeRequestFriendStatusDTO} from "../../../Application/DTO/ToCommand/ChangeRequestFriendStatusDTO.js";
+import {StatusRequest} from "../../../Application/Enums/StatusRequest.js";
 
 export class ChangeRequestFriendStatusCommand
 {

@@ -15,10 +15,10 @@ export class ChangeRequestFriendStatusCommandHandler implements BaseHandlerComma
 
     async Handle(command: ChangeRequestFriendStatusCommand): Promise<void>
     {
-        const friendship: Friendship = await this.FriendshipRepository.GetByFriendshipUuid(command.friendshipUuid);
+        const friendship: Friendship | null = await this.FriendshipRepository.GetByFriendshipUuid(command.friendshipUuid);
 
-        friendship.status = command.status;
+        friendship!.status = command.status;
 
-        await this.FriendshipRepository.Update(command.friendshipUuid, friendship);
+        await this.FriendshipRepository.Update(command.friendshipUuid, friendship!);
     }
 }
