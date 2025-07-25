@@ -4,6 +4,7 @@ import {User} from "../../Entities/Concrete/User.js";
 import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
 import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog.js";
 import {UpdateStatsCommand} from "../CommandObject/UpdateStatsCommand.js";
+import {GameTypeEnum} from "../../../Application/Enums/GameTypeEnum.js";
 
 export class UpdateStatsCommandHandler implements BaseHandlerCommand<UpdateStatsCommand>
 {
@@ -18,38 +19,104 @@ export class UpdateStatsCommandHandler implements BaseHandlerCommand<UpdateStats
 
     async Handle(command: UpdateStatsCommand): Promise<void>
     {
+        switch(command.gameType)
+        {
+            case GameTypeEnum.SINGLEPLAYER:
+            case GameTypeEnum.MULTIPLAYER_LOCAL:
+            case GameTypeEnum.RPS:
+                return await UpdateStatsCommandHandler.UpdateStatsForTwoPlayers(command, this.userRepository, this.notificationError);
+
+            case GameTypeEnum.MULTIPLAYER_REMOTO:
+            case GameTypeEnum.TOURNAMENT:
+                return await UpdateStatsCommandHandler.UpdateStatsForFourPlayers(command, this.userRepository, this.notificationError);
+
+            default:
+                return;
+        }
+    }
+
+    private static async UpdateStatsForTwoPlayers(command: UpdateStatsCommand, userRepository: UserRepository, notificationError: NotificationError): Promise<void>
+    {
         const usersList: string[] = [command.player1Username, command.player2Username];
-        const usersEntities = await this.userRepository.GetUsersEntitiesByUsername(usersList);
+        const usersEntities: User[] = await userRepository.GetUsersEntitiesByUsername(usersList);
 
         if (!usersEntities)
         {
-            this.notificationError.AddError(ErrorCatalog.UserNotFound);
+            notificationError.AddError(ErrorCatalog.UserNotFound);
             return;
         }
 
-        UpdateStatsCommandHandler.UpdateStats(command, usersEntities, this.notificationError);
-        if (this.notificationError.NumberOfErrors() > 0)
+        UpdateStatsCommandHandler.UpdateStats(command, usersEntities, notificationError);
+        if (notificationError.NumberOfErrors() > 0)
             return;
 
-        await this.userRepository.Update(usersEntities[0].Uuid, usersEntities[0]);
-        await this.userRepository.Update(usersEntities[1].Uuid, usersEntities[1]);
+        await userRepository.UpdateInBatch(usersEntities);
+        return ;
+    }
+
+    private static async UpdateStatsForFourPlayers(command: UpdateStatsCommand, userRepository: UserRepository, notificationError: NotificationError): Promise<void>
+    {
+        const usersList: (string | null)[] = [command.player1Username, command.player2Username, command.player3Username, command.player4Username];
+        const usersEntities: User[] = await userRepository.GetUsersEntitiesByUsername(usersList as string[]);
+
+        if (!usersEntities)
+        {
+            notificationError.AddError(ErrorCatalog.UserNotFound);
+            return;
+        }
+
+        UpdateStatsCommandHandler.UpdateStats(command, usersEntities, notificationError);
+        if (notificationError.NumberOfErrors() > 0)
+            return;
+
+        await userRepository.UpdateInBatch(usersEntities);
         return ;
     }
 
     private static UpdateStats(command: UpdateStatsCommand, usersEntities: User[], notificationError: NotificationError): void
     {
-        const player1 = usersEntities.find(user => user.Username == command.player1Username);
-        const player2 = usersEntities.find(user => user.Username == command.player2Username);
+        type usersInfo = [string | null, number | null];
 
-        if (command.player1Points > command.player2Points)
+        const usersList: usersInfo[] = [
+            [command.player1Username, command.player1Points] as usersInfo,
+            [command.player2Username, command.player2Points] as usersInfo,
+            [command.player3Username, command.player3Points] as usersInfo,
+            [command.player4Username, command.player4Points] as usersInfo
+        ].filter(([username, points]) => username !== null && points !== null)
+            .sort((a, b) => (b[1] as number) - (a[1] as number));
+
+        const players: User[] = [];
+        for (let i: number = 0; i < usersList.length; i++)
         {
-            this.WinStats(player1!, notificationError);
-            this.LoserStats(player2!, notificationError);
+            const player: User | undefined = usersEntities.find(user => user.Username === usersList[i][0]);
+            if (!player)
+            {
+                notificationError.AddError(ErrorCatalog.UserNotFound);
+                return;
+            }
+            players.push(player);
         }
-        else
+
+        if (command.gameType === GameTypeEnum.TOURNAMENT && players.length === 4)
         {
-            this.WinStats(player2!, notificationError);
-            this.LoserStats(player1!, notificationError);
+            this.WinStats(players[0], notificationError);
+            this.WinStats(players[0], notificationError);
+            this.WinStats(players[1], notificationError);
+            this.LoserStats(players[1], notificationError);
+            this.LoserStats(players[2], notificationError);
+            this.LoserStats(players[3], notificationError);
+        }
+        else if (command.gameType === GameTypeEnum.MULTIPLAYER_REMOTO && players.length === 4)
+        {
+            this.WinStats(players[0], notificationError);
+            this.LoserStats(players[1], notificationError);
+            this.LoserStats(players[2], notificationError);
+            this.LoserStats(players[3], notificationError);
+        }
+        else if (players.length === 2)
+        {
+            this.WinStats(players[0], notificationError);
+            this.LoserStats(players[1], notificationError);
         }
     }
 
