@@ -1,4 +1,5 @@
 import {StatusRequest} from "../../../Application/Enums/StatusRequest.js";
+import {GetFriendshipListDTO} from "../../../Application/DTO/ToQuery/GetFriendshipListDTO.js";
 
 export class GetFriendshipListQuery
 {
@@ -11,8 +12,8 @@ export class GetFriendshipListQuery
         this.status = status;
     }
 
-    public static fromQuery(query: GetFriendshipListQuery): GetFriendshipListQuery
+    public static fromQuery(dto: GetFriendshipListDTO): GetFriendshipListQuery
     {
-        return new GetFriendshipListQuery(query.uuid, query.status);
+        return new GetFriendshipListQuery(dto.userUuid, dto.status);
     }
 }

@@ -2,6 +2,8 @@ import {FriendshipController} from "../../Controllers/FriendshipController.js";
 import {authenticateJWT} from "../../Middleware/AuthMiddleware.js";
 import {AddRequestFriendDTO} from "../../../Application/DTO/ToCommand/AddRequestFriendDTO.js";
 import {ChangeRequestFriendStatusDTO} from "../../../Application/DTO/ToCommand/ChangeRequestFriendStatusDTO.js";
+import {GetFriendshipListDTO} from "../../../Application/DTO/ToQuery/GetFriendshipListDTO.js";
+import {FastifyReply, FastifyRequest} from "fastify";
 
 export const FriendshipRoutes = async (server: any, friendshipController: FriendshipController) => {
 
