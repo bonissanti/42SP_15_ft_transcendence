@@ -1,3 +1,5 @@
+import { fetchWithGame } from "../api/api";
+
 export interface Paddle {
   x: number;
   y: number;
@@ -108,27 +110,29 @@ export function resetBall() {
 
 
 export function draw() {
+    console.log('Paddles:', paddles.length);
     if (!canvas || !ctx) return;
-
+    
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-
+    
     if (isWaiting) {
-        ctx.fillStyle = 'white';
-        ctx.font = '30px Arial';
-        ctx.textAlign = 'center';
-        ctx.fillText('Aguardando oponentes...', canvas.width / 2, canvas.height / 2);
-        return;
+      ctx.fillStyle = 'white';
+      ctx.font = '30px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('Aguardando oponentes...', canvas.width / 2, canvas.height / 2);
+      return;
     }
-
+    
     if (!ball || paddles.length === 0) return;
-
+    
     ctx.fillStyle = 'white';
     ctx.beginPath();
     ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
     ctx.fill();
-
+    
     paddles.forEach((p, index) => {
+        console.log('Index: ', index);
         ctx.fillStyle = p.lost ? 'red' : 'white';
         ctx.fillRect(p.x, p.y, p.width, p.height);
 
@@ -157,4 +161,78 @@ export function draw() {
             if (index === 1) ctx.fillText(`${name}: ${p.score}`, (canvas.width / 4) * 3, 30);
         }
     });
+}
+
+export async function sendMatchHistory(tournamentName: string, player1Username: string | null, player1Points: number | null, player2Username: string | null, player2Points: number | null, player3Username: string | null = null, player3Points: number | null = null, player4Username: string | null = null, player4Points: number | null = null) {
+  try {
+    const historyData = {
+      tournamentName: tournamentName,
+      player1Username: player1Username,
+      player1Points: player1Points,
+      player2Username: player2Username,
+      player2Points: player2Points,
+      player3Username: player3Username,
+      player3Points: player3Points,
+      player4Username: player4Username,
+      player4Points: player4Points,
+    };
+
+    await fetchWithGame('/history', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(historyData),
+    });
+  } catch (error) {
+    console.error('Falha ao enviar histórico da partida:', error);
+  }
+}
+
+export async function getUserProfile(): Promise<{ username: string, profilePic: string }> {
+  try {
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+      return { username: 'Jogador 1', profilePic: 'https://placehold.co/128x128/000000/FFFFFF?text=P1' };
+    }
+
+    const response = await fetch('/api/users/me', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    
+    if (!response.ok) {
+      return { username: 'Jogador 1', profilePic: 'https://placehold.co/128x128/000000/FFFFFF?text=P1' };
+    }
+    
+    const user = await response.json();
+    return { 
+      username: user.Username || 'Jogador 1',
+      profilePic: user.ProfilePic || 'https://placehold.co/128x128/000000/FFFFFF?text=P1'
+    };
+  } catch (error) {
+    return { username: 'Jogador 1', profilePic: 'https://placehold.co/128x128/000000/FFFFFF?text=P1' };
+  }
+}
+
+export async function getCachoraoProfile(): Promise<{ username: string, profilePic: string }> {
+  try {
+    const response = await fetch('/api/users/exists/cachorrao');
+    
+    if (!response.ok) {
+      return { username: 'Cachorrao', profilePic: '/img/cachorrao.jpg' };
+    }
+    
+    const userResponse = await fetch('/api/users?username=cachorrao');
+    
+    if (!userResponse.ok) {
+      return { username: 'Cachorrao', profilePic: '/img/cachorrao.jpg' };
+    }
+    
+    const user = await userResponse.json();
+    return { 
+      username: user.Username || 'Cachorrao',
+      profilePic: user.ProfilePic || '/img/cachorrao.jpg'
+    };
+  } catch (error) {
+    console.error('Erro ao buscar perfil do Cachorrao:', error);
+    return { username: 'Cachorrao', profilePic: '/img/cachorrao.jpg' };
+  }
 }

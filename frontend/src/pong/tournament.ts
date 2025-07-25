@@ -7,7 +7,7 @@ import {
 
 let ws: WebSocket | null = null;
 let animationFrameId: number | null = null;
-const tournamentName = 'Torneio Padrão';
+const tournamentName = Date.now().toString();
 
 async function getUserProfile(): Promise<{ username: string, profilePic: string }> {
   try {
@@ -53,7 +53,6 @@ function renderWaitingRoom(players: any[]) {
 
     if (!waitingRoomDiv || !gameContainerDiv || !slotsDiv || !waitingMessage) return;
 
-    // Garante que a sala de espera está visível e o jogo escondido
     waitingRoomDiv.classList.remove('hidden');
     gameContainerDiv.classList.add('hidden');
     document.getElementById('tournament-modal')?.classList.add('hidden');
@@ -107,36 +106,32 @@ async function createTournament(players: any[]) {
 }
 
 
-function updateRemote() {
+function updateRemoteTournament() {
   if (ws && ws.readyState === WebSocket.OPEN) {
     ws.send(JSON.stringify({
       type: 'keys',
       keys: {
         'w': keys['w'], 's': keys['s'],
-        'a': keys['a'], 'd': keys['d'],
         'ArrowUp': keys['ArrowUp'], 'ArrowDown': keys['ArrowDown'],
-        'ArrowLeft': keys['ArrowLeft'], 'ArrowRight': keys['ArrowRight']
       }
     }));
   }
 }
 
-function gameLoop() {
-  updateRemote();
+function gameLoopTournament() {
+  updateRemoteTournament();
   draw();
-  animationFrameId = requestAnimationFrame(gameLoop);
+  animationFrameId = requestAnimationFrame(gameLoopTournament);
   setAnimationFrameId(animationFrameId);
 }
 
-// Lógica de inicialização simplificada para corrigir a "tela azul"
+
 export async function initTournamentGame() {
-    stopTournamentGame(); // Garante que qualquer estado anterior seja limpo
+    stopTournamentGame();
     if (!initSharedState()) return;
 
-    // Esconde o modal e mostra a sala de espera imediatamente
     document.getElementById('tournament-modal')?.classList.add('hidden');
     document.getElementById('waiting-room')?.classList.remove('hidden');
-
 
     const { username, profilePic } = await getUserProfile();
     const token = localStorage.getItem('jwtToken');
@@ -144,73 +139,101 @@ export async function initTournamentGame() {
         window.location.hash = '/login';
         return;
     }
+
     const payload = JSON.parse(atob(token.split('.')[1]));
     const userId = payload.uuid;
 
-    ws = new WebSocket(`ws://localhost:3001?userId=${userId}&username=${encodeURIComponent(username)}&profilePic=${encodeURIComponent(profilePic)}`);
+    ws = new WebSocket(`ws://localhost:3001?userId=${userId}&username=${encodeURIComponent(username)}&profilePic=${encodeURIComponent(profilePic)}&mode=tournament&token=${encodeURIComponent(token)}&tournamentName=${encodeURIComponent(tournamentName)}`);
 
     ws.onopen = () => {
         console.log(`WebSocket conectado como ${username}. Aguardando jogadores...`);
     };
 
+
     ws.onmessage = (event) => {
         const message = JSON.parse(event.data);
+
         switch (message.type) {
-        case 'lobby_update':
-            renderWaitingRoom(message.players);
-            // A criação do torneio agora é disparada por todos os clientes,
-            // mas o backend deve ser robusto para lidar com isso (ex: criar apenas uma vez).
-            if (message.players.length === 4) {
-                createTournament(message.players);
-            }
-            break;
-        case 'game_start':
+            case 'lobby_update':
+                renderWaitingRoom(message.players);
+                if (message.players.length === 4) {
+                    createTournament(message.players);
+                }
+                break;
+
+            case 'game_start':
             document.getElementById('waiting-room')?.classList.add('hidden');
+            document.getElementById('final-waiting-room')?.classList.add('hidden');
+            document.getElementById('tournament-modal')?.classList.add('hidden');
+            
             document.getElementById('game-container')?.classList.remove('hidden');
+            
             setIsWaiting(false);
             const playerNames = message.opponents;
             setPlayerNames(playerNames);
             if(message.paddles && message.ball){
-              setPaddles(message.paddles);
-              setBall(message.ball);
+                setPaddles(message.paddles);
+                setBall(message.ball);
             }
-            gameLoop();
+            gameLoopTournament();
             break;
-        case 'update':
-            setBall(message.ball);
-            setPaddles(message.paddles);
-            break;
-        case 'game_over':
-            stopTournamentGame();
-            if (message.winner) {
-              const { username, profilePic } = message.winner;
-              const path = `/winner?username=${encodeURIComponent(username)}&profilePic=${encodeURIComponent(profilePic)}`;
-              history.pushState({}, '', path);
-              window.dispatchEvent(new PopStateEvent('popstate'));
-            } else {
-                alert('O jogo terminou sem um vencedor claro.');
+
+            case 'update':
+                setBall(message.ball);
+                setPaddles(message.paddles);
+                break;
+
+            case 'game_over':
+                stopTournamentGame();
+                if (message.winner) {
+                    const { username, profilePic } = message.winner;
+                    const path = `/winner?username=${encodeURIComponent(username)}&profilePic=${encodeURIComponent(profilePic)}`;
+                    history.pushState({}, '', path);
+                    window.dispatchEvent(new PopStateEvent('popstate'));
+                } else {
+                    alert('O jogo terminou sem um vencedor claro.');
+                    window.location.hash = '/';
+                }
+                break;
+
+            case 'semifinal_win':
+                renderFinalsWaitingRoom(message.winners);
+                break;
+
+            case 'semifinal_loss':
+                stopTournamentGame();
+                history.pushState({}, '', '/defeat');
+                window.dispatchEvent(new PopStateEvent('popstate'));
+                break;
+
+            case 'final_ready':
+                renderFinalsWaitingRoom(message.finalists);
+                break;
+
+            case 'opponent_ready':
+                const readyStatus = document.getElementById('ready-status')!;
+                readyStatus.textContent = 'Oponente está pronto!';
+                break;
+
+            case 'opponent_disconnected':
+                alert("Um oponente desconectou. O jogo terminou.");
+                stopTournamentGame();
                 window.location.hash = '/';
-            }
-            break;
-        case 'opponent_disconnected':
-            alert("Um oponente desconectou. O jogo terminou.");
-            stopTournamentGame();
-            window.location.hash = '/';
-            break;
-        case 'error':
-            alert(`Erro do servidor: ${message.message}`);
-            stopTournamentGame();
-            window.location.hash = '/';
-            break;
+                break;
+
+            case 'error':
+                alert(`Erro do servidor: ${message.message}`);
+                stopTournamentGame();
+                window.location.hash = '/';
+                break;
         }
     };
 
     ws.onclose = () => {
-        // Evita múltiplos alertas se o jogo já terminou normalmente
         if (document.getElementById('game-container')?.classList.contains('hidden')) {
             console.log("Conexão WebSocket fechada.");
         } else {
-             alert("A conexão com o servidor foi perdida.");
+            alert("A conexão com o servidor foi perdida.");
         }
         stopTournamentGame();
         window.location.hash = '/';
@@ -221,23 +244,91 @@ export async function initTournamentGame() {
         alert("Ocorreu um erro na conexão com o servidor.");
         stopTournamentGame();
         window.location.hash = '/';
-    }
+    };
+
+    document.getElementById('ready-button')?.addEventListener('click', () => {
+        if (ws && ws.readyState === WebSocket.OPEN) {
+            ws.send(JSON.stringify({ type: 'final_ready_click' }));
+            const readyButton = document.getElementById('ready-button') as HTMLButtonElement;
+            const readyStatus = document.getElementById('ready-status')!;
+            readyButton.textContent = "Aguardando oponente...";
+            readyButton.disabled = true;
+            readyStatus.textContent = "";
+        }
+    });
 }
 
+
 export function stopTournamentGame() {
-  stopSharedState();
-  if (animationFrameId) {
-    cancelAnimationFrame(animationFrameId);
-    setAnimationFrameId(null);
-    animationFrameId = null;
-  }
-  if (ws) {
-    ws.onmessage = null;
-    ws.onclose = null;
-    ws.onerror = null;
-    if (ws.readyState === WebSocket.OPEN) {
-        ws.close();
+    stopSharedState();
+
+    if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        setAnimationFrameId(null);
+        animationFrameId = null;
     }
-    ws = null;
-  }
+
+    if (ws) {
+        ws.onmessage = null;
+        ws.onclose = null;
+        ws.onerror = null;
+        if (ws.readyState === WebSocket.OPEN) {
+            ws.close();
+        }
+        ws = null;
+    }
+
+    const readyButton = document.getElementById('ready-button') as HTMLButtonElement;
+    if (readyButton) {
+        readyButton.textContent = "Pronto";
+        readyButton.disabled = false;
+        readyButton.classList.add('hidden');
+    }
+
+    document.getElementById('final-waiting-room')?.classList.add('hidden');
+    document.getElementById('waiting-room')?.classList.add('hidden');
+    document.getElementById('game-container')?.classList.remove('hidden');
+}
+
+
+function renderFinalsWaitingRoom(finalists: any[]) {
+    const finalWaitingRoom = document.getElementById('final-waiting-room')!;
+    const initialWaitingRoom = document.getElementById('waiting-room')!;
+    const gameContainer = document.getElementById('game-container')!;
+    const finalistsDisplay = document.getElementById('finalists-display')!;
+    const readyButton = document.getElementById('ready-button')!;
+
+    initialWaitingRoom.classList.add('hidden');
+    gameContainer.classList.add('hidden');
+    finalWaitingRoom.classList.remove('hidden');
+
+    const player1 = finalists[0];
+    const player2 = finalists[1];
+
+    let player2HTML;
+    if (player2) {
+        player2HTML = `
+            <div class="flex flex-col items-center text-center w-1/3">
+                <img src="${player2.profilePic}" alt="${player2.username}" class="w-32 h-32 rounded-full border-4 border-white mb-2">
+                <span class="text-2xl truncate">${player2.username}</span>
+            </div>`;
+        readyButton.classList.remove('hidden');
+    } else {
+        player2HTML = `
+            <div class="flex flex-col items-center text-center w-1/3">
+                <div class="w-32 h-32 rounded-full border-4 border-dashed border-gray-500 flex items-center justify-center">
+                    <span class="text-gray-400 text-lg">EM ESPERA...</span>
+                </div>
+                <span class="text-2xl text-gray-500">Aguardando oponente</span>
+            </div>`;
+    }
+
+    finalistsDisplay.innerHTML = `
+        <div class="flex flex-col items-center text-center w-1/3">
+            <img src="${player1.profilePic}" alt="${player1.username}" class="w-32 h-32 rounded-full border-4 border-white mb-2">
+            <span class="text-2xl truncate">${player1.username}</span>
+        </div>
+        <span class="text-6xl text-glow mx-8">VS</span>
+        ${player2HTML}
+    `;
 }

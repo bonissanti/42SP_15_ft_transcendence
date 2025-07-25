@@ -38,18 +38,6 @@ CREATE TABLE "matchmaking" (
 CREATE UNIQUE INDEX "game-service_tournamentUuid_key" ON "game-service"("tournamentUuid");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "game-service_player1Username_key" ON "game-service"("player1Username");
-
--- CreateIndex
-CREATE UNIQUE INDEX "game-service_player2Username_key" ON "game-service"("player2Username");
-
--- CreateIndex
-CREATE UNIQUE INDEX "game-service_player3Username_key" ON "game-service"("player3Username");
-
--- CreateIndex
-CREATE UNIQUE INDEX "game-service_player4Username_key" ON "game-service"("player4Username");
-
--- CreateIndex
 CREATE UNIQUE INDEX "history_historyUuid_key" ON "history"("historyUuid");
 
 -- CreateIndex

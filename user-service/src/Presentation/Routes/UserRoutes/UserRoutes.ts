@@ -89,7 +89,6 @@ export const UserRoutes = async (server: any, userController: UserController) =>
     });
 
     server.get('/user', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Querystring: GetUserDTO }>, reply: FastifyReply) => {
-        console.log("Passou");
         await userController.GetUser(request, reply);
     });
 

@@ -16,4 +16,5 @@ export const routes = [
   { path: '/creators', view: 'creators' },
   { path: '/profile', view: 'profile', action: showProfile },
   { path: '/winner', view: 'winner', action: showWinner },
+  { path: '/defeat', view: 'defeat' },
 ];

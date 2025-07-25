@@ -17,10 +17,13 @@
   .popup-content {
     @apply bg-slate-800 p-8 rounded-xl shadow-2xl text-center;
   }
-
-  /* Estilizando os botões dentro do popup (opcional) */
   .popup-content button {
-    @apply menu-button text-base px-6 py-2; /* Reutiliza e ajusta o estilo do menu-button */
+    @apply menu-button text-base px-6 py-2;
+  }
+  
+  body.in-game #lang-switcher-container,
+  body.in-game #profile-link-container {
+    display: none;
   }
 
 }
