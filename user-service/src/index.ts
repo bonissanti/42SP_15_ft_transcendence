@@ -20,6 +20,9 @@ import { LoginUserService } from './Application/Services/Concrete/LoginUserServi
 import { LogoutUserService } from './Application/Services/Concrete/LogoutUserService.js';
 import {UserService} from "./Application/Services/Concrete/UserService.js";
 import {User} from "./Domain/Entities/Concrete/User.js";
+import {FriendshipRepository} from "./Infrastructure/Persistence/Repositories/Concrete/FriendshipRepository.js";
+import {FriendshipController} from "./Presentation/Controllers/FriendshipController.js";
+import {FriendshipRoutes} from "./Presentation/Routes/FriendshipRoutes/FriendshipRoutes.js";
 
 declare module 'fastify' {
     export interface FastifyInstance {
@@ -60,26 +63,29 @@ server.get('/health', async (request, reply) => {
 async function main() {
     const prisma = new PrismaClient();
     const userRepository = new UserRepository(prisma);
+    const friendshipRepository = new FriendshipRepository(prisma);
     const notificationError = new NotificationError();
 
     server.decorate('userRepository', userRepository);
 
-  const createUserService = new CreateUserService(userRepository, notificationError);
-  const editUserService = new EditUserService(userRepository, notificationError);
-  const deleteUserService = new DeleteUserService(userRepository, notificationError);
-  const getUserService = new GetUserService(userRepository, notificationError);
-  const loginUserService = new LoginUserService(userRepository, notificationError);
-  const logoutUserService = new LogoutUserService(userRepository, notificationError);
-  const userService = new UserService(userRepository, notificationError);
+    const createUserService = new CreateUserService(userRepository, notificationError);
+    const editUserService = new EditUserService(userRepository, notificationError);
+    const deleteUserService = new DeleteUserService(userRepository, notificationError);
+    const getUserService = new GetUserService(userRepository, notificationError);
+    const loginUserService = new LoginUserService(userRepository, notificationError);
+    const logoutUserService = new LogoutUserService(userRepository, notificationError);
+    const userService = new UserService(userRepository, notificationError);
 
-  const userController = new UserController(
+    const userController = new UserController(
     createUserService,
     editUserService,
     deleteUserService,
     getUserService,
     userRepository,
     userService
-  );
+    );
+
+    const friendshipController = new FriendshipController(friendshipRepository, userRepository);
 
     const userSessionController = new UserSessionController(
         loginUserService,
@@ -88,6 +94,7 @@ async function main() {
 
     await UserRoutes(server, userController);
     await UserSessionRoutes(server, userSessionController, userRepository);
+    await FriendshipRoutes(server, friendshipController);
 
     server.setErrorHandler(async (error, request, reply) => {
         console.error("Internal server error:", error);

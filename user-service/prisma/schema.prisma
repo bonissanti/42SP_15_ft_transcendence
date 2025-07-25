@@ -36,7 +36,9 @@ model User {
     isOnline      Boolean   @default(false)
 
     sentRequests     Friendship[] @relation("SentRequests")
-    receivedRequests Friendship[] @relation("ReceiveRequests")
+    receivedRequests Friendship[] @relation("ReceivedRequests")
+
+    @@index([uuid, username])
 }
 
 model Friendship {
@@ -52,5 +54,6 @@ model Friendship {
     receiver User @relation("ReceivedRequests", fields: [receiverUuid], references: [uuid])
 
     @@unique([senderUuid, receiverUuid], name: "unique_friendship")
+    @@index([uuid, receiverUuid, senderUuid])
     @@map("Friendship")
 }
