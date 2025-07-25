@@ -1,4 +1,4 @@
-export enum StatusRequest
+export enum StatusRequestEnum
 {
     PENDING = "PENDING",
     REJECTED = "REJECTED",

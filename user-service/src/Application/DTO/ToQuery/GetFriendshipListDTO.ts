@@ -1,11 +1,11 @@
-import {StatusRequest} from "../../Enums/StatusRequest.js";
+import {StatusRequestEnum} from "../../Enums/StatusRequestEnum.js";
 
 export class GetFriendshipListDTO
 {
     public readonly userUuid: string;
-    public readonly status: StatusRequest;
+    public readonly status: StatusRequestEnum;
 
-    constructor(uuid: string, status: StatusRequest)
+    constructor(uuid: string, status: StatusRequestEnum)
     {
         this.userUuid = uuid;
         this.status = status;
