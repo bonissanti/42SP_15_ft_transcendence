@@ -19,9 +19,7 @@ import {GetFriendshipListDTO} from "../../DTO/ToQuery/GetFriendshipListDTO.js";
 import {GetFriendshipListQuery} from "../../../Domain/Queries/QueryObject/GetFriendshipListQuery.js";
 import {GetFriendshipListQueryHandler} from "../../../Domain/Queries/Handlers/GetFriendshipListQueryHandler.js";
 import {GetFriendshipListQueryValidator} from "../../../Domain/Queries/Validators/GetFriendshipListQueryValidator.js";
-import {GetFriendshipListQueryDTO} from "../../../Domain/QueryDTO/GetFriendshipListQueryDTO.js";
 import {GetFriendshipListViewModel} from "../../ViewModels/GetFriendshipListViewModel.js";
-import {GetUserViewModel} from "../../ViewModels/GetUserViewModel.js";
 
 export class FriendshipService implements BaseService<any, boolean>
 {

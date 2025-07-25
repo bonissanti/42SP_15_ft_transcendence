@@ -19,7 +19,6 @@ import { NotificationError } from './Shared/Errors/NotificationError.js';
 import { LoginUserService } from './Application/Services/Concrete/LoginUserService.js';
 import { LogoutUserService } from './Application/Services/Concrete/LogoutUserService.js';
 import {UserService} from "./Application/Services/Concrete/UserService.js";
-import {User} from "./Domain/Entities/Concrete/User.js";
 import {FriendshipRepository} from "./Infrastructure/Persistence/Repositories/Concrete/FriendshipRepository.js";
 import {FriendshipController} from "./Presentation/Controllers/FriendshipController.js";
 import {FriendshipRoutes} from "./Presentation/Routes/FriendshipRoutes/FriendshipRoutes.js";
