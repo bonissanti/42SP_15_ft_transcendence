@@ -3,38 +3,46 @@ import {AddRequestFriendDTO} from "../../Application/DTO/ToCommand/AddRequestFri
 import {Result} from "../../Shared/Utils/Result.js";
 import {ChangeRequestFriendStatusDTO} from "../../Application/DTO/ToCommand/ChangeRequestFriendStatusDTO.js";
 import {BaseController} from "./BaseController.js";
+import {GetFriendshipListDTO} from "../../Application/DTO/ToQuery/GetFriendshipListDTO.js";
+import {FriendshipService} from "../../Application/Services/Concrete/FriendshipService.js";
+import {GetFriendshipListViewModel} from "../../Application/ViewModels/GetFriendshipListViewModel.js";
+import {UserRepository} from "../../Infrastructure/Persistence/Repositories/Concrete/UserRepository.js";
+import {FriendshipRepository} from "../../Infrastructure/Persistence/Repositories/Concrete/FriendshipRepository.js";
+import {FastifyReply, FastifyRequest} from "fastify";
 
 export class FriendshipController extends BaseController
 {
     private readonly notificationError: NotificationError;
+    private readonly friendshipService: FriendshipService;
 
-    constructor()
+    constructor(friendshipRepository: FriendshipRepository, userRepository: UserRepository)
     {
         super();
         this.notificationError = new NotificationError();
+        this.friendshipService = new FriendshipService(friendshipRepository, userRepository, this.notificationError);
     }
 
-    private async AddFriend(request: FastifyRequest<{ Body: AddRequestFriendDTO }>, reply: FastifyReply): Promise<Result>
+    public async AddFriend(request: FastifyRequest<{ Body: AddRequestFriendDTO }>, reply: FastifyReply): Promise<Result>
     {
         const body = request.body;
         const friendDTO: AddRequestFriendDTO = new AddRequestFriendDTO(body.receiverUuid, body.senderUuid);
-        const result: Result = await this.friendship.AddFriendService(friendDTO, reply);
+        const result: Result = await this.friendshipService.AddFriendService(friendDTO, reply);
         return this.handleResult(result, reply, this.notificationError);
     }
 
-    private async ChangeStatusRequestFriend(request: FastifyRequest<{ Body: ChangeRequestFriendStatusDTO}>, reply: FastifyReply): Promise<Result>
+    public async ChangeStatusRequestFriend(request: FastifyRequest<{ Body: ChangeRequestFriendStatusDTO}>, reply: FastifyReply): Promise<Result>
     {
         const body = request.body;
-        const friendDTO: ChangeRequestFriendStatusDTO = new ChangeRequestFriendStatusDTO(body.uuid, body.status);
-        const result: Result = await this.friendship.ChangeStatusService(friendDTO, reply);
+        const friendDTO: ChangeRequestFriendStatusDTO = new ChangeRequestFriendStatusDTO(body.friendshipUuid, body.status);
+        const result: Result = await this.friendshipService.ChangeStatusService(friendDTO, reply);
         return this.handleResult(result, reply, this.notificationError);
     }
 
-    private async FriendshipStatusList(request: FastifyRequest<{ Body: FriendshipListDTO }>, reply: FastifyReply): Promise<Result>
+    public async FriendshipStatusList(request: FastifyRequest<{ Body: GetFriendshipListDTO }>, reply: FastifyReply): Promise<Result<GetFriendshipListViewModel[]>>
     {
         const body = request.body;
-        const friendDTO: FriendshipListDTO = new FriendshipListDTO(body.userUuid, body.status);
-        const result: Result = await this.friendship.ListFriendService(friendDTO, reply);
+        const friendDTO: GetFriendshipListDTO = new GetFriendshipListDTO(body.userUuid, body.status);
+        const result: Result<GetFriendshipListViewModel[]> = await this.friendshipService.ListFriendService(friendDTO, reply);
         return this.handleResult(result, reply, this.notificationError);
     }
 }

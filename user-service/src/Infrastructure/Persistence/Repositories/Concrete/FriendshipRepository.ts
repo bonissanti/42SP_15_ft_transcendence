@@ -2,18 +2,22 @@ import {Friendship} from "../../../../Domain/Entities/Concrete/Friendship.js";
 import {StatusRequest} from "../../../../Application/Enums/StatusRequest.js";
 import {GetFriendshipListQueryDTO} from "../../../../Domain/QueryDTO/GetFriendshipListQueryDTO.js";
 import {IBaseRepository} from "../Interface/IBaseRepository.js";
-import {PrismaClient} from "@prisma/client";
+import {PrismaClient, StatusRequest as PrismaStatusRequest} from "@prisma/client";
 
 export class FriendshipRepository implements IBaseRepository<GetFriendshipListQueryDTO, Friendship>
 {
     private prisma: PrismaClient;
+
+    constructor(prisma: PrismaClient) {
+        this.prisma = prisma;
+    }
 
     public async Create(entity: Friendship): Promise<void>
     {
         await this.prisma.friendship.create({
             data: {
                 uuid: entity.uuid,
-                status: entity.status,
+                status: entity.status as PrismaStatusRequest,
                 receiverUuid: entity.receiverUuid,
                 senderUuid: entity.senderUuid,
             }
@@ -25,7 +29,7 @@ export class FriendshipRepository implements IBaseRepository<GetFriendshipListQu
         await this.prisma.friendship.update({
             where: {uuid: friendshipUuid},
             data: {
-                Status: entity.status,
+                status: entity.status as PrismaStatusRequest,
             }
         });
     }
@@ -37,13 +41,13 @@ export class FriendshipRepository implements IBaseRepository<GetFriendshipListQu
         });
     }
 
-    public async GetFriendshipByUserAndStatus(userUuid: string, status: StatusRequest): Promise<Friendship[]>
+    public async GetFriendshipByUserAndStatus(userUuid: string, status: StatusRequest): Promise<GetFriendshipListQueryDTO[]>
     {
         const friendships = await this.prisma.friendship.findMany({
             where: {
                 OR: [
-                    {senderUuid: userUuid, status: status},
-                    {receiverUuid: userUuid, status: status}
+                    {senderUuid: userUuid, status: status as PrismaStatusRequest},
+                    {receiverUuid: userUuid, status: status as PrismaStatusRequest}
                 ]
             },
             include: {
@@ -55,24 +59,35 @@ export class FriendshipRepository implements IBaseRepository<GetFriendshipListQu
         if (!friendships || friendships.length === 0)
             return [];
 
-        return friendships.map(friendship => {
+        return friendships.map((friendship: any) => {
             const isSender = friendship.senderUuid === userUuid;
-            const friendUser = isSender ? friendship.receiverUuid : friendship.senderUuid;
+            const friendUser = isSender ? friendship.receiver : friendship.sender;
 
             return this.mapToQueryDTO(friendship, friendUser);
         })
     }
 
-    public async GetByFriendshipUuid(friendshipUuid: string): Promise<Friendship>
+    public async GetByFriendshipUuid(friendshipUuid: string): Promise<Friendship | null>
     {
-        return await this.prisma.friendship.findUnique({
+        const friendship =  await this.prisma.friendship.findUnique({
             where: {uuid: friendshipUuid}
         });
+
+        if (!friendship)
+            return null;
+
+        return Friendship.fromDatabase(
+            friendship.uuid,
+            friendship.status as StatusRequest,
+            friendship.receiverUuid,
+            friendship.senderUuid,
+            friendship.createdAt
+        );
     }
 
     public async VerifyIfFriendshipExistsByUsersUuid(person1Uuid: string, person2Uuid: string): Promise<boolean>
     {
-        const friendship = await this.prisma.friendship.findUnique({
+        const friendship = await this.prisma.friendship.findFirst({
             where:{
                 OR:[
                     {senderUuid: person1Uuid, receiverUuid: person2Uuid},
@@ -105,5 +120,9 @@ export class FriendshipRepository implements IBaseRepository<GetFriendshipListQu
             friendUser.loses,
             friendUser.matchesPlayed
         );
+    }
+
+    GetAll(): Promise<Friendship[] | null> {
+        throw new Error("Method not implemented.");
     }
 }

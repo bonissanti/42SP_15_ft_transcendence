@@ -1,10 +1,12 @@
+import {StatusRequest} from "../../../Application/Enums/StatusRequest.js";
+
 export class Friendship
 {
-    public readonly uuid: string;
+    public uuid: string;
     public status: StatusRequest;
-    public readonly receiverUuid: string;
-    public readonly senderUuid: string;
-    public readonly createdAt: number;
+    public receiverUuid: string;
+    public senderUuid: string;
+    public createdAt: number;
 
     constructor (status: StatusRequest, receiverUuid: string, senderUuid: string)
     {
@@ -13,5 +15,16 @@ export class Friendship
         this.receiverUuid = receiverUuid;
         this.senderUuid = senderUuid;
         this.createdAt = Date.now();
+    }
+
+    public static fromDatabase(uuid: string, status: StatusRequest, receiverUuid: string, senderUuid: string, createdAt: Date): Friendship
+    {
+        const friendship = Object.create(Friendship.prototype);
+        friendship.uuid = uuid;
+        friendship.status = status;
+        friendship.receiverUuid = receiverUuid;
+        friendship.senderUuid = senderUuid;
+        friendship.createdAt = createdAt.getTime();
+        return friendship;
     }
 }
