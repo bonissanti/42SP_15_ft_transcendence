@@ -10,6 +10,7 @@ import { CreateUserCommandValidator } from "../../../Domain/Command/Validators/C
 import { NotificationError } from "../../../Shared/Errors/NotificationError.js";
 import { ValidationException } from "../../../Shared/Errors/ValidationException.js";
 import { Prisma } from "@prisma/client";
+import {ErrorTypeEnum} from "../../Enums/ErrorTypeEnum.js";
 
 export class CreateUserService implements BaseService<CreateUserDTO> {
     private readonly UserRepository: UserRepository;
@@ -36,7 +37,7 @@ export class CreateUserService implements BaseService<CreateUserDTO> {
             if (error instanceof ValidationException)
             {
                 const message: string = error.SetErrors();
-                return Result.Failure(message);
+                return Result.Failure(message, ErrorTypeEnum.VALIDATION);
             }
             else if (error instanceof Prisma.PrismaClientKnownRequestError)
             {
@@ -44,7 +45,7 @@ export class CreateUserService implements BaseService<CreateUserDTO> {
                     const target = error.meta?.target as string[];
 
                     if (target?.includes('username')) {
-                        return Result.Failure(ErrorCatalog.UsernameAlreadyExists.SetError());
+                        return Result.Failure(ErrorCatalog.UsernameAlreadyExists.SetError(), ErrorTypeEnum.VALIDATION);
                     }
 
                     if (target?.includes('email')) {
@@ -52,10 +53,10 @@ export class CreateUserService implements BaseService<CreateUserDTO> {
                     }
                 }
 
-                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError());
+                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError(), ErrorTypeEnum.CONFLICT);
             }
 
-            return Result.Failure(ErrorCatalog.InternalServerError.SetError());
+            return Result.Failure(ErrorCatalog.InternalServerError.SetError(), ErrorTypeEnum.CONFLICT);
         }
     }
 }
