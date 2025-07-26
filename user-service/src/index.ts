@@ -23,6 +23,9 @@ import { LoginUserService } from './Application/Services/Concrete/LoginUserServi
 import { LogoutUserService } from './Application/Services/Concrete/LogoutUserService.js';
 import { UserService } from "./Application/Services/Concrete/UserService.js";
 import { CreateUserDTO } from "./Application/DTO/ToCommand/CreateUserDTO.js";
+import {FriendshipController} from "./Presentation/Controllers/FriendshipController.js";
+import {FriendshipRepository} from "./Infrastructure/Persistence/Repositories/Concrete/FriendshipRepository.js";
+import {FriendshipRoutes} from "./Presentation/Routes/FriendshipRoutes/FriendshipRoutes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -110,6 +113,7 @@ async function createDefaultUser(prisma: PrismaClient, userRepository: UserRepos
 async function main() {
   const prisma = new PrismaClient();
   const userRepository = new UserRepository(prisma);
+  const friendshipRepository = new FriendshipRepository(prisma);
   const notificationError = new NotificationError();
 
   server.decorate('userRepository', userRepository);
@@ -136,9 +140,12 @@ async function main() {
     logoutUserService
   );
 
+  const friendshipController = new FriendshipController(friendshipRepository, userRepository);
+
   await UserRoutes(server, userController);
   await UserSessionRoutes(server, userSessionController, userRepository);
   await createDefaultUser(prisma, userRepository, createUserService);
+  await FriendshipRoutes(server, friendshipController);
 
   server.setErrorHandler(async (error, request, reply) => {
     console.error("Internal server error:", error);

@@ -29,7 +29,6 @@ export class UserServiceClient implements IUserServiceClient
         return response.data;
         } catch (error) {
             if (axios.isAxiosError(error) && (error.response?.status === 404 || error.response?.status === 400)) {
-                console.error("Error from user-service:", error.response?.data);
                 return false;
             }
             throw error;
