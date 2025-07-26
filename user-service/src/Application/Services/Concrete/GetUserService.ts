@@ -13,7 +13,7 @@ import {GetUserQueryDTO} from "../../../Domain/QueryDTO/GetUserQueryDTO.js";
 import {GetUserDTO} from "../../DTO/ToQuery/GetUserDTO.js";
 
 export class GetUserService implements BaseService<GetUserDTO, GetUserViewModel> {
-    private UserRepository: UserRepository;
+    private readonly UserRepository: UserRepository;
     private GetUserQueryHandler: GetUserQueryHandler;
 
     constructor(userRepository: UserRepository, notificationError: NotificationError) {
@@ -26,6 +26,7 @@ export class GetUserService implements BaseService<GetUserDTO, GetUserViewModel>
         try
         {
             const query: GetUserQuery = GetUserQuery.FromDTO(dto);
+            // TODO: adicionar validator
             const getUserQueryDTO = await this.GetUserQueryHandler.Handle(query);
 
             if (!getUserQueryDTO) {

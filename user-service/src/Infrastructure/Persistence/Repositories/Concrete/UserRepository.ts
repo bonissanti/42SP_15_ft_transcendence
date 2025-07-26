@@ -1,5 +1,4 @@
-// user-service/src/Infrastructure/Persistence/Repositories/Concrete/UserRepository.ts
-import {PrismaClient, User as PrismaUser} from '@prisma/client';
+import {PrismaClient} from '@prisma/client';
 import {IBaseRepository} from "../Interface/IBaseRepository.js";
 import {User} from "../../../../Domain/Entities/Concrete/User.js";
 import {ErrorCatalog} from "../../../../Shared/Errors/ErrorCatalog.js";
@@ -56,16 +55,39 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
 
     public async GetAll(): Promise<User[]> {
         const usersData = await this.prisma.user.findMany();
-        if (!usersData.length) {
+        if (!usersData.length)
+        {
             throw new Error(ErrorCatalog.UserNotFound.SetError());
         }
-        return usersData.map(user => this.RecoverEntity(user));
+
+        return usersData.map((user: any) => User.fromDatabase(
+            EmailVO.AddEmail(user.email),
+            new PasswordHashVO(user.password),
+            user.username,
+            user.profilePic,
+            user.lastLogin,
+            user.isOnline,
+            user.matchesPlayed,
+            user.wins,
+            user.loses
+        ));
     }
 
     public async GetUserQueryDTOByUuid(uuid: string): Promise<GetUserQueryDTO | null> {
         const userData = await this.prisma.user.findUnique({where: {uuid}});
         if (!userData) return null;
-        const entity = this.RecoverEntity(userData);
+
+        const entity = User.fromDatabase(
+            EmailVO.AddEmail(userData.email),
+            new PasswordHashVO(userData.password),
+            userData.username,
+            userData.profilePic,
+            userData.lastLogin,
+            userData.isOnline,
+            userData.matchesPlayed,
+            userData.wins,
+            userData.loses
+        );
         return this.mapToQueryDTO(entity);
     }
 
@@ -74,16 +96,37 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
 
         if (!userData)
             return null;
-        return this.RecoverEntity(userData);
+
+        return User.fromDatabase(
+            EmailVO.AddEmail(userData.email),
+            new PasswordHashVO(userData.password),
+            userData.username,
+            userData.profilePic,
+            userData.lastLogin,
+            userData.isOnline,
+            userData.matchesPlayed,
+            userData.wins,
+            userData.loses
+        );
     }
 
-    public async GetUserEntityByUsername(username: string): Promise<User | null>
-    {
-        const userData = await this.prisma.user.findUnique({ where: {username}});
+    public async GetUserEntityByUsername(username: string): Promise<User | null> {
+        const userData = await this.prisma.user.findUnique({where: {username}});
 
         if (!userData)
             return null;
-        return this.RecoverEntity(userData);
+
+        return User.fromDatabase(
+            EmailVO.AddEmail(userData.email),
+            new PasswordHashVO(userData.password),
+            userData.username,
+            userData.profilePic,
+            userData.lastLogin,
+            userData.isOnline,
+            userData.matchesPlayed,
+            userData.wins,
+            userData.loses
+        );
     }
 
     public async GetUsersEntitiesByUsername(usernames: string[]): Promise<User[]>
@@ -92,25 +135,33 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
 
         if (!usersData.length)
             return [];
-        return usersData.map(user => this.RecoverEntity(user));
+
+        return usersData.map((user: any) => User.fromDatabase(
+            EmailVO.AddEmail(user.email),
+            new PasswordHashVO(user.password),
+            user.username,
+            user.profilePic,
+            user.lastLogin,
+            user.isOnline,
+            user.matchesPlayed,
+            user.wins,
+            user.loses
+        ));
     }
 
-    public async GetFullUsers(): Promise<GetUserQueryDTO[]>
-    {
+    public async GetFullUsers(): Promise<GetUserQueryDTO[]> {
         const userEntities: User[] = await this.GetAll();
 
         return userEntities.map(user => this.mapToQueryDTO(user));
     }
 
-    public async VerifyIfUserExistsByUUID(uuid: string): Promise<boolean>
-    {
+    public async VerifyIfUserExistsByUUID(uuid: string): Promise<boolean> {
         const user = await this.prisma.user.findUnique({where: {uuid}});
 
         return user !== null;
     }
 
-    public async VerifyIfUsersExistsByUUIDs(uuids: (string | null)[]): Promise<boolean>
-    {
+    public async VerifyIfUsersExistsByUUIDs(uuids: (string | null)[]): Promise<boolean> {
         const validUuids = uuids.filter(uuid => uuid != null || uuid !== '') as string[];
 
         if (validUuids.length === 0)
@@ -138,8 +189,7 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
         return users.length === validUsernames.length;
     }
 
-    public async SearchForClosestOpponent(username: string, paremeterWin: number, totalGames: number)
-    {
+    public async SearchForClosestOpponent(username: string, paremeterWin: number, totalGames: number) {
         const maxRationDifference = 10;
         const minMatchesPlayed = Math.abs(15 - totalGames);
         const maxMatchesPlayed = totalGames + 10;
@@ -147,18 +197,18 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
 
         const potentialOpponents = await this.prisma.user.findMany({
             where: {
-                username: { not: username },
-                matchesPlayed: { gte: minMatchesPlayed, lte: maxMatchesPlayed },
+                username: {not: username},
+                matchesPlayed: {gte: minMatchesPlayed, lte: maxMatchesPlayed},
             }
         })
 
         const usersWithRatioDifference = potentialOpponents
-            .map(user => ({
+            .map((user: { wins: number; matchesPlayed: number; }) => ({
                 ...user,
                 winRatio: (user.wins / user.matchesPlayed) * 100,
                 ratioDifference: Math.abs(((user.wins / user.matchesPlayed) * 100) - userWinRatio)
             }))
-            .filter(user => user.ratioDifference <= maxRationDifference);
+            .filter((user: { ratioDifference: number; }) => user.ratioDifference <= maxRationDifference);
 
         const candidates = usersWithRatioDifference.length > 0 ? usersWithRatioDifference : this.SearchForAnyOpponent(potentialOpponents, userWinRatio)
 
@@ -166,8 +216,7 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
         return this.mapToUserMatchmakingQueryDTO(candidates[randomIndex]);
     }
 
-    private SearchForAnyOpponent(potentialOpponents: any, userWinRatio: number)
-    {
+    private SearchForAnyOpponent(potentialOpponents: any, userWinRatio: number) {
         return potentialOpponents
             .map((user: { wins: number; matchesPlayed: number; }) => ({
                 ...user,
@@ -178,8 +227,7 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
 
     }
 
-    private mapToUserMatchmakingQueryDTO(user: any): GetUserMatchmakingQueryDTO
-    {
+    private mapToUserMatchmakingQueryDTO(user: any): GetUserMatchmakingQueryDTO {
         return new GetUserMatchmakingQueryDTO(
             user.uuid,
             user.email,
@@ -204,24 +252,5 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
             userEntity.isOnline,
             userEntity.LastLogin
         );
-    }
-
-    private RecoverEntity(user: PrismaUser): User {
-        const userEntity = new User(
-            EmailVO.AddEmail(user.email),
-            new PasswordHashVO(user.password),
-            user.username,
-            user.profilePic,
-            user.lastLogin,
-            user.isOnline,
-            user.matchesPlayed,
-            user.wins,
-            user.loses
-        );
-        userEntity.Uuid = user.uuid;
-        userEntity.Auth0Id = user.auth0Id;
-        userEntity.isOnline = user.isOnline;
-
-        return userEntity;
     }
 }

@@ -12,6 +12,14 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+enum StatusRequest {
+    PENDING
+    ACCEPT
+    REJECTED
+
+    @@map("StatusRequest")
+}
+
 model User {
     id            Int       @id @default(autoincrement())
     uuid          String    @unique
@@ -26,4 +34,26 @@ model User {
     loses         Int       @default(0)
     auth0Id       String?   @unique
     isOnline      Boolean   @default(false)
+
+    sentRequests     Friendship[] @relation("SentRequests")
+    receivedRequests Friendship[] @relation("ReceivedRequests")
+
+    @@index([uuid, username])
+}
+
+model Friendship {
+    id           Int           @id @default(autoincrement())
+    uuid         String        @unique
+    status       StatusRequest
+    receiverUuid String
+    senderUuid   String
+    createdAt    DateTime      @default(now())
+    updatedAt    DateTime      @updatedAt
+
+    sender   User @relation("SentRequests", fields: [senderUuid], references: [uuid])
+    receiver User @relation("ReceivedRequests", fields: [receiverUuid], references: [uuid])
+
+    @@unique([senderUuid, receiverUuid], name: "unique_friendship")
+    @@index([uuid, receiverUuid, senderUuid])
+    @@map("Friendship")
 }
