@@ -3,18 +3,18 @@ import {CreateHistoryCommand} from "../CommandObject/CreateHistoryCommand";
 import {NotificationError} from "../../../Shared/Errors/NotificationError";
 import {History} from "../../Entities/Concrete/History";
 import {HistoryRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/HistoryRepository";
-import {BackendApiClient} from "../../../Infrastructure/Http/Concrete/BackendApiClient";
+import {UserServiceClient} from "../../../Infrastructure/Http/Concrete/UserServiceClient";
 import {UpdateStatsExternalDTO} from "../../ExternalDTO/UpdateStatsExternalDTO";
 
 export class CreateHistoryCommandHandler implements BaseHandlerCommand<CreateHistoryCommand>
 {
     private historyRepository: HistoryRepository;
-    private backendApiClient: BackendApiClient;
+    private backendApiClient: UserServiceClient;
 
     constructor(historyRepository: HistoryRepository, notification: NotificationError)
     {
         this.historyRepository = historyRepository;
-        this.backendApiClient = new BackendApiClient();
+        this.backendApiClient = new UserServiceClient();
     }
 
     async Handle(command: CreateHistoryCommand) : Promise<void>
@@ -32,6 +32,7 @@ export class CreateHistoryCommandHandler implements BaseHandlerCommand<CreateHis
         );
 
         const addStatsAfterMatch: UpdateStatsExternalDTO = new UpdateStatsExternalDTO(
+            command.gameType,
             command.player1Username,
             command.player1Points,
             command.player2Username,
