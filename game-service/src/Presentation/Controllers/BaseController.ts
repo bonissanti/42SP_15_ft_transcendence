@@ -12,7 +12,7 @@ export abstract class BaseController
         if (result.isSucess)
         {
             const responseData = result.getData();
-            if (responseData !== undefined || responseData !== null) {
+            if (responseData !== undefined && responseData !== null) {
                 return reply.status(200).send(responseData);
             }
             return reply.status(200).send(result.getMessage());
