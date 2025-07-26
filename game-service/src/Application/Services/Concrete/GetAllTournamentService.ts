@@ -11,6 +11,7 @@ import {GetAllTournamentsQuery} from "../../../Domain/Queries/QueryObject/GetAll
 import {GetAllTournamentsViewModel} from "../../ViewModel/GetAllTournamentsViewModel";
 import {GetAllTournamentQueryHandler} from "../../../Domain/Queries/Handlers/GetAllTournamentQueryHandler";
 import {GetAllTournamentsQueryDTO} from "../../../Domain/QueryDTO/GetAllTournamentsQueryDTO";
+import {ErrorTypeEnum} from "../../Enum/ErrorTypeEnum";
 
 export class GetAllTournamentService implements BaseService<GetAllTournamentsDTO, GetAllTournamentsViewModel[]>
 {
@@ -42,7 +43,7 @@ export class GetAllTournamentService implements BaseService<GetAllTournamentsDTO
             if (error instanceof ValidationException)
             {
                 const message: string = error.SetErrors();
-                return Result.Failure<GetAllTournamentsViewModel[]>(message);
+                return Result.Failure<GetAllTournamentsViewModel[]>(message, ErrorTypeEnum.VALIDATION);
             }
             else if (error instanceof Prisma.PrismaClientKnownRequestError)
             {

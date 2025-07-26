@@ -11,6 +11,7 @@ import { ErrorCatalog } from "../../../Shared/Errors/ErrorCatalog.js";
 import { Prisma } from '@prisma/client';
 import {GetUserQueryDTO} from "../../../Domain/QueryDTO/GetUserQueryDTO.js";
 import {GetUserDTO} from "../../DTO/ToQuery/GetUserDTO.js";
+import {ErrorTypeEnum} from "../../Enums/ErrorTypeEnum.js";
 
 export class GetUserService implements BaseService<GetUserDTO, GetUserViewModel> {
     private readonly UserRepository: UserRepository;
@@ -41,13 +42,13 @@ export class GetUserService implements BaseService<GetUserDTO, GetUserViewModel>
             if (error instanceof ValidationException)
             {
                 const message: string = error.SetErrors();
-                return Result.Failure<GetUserViewModel>(message);
+                return Result.Failure<GetUserViewModel>(message, ErrorTypeEnum.VALIDATION);
             }
             else if (error instanceof Prisma.PrismaClientKnownRequestError)
             {
-                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError());
+                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError(), ErrorTypeEnum.CONFLICT);
             }
-            return Result.Failure(ErrorCatalog.InternalServerError.SetError());
+            return Result.Failure(ErrorCatalog.InternalServerError.SetError(), ErrorTypeEnum.INTERNAL);
         }
     }
 
@@ -58,14 +59,19 @@ export class GetUserService implements BaseService<GetUserDTO, GetUserViewModel>
             const getUserViewModels: GetUserViewModel[] = getUserQueryDTOs.map(dto => GetUserViewModel.FromQueryDTO(dto));
 
             return Result.SucessWithData<GetUserViewModel[]>("Users found", getUserViewModels);
-        } catch (error) {
-            if (error instanceof ValidationException) {
+        }
+        catch (error)
+        {
+            if (error instanceof ValidationException)
+            {
                 const message: string = error.SetErrors();
-                return Result.Failure<GetUserViewModel[]>(message);
-            } else if (error instanceof Prisma.PrismaClientKnownRequestError) {
-                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError());
+                return Result.Failure<GetUserViewModel[]>(message, ErrorTypeEnum.VALIDATION);
             }
-            return Result.Failure(ErrorCatalog.InternalServerError.SetError());
+            else if (error instanceof Prisma.PrismaClientKnownRequestError)
+            {
+                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError(), ErrorTypeEnum.CONFLICT);
+            }
+            return Result.Failure(ErrorCatalog.InternalServerError.SetError(), ErrorTypeEnum.INTERNAL);
         }
     }
 }

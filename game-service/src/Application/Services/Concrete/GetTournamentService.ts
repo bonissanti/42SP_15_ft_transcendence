@@ -10,6 +10,7 @@ import {GetTournamentQueryHandler} from "../../../Domain/Queries/Handlers/GetTou
 import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog";
 import {ValidationException} from "../../../Shared/Errors/ValidationException";
 import {NotificationError} from "../../../Shared/Errors/NotificationError";
+import {ErrorTypeEnum} from "../../Enum/ErrorTypeEnum";
 
 export class GetTournamentService implements BaseService<GetTournamentDTO, GetTournamentViewModel>
 
@@ -42,13 +43,13 @@ export class GetTournamentService implements BaseService<GetTournamentDTO, GetTo
             if (error instanceof ValidationException)
             {
                 const message: string = error.SetErrors();
-                return Result.Failure<GetTournamentViewModel>(message);
+                return Result.Failure<GetTournamentViewModel>(message, ErrorTypeEnum.VALIDATION);
             }
             else if (error instanceof Prisma.PrismaClientKnownRequestError)
             {
-                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError());
+                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError(), ErrorTypeEnum.CONFLICT);
             }
-            return Result.Failure(ErrorCatalog.InternalServerError.SetError());
+            return Result.Failure(ErrorCatalog.InternalServerError.SetError(), ErrorTypeEnum.INTERNAL);
         }
     }
 }
