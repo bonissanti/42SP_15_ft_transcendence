@@ -5,17 +5,17 @@ import {CreateHistoryValidator} from "../../../Domain/Command/Validators/CreateH
 import {NotificationError} from "../../../Shared/Errors/NotificationError";
 import {CreateHistoryDTO} from "../../DTO/ToCommand/CreateHistoryDTO";
 import {FastifyReply} from "fastify";
-import { Result } from "../../../Shared/Utils/Result";
+import {Result} from "../../../Shared/Utils/Result";
 import {CreateHistoryCommand} from "../../../Domain/Command/CommandObject/CreateHistoryCommand";
 import {ValidationException} from "../../../Shared/Errors/ValidationException";
 import {Prisma} from "@prisma/client";
 import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog";
-import {GetAllTournamentsViewModel} from "../../ViewModel/GetAllTournamentsViewModel";
 import {GetAllHistoriesDTO} from "../../DTO/ToQuery/GetAllHistoriesDTO";
 import {GetAllHistoriesQuery} from "../../../Domain/Queries/QueryObject/GetAllHistoriesQuery";
 import {GetAllHistoriesViewModel} from "../../ViewModel/GetAllHistoriesViewModel";
 import {GetAllHistoriesQueryDTO} from "../../../Domain/QueryDTO/GetAllHistoriesQueryDTO";
 import {GetAllHistoriesQueryHandler} from "../../../Domain/Queries/Handlers/GetAllHistoriesQueryHandler";
+import {ErrorTypeEnum} from "../../Enum/ErrorTypeEnum";
 
 export class HistoryService implements BaseService<any>
 {
@@ -77,13 +77,13 @@ export class HistoryService implements BaseService<any>
             if (error instanceof ValidationException)
             {
                 const message: string = error.SetErrors();
-                return Result.Failure<GetAllHistoriesViewModel[]>(message);
+                return Result.Failure<GetAllHistoriesViewModel[]>(message, ErrorTypeEnum.VALIDATION);
             }
             else if (error instanceof Prisma.PrismaClientKnownRequestError)
             {
-                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError());
+                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError(), ErrorTypeEnum.CONFLICT);
             }
-            return Result.Failure(ErrorCatalog.InternalServerError.SetError());
+            return Result.Failure(ErrorCatalog.InternalServerError.SetError(), ErrorTypeEnum.INTERNAL);
         }
     }
 
