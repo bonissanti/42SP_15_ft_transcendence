@@ -55,7 +55,7 @@ export class TournamentController extends BaseController
     {
         const query = request.query;
         const getTournamentDTO: GetTournamentDTO = new GetTournamentDTO(query.tournamentUuid);
-        const result: Result<GetTournamentViewModel> = await this.getTournament.Execute(getTournamentDTO, reply);
+        const result: Result<GetTournamentViewModel | null> = await this.getTournament.Get(getTournamentDTO, reply);
         return this.handleResult(result, reply, this.notificationError);
     }
 

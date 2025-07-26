@@ -47,14 +47,14 @@ export class HistoryService implements BaseService<any>
             if (error instanceof ValidationException)
             {
                 const message: string = error.SetErrors();
-                return Result.Failure(message);
+                return Result.Failure(message, ErrorTypeEnum.VALIDATION);
             }
 
             else if (error instanceof Prisma.PrismaClientKnownRequestError)
             {
-                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError());
+                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError(), ErrorTypeEnum.CONFLICT);
             }
-            return Result.Failure(ErrorCatalog.InternalServerError.SetError());
+            return Result.Failure(ErrorCatalog.InternalServerError.SetError(), ErrorTypeEnum.INTERNAL);
         }
     }
 
@@ -62,14 +62,15 @@ export class HistoryService implements BaseService<any>
     {
         try
         {
+            let getAllHistoriesViewModel: GetAllHistoriesViewModel[] = [];
             const query: GetAllHistoriesQuery = GetAllHistoriesQuery.fromDTO(dto);
             const GetAllHistoriesQueryDTO: GetAllHistoriesQueryDTO[] | null = await this.getAllHistoriesQueryHandler.Handle(query);
 
             if (!GetAllHistoriesQueryDTO) {
-                return Result.Failure<GetAllHistoriesViewModel[]>(ErrorCatalog.HistoryNotFound.SetError());
+                return Result.SuccessWithData<GetAllHistoriesViewModel[]>("Histories not found", getAllHistoriesViewModel);
             }
 
-            const getAllHistoriesViewModel = GetAllHistoriesViewModel.fromQueryDTOList(GetAllHistoriesQueryDTO);
+            getAllHistoriesViewModel = GetAllHistoriesViewModel.fromQueryDTOList(GetAllHistoriesQueryDTO);
             return Result.SuccessWithData<GetAllHistoriesViewModel[]>("Histories found", getAllHistoriesViewModel);
         }
         catch (error)

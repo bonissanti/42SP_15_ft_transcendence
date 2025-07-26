@@ -7,11 +7,17 @@ import {AddRequestFriendCommand} from "../../../Domain/Command/CommandObject/Add
 import {ValidationException} from "../../../Shared/Errors/ValidationException.js";
 import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog.js";
 import {ChangeRequestFriendStatusDTO} from "../../DTO/ToCommand/ChangeRequestFriendStatusDTO.js";
-import {ChangeRequestFriendStatusCommand} from "../../../Domain/Command/CommandObject/ChangeRequestFriendStatusCommand.js";
+import {
+    ChangeRequestFriendStatusCommand
+} from "../../../Domain/Command/CommandObject/ChangeRequestFriendStatusCommand.js";
 import {AddRequestFriendCommandHandler} from "../../../Domain/Command/Handlers/AddRequestFriendCommandHandler.js";
 import {AddRequestFriendCommandValidator} from "../../../Domain/Command/Validators/AddRequestFriendCommandValidator.js";
-import {ChangeRequestFriendStatusCommandHandler} from "../../../Domain/Command/Handlers/ChangeRequestFriendStatusCommandHandler.js";
-import {ChangeRequestFriendStatusCommandValidator} from "../../../Domain/Command/Validators/ChangeRequestFriendStatusCommandValidator.js";
+import {
+    ChangeRequestFriendStatusCommandHandler
+} from "../../../Domain/Command/Handlers/ChangeRequestFriendStatusCommandHandler.js";
+import {
+    ChangeRequestFriendStatusCommandValidator
+} from "../../../Domain/Command/Validators/ChangeRequestFriendStatusCommandValidator.js";
 import {FriendshipRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/FriendshipRepository.js";
 import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
 import {UserRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/UserRepository.js";
@@ -101,7 +107,7 @@ export class FriendshipService implements BaseService<any, boolean>
             if (error instanceof ValidationException)
             {
                 const message: string = error.SetErrors();
-                return Result.Failure(message);
+                return Result.Failure(message, ErrorTypeEnum.VALIDATION);
             }
             else if (error instanceof Prisma.PrismaClientKnownRequestError)
             {
@@ -109,16 +115,16 @@ export class FriendshipService implements BaseService<any, boolean>
                     const target = error.meta?.target as string[];
 
                     if (target?.includes('username')) {
-                        return Result.Failure(ErrorCatalog.UsernameAlreadyExists.SetError());
+                        return Result.Failure(ErrorCatalog.UsernameAlreadyExists.SetError(), ErrorTypeEnum.VALIDATION);
                     }
 
                     if (target?.includes('email')) {
-                        return Result.Failure("Code:409 Message:Este email já está em uso.");
+                        return Result.Failure("Code:409 Message:Este email já está em uso.", ErrorTypeEnum.VALIDATION);
                     }
                 }
-                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError());
+                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError(), ErrorTypeEnum.CONFLICT);
             }
-            return Result.Failure(ErrorCatalog.InternalServerError.SetError());
+            return Result.Failure(ErrorCatalog.InternalServerError.SetError(), ErrorTypeEnum.INTERNAL);
         }
     }
 
@@ -126,14 +132,15 @@ export class FriendshipService implements BaseService<any, boolean>
     {
         try
         {
+            let getFriendshipViewModel: GetFriendshipListViewModel[] = [];
             const query = GetFriendshipListQuery.fromQuery(dto);
             await this.GetFriendshipValidator.Validator(query);
             const getFriendshipQueryDTO = await this.GetFriendshipHandler.Handle(query);
 
             if (!getFriendshipQueryDTO)
-                return Result.Failure<GetFriendshipListViewModel[]>(ErrorCatalog.UserNotFound.SetError());
+                return Result.SuccessWithData<GetFriendshipListViewModel[]>("Friend's list from user not found", getFriendshipViewModel);
 
-            const getFriendshipViewModel = GetFriendshipListViewModel.fromQueryDTO(getFriendshipQueryDTO);
+            getFriendshipViewModel = GetFriendshipListViewModel.fromQueryDTO(getFriendshipQueryDTO);
             return Result.SuccessWithData<GetFriendshipListViewModel[]>("Friend's list from user found successfully", getFriendshipViewModel);
         }
         catch (error)
@@ -141,13 +148,13 @@ export class FriendshipService implements BaseService<any, boolean>
             if (error instanceof ValidationException)
             {
                 const message: string = error.SetErrors();
-                return Result.Failure<GetFriendshipListViewModel[]>(message);
+                return Result.Failure<GetFriendshipListViewModel[]>(message, ErrorTypeEnum.VALIDATION);
             }
             else if (error instanceof Prisma.PrismaClientKnownRequestError)
             {
-                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError());
+                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError(), ErrorTypeEnum.CONFLICT);
             }
-            return Result.Failure(ErrorCatalog.InternalServerError.SetError());
+            return Result.Failure(ErrorCatalog.InternalServerError.SetError(), ErrorTypeEnum.INTERNAL);
         }
     }
 }

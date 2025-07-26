@@ -28,14 +28,15 @@ export class GetAllTournamentService implements BaseService<GetAllTournamentsDTO
     {
         try
         {
+            let getAllTournamentsViewModel: GetAllTournamentsViewModel[] = [];
             const query: GetAllTournamentsQuery = GetAllTournamentsQuery.fromDTO(dto);
             const getAllTournamentsQueryDTO: GetAllTournamentsQueryDTO[] | null = await this.GetUserQueryHandler.Handle(query);
 
             if (!getAllTournamentsQueryDTO) {
-                return Result.Failure<GetAllTournamentsViewModel[]>(ErrorCatalog.TournamentNotFound.SetError());
+                return Result.SuccessWithData<GetAllTournamentsViewModel[]>("Tournaments not found", getAllTournamentsViewModel);
             }
 
-            const getAllTournamentsViewModel = GetAllTournamentsViewModel.fromQueryDTOlist(getAllTournamentsQueryDTO);
+            getAllTournamentsViewModel = GetAllTournamentsViewModel.fromQueryDTOlist(getAllTournamentsQueryDTO);
             return Result.SuccessWithData<GetAllTournamentsViewModel[]>("Tournaments found", getAllTournamentsViewModel);
         }
         catch (error)
@@ -47,9 +48,9 @@ export class GetAllTournamentService implements BaseService<GetAllTournamentsDTO
             }
             else if (error instanceof Prisma.PrismaClientKnownRequestError)
             {
-                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError());
+                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError(), ErrorTypeEnum.CONFLICT);
             }
-            return Result.Failure(ErrorCatalog.InternalServerError.SetError());
+            return Result.Failure(ErrorCatalog.InternalServerError.SetError(), ErrorTypeEnum.INTERNAL);
         }
     }
 }

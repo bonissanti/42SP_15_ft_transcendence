@@ -24,18 +24,19 @@ export class GetTournamentService implements BaseService<GetTournamentDTO, GetTo
         this.getTournamentQueryHandler = new GetTournamentQueryHandler(this.tournamentRepository, notificationError);
     }
 
-    public async Execute(dto: GetTournamentDTO, reply: FastifyReply): Promise<Result<GetTournamentViewModel>>
+    public async Get(dto: GetTournamentDTO, reply: FastifyReply): Promise<Result<GetTournamentViewModel | null>>
     {
         try
         {
+            let getTournamentViewModel: GetTournamentViewModel | null = null;
             const query: GetTournamentQuery = GetTournamentQuery.fromDTO(dto);
             const getUserQueryDTO = await this.getTournamentQueryHandler.Handle(query);
 
             if (!getUserQueryDTO) {
-                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError());
+                return Result.SuccessWithData<GetTournamentViewModel | null>("Tournament not found", getTournamentViewModel);
             }
 
-            const getTournamentViewModel = GetTournamentViewModel.fromQueryDTO(getUserQueryDTO);
+            getTournamentViewModel = GetTournamentViewModel.fromQueryDTO(getUserQueryDTO);
             return Result.SuccessWithData<GetTournamentViewModel>("Tournament found", getTournamentViewModel);
         }
         catch (error)
@@ -51,5 +52,10 @@ export class GetTournamentService implements BaseService<GetTournamentDTO, GetTo
             }
             return Result.Failure(ErrorCatalog.InternalServerError.SetError(), ErrorTypeEnum.INTERNAL);
         }
+    }
+
+    Execute(dto: GetTournamentDTO, reply: FastifyReply): Promise<Result<GetTournamentViewModel>>
+    {
+        throw new Error("Method not implemented.");
     }
 }
