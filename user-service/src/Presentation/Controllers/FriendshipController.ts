@@ -9,6 +9,7 @@ import {GetFriendshipListViewModel} from "../../Application/ViewModels/GetFriend
 import {UserRepository} from "../../Infrastructure/Persistence/Repositories/Concrete/UserRepository.js";
 import {FriendshipRepository} from "../../Infrastructure/Persistence/Repositories/Concrete/FriendshipRepository.js";
 import {FastifyReply, FastifyRequest} from "fastify";
+import {DeleteFriendDTO} from "../../Application/DTO/ToCommand/DeleteFriendDTO.js";
 
 export class FriendshipController extends BaseController
 {
@@ -43,6 +44,14 @@ export class FriendshipController extends BaseController
         const body = request.body;
         const friendDTO: GetFriendshipListDTO = new GetFriendshipListDTO(body.userUuid, body.status);
         const result: Result<GetFriendshipListViewModel[]> = await this.friendshipService.ListFriendService(friendDTO, reply);
+        return this.handleResult(result, reply, this.notificationError);
+    }
+
+    public async DeleteFriend(request: FastifyRequest<{ Body: DeleteFriendDTO }>, reply: FastifyReply): Promise<Result>
+    {
+        const body = request.body;
+        const friendDTO = new DeleteFriendDTO(body.friendshipUuid);
+        const result: Result = await this.friendshipService.DeleteFriendService(friendDTO, reply);
         return this.handleResult(result, reply, this.notificationError);
     }
 }

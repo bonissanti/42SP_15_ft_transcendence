@@ -27,6 +27,10 @@ import {GetFriendshipListQueryHandler} from "../../../Domain/Queries/Handlers/Ge
 import {GetFriendshipListQueryValidator} from "../../../Domain/Queries/Validators/GetFriendshipListQueryValidator.js";
 import {GetFriendshipListViewModel} from "../../ViewModels/GetFriendshipListViewModel.js";
 import {ErrorTypeEnum} from "../../Enums/ErrorTypeEnum.js";
+import {DeleteFriendDTO} from "../../DTO/ToCommand/DeleteFriendDTO.js";
+import {DeleteFriendCommand} from "../../../Domain/Command/CommandObject/DeleteFriendCommand.js";
+import {DeleteFriendCommandValidator} from "../../../Domain/Command/Validators/DeleteFriendCommandValidator.js";
+import {DeleteFriendCommandHandler} from "../../../Domain/Command/Handlers/DeleteFriendCommandHandler.js";
 
 export class FriendshipService implements BaseService<any, boolean>
 {
@@ -36,6 +40,8 @@ export class FriendshipService implements BaseService<any, boolean>
     private readonly ChangeRequestFriendStatusValidator: ChangeRequestFriendStatusCommandValidator;
     private readonly GetFriendshipHandler: GetFriendshipListQueryHandler;
     private readonly GetFriendshipValidator: GetFriendshipListQueryValidator;
+    private readonly DeleteFriendValidator: DeleteFriendCommandValidator;
+    private readonly DeleteFriendHandler: DeleteFriendCommandHandler;
     private readonly FriendshipRepository: FriendshipRepository;
     private readonly UserRepository: UserRepository;
 
@@ -49,6 +55,8 @@ export class FriendshipService implements BaseService<any, boolean>
         this.ChangeRequestFriendStatusValidator = new ChangeRequestFriendStatusCommandValidator(friendshipRepository, notificationError);
         this.GetFriendshipHandler = new GetFriendshipListQueryHandler(friendshipRepository, notificationError);
         this.GetFriendshipValidator = new GetFriendshipListQueryValidator(userRepository, notificationError);
+        this.DeleteFriendHandler = new DeleteFriendCommandHandler(friendshipRepository, notificationError);
+        this.DeleteFriendValidator = new DeleteFriendCommandValidator(friendshipRepository, userRepository, notificationError);
 
     }
 
@@ -74,20 +82,8 @@ export class FriendshipService implements BaseService<any, boolean>
                 return Result.Failure(message, ErrorTypeEnum.VALIDATION);
             }
             else if (error instanceof Prisma.PrismaClientKnownRequestError)
-            {
-                if (error.code === 'P2002') {
-                    const target = error.meta?.target as string[];
-
-                    if (target?.includes('username')) {
-                        return Result.Failure(ErrorCatalog.UsernameAlreadyExists.SetError(), ErrorTypeEnum.VALIDATION);
-                    }
-
-                    if (target?.includes('email')) {
-                        return Result.Failure("Code:409 Message:Este email já está em uso.", ErrorTypeEnum.VALIDATION);
-                    }
-                }
                 return Result.Failure(ErrorCatalog.DatabaseViolated.SetError(), ErrorTypeEnum.CONFLICT);
-            }
+
             return Result.Failure(ErrorCatalog.InternalServerError.SetError(), ErrorTypeEnum.INTERNAL);
         }
     }
@@ -110,20 +106,8 @@ export class FriendshipService implements BaseService<any, boolean>
                 return Result.Failure(message, ErrorTypeEnum.VALIDATION);
             }
             else if (error instanceof Prisma.PrismaClientKnownRequestError)
-            {
-                if (error.code === 'P2002') {
-                    const target = error.meta?.target as string[];
-
-                    if (target?.includes('username')) {
-                        return Result.Failure(ErrorCatalog.UsernameAlreadyExists.SetError(), ErrorTypeEnum.VALIDATION);
-                    }
-
-                    if (target?.includes('email')) {
-                        return Result.Failure("Code:409 Message:Este email já está em uso.", ErrorTypeEnum.VALIDATION);
-                    }
-                }
                 return Result.Failure(ErrorCatalog.DatabaseViolated.SetError(), ErrorTypeEnum.CONFLICT);
-            }
+
             return Result.Failure(ErrorCatalog.InternalServerError.SetError(), ErrorTypeEnum.INTERNAL);
         }
     }
@@ -154,6 +138,30 @@ export class FriendshipService implements BaseService<any, boolean>
             {
                 return Result.Failure(ErrorCatalog.DatabaseViolated.SetError(), ErrorTypeEnum.CONFLICT);
             }
+            return Result.Failure(ErrorCatalog.InternalServerError.SetError(), ErrorTypeEnum.INTERNAL);
+        }
+    }
+
+    public async DeleteFriendService(dto: DeleteFriendDTO, reply: FastifyReply): Promise<Result>
+    {
+        try
+        {
+            const command = DeleteFriendCommand.fromDTO(dto);
+            await this.DeleteFriendValidator.Validator(command);
+            await this.DeleteFriendHandler.Handle(command);
+
+            return Result.Success("Friend deleted successfully");
+        }
+        catch (error)
+        {
+            if (error instanceof ValidationException)
+            {
+                const message: string = error.SetErrors();
+                return Result.Failure(message, ErrorTypeEnum.VALIDATION);
+            }
+            else if (error instanceof Prisma.PrismaClientKnownRequestError)
+                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError(), ErrorTypeEnum.CONFLICT);
+
             return Result.Failure(ErrorCatalog.InternalServerError.SetError(), ErrorTypeEnum.INTERNAL);
         }
     }
