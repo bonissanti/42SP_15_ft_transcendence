@@ -20,6 +20,7 @@ import {GetFriendshipListQuery} from "../../../Domain/Queries/QueryObject/GetFri
 import {GetFriendshipListQueryHandler} from "../../../Domain/Queries/Handlers/GetFriendshipListQueryHandler.js";
 import {GetFriendshipListQueryValidator} from "../../../Domain/Queries/Validators/GetFriendshipListQueryValidator.js";
 import {GetFriendshipListViewModel} from "../../ViewModels/GetFriendshipListViewModel.js";
+import {ErrorTypeEnum} from "../../Enums/ErrorTypeEnum.js";
 
 export class FriendshipService implements BaseService<any, boolean>
 {
@@ -64,7 +65,7 @@ export class FriendshipService implements BaseService<any, boolean>
             if (error instanceof ValidationException)
             {
                 const message: string = error.SetErrors();
-                return Result.Failure(message);
+                return Result.Failure(message, ErrorTypeEnum.VALIDATION);
             }
             else if (error instanceof Prisma.PrismaClientKnownRequestError)
             {
@@ -72,16 +73,16 @@ export class FriendshipService implements BaseService<any, boolean>
                     const target = error.meta?.target as string[];
 
                     if (target?.includes('username')) {
-                        return Result.Failure(ErrorCatalog.UsernameAlreadyExists.SetError());
+                        return Result.Failure(ErrorCatalog.UsernameAlreadyExists.SetError(), ErrorTypeEnum.VALIDATION);
                     }
 
                     if (target?.includes('email')) {
-                        return Result.Failure("Code:409 Message:Este email já está em uso.");
+                        return Result.Failure("Code:409 Message:Este email já está em uso.", ErrorTypeEnum.VALIDATION);
                     }
                 }
-                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError());
+                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError(), ErrorTypeEnum.CONFLICT);
             }
-            return Result.Failure(ErrorCatalog.InternalServerError.SetError());
+            return Result.Failure(ErrorCatalog.InternalServerError.SetError(), ErrorTypeEnum.INTERNAL);
         }
     }
 

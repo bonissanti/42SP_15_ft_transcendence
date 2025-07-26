@@ -10,10 +10,10 @@ export class ErrorCatalog
     public static readonly NegativePoints: CustomError = new CustomError(400, "Points can't be negative");
     public static readonly NegativeWins: CustomError = new CustomError(400, "Wins can't be negative");
     public static readonly NegativeValues: CustomError = new CustomError(400, "Wins or Total Games can't be negative");
+    public static readonly InternalBackendApiErrorVerifyIfUsersExists: CustomError = new CustomError(400, "Error while trying to communicate with the backend api - endpont: VerifyIfUsersExists");
+    public static readonly InternalBackendApiErrorVerifyIfUsersExistsByUsername: CustomError = new CustomError(400, "Error while trying to communicate with the user-sevice api - endpont: VerifyIfUsersExistsByUsername");
     public static readonly UserNotFound: CustomError = new CustomError(404, "User not found");
     public static readonly TournamentNotFound: CustomError = new CustomError(404, "Tournament not found");
     public static readonly HistoryNotFound: CustomError = new CustomError(404, "History not found");
     public static readonly InternalServerError: CustomError = new CustomError(500, "Internal server error");
-    public static readonly InternalBackendApiErrorVerifyIfUsersExists: CustomError = new CustomError(500, "Error while trying to communicate with the backend api - endpont: VerifyIfUsersExists");
-    public static readonly InternalBackendApiErrorVerifyIfUserExists: CustomError = new CustomError(500, "Error while trying to communicate with the backend api - endpont: VerifyIfUserExists");
 }
