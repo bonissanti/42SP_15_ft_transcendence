@@ -208,6 +208,7 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
 
         const users = await this.prisma.user.findMany({where: {username: {in: validUsernames}}});
 
+        console.log(`existem: ${users.length}`);
         return users.length === validUsernames.length;
     }
 

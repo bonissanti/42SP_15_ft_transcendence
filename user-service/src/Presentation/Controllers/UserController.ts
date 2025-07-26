@@ -85,9 +85,8 @@ export class UserController extends BaseController {
     const query = request.query;
     const usernamesArray = request.query.usernames;
 
-    console.log("Received request to verify if users exist by usernames:", usernamesArray);
     const usersDTO = new VerifyIfUsersExistsByUsernamesDTO(usernamesArray);
-    const result: Result<boolean> = await this.userService.VerifyIfUsersExistsByUsernamesService(usersDTO, reply);
+    const result: Result<boolean> = await this.userService.VerifyIfUsersExistsByUsernamesService(usersDTO, this.notificationError, reply);
 
     return this.handleResult(result, reply, this.notificationError);
 }
