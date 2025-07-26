@@ -1,4 +1,4 @@
-export interface IBackendApiClient
+export interface IUserServiceClient
 {
     VerifyIfUsersExistsByUsername(uuid: string[]) : Promise<boolean>;
 }

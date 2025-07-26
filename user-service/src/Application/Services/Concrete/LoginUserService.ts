@@ -13,6 +13,7 @@ import {FastifyReply, FastifyRequest} from "fastify";
 import {User} from "../../../Domain/Entities/Concrete/User.js";
 import {LoginUserViewModel} from "../../ViewModels/LoginUserViewModel.js";
 import * as process from "node:process";
+import {ErrorTypeEnum} from "../../Enums/ErrorTypeEnum.js";
 
 export class LoginUserService  implements BaseService<UserSessionDTO, LoginUserViewModel>
 {
@@ -48,16 +49,16 @@ export class LoginUserService  implements BaseService<UserSessionDTO, LoginUserV
             if (error instanceof ValidationException)
             {
                 const message: string = error.SetErrors();
-                return Result.Failure<LoginUserViewModel>(message);
+                return Result.Failure<LoginUserViewModel>(message, ErrorTypeEnum.VALIDATION);
             }
             else if (error instanceof  PrismaClientKnownRequestError)
             {
                 if (error.code === 'P2002')
-                    return Result.Failure<LoginUserViewModel>(ErrorCatalog.UsernameAlreadyExists.SetError());
+                    return Result.Failure<LoginUserViewModel>(ErrorCatalog.UsernameAlreadyExists.SetError(), ErrorTypeEnum.VALIDATION);
 
-                return Result.Failure<LoginUserViewModel>(ErrorCatalog.DatabaseViolated.SetError());
+                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError(), ErrorTypeEnum.CONFLICT);
             }
-            return Result.Failure<LoginUserViewModel>(ErrorCatalog.InternalServerError.SetError());
+            return Result.Failure(ErrorCatalog.InternalServerError.SetError(), ErrorTypeEnum.INTERNAL);
         }
     }
 
