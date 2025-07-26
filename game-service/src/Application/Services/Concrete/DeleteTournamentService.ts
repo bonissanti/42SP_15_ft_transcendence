@@ -1,15 +1,16 @@
-import { FastifyReply } from "fastify";
-import { BaseService } from "../Interfaces/BaseService.js";
-import { NotificationError } from "../../../Shared/Errors/NotificationError.js";
-import { TournamentRepository } from "../../../Infrastructure/Persistence/Repositories/Concrete/TournamentRepository.js";
-import { DeleteUserCommandValidator } from "../../../Domain/Command/Validators/DeleteUserCommandValidator.js";
-import { DeleteTournamentCommandHandler } from "../../../Domain/Command/Handlers/DeleteTournamentCommandHandler.js";
-import { Result } from "../../../Shared/Utils/Result.js";
-import { ValidationException } from "../../../Shared/Errors/ValidationException.js";
-import { ErrorCatalog } from "../../../Shared/Errors/ErrorCatalog.js";
-import { Prisma } from "@prisma/client";
+import {FastifyReply} from "fastify";
+import {BaseService} from "../Interfaces/BaseService.js";
+import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
+import {TournamentRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/TournamentRepository.js";
+import {DeleteUserCommandValidator} from "../../../Domain/Command/Validators/DeleteUserCommandValidator.js";
+import {DeleteTournamentCommandHandler} from "../../../Domain/Command/Handlers/DeleteTournamentCommandHandler.js";
+import {Result} from "../../../Shared/Utils/Result.js";
+import {ValidationException} from "../../../Shared/Errors/ValidationException.js";
+import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog.js";
+import {Prisma} from "@prisma/client";
 import {DeleteTournamentCommand} from "../../../Domain/Command/CommandObject/DeleteTournamentCommand";
 import {DeleteTournamentDTO} from "../../DTO/ToCommand/DeleteTournamentDTO";
+import {ErrorTypeEnum} from "../../Enum/ErrorTypeEnum";
 
 export class DeleteTournamentService implements BaseService<DeleteTournamentDTO>
 {
@@ -39,7 +40,7 @@ export class DeleteTournamentService implements BaseService<DeleteTournamentDTO>
             if (error instanceof ValidationException)
             {
                 const message: string = error.SetErrors();
-                return Result.Failure(message);
+                return Result.Failure(message, ErrorTypeEnum.VALIDATION);
 
             }
             else if (error instanceof Prisma.PrismaClientKnownRequestError)
@@ -47,10 +48,10 @@ export class DeleteTournamentService implements BaseService<DeleteTournamentDTO>
                 if (error.code === 'P2025')
                     return Result.Failure("User to be deleted not found.");
 
-                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError());
+                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError(), ErrorTypeEnum.CONFLICT);
             }
 
-            return Result.Failure(ErrorCatalog.InternalServerError.SetError());
+            return Result.Failure(ErrorCatalog.InternalServerError.SetError(), ErrorTypeEnum.INTERNAL);
         }
     }
 }

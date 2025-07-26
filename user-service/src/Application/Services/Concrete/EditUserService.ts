@@ -10,6 +10,7 @@ import {EditUserCommandValidator} from "../../../Domain/Command/Validators/EditU
 import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
 import { ValidationException } from "../../../Shared/Errors/ValidationException.js";
 import { Result } from "../../../Shared/Utils/Result.js";
+import {ErrorTypeEnum} from "../../Enums/ErrorTypeEnum.js";
 
 export class EditUserService implements BaseService<EditUserDTO>
 {
@@ -39,16 +40,16 @@ export class EditUserService implements BaseService<EditUserDTO>
             if (error instanceof ValidationException)
             {
                 const message: string = error.SetErrors();
-                return Result.Failure(message);
+                return Result.Failure(message, ErrorTypeEnum.VALIDATION);
             }
             else if (error instanceof  PrismaClientKnownRequestError)
             {
                 if (error.code === 'P2002')
-                    return Result.Failure(ErrorCatalog.UsernameAlreadyExists.SetError());
+                    return Result.Failure(ErrorCatalog.UsernameAlreadyExists.SetError(), ErrorTypeEnum.VALIDATION);
 
-                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError());
+                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError(), ErrorTypeEnum.CONFLICT);
             }
-            return Result.Failure(ErrorCatalog.InternalServerError.SetError());
+            return Result.Failure(ErrorCatalog.InternalServerError.SetError(), ErrorTypeEnum.INTERNAL);
         }
     }
 }
