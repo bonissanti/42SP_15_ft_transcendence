@@ -42,7 +42,7 @@ export class LoginUserService  implements BaseService<UserSessionDTO, LoginUserV
             await this.LoginUserHandler.Handle(command);
             const loginUserViewModel = this.GenerateToken(reply, request);
 
-            return Result.SucessWithData<LoginUserViewModel>("User logged in successfully", loginUserViewModel);
+            return Result.SuccessWithData<LoginUserViewModel>("User logged in successfully", loginUserViewModel);
         }
         catch (error)
         {

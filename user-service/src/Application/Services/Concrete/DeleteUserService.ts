@@ -29,7 +29,7 @@ export class DeleteUserService implements BaseService<DeleteUserDTO> {
             await this.DeleteUserValidator.Validator(command);
             await this.DeleteUserHandler.Handle(command);
 
-            return Result.Sucess("User deleted successfully");
+            return Result.Success("User deleted successfully");
         }
         catch (error)
         {

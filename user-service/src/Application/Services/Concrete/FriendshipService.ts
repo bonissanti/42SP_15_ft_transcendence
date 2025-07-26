@@ -58,7 +58,7 @@ export class FriendshipService implements BaseService<any, boolean>
             await this.AddRequestFriendValidator.Validator(command);
             await this.AddRequestFriendHandler.Handle(command);
 
-            return Result.Sucess("Request sent successfully to user");
+            return Result.Success("Request sent successfully to user");
         }
         catch (error)
         {
@@ -94,7 +94,7 @@ export class FriendshipService implements BaseService<any, boolean>
             await this.ChangeRequestFriendStatusValidator.Validator(command);
             await this.ChangeRequestFriendStatusHandler.Handle(command);
 
-            return Result.Sucess(`Request status changed to ${command.status}`);
+            return Result.Success(`Request status changed to ${command.status}`);
         }
         catch (error)
         {
@@ -134,7 +134,7 @@ export class FriendshipService implements BaseService<any, boolean>
                 return Result.Failure<GetFriendshipListViewModel[]>(ErrorCatalog.UserNotFound.SetError());
 
             const getFriendshipViewModel = GetFriendshipListViewModel.fromQueryDTO(getFriendshipQueryDTO);
-            return Result.SucessWithData<GetFriendshipListViewModel[]>("Friend's list from user found successfully", getFriendshipViewModel);
+            return Result.SuccessWithData<GetFriendshipListViewModel[]>("Friend's list from user found successfully", getFriendshipViewModel);
         }
         catch (error)
         {

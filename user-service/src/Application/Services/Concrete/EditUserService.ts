@@ -33,7 +33,7 @@ export class EditUserService implements BaseService<EditUserDTO>
             await this.EditUserValidator.Validator(command);
             await this.EditUserHandler.Handle(command);
 
-            return Result.Sucess("User edited successfully");
+            return Result.Success("User edited successfully");
         }
         catch (error)
         {

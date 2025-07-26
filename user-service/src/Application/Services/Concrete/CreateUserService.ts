@@ -31,7 +31,7 @@ export class CreateUserService implements BaseService<CreateUserDTO> {
             await this.CreateUserValidator.Validator(command);
             await this.CreateUserHandler.Handle(command);
 
-            return Result.Sucess("User created successfully");
+            return Result.Success("User created successfully");
         } catch (error)
         {
             if (error instanceof ValidationException)

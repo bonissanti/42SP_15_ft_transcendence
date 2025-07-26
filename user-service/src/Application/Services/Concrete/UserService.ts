@@ -61,7 +61,7 @@ export class UserService implements BaseService<any,  boolean>
             if (!exists)
                 return Result.Failure<boolean>("User does not exists");
 
-            return Result.SucessWithData<boolean>("All users exists!", exists);
+            return Result.SuccessWithData<boolean>("All users exists!", exists);
         }
         catch (error)
         {
@@ -86,9 +86,9 @@ export class UserService implements BaseService<any,  boolean>
             const exists = await this.VerifyUsersByUsernamesQueryHandler.Handle(query);
 
             if (!exists)
-                return Result.SucessWithData<boolean>("Users not exists!", exists);
+                return Result.SuccessWithData<boolean>("Users not exists!", exists);
 
-            return Result.SucessWithData<boolean>("All users exists!", exists);
+            return Result.SuccessWithData<boolean>("All users exists!", exists);
         }
         catch (error)
         {
@@ -113,7 +113,7 @@ export class UserService implements BaseService<any,  boolean>
             await this.UpdateStatsValidator.Validator(command);
             await this.UpdateStatsHandler.Handle(command);
 
-            return Result.Sucess(`Stats from ${command.player1Username} and ${command.player2Username} updated successfully`);
+            return Result.Success(`Stats from ${command.player1Username} and ${command.player2Username} updated successfully`);
         }
         catch (error)
         {
@@ -146,9 +146,9 @@ export class UserService implements BaseService<any,  boolean>
             const exists = await this.VerifyIfUserExistsByUsernameQueryHandler.Handle(query)
 
             if (!exists)
-                return Result.SucessWithData<boolean>(`User ${query.username} does not exists`, exists);
+                return Result.SuccessWithData<boolean>(`User ${query.username} does not exists`, exists);
 
-            return Result.SucessWithData<boolean>(`User ${query.username} exists`, exists);
+            return Result.SuccessWithData<boolean>(`User ${query.username} exists`, exists);
         }
         catch (error)
         {

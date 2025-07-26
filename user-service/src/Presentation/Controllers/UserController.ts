@@ -124,7 +124,7 @@ export class UserController extends BaseController {
 
       user.ChangeStatusOnline(isOnline);
       await this.userRepository.Update(uuid, user);
-      return this.handleResult(Result.Sucess("Status do usuário atualizado."), reply, this.notificationError);
+      return this.handleResult(Result.Success("Status do usuário atualizado."), reply, this.notificationError);
     } catch (error) {
       return this.handleResult(Result.Failure("Erro ao atualizar o status do usuário."), reply, this.notificationError);
     }

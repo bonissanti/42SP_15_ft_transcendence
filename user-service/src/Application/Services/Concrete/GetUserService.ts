@@ -33,10 +33,10 @@ export class GetUserService implements BaseService<GetUserDTO, GetUserViewModel>
             const getUserQueryDTO = await this.GetUserQueryHandler.Handle(query);
 
             if (!getUserQueryDTO)
-                return Result.SucessWithData<GetUserViewModel | null>("User not found", getUserViewModel);
+                return Result.SuccessWithData<GetUserViewModel | null>("User not found", getUserViewModel);
 
             getUserViewModel = GetUserViewModel.FromQueryDTO(getUserQueryDTO);
-            return Result.SucessWithData<GetUserViewModel>("User found", getUserViewModel);
+            return Result.SuccessWithData<GetUserViewModel>("User found", getUserViewModel);
         }
         catch (error)
         {
@@ -59,7 +59,7 @@ export class GetUserService implements BaseService<GetUserDTO, GetUserViewModel>
             const getUserQueryDTOs: GetUserQueryDTO[] = await this.GetUserQueryHandler.GetAll();
             const getUserViewModels: GetUserViewModel[] = getUserQueryDTOs.map(dto => GetUserViewModel.FromQueryDTO(dto));
 
-            return Result.SucessWithData<GetUserViewModel[]>("Users found", getUserViewModels);
+            return Result.SuccessWithData<GetUserViewModel[]>("Users found", getUserViewModels);
         }
         catch (error)
         {

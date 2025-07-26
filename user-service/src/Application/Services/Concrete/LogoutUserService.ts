@@ -39,7 +39,7 @@ export class LogoutUserService implements BaseService<UserSessionDTO>
             await this.LogoutUserValidator.Validator(command);
             await this.LogoutUserHandler.Handle(command);
 
-            return Result.Sucess("User logged out successfully");
+            return Result.Success("User logged out successfully");
         }
         catch (error)
         {

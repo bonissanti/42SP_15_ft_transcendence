@@ -14,11 +14,11 @@ export class Result<T = void> {
         this.Error = error;
     }
 
-    public static Sucess(message: string): Result<void> {
+    public static Success(message: string): Result<void> {
         return new Result(true, message, undefined);
     }
 
-    public static SucessWithData<T>(message: string, data: T): Result<T> {
+    public static SuccessWithData<T>(message: string, data: T): Result<T> {
         return new Result(true, message, data);
     }
 
