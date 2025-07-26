@@ -33,7 +33,7 @@ export class EditTournamentService implements BaseService<EditTournamentDTO>
             await this.editTournamentValidator.Validator(command);
             await this.editTournamentHandler.Handle(command);
 
-            return Result.Sucess("Tournament edited successfully");
+            return Result.Success("Tournament edited successfully");
         }
         catch (error)
         {

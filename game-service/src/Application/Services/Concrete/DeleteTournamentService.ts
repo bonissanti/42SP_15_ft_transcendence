@@ -33,7 +33,7 @@ export class DeleteTournamentService implements BaseService<DeleteTournamentDTO>
             await this.deleteUserCommandValidator.Validator(command);
             await this.deleteTournamentHandler.Handle(command);
 
-            return Result.Sucess("User deleted successfully");
+            return Result.Success("User deleted successfully");
         }
         catch (error)
         {

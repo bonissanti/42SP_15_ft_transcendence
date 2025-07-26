@@ -37,7 +37,7 @@ export class MatchmakingService
                 return Result.Failure(ErrorCatalog.DatabaseViolated.SetError());
 
             const getUserMatchmakingViewModel = GetUserMatchmakingViewModel.fromQueryDTO(getUserMatchmakingQueryDTO);
-            return Result.SucessWithData<GetUserMatchmakingViewModel>("Opponent found", getUserMatchmakingViewModel);
+            return Result.SuccessWithData<GetUserMatchmakingViewModel>("Opponent found", getUserMatchmakingViewModel);
         }
         catch (error)
         {

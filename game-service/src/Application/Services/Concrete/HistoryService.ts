@@ -40,7 +40,7 @@ export class HistoryService implements BaseService<any>
             await this.createHistoryCommandValidator.Validator(command);
             await this.createHistoryCommandHandler.Handle(command);
 
-            return Result.Sucess("History created successfully");
+            return Result.Success("History created successfully");
         }
         catch (error)
         {
@@ -70,7 +70,7 @@ export class HistoryService implements BaseService<any>
             }
 
             const getAllHistoriesViewModel = GetAllHistoriesViewModel.fromQueryDTOList(GetAllHistoriesQueryDTO);
-            return Result.SucessWithData<GetAllHistoriesViewModel[]>("Histories found", getAllHistoriesViewModel);
+            return Result.SuccessWithData<GetAllHistoriesViewModel[]>("Histories found", getAllHistoriesViewModel);
         }
         catch (error)
         {

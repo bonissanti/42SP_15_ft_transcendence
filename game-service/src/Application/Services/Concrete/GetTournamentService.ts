@@ -36,7 +36,7 @@ export class GetTournamentService implements BaseService<GetTournamentDTO, GetTo
             }
 
             const getTournamentViewModel = GetTournamentViewModel.fromQueryDTO(getUserQueryDTO);
-            return Result.SucessWithData<GetTournamentViewModel>("Tournament found", getTournamentViewModel);
+            return Result.SuccessWithData<GetTournamentViewModel>("Tournament found", getTournamentViewModel);
         }
         catch (error)
         {

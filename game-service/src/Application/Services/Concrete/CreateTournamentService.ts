@@ -32,7 +32,7 @@ export class CreateTournamentService implements BaseService<CreateTournamentDTO>
             await this.createTournamentValidator.Validator(command);
             await this.createTournamentCommandHandler.Handle(command);
 
-            return Result.Sucess("Tournament created successfully");
+            return Result.Success("Tournament created successfully");
         }
         catch (error)
         {
