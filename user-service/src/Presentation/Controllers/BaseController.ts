@@ -35,5 +35,5 @@ export abstract class BaseController
             default:
                 return 500;
         }
-    }}
+    }
 }

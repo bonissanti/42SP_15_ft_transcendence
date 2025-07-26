@@ -1,4 +1,5 @@
 import { CustomError } from "../Errors/CustomError.js";
+import {ErrorTypeEnum} from "../../Application/Enums/ErrorTypeEnum.js";
 
 export class Result<T = void> {
     public readonly isSucess: boolean;
