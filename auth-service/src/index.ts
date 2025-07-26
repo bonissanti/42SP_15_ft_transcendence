@@ -2,6 +2,7 @@ import fastify, { FastifyInstance } from 'fastify';
 import { PrismaClient } from '@prisma/client';
 import dotenv from 'dotenv';
 import { authRoutes, IAuthOptions } from './routes/authRoutes.js';
+import { fastifyCors } from "@fastify/cors";
 
 dotenv.config();
 
@@ -23,6 +24,10 @@ const authOptions: IAuthOptions = {
 
 server.register(authRoutes, authOptions);
 
+server.register(fastifyCors, {
+  origin: ['http://127.0.0.1:8080', 'http://localhost:8080'],
+  credentials: true
+});
 
 server.after(() => {
   console.log(server.printRoutes());
