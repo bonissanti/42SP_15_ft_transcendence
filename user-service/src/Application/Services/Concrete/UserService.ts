@@ -73,7 +73,7 @@ export class UserService implements BaseService<any,  boolean>
         }
     }
 
-    public async VerifyIfUsersExistsByUsernamesService(dto: VerifyIfUsersExistsByUsernamesQuery, reply: FastifyReply): Promise<Result<boolean>>
+    public async VerifyIfUsersExistsByUsernamesService(dto: VerifyIfUsersExistsByUsernamesQuery, notificationError: NotificationError, reply: FastifyReply): Promise<Result<boolean>>
     {
         try
         {
@@ -81,9 +81,9 @@ export class UserService implements BaseService<any,  boolean>
             const exists = await this.VerifyUsersByUsernamesQueryHandler.Handle(query);
 
             if (!exists)
-                return Result.Failure<boolean>("User does notists");
+                notificationError.AddError(ErrorCatalog.UserNotFound);
 
-            return Result.SucessWithData<boolean>("All users exists!", exists);
+            return Result.SucessWithData<boolean>(exists ? "All users exists!" : "Not all users exist", exists);
         }
         catch (error)
         {

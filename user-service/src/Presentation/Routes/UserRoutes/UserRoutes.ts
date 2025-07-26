@@ -97,11 +97,11 @@ export const UserRoutes = async (server: any, userController: UserController) =>
     })
 
     server.get('/users/exists/usernames', optsUsernamesChecker, async (request: FastifyRequest<{ Querystring: { usernames: (string | null)[] }}>, reply: FastifyReply) => {
-        await userController.VerifyIfUsersExistsByUsernames(request, reply);
+        return await userController.VerifyIfUsersExistsByUsernames(request, reply);
     })
 
     server.get('/users/exists/:username', { preHandler: authenticateJWT }, async (request: FastifyRequest <{ Querystring: { username: string }}>, reply: FastifyReply) => {
-        await userController.VerifyIfUserExistsByUsername(request, reply);
+        return await userController.VerifyIfUserExistsByUsername(request, reply);
     })
 
     server.get('/users/:uuid', userController.findOne.bind(userController));
