@@ -43,14 +43,16 @@ server.register(helmet, {
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      script: ["'self'"]
+      scriptSrc: ["'self'", "https://accounts.google.com"],
+      frameSrc: ["'self'", "https://accounts.google.com"],
+      connectSrc: ["'self'", "https://accounts.google.com"]
     }
   }
 });
 
 server.register(cookie);
 server.register(fastifyCors, {
-  origin: ['http://localhost:5173'],
+  origin: ['http://localhost:5173', 'http://127.0.0.1:8080', 'http://localhost:8080'],
   credentials: true
 });
 

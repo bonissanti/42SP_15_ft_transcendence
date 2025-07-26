@@ -123,7 +123,7 @@ export const UserRoutes = async (server: any, userController: UserController) =>
         await userController.GetUser(modifiedRequest, reply);
     });
 
-    server.put('/users/me/status', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Body: { isOnline: boolean } }>, reply: FastifyReply) => {
+    server.get('/users/me/status', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Body: { isOnline: boolean } }>, reply: FastifyReply) => {
         const userPayload = request.user as { uuid: string };
         const { isOnline } = request.body;
 

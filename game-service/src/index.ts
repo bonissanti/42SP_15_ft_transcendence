@@ -19,15 +19,16 @@ async function main() {
         secret: process.env.JWT_SECRET || 'transcendence'
     });
 
-    server.register(helmet,
-        {
-            contentSecurityPolicy: {
-                directives: {
-                    defaultSrc: ["'self'"],
-                    script: ["'self'"]
-                }
+    server.register(helmet, {
+        contentSecurityPolicy: {
+            directives: {
+                defaultSrc: ["'self'"],
+                scriptSrc: ["'self'", "https://accounts.google.com"],
+                frameSrc: ["'self'", "https://accounts.google.com"],
+                connectSrc: ["'self'", "https://accounts.google.com"]
             }
-        });
+        }
+    });
 
     server.register(fastifyCors, {
         origin: "*",
