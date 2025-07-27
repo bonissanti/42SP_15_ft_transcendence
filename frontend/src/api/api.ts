@@ -29,12 +29,17 @@ export async function fetchWithGame(url: string, options: RequestInit = {}): Pro
   const headers = new Headers(options.headers || {});
 
   if (token) {
-    headers.append('Authorization', `Bearer ${token}`);
+    headers.set('Authorization', `Bearer ${token}`);
+  }
+
+  if (options.body && !headers.has('Content-Type')) {
+    headers.set('Content-Type', 'application/json');
   }
 
   const response = await fetch(`${GAME_API_BASE_URL}${url}`, {
     ...options,
     headers,
+    credentials: 'include',
   });
 
   if (response.status === 401) {

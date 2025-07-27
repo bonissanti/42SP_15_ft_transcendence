@@ -409,7 +409,7 @@ export function setupWebSocket(server: any) {
                             
                             const disconnectedClient: ClientData = {
                                 ws: dummyWs,
-                                username: username + ' (Desconectado)',
+                                username: username,
                                 inputs: {},
                                 id: userId,
                                 profilePic: profilePic,

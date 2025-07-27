@@ -15,4 +15,13 @@ export const HistoryRoutes = async (server: any, historyController: HistoryContr
     server.get('/history', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Querystring: { username: string }}>, reply: FastifyReply) =>{
         await historyController.GetAllHistories(request, reply);
     });
-}
+
+    server.get('/test', { preHandler: authenticateJWT }, async (request: FastifyRequest, reply: FastifyReply) => {
+        if( request.user) {
+            console.log('Authenticated user:', request.user);
+            return reply.send({ message: 'Test route accessed successfully', user: request.user });
+        }
+        console.log('No authenticated user found in request');
+        return reply.status(401).send({ message: 'Unauthorized: No user found' });
+    });
+};

@@ -33,7 +33,8 @@ async function main() {
     server.register(fastifyCors, {
         origin: "*",
         methods: ["GET", "POST", "PUT", "DELETE"],
-        credentials: true
+        credentials: true,
+        allowedHeaders: ['Content-Type', 'Authorization']
     });
 
     const tournamentController = new TournamentController();
