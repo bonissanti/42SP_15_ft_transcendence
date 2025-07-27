@@ -6,10 +6,10 @@ import {HistoryController} from "../../Controllers/HistoryController";
 export const HistoryRoutes = async (server: any, historyController: HistoryController) =>
 {
     server.post('/history', async (request: FastifyRequest<{ Body: CreateHistoryDTO }>, reply: FastifyReply) =>{
-        await historyController.CreateHistory(request, reply);
+        return await historyController.CreateHistory(request, reply);
     });
 
     server.get('/history', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Querystring: { username: string }}>, reply: FastifyReply) =>{
-        await historyController.GetAllHistories(request, reply);
+        return await historyController.GetAllHistories(request, reply);
     });
 }
