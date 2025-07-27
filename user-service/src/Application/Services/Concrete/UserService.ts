@@ -10,8 +10,12 @@ import {UpdateStatsCommand} from "../../../Domain/Command/CommandObject/UpdateSt
 import {UpdateStatsDTO} from "../../DTO/ToCommand/UpdateStatsDTO.js";
 import {UpdateStatsCommandValidator} from "../../../Domain/Command/Validators/UpdateStatsCommandValidator.js";
 import {UpdateStatsCommandHandler} from "../../../Domain/Command/Handlers/UpdateStatsCommandHandler.js";
-import {VerifyIfUserExistsByUsernameQuery} from "../../../Domain/Queries/QueryObject/VerifyIfUserExistsByUsernameQuery.js";
-import {VerifyUserExistsByUsernameQueryHandler} from "../../../Domain/Queries/Handlers/VerifyUserExistsByUsernameQueryHandler.js";
+import {
+    VerifyIfUserExistsByUsernameQuery
+} from "../../../Domain/Queries/QueryObject/VerifyIfUserExistsByUsernameQuery.js";
+import {
+    VerifyUserExistsByUsernameQueryHandler
+} from "../../../Domain/Queries/Handlers/VerifyUserExistsByUsernameQueryHandler.js";
 import {VerifyIfUserExistsByUsernameDTO} from "../../DTO/ToQuery/VerifyIfUserExistsByUsernameDTO.js";
 import {
     VerifyIfUsersExistsByUsernamesQuery
@@ -24,6 +28,7 @@ import {
     VerifyIfUsersExistsByUuidsQueryHandler
 } from "../../../Domain/Queries/Handlers/VerifyIfUsersExistsByUuidsQueryHandler.js";
 import {VerifyIfUsersExistsByUuidsDTO} from "../../DTO/ToQuery/VerifyIfUsersExistsByUuidsDTO.js";
+import {ErrorTypeEnum} from "../../Enums/ErrorTypeEnum.js";
 
 export class UserService implements BaseService<any,  boolean>
 {
@@ -56,7 +61,7 @@ export class UserService implements BaseService<any,  boolean>
             if (!exists)
                 return Result.Failure<boolean>("User does not exists");
 
-            return Result.SucessWithData<boolean>("All users exists!", exists);
+            return Result.SuccessWithData<boolean>("All users exists!", exists);
         }
         catch (error)
         {
@@ -73,7 +78,7 @@ export class UserService implements BaseService<any,  boolean>
         }
     }
 
-    public async VerifyIfUsersExistsByUsernamesService(dto: VerifyIfUsersExistsByUsernamesQuery, reply: FastifyReply): Promise<Result<boolean>>
+    public async VerifyIfUsersExistsByUsernamesService(dto: VerifyIfUsersExistsByUsernamesQuery, notificationError: NotificationError, reply: FastifyReply): Promise<Result<boolean>>
     {
         try
         {
@@ -81,22 +86,22 @@ export class UserService implements BaseService<any,  boolean>
             const exists = await this.VerifyUsersByUsernamesQueryHandler.Handle(query);
 
             if (!exists)
-                return Result.Failure<boolean>("User does notists");
+                return Result.SuccessWithData<boolean>("Users does not exists!", exists);
 
-            return Result.SucessWithData<boolean>("All users exists!", exists);
+            return Result.SuccessWithData<boolean>("All users exists!", exists);
         }
         catch (error)
         {
             if (error instanceof ValidationException)
             {
                 const message: string = error.SetErrors();
-                return Result.Failure<false>(message);
+                return Result.Failure<false>(message, ErrorTypeEnum.VALIDATION);
             }
             else if (error instanceof Prisma.PrismaClientKnownRequestError)
             {
-                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError());
+                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError(), ErrorTypeEnum.CONFLICT);
             }
-            return Result.Failure(ErrorCatalog.InternalServerError.SetError());
+            return Result.Failure(ErrorCatalog.InternalServerError.SetError(), ErrorTypeEnum.INTERNAL);
         }
     }
 
@@ -105,17 +110,17 @@ export class UserService implements BaseService<any,  boolean>
         try
         {
             const command: UpdateStatsCommand = UpdateStatsCommand.fromDTO(dto);
-            await this.UpdateStatsValidator.Validator(command);
+            // await this.UpdateStatsValidator.Validator(command);
             await this.UpdateStatsHandler.Handle(command);
 
-            return Result.Sucess(`Stats from ${command.player1Username} and ${command.player2Username} updated successfully`);
+            return Result.Success(`Stats from ${command.player1Username} and ${command.player2Username} updated successfully`);
         }
         catch (error)
         {
             if (error instanceof ValidationException)
             {
                 const message: string = error.SetErrors();
-                return Result.Failure(message);
+                return Result.Failure(message, ErrorTypeEnum.VALIDATION);
             }
             else if (error instanceof Prisma.PrismaClientKnownRequestError)
             {
@@ -123,12 +128,12 @@ export class UserService implements BaseService<any,  boolean>
                     const target = error.meta?.target as string[];
 
                     if (target?.includes('username')) {
-                        return Result.Failure(ErrorCatalog.UsernameAlreadyExists.SetError());
+                        return Result.Failure(ErrorCatalog.UsernameAlreadyExists.SetError(), ErrorTypeEnum.VALIDATION);
                     }
                 }
-                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError());
+                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError(), ErrorTypeEnum.CONFLICT);
             }
-            return Result.Failure(ErrorCatalog.InternalServerError.SetError());
+            return Result.Failure(ErrorCatalog.InternalServerError.SetError(), ErrorTypeEnum.INTERNAL);
         }
     }
 
@@ -141,22 +146,22 @@ export class UserService implements BaseService<any,  boolean>
             const exists = await this.VerifyIfUserExistsByUsernameQueryHandler.Handle(query)
 
             if (!exists)
-                return Result.Failure<boolean>(`User ${query.username} does not exists`);
+                return Result.SuccessWithData<boolean>(`User ${query.username} does not exists`, exists);
 
-            return Result.SucessWithData<boolean>(`User ${query.username} exists`, exists);
+            return Result.SuccessWithData<boolean>(`User ${query.username} exists`, exists);
         }
         catch (error)
         {
             if (error instanceof ValidationException)
             {
                 const message: string = error.SetErrors();
-                return Result.Failure<false>(message);
+                return Result.Failure<false>(message, ErrorTypeEnum.VALIDATION);
             }
             else if (error instanceof Prisma.PrismaClientKnownRequestError)
             {
-                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError());
+                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError(), ErrorTypeEnum.CONFLICT);
             }
-            return Result.Failure(ErrorCatalog.InternalServerError.SetError());
+            return Result.Failure(ErrorCatalog.InternalServerError.SetError(), ErrorTypeEnum.INTERNAL);
         }
     }
 }

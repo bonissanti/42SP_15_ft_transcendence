@@ -49,6 +49,7 @@ services:
       JWT_SECRET: "transcendence"
     ports:
       - "3001:3001"
+      - "5556:5556"
     volumes:
       - game-service-prisma-data:/usr/src/app/prisma
     networks:

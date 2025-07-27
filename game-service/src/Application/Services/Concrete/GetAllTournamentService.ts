@@ -11,6 +11,7 @@ import {GetAllTournamentsQuery} from "../../../Domain/Queries/QueryObject/GetAll
 import {GetAllTournamentsViewModel} from "../../ViewModel/GetAllTournamentsViewModel";
 import {GetAllTournamentQueryHandler} from "../../../Domain/Queries/Handlers/GetAllTournamentQueryHandler";
 import {GetAllTournamentsQueryDTO} from "../../../Domain/QueryDTO/GetAllTournamentsQueryDTO";
+import {ErrorTypeEnum} from "../../Enum/ErrorTypeEnum";
 
 export class GetAllTournamentService implements BaseService<GetAllTournamentsDTO, GetAllTournamentsViewModel[]>
 {
@@ -27,28 +28,29 @@ export class GetAllTournamentService implements BaseService<GetAllTournamentsDTO
     {
         try
         {
+            let getAllTournamentsViewModel: GetAllTournamentsViewModel[] = [];
             const query: GetAllTournamentsQuery = GetAllTournamentsQuery.fromDTO(dto);
             const getAllTournamentsQueryDTO: GetAllTournamentsQueryDTO[] | null = await this.GetUserQueryHandler.Handle(query);
 
             if (!getAllTournamentsQueryDTO) {
-                return Result.Failure<GetAllTournamentsViewModel[]>(ErrorCatalog.TournamentNotFound.SetError());
+                return Result.SuccessWithData<GetAllTournamentsViewModel[]>("Tournaments not found", getAllTournamentsViewModel);
             }
 
-            const getAllTournamentsViewModel = GetAllTournamentsViewModel.fromQueryDTOlist(getAllTournamentsQueryDTO);
-            return Result.SucessWithData<GetAllTournamentsViewModel[]>("Tournaments found", getAllTournamentsViewModel);
+            getAllTournamentsViewModel = GetAllTournamentsViewModel.fromQueryDTOlist(getAllTournamentsQueryDTO);
+            return Result.SuccessWithData<GetAllTournamentsViewModel[]>("Tournaments found", getAllTournamentsViewModel);
         }
         catch (error)
         {
             if (error instanceof ValidationException)
             {
                 const message: string = error.SetErrors();
-                return Result.Failure<GetAllTournamentsViewModel[]>(message);
+                return Result.Failure<GetAllTournamentsViewModel[]>(message, ErrorTypeEnum.VALIDATION);
             }
             else if (error instanceof Prisma.PrismaClientKnownRequestError)
             {
-                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError());
+                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError(), ErrorTypeEnum.CONFLICT);
             }
-            return Result.Failure(ErrorCatalog.InternalServerError.SetError());
+            return Result.Failure(ErrorCatalog.InternalServerError.SetError(), ErrorTypeEnum.INTERNAL);
         }
     }
 }

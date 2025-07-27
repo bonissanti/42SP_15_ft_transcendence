@@ -1,9 +1,9 @@
-import {StatusRequest} from "../../Application/Enums/StatusRequest.js";
+import {StatusRequestEnum} from "../../Application/Enums/StatusRequestEnum.js";
 
 export class GetFriendshipListQueryDTO
 {
     public readonly uuid: string;
-    public readonly status: StatusRequest;
+    public readonly status: StatusRequestEnum;
     public readonly friendUuid: string;
     public readonly friendUsername: string;
     public readonly friendProfilePic: string | null;
@@ -13,7 +13,7 @@ export class GetFriendshipListQueryDTO
 
     constructor(
         uuid: string,
-        status: StatusRequest,
+        status: StatusRequestEnum,
         friendUuid: string,
         friendUsername: string,
         friendProfilePic: string | null,

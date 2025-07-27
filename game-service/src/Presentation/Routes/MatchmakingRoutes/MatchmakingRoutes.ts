@@ -21,6 +21,6 @@ const opts = {
 export const MatchmakingRoutes = async (server: any, matchmakingController: MatchmakingController) =>
 {
     server.get('/matchmaking', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Querystring: GenerateMatchmakingDTO }>, reply: FastifyReply) => {
-        await matchmakingController.GenerateMatchmaking(request, reply);
+        return await matchmakingController.GenerateMatchmaking(request, reply);
     })
 }

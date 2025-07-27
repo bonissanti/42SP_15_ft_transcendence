@@ -4,7 +4,7 @@ import {FastifyReply} from "fastify";
 import {GenerateMatchmakingQuery} from "../../../Domain/Queries/QueryObject/GenerateMatchmakingQuery";
 import {GenerateMatchmakingQueryHandler} from "../../../Domain/Queries/Handlers/GenerateMatchmakingQueryHandler";
 import {GenerateMatchmakingQueryValidator} from "../../../Domain/Queries/Validators/GenerateMatchmakingQueryValidator";
-import { BackendApiClient } from "../../../Infrastructure/Http/Concrete/BackendApiClient";
+import { UserServiceClient } from "../../../Infrastructure/Http/Concrete/UserServiceClient";
 import {GetUserMatchmakingQueryDTO} from "../../../Domain/QueryDTO/GetUserMatchmakingQueryDTO";
 import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog";
 import { Result } from "../../../Shared/Utils/Result";
@@ -14,13 +14,13 @@ import {GetUserMatchmakingViewModel} from "../../ViewModel/GetUserMatchmakingVie
 
 export class MatchmakingService
 {
-    private readonly backendApiClient: BackendApiClient;
+    private readonly backendApiClient: UserServiceClient;
     private readonly matchmakingQueryHandler: GenerateMatchmakingQueryHandler;
     private readonly matchmakingQueryValidator: GenerateMatchmakingQueryValidator;
 
     constructor(notificationError: NotificationError)
     {
-        this.backendApiClient = new BackendApiClient();
+        this.backendApiClient = new UserServiceClient();
         this.matchmakingQueryHandler = new GenerateMatchmakingQueryHandler(this.backendApiClient, notificationError);
         this.matchmakingQueryValidator = new GenerateMatchmakingQueryValidator(notificationError);
     }
@@ -37,7 +37,7 @@ export class MatchmakingService
                 return Result.Failure(ErrorCatalog.DatabaseViolated.SetError());
 
             const getUserMatchmakingViewModel = GetUserMatchmakingViewModel.fromQueryDTO(getUserMatchmakingQueryDTO);
-            return Result.SucessWithData<GetUserMatchmakingViewModel>("Opponent found", getUserMatchmakingViewModel);
+            return Result.SuccessWithData<GetUserMatchmakingViewModel>("Opponent found", getUserMatchmakingViewModel);
         }
         catch (error)
         {

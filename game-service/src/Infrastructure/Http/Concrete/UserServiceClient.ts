@@ -1,19 +1,20 @@
-import {IBackendApiClient} from "../Interface/IBackendApiClient";
+import {IUserServiceClient} from "../Interface/IUserServiceClient";
 import axios from 'axios';
 import {GetUserMatchmakingQueryDTO} from "../../../Domain/QueryDTO/GetUserMatchmakingQueryDTO";
 import {UpdateStatsExternalDTO} from "../../../Domain/ExternalDTO/UpdateStatsExternalDTO";
 import { stringify } from 'qs';
 
-export class BackendApiClient implements IBackendApiClient
+export class UserServiceClient implements IUserServiceClient
 {
     private readonly baseUrl: string;
 
     constructor()
     {
-        this.baseUrl = process.env.BACKEND_API_URL || 'http://user-service:8080';
+        //Pode ser que seja 127.0.0.1:8080 (local é isso)
+        this.baseUrl = process.env.BACKEND_API_URL || 'http://localhost:8080';
     }
 
-    public async VerifyIfUsersExistsByUsername(usernames: (string | null)[]): Promise<boolean> {
+    public async VerifyIfUsersExistsByUsername(usernames: (string | null)[]): Promise<any> {
     try {
         const validUsernames = usernames.filter(u => u != null && u !== '');
 
@@ -23,24 +24,19 @@ export class BackendApiClient implements IBackendApiClient
 
         const response = await axios.get(`${this.baseUrl}/users/exists/usernames`, {
             params: { usernames: validUsernames },
-            paramsSerializer: params => {
-                return stringify(params, { arrayFormat: 'repeat' });
-            }
+            paramsSerializer: params => stringify(params, { arrayFormat: 'repeat' }),
         });
 
-        return response.status === 200;
+        return response.data;
         } catch (error) {
             if (axios.isAxiosError(error) && (error.response?.status === 404 || error.response?.status === 400)) {
-                console.error("Error from user-service:", error.response?.data);
                 return false;
             }
             throw error;
         }
     }
 
-
-
-    public async VerifyIfUserExistsByUuid(uuid: string): Promise<boolean>
+    public async VerifyIfUserExistsByUuid(uuid: string): Promise<any>
     {
         try
         {
@@ -48,7 +44,7 @@ export class BackendApiClient implements IBackendApiClient
                 params: { uuid: uuid }
             });
 
-            return response.status === 200;
+            return response.data;
         }
         catch (error)
         {
@@ -59,15 +55,15 @@ export class BackendApiClient implements IBackendApiClient
         }
     }
 
-    public async VerifyIfUserExistsByUsername(username: string): Promise<boolean>
+    public async VerifyIfUserExistsByUsername(username: string): Promise<any>
     {
         try
         {
             const response = await axios.get(`${this.baseUrl}/users/:${username}`, {
-                params: { uuid: username }
+                params: { username: username }
             });
 
-            return response.status === 200;
+            return response.data;
         }
         catch (error)
         {
@@ -78,12 +74,12 @@ export class BackendApiClient implements IBackendApiClient
         }
     }
 
-    public async UpdateStatsForUsers(updateStatsExternalDTO: UpdateStatsExternalDTO): Promise<boolean>
+    public async UpdateStatsForUsers(updateStatsExternalDTO: UpdateStatsExternalDTO): Promise<any>
     {
         try
         {
             const response = await axios.put(`${this.baseUrl}/user/updateStats`, updateStatsExternalDTO);
-            return response.status === 200;
+            return response.data;
         }
         catch (error)
         {

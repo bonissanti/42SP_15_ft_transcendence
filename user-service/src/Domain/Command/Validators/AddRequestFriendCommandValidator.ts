@@ -4,7 +4,7 @@ import {FriendshipRepository} from "../../../Infrastructure/Persistence/Reposito
 import {UserRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/UserRepository.js";
 import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
 import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog.js";
-import {StatusRequest} from "../../../Application/Enums/StatusRequest.js";
+import {StatusRequestEnum} from "../../../Application/Enums/StatusRequestEnum.js";
 import {CustomError} from "../../../Shared/Errors/CustomError.js";
 import {ValidationException} from "../../../Shared/Errors/ValidationException.js";
 
@@ -31,7 +31,7 @@ export class AddRequestFriendCommandValidator implements BaseValidator<AddReques
         if (!await this.UserRepository.VerifyIfUsersExistsByUUIDs(users))
             this.NotificationError.AddError(ErrorCatalog.UserNotFound)
 
-        if (command.status !== StatusRequest.PENDING)
+        if (command.status !== StatusRequestEnum.PENDING)
             this.NotificationError.AddError(ErrorCatalog.InvalidStatusFriendRequest)
 
         if (await this.FriendshipRepository.VerifyIfFriendshipExistsByUsersUuid(command.senderUuid, command.receiverUuid))

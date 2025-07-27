@@ -203,8 +203,10 @@ export async function getUserProfile(): Promise<{ username: string, profilePic: 
 
 export async function getCachoraoProfile(): Promise<{ username: string, profilePic: string }> {
   try {
+    // talvez const response = await fetchWithAuth('/users/exists/cachorrao'); ?
     const response = await fetch('/api/users/exists/cachorrao');
-    
+
+
     if (!response.ok) {
       return { username: 'Cachorrao', profilePic: '/img/cachorrao.jpg' };
     }

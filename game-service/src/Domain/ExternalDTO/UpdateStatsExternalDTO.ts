@@ -1,5 +1,8 @@
+import {GameTypeEnum} from "../../Application/Enum/GameTypeEnum";
+
 export class UpdateStatsExternalDTO
 {
+    public readonly gameType: GameTypeEnum;
     public readonly player1Username: string;
     public readonly player1Points: number;
     public readonly player2Username: string;
@@ -9,9 +12,10 @@ export class UpdateStatsExternalDTO
     public readonly player4Username: string | null;
     public readonly player4Points: number | null;
 
-    constructor(player1Username: string, player1Points: number, player2Username: string, player2Points: number,
+    constructor(gameType: GameTypeEnum, player1Username: string, player1Points: number, player2Username: string, player2Points: number,
                 player3Username: string | null, player3Points: number | null, player4Username: string | null, player4Points: number | null)
     {
+        this.gameType = gameType;
         this.player1Username = player1Username;
         this.player1Points = player1Points;
         this.player2Username = player2Username;

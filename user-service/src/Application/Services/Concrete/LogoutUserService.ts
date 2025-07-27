@@ -11,6 +11,7 @@ import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog.js";
 import { Result } from "../../../Shared/Utils/Result.js";
 import {FastifyRequest} from "fastify";
 import {TokenBlacklistService} from "./TokenBlacklistService.js";
+import {ErrorTypeEnum} from "../../Enums/ErrorTypeEnum.js";
 
 export class LogoutUserService implements BaseService<UserSessionDTO>
 {
@@ -38,23 +39,23 @@ export class LogoutUserService implements BaseService<UserSessionDTO>
             await this.LogoutUserValidator.Validator(command);
             await this.LogoutUserHandler.Handle(command);
 
-            return Result.Sucess("User logged out successfully");
+            return Result.Success("User logged out successfully");
         }
         catch (error)
         {
             if (error instanceof ValidationException)
             {
                 const message: string = error.SetErrors();
-                return Result.Failure(message);
+                return Result.Failure(message, ErrorTypeEnum.VALIDATION);
             }
             else if (error instanceof  PrismaClientKnownRequestError)
             {
                 if (error.code === 'P2002')
-                    return Result.Failure(ErrorCatalog.UsernameAlreadyExists.SetError());
+                    return Result.Failure(ErrorCatalog.UsernameAlreadyExists.SetError(), ErrorTypeEnum.VALIDATION);
 
-                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError());
+                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError(), ErrorTypeEnum.CONFLICT);
             }
-            return Result.Failure(ErrorCatalog.InternalServerError.SetError());
+            return Result.Failure(ErrorCatalog.InternalServerError.SetError(), ErrorTypeEnum.INTERNAL);
         }
     }
 

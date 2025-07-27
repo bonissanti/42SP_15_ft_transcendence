@@ -1,5 +1,8 @@
+import {GameTypeEnum} from "../../Enum/GameTypeEnum";
+
 export class CreateHistoryDTO
 {
+    public readonly gameType: GameTypeEnum
     public readonly tournamentName?: string;
     public readonly player1Username: string;
     public readonly player1Points: number;
@@ -10,9 +13,10 @@ export class CreateHistoryDTO
     public readonly player4Username: string | null;
     public readonly player4Points: number | null;
 
-    constructor(tournamentName: string | undefined, player1Username: string, player1Points: number, player2Username: string, player2Points: number,
+    constructor(gameType: GameTypeEnum, tournamentName: string | undefined, player1Username: string, player1Points: number, player2Username: string, player2Points: number,
         player3Username: string | null, player3Points: number | null, player4Username: string | null, player4Points: number | null)
     {
+        this.gameType = gameType;
         this.tournamentName = tournamentName;
         this.player1Username = player1Username;
         this.player1Points = player1Points;

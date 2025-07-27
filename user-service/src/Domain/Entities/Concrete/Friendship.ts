@@ -1,14 +1,14 @@
-import {StatusRequest} from "../../../Application/Enums/StatusRequest.js";
+import {StatusRequestEnum} from "../../../Application/Enums/StatusRequestEnum.js";
 
 export class Friendship
 {
     public uuid: string;
-    public status: StatusRequest;
+    public status: StatusRequestEnum;
     public receiverUuid: string;
     public senderUuid: string;
     public createdAt: number;
 
-    constructor (status: StatusRequest, receiverUuid: string, senderUuid: string)
+    constructor (status: StatusRequestEnum, receiverUuid: string, senderUuid: string)
     {
         this.uuid = crypto.randomUUID();
         this.status = status;
@@ -17,7 +17,7 @@ export class Friendship
         this.createdAt = Date.now();
     }
 
-    public static fromDatabase(uuid: string, status: StatusRequest, receiverUuid: string, senderUuid: string, createdAt: Date): Friendship
+    public static fromDatabase(uuid: string, status: StatusRequestEnum, receiverUuid: string, senderUuid: string, createdAt: Date): Friendship
     {
         const friendship = Object.create(Friendship.prototype);
         friendship.uuid = uuid;
