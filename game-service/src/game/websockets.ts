@@ -235,212 +235,178 @@ async function sendTournamentHistory(tournamentId: string, finalWinnerId: string
 
 
 export function setupWebSocket(server: any) {
-    const wss = new WebSocketServer({ noServer: true });
+	const wss = new WebSocketServer({ noServer: true });
 
-    server.server.on('upgrade', (request: any, socket: any, head: any) => {
-        wss.handleUpgrade(request, socket, head, (ws) => {
-            wss.emit('connection', ws, request);
-        });
-    });
-    
-    wss.on('connection', (ws: WebSocket, req: any) => {
-        const url = new URL(req.url!, `http://${req.headers.host}`);
-        const userId = url.searchParams.get('userId');
-        const username = url.searchParams.get('username') || 'Anônimo';
-        const profilePic = url.searchParams.get('profilePic') || 'https://placehold.co/128x128/000000/FFFFFF?text=User';
-        const gameModeParam = url.searchParams.get('mode') || 'remote';
-        const gameMode: 'remote' | 'tournament' = (gameModeParam === 'tournament') ? 'tournament' : 'remote';
-        const jwtToken = url.searchParams.get('token') || '';
-        const tournamentName = url.searchParams.get('tournamentName') || `Tournament-${Date.now()}`;
+	server.server.on('upgrade', (request: any, socket: any, head: any) => {
+		wss.handleUpgrade(request, socket, head, (ws) => {
+			wss.emit('connection', ws, request);
+		});
+	});
 
-        if (!userId) {
-            ws.send(JSON.stringify({ type: 'error', message: 'ID de usuário inválido.' }));
-            ws.close();
-            return;
-        }
+	wss.on('connection', (ws: WebSocket, req: any) => {
+		const url = new URL(req.url!, `http://${req.headers.host}`);
 
-        if (clients.has(userId)) {
-            const existingClient = clients.get(userId);
-            if (existingClient) {
-                if (existingClient.ws.readyState === WebSocket.OPEN) {
-                    existingClient.ws.close();
-                }
-                cleanupClient(userId);
-            }
-        }
+		const userId = url.searchParams.get('userId');
+		const username = url.searchParams.get('username') || 'Anônimo';
+		const profilePic = url.searchParams.get('profilePic') || 'https://placehold.co/128x128/000000/FFFFFF?text=User';
+		const gameModeParam = url.searchParams.get('mode') || 'remote';
+		const gameMode: 'remote' | 'tournament' = (gameModeParam === 'tournament') ? 'tournament' : 'remote';
+		const jwtToken = url.searchParams.get('token') || '';
+		const tournamentName = url.searchParams.get('tournamentName') || `Tournament-${Date.now()}`;
 
-        console.log(`Jogador ${username} (${userId}) conectado no modo ${gameMode}.`);
-        const clientData: ClientData = { 
-            ws, 
-            username, 
-            inputs: {}, 
-            id: userId, 
-            profilePic, 
-            isReady: false,
-            gameMode,
-            jwtToken
-        };
-        clients.set(userId, clientData);
-        
-        if (gameMode === 'tournament') {
-            tournamentLobby.push(clientData);
-            broadcastLobbyUpdate('tournament');
-            
-            if (tournamentLobby.length >= 4) {
-                const tournamentId = `tourney-${Date.now()}`;
-                const gamePlayers = tournamentLobby.splice(0, 4);
-                tournaments.set(tournamentId, { 
-                    gameIds: [], 
-                    winners: [], 
-                    finalistsReady: 0,
-                    tournamentName: tournamentName,
-                    eliminationOrder: []
-                });
+		if (!userId) {
+			ws.send(JSON.stringify({ type: 'error', message: 'ID de usuário inválido.' }));
+			ws.close();
+			return;
+		}
 
-                createTournamentInService(gamePlayers, tournamentName, jwtToken);
+		if (clients.has(userId)) {
+			const existingClient = clients.get(userId);
+			if (existingClient && existingClient.ws.readyState === WebSocket.OPEN) {
+				existingClient.ws.close();
+			}
+			cleanupClient(userId);
+		}
 
-                const group1 = [gamePlayers[0], gamePlayers[1]];
-                const group2 = [gamePlayers[2], gamePlayers[3]];
+		console.log(`Jogador ${username} (${userId}) conectado no modo ${gameMode}.`);
 
-                const gameId1 = startOneVsOneGame(group1.map(p => p.id), tournamentId);
-                const gameId2 = startOneVsOneGame(group2.map(p => p.id), tournamentId);
+		const clientData: ClientData = {
+			ws,
+			username,
+			inputs: {},
+			id: userId,
+			profilePic,
+			isReady: false,
+			gameMode,
+			jwtToken
+		};
 
-                if (gameId1) tournaments.get(tournamentId)?.gameIds.push(gameId1);
-                if (gameId2) tournaments.get(tournamentId)?.gameIds.push(gameId2);
-                
-                broadcastLobbyUpdate('tournament');
-            }
-        } else {
-            remoteLobby.push(clientData);
-            broadcastLobbyUpdate('remote');
-            
-            if (remoteLobby.length >= 4) {
-                const gamePlayers = remoteLobby.splice(0, 4);
-                startGame(gamePlayers.map(p => p.id));
-                broadcastLobbyUpdate('remote');
-            }
-        }
+		clients.set(userId, clientData);
 
-        ws.on('close', () => {
-            console.log(`Jogador ${clients.get(userId)?.username} (${userId}) desconectado.`);
-            
-            const originalClient = clients.get(userId);
-            const originalToken = originalClient?.jwtToken || '';
+		ws.on('message', (message) => {
+			try {
+				const data = JSON.parse(message.toString());
+				const client = clients.get(userId);
+				if (!client) return;
 
-            for (const [gameId, game] of games.entries()) {
-                if (game.playerIds.includes(userId)) {
-                    const playerIndex = game.playerIds.indexOf(userId);
-                    
-                    if (game.playerIds.length === 4 && !game.tournamentId) {
-                        if (game.gameState.paddles[playerIndex]) {
-                            game.gameState.paddles[playerIndex].lost = true;
-                            game.gameState.paddles[playerIndex].score = 5;
-                            
-                            if (playerIndex < 2) { 
-                                game.gameState.paddles[playerIndex].x = 0;
-                                game.gameState.paddles[playerIndex].width = 800;
-                            } else { 
-                                game.gameState.paddles[playerIndex].y = 0;
-                                game.gameState.paddles[playerIndex].height = 600;
-                            }
-                            
-                            const dummyWs = { 
-                                readyState: WebSocket.CLOSED,
-                                send: () => {},
-                                close: () => {}
-                            } as any;
-                            
-                            const disconnectedClient: ClientData = {
-                                ws: dummyWs,
-                                username: username,
-                                inputs: {},
-                                id: userId,
-                                profilePic: profilePic,
-                                isReady: false,
-                                gameMode: 'remote',
-                                jwtToken: originalToken
-                            };  
-                            clients.set(userId, disconnectedClient);
-                            console.log(`Jogador ${userId} marcado como perdedor no jogo ${gameId}, jogo continua`);
-                        }
-                    } else {
-                        stopGame(gameId);
-                        const remainingPlayers = game.playerIds.filter(id => id !== userId && clients.has(id));
-                        remainingPlayers.forEach(id => {
-                            const remainingClient = clients.get(id);
-                            if (remainingClient && remainingClient.ws.readyState === WebSocket.OPEN) {
-                                remainingClient.ws.send(JSON.stringify({ type: 'opponent_disconnected' }));
-                            }
-                        });
+				switch (data.type) {
+					case 'keys':
+						client.inputs = data.keys;
+						break;
 
-                        cleanupClient(userId);
-                    }
-                } else {
-                    cleanupClient(userId);
-                }
-            }
-        });
+					case 'final_ready_click':
+						const game = Array.from(games.values()).find(g =>
+							g.tournamentId && g.isFinal && g.playerIds.includes(userId)
+						);
+						if (game && game.tournamentId) {
+							const tournament = tournaments.get(game.tournamentId);
+							if (tournament) {
+								tournament.finalistsReady++;
 
-        ws.on('close', () => {
-            console.log(`Jogador ${clients.get(userId)?.username} (${userId}) desconectado.`);
-            
-            for (const [gameId, game] of games.entries()) {
-                if (game.playerIds.includes(userId)) {
-                    const playerIndex = game.playerIds.indexOf(userId);
-                    
-                    if (game.playerIds.length === 4 && !game.tournamentId) {
-                        if (game.gameState.paddles[playerIndex]) {
-                            game.gameState.paddles[playerIndex].lost = true;
-                            game.gameState.paddles[playerIndex].score = 5;
-                            
-                            if (playerIndex < 2) { 
-                                game.gameState.paddles[playerIndex].x = 0;
-                                game.gameState.paddles[playerIndex].width = 800;
-                            } else { 
-                                game.gameState.paddles[playerIndex].y = 0;
-                                game.gameState.paddles[playerIndex].height = 600;
-                            }
-                            
-                            const dummyWs = { 
-                                readyState: WebSocket.CLOSED,
-                                send: () => {},
-                                close: () => {}
-                            } as any;
-                            
-                            const disconnectedClient: ClientData = {
-                                ws: dummyWs,
-                                username: username,
-                                inputs: {},
-                                id: userId,
-                                profilePic: profilePic,
-                                isReady: false,
-                                gameMode: 'remote',
-                                jwtToken: ''
-                            };  
-                            clients.set(userId, disconnectedClient);
-                            console.log(`Jogador ${userId} marcado como perdedor no jogo ${gameId}, jogo continua`);
-                        }
-                    } else {
-                        stopGame(gameId);
-                        const remainingPlayers = game.playerIds.filter(id => id !== userId && clients.has(id));
-                        remainingPlayers.forEach(id => {
-                            const remainingClient = clients.get(id);
-                            if (remainingClient && remainingClient.ws.readyState === WebSocket.OPEN) {
-                                remainingClient.ws.send(JSON.stringify({ type: 'opponent_disconnected' }));
-                            }
-                        });
-                        
-                        cleanupClient(userId);
-                    }
-                } else {
-                    cleanupClient(userId);
-                }
-            }
-        });
+								const otherPlayerId = game.playerIds.find(id => id !== userId);
+								const otherClient = clients.get(otherPlayerId!);
 
-        ws.on('error', (error) => {
-            console.error(`Erro no WebSocket do jogador ${userId}:`, error);
-            cleanupClient(userId);
-        });
-    });
+								if (otherClient && otherClient.ws.readyState === WebSocket.OPEN) {
+									otherClient.ws.send(JSON.stringify({ type: 'opponent_ready' }));
+								}
+
+								if (tournament.finalistsReady === 2) {
+									const finalGameId = startOneVsOneGame(
+										tournament.winners.map(w => w.id),
+										game.tournamentId,
+										true
+									);
+									if (finalGameId) {
+										tournament.gameIds.push(finalGameId);
+									}
+								}
+							}
+						}
+						break;
+				}
+			} catch (error) {
+				console.error('Erro ao processar mensagem:', error);
+			}
+		});
+
+		if (gameMode === 'tournament') {
+			tournamentLobby.push(clientData);
+			broadcastLobbyUpdate('tournament');
+
+			if (tournamentLobby.length >= 4) {
+				const tournamentId = `tourney-${Date.now()}`;
+				const gamePlayers = tournamentLobby.splice(0, 4);
+
+				tournaments.set(tournamentId, {
+					gameIds: [],
+					winners: [],
+					finalistsReady: 0,
+					tournamentName: tournamentName,
+					eliminationOrder: []
+				});
+
+				createTournamentInService(gamePlayers, tournamentName, jwtToken);
+
+				const group1 = [gamePlayers[0], gamePlayers[1]];
+				const group2 = [gamePlayers[2], gamePlayers[3]];
+
+				const gameId1 = startOneVsOneGame(group1.map(p => p.id), tournamentId);
+				const gameId2 = startOneVsOneGame(group2.map(p => p.id), tournamentId);
+
+				if (gameId1) tournaments.get(tournamentId)?.gameIds.push(gameId1);
+				if (gameId2) tournaments.get(tournamentId)?.gameIds.push(gameId2);
+
+				broadcastLobbyUpdate('tournament');
+			}
+		} else {
+			remoteLobby.push(clientData);
+			broadcastLobbyUpdate('remote');
+
+			if (remoteLobby.length >= 4) {
+				const gamePlayers = remoteLobby.splice(0, 4);
+				startGame(gamePlayers.map(p => p.id));
+				broadcastLobbyUpdate('remote');
+			}
+		}
+
+		ws.on('close', () => {
+			console.log(`Jogador ${clients.get(userId)?.username} (${userId}) desconectado.`);
+
+			const client = clients.get(userId);
+			if (!client) return;
+
+			let wasInGame = false;
+
+			for (const [gameId, game] of games.entries()) {
+				if (game.playerIds.includes(userId)) {
+					wasInGame = true;
+					const playerIndex = game.playerIds.indexOf(userId);
+
+					if (game.playerIds.length === 4 && !game.tournamentId) {
+						if (game.gameState.paddles[playerIndex]) {
+							game.gameState.paddles[playerIndex].lost = true;
+						}
+						console.log(`Jogador ${userId} marcado como perdedor no jogo ${gameId}, jogo continua.`);
+					} else {
+						stopGame(gameId);
+						const remainingPlayers = game.playerIds.filter(id => id !== userId && clients.has(id));
+						remainingPlayers.forEach(id => {
+							const remainingClient = clients.get(id);
+							if (remainingClient && remainingClient.ws.readyState === WebSocket.OPEN) {
+								remainingClient.ws.send(JSON.stringify({ type: 'opponent_disconnected' }));
+							}
+						});
+						break;
+					}
+				}
+			}
+
+			cleanupClient(userId);
+		});
+
+		ws.on('error', (error) => {
+			console.error(`Erro no WebSocket do jogador ${userId}:`, error);
+			cleanupClient(userId);
+		});
+	});
 }
