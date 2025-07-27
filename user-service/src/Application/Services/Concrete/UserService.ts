@@ -86,7 +86,7 @@ export class UserService implements BaseService<any,  boolean>
             const exists = await this.VerifyUsersByUsernamesQueryHandler.Handle(query);
 
             if (!exists)
-                return Result.SuccessWithData<boolean>("Users not exists!", exists);
+                return Result.SuccessWithData<boolean>("Users does not exists!", exists);
 
             return Result.SuccessWithData<boolean>("All users exists!", exists);
         }
@@ -110,7 +110,7 @@ export class UserService implements BaseService<any,  boolean>
         try
         {
             const command: UpdateStatsCommand = UpdateStatsCommand.fromDTO(dto);
-            await this.UpdateStatsValidator.Validator(command);
+            // await this.UpdateStatsValidator.Validator(command);
             await this.UpdateStatsHandler.Handle(command);
 
             return Result.Success(`Stats from ${command.player1Username} and ${command.player2Username} updated successfully`);

@@ -13,7 +13,6 @@ export class VerifyIfUsersExistsByUsernamesQueryHandler implements BaseHandlerQu
 
     async Handle(query: VerifyIfUsersExistsByUsernamesQuery): Promise<boolean>
     {
-        console.log(query.Usernames);
         return await this.UserRepository.VerifyIfUsersExistsByUsername(query.Usernames);
     }
 }

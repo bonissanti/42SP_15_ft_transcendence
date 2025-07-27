@@ -10,7 +10,8 @@ export class UserServiceClient implements IUserServiceClient
 
     constructor()
     {
-        this.baseUrl = process.env.BACKEND_API_URL || 'http://127.0.0.1:8080';
+        //Pode ser que seja 127.0.0.1:8080 (local é isso)
+        this.baseUrl = process.env.BACKEND_API_URL || 'http://localhost:8080';
     }
 
     public async VerifyIfUsersExistsByUsername(usernames: (string | null)[]): Promise<any> {
