@@ -1,6 +1,7 @@
 import { API_BASE_URL, GOOGLE_CLIENT_ID } from '../utils/constants';
 import { updateProfileLink } from '../components/profileLink';  
 import { stopStatusListeners } from '../core/router';
+import { isUserAuthenticated } from '../api/api';
 
 declare global {
   interface Window {
@@ -32,29 +33,49 @@ function navigateTo(path: string) {
 }
 
 export function logout() {
-  if (localStorage.getItem('jwtToken')) {
+  if (isUserAuthenticated()) {
     navigator.sendBeacon(`${API_BASE_URL}/users/me/status`, JSON.stringify({ isOnline: false }));
   }
 
+  document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+
   stopStatusListeners();
-  localStorage.removeItem('jwtToken');
   updateProfileLink();
   navigateTo('/login');
 }
 
-async function handleGoogleCredentialResponse(response: any) {
+export async function handleGoogleCredentialResponse(response: any) {
   try {
     const res = await fetch(`${API_BASE_URL}/auth/google`, {
       method: 'POST',
+      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ credential: response.credential }),
     });
 
     if (res.ok) {
-      const { token } = await res.json();
-      localStorage.setItem('jwtToken', token);
-      updateProfileLink();
-      navigateTo('/');
+      const data = await res.json();
+      console.log('Resposta do servidor:', data);
+      
+      if (data.token) {
+        document.cookie = `token=${data.token}; path=/; max-age=3600; samesite=lax`;
+        console.log('Token salvo no cookie:', data.token);
+        localStorage.setItem('jwtToken', data.token);
+        console.log('Token salvo no localStorage:', data.token);
+      }
+      
+      console.log('Headers da resposta:', res.headers);
+      console.log('Set-Cookie header:', res.headers.get('set-cookie'));
+      
+      setTimeout(() => {
+        console.log('Verificando autenticação após login...');
+        console.log('Cookies após login:', document.cookie);
+        console.log('localStorage token:', localStorage.getItem('jwtToken'));
+        console.log('isUserAuthenticated:', isUserAuthenticated());
+        
+        updateProfileLink();
+        navigateTo('/');
+      }, 100);
     } else {
       const errorData = await res.json();
       alert(`Falha no login: ${errorData.message}`);
@@ -64,6 +85,8 @@ async function handleGoogleCredentialResponse(response: any) {
     alert("Erro de rede. Não foi possível conectar ao servidor.");
   }
 }
+
+
 
 export function initializeGoogleButton() {
   let attempts = 0;
@@ -94,3 +117,4 @@ export function initializeGoogleButton() {
     }
   }, 100);
 }
+

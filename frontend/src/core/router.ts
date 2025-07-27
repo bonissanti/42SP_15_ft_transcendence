@@ -2,33 +2,30 @@ import { routes } from '../config/routes';
 import { renderView } from './view';
 import { stopPongGame } from '../pong/game';
 import { initializeGoogleButton, logout } from '../auth/auth';
-import { fetchWithAuth } from '../api/api';
+import { fetchWithAuth, isUserAuthenticated } from '../api/api';
 
 const appContainer = document.getElementById('app') as HTMLDivElement;
 let statusListenersActive = false;
 
-async function updateUserStatus(isOnline: boolean) {
-    if (!localStorage.getItem('jwtToken')) return;
-    try {
-        await fetchWithAuth('/users/me/status', {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ isOnline }),
-        });
-    } catch (error) {
-        console.error('Falha ao atualizar status:', error);
-    }
+export async function updateUserStatus(isOnline: boolean) {
+  try {
+    await fetchWithAuth('/users/me/status', {
+      method: 'PUT',
+      body: JSON.stringify({ isOnline }),
+    });
+  } catch (error) {
+    console.error('Falha ao atualizar status:', error);
+  }
 }
 
 const handleFocus = () => updateUserStatus(true);
 const handleBlur = () => updateUserStatus(false);
 
 const handleUnload = () => {
-    if (localStorage.getItem('jwtToken')) {
-        navigator.sendBeacon('/api/users/me/status', JSON.stringify({ isOnline: false }));
-    }
+  if (isUserAuthenticated()) {
+    navigator.sendBeacon('/api/users/me/status', JSON.stringify({ isOnline: false }));
+  }
 };
-
 function startStatusListeners() {
     if (statusListenersActive) return;
     window.addEventListener('focus', handleFocus);
@@ -65,22 +62,22 @@ export async function router() {
   stopStatusListeners();
 
   appContainer.innerHTML = `<h1>Carregando...</h1>`;
-  const token = localStorage.getItem('jwtToken');
+  const isAuthenticated = isUserAuthenticated();
   const isProtectedRoute = !['/login'].includes(path);
 
-  if (!token && isProtectedRoute) {
+  if (!isAuthenticated && isProtectedRoute) {
     history.pushState({}, '', '/login');
     await router();
     return;
   }
 
-  if (token && path === '/login') {
+  if (isAuthenticated && path === '/login') {
     history.pushState({}, '', '/');
     await router();
     return;
   }
 
-  if (token && isProtectedRoute) {
+  if (isAuthenticated && isProtectedRoute) {
     startStatusListeners();
     updateUserStatus(true);
   }

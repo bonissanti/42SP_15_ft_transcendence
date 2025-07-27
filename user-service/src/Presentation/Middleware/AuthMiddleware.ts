@@ -7,22 +7,33 @@ import {JWTPayload} from "./JWTPayload.js";
 //     }
 // }
 
-export const authenticateJWT = async (request: any, reply: any): Promise<void> =>
-{
-    try
-    {
-        const token = request.cookies.token;
+export const authenticateJWT = async (request: any, reply: any): Promise<void> => {
+    try {
+        let token = request.cookies.token;
+        
+        if (!token) {
+            const authHeader = request.headers.authorization;
+            if (authHeader && authHeader.startsWith('Bearer ')) {
+                token = authHeader.substring(7);
+                console.log('Token from header:', token);
+            }
+            else{
+                console.log('Token from cookie:', token);
+            }
+        }
 
-        if (!token)
+        if (!token) {
+            console.log('No token found!');
             return reply.code(401).send({ message: 'Unauthorized: No token provided' });
+        }
 
-        if (await TokenBlacklistService.isTokenBlacklisted(token))
+        if (await TokenBlacklistService.isTokenBlacklisted(token)) {
             return reply.code(401).send({ message: 'Unauthorized: Token has been revoked' });
+        }
 
         request.user = request.server.jwt.verify(token);
-    }
-    catch (err)
-    {
+    } catch (err) {
+        console.error('JWT verification error:', err);
         reply.status(401).send({ message: 'Invalid token - AuthenticateJWT' });
     }
 }
