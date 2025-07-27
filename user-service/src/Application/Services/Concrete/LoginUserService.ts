@@ -72,9 +72,9 @@ export class LoginUserService  implements BaseService<UserSessionDTO, LoginUserV
 
         reply.setCookie('token', token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
-            path: '/'
+            secure: false, // Deixei como false porque a aplicação ainda está em HTTP, mas deve ser true em HTTPS
+            sameSite: 'lax',
+            path: '/',
         });
 
         return new LoginUserViewModel(token);

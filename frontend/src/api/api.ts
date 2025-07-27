@@ -3,17 +3,22 @@ import { API_BASE_URL, GAME_API_BASE_URL } from '../utils/constants';
 export async function fetchWithAuth(url: string, options: RequestInit = {}): Promise<Response> {
   const token = localStorage.getItem('jwtToken');
   const headers = new Headers(options.headers || {});
+  
   if (token) {
-    headers.append('Authorization', `Bearer ${token}`);
+    headers.set('Authorization', `Bearer ${token}`);
   }
-
+  
   const response = await fetch(`${API_BASE_URL}${url}`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      ...Object.fromEntries(headers),
+    },
     ...options,
-    headers,
   });
 
-  if (response.status === 401) {
-    window.dispatchEvent(new Event('auth-error'));
+  if (!response.ok) {
+    throw new Error(`Falha ao buscar dados do usuário. Status: ${response.status}`);
   }
 
   return response;
@@ -37,4 +42,16 @@ export async function fetchWithGame(url: string, options: RequestInit = {}): Pro
   }
 
   return response;
+}
+
+export function isUserAuthenticated(): boolean {
+  console.log('Todos os cookies:', document.cookie);
+  
+  const hasCookie = document.cookie.split('; ').some((row) => row.startsWith('token='));
+  const hasLocalStorage = !!localStorage.getItem('jwtToken');
+  
+  console.log('Token no cookie?', hasCookie);
+  console.log('Token no localStorage?', hasLocalStorage);
+  
+  return hasCookie || hasLocalStorage;
 }

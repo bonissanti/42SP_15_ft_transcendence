@@ -22,7 +22,6 @@ export const UserSessionRoutes = async (server: any, userSessionController: User
             }
 
             const googlePayload = await verifyGoogleCredential(credential, server);
-
             const user = await findOrCreateUser(googlePayload, userRepository, server);
 
             if (!user) {
@@ -30,14 +29,21 @@ export const UserSessionRoutes = async (server: any, userSessionController: User
             }
 
             const token = server.jwt.sign({ uuid: user.uuid, isAuthenticated: true }, { expiresIn: '1h' });
+            
             reply.setCookie('token', token, {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: 'strict',
-                path: '/'
+                secure: false,
+                sameSite: 'lax',
+                path: '/',
+                maxAge: 3600
             });
-
-            return reply.send({ message: 'Authentication successful.', user: { uuid: user.uuid} });
+            
+            
+            return reply.send({ 
+                message: 'Authentication successful.', 
+                user: { uuid: user.uuid },
+                token: token,
+            });
 
         } catch (error: any) {
             return handleAuthError(error, server, reply);

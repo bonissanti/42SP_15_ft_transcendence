@@ -1,4 +1,4 @@
-import { fetchWithGame } from "../api/api";
+import { fetchWithGame, fetchWithAuth } from "../api/api";
 
 export interface Paddle {
   x: number;
@@ -189,25 +189,14 @@ export async function sendMatchHistory(tournamentName: string, player1Username: 
 
 export async function getUserProfile(): Promise<{ username: string, profilePic: string }> {
   try {
-    const token = localStorage.getItem('jwtToken');
-    if (!token) {
-      return { username: 'Jogador 1', profilePic: 'https://placehold.co/128x128/000000/FFFFFF?text=P1' };
-    }
-
-    const response = await fetch('/api/users/me', {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-    
-    if (!response.ok) {
-      return { username: 'Jogador 1', profilePic: 'https://placehold.co/128x128/000000/FFFFFF?text=P1' };
-    }
-    
+    const response = await fetchWithAuth('/users/me');
     const user = await response.json();
-    return { 
+
+    return {
       username: user.Username || 'Jogador 1',
       profilePic: user.ProfilePic || 'https://placehold.co/128x128/000000/FFFFFF?text=P1'
     };
-  } catch (error) {
+  } catch {
     return { username: 'Jogador 1', profilePic: 'https://placehold.co/128x128/000000/FFFFFF?text=P1' };
   }
 }
