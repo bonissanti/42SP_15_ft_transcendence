@@ -1,7 +1,9 @@
 import {CreateHistoryDTO} from "../../../Application/DTO/ToCommand/CreateHistoryDTO";
+import {GameTypeEnum} from "../../../Application/Enum/GameTypeEnum";
 
 export class CreateHistoryCommand
 {
+    public readonly gameType: GameTypeEnum
     public readonly tournamentName?: string;
     public readonly player1Username: string;
     public readonly player1Points: number;
@@ -12,9 +14,10 @@ export class CreateHistoryCommand
     public readonly player4Username: string | null;
     public readonly player4Points: number | null;
 
-    constructor(tournamentName: string | undefined, player1Username: string, player1Points: number, player2Username: string, player2Points: number,
+    constructor(gameType: GameTypeEnum, tournamentName: string | undefined, player1Username: string, player1Points: number, player2Username: string, player2Points: number,
                 player3Username: string | null, player3Points: number | null, player4Username: string | null, player4Points: number | null)
     {
+        this.gameType = gameType;
         this.tournamentName = tournamentName;
         this.player1Username = player1Username;
         this.player1Points = player1Points;
@@ -29,6 +32,7 @@ export class CreateHistoryCommand
     public static fromDTO(dto: CreateHistoryDTO)
     {
         return new CreateHistoryCommand(
+            dto.gameType,
             dto.tournamentName,
             dto.player1Username,
             dto.player1Points,

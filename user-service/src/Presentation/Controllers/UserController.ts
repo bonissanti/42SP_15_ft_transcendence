@@ -69,7 +69,7 @@ export class UserController extends BaseController {
     public async GetUser(request: FastifyRequest<{ Querystring: GetUserDTO }>, reply: FastifyReply): Promise<Result> {
         const query = request.query;
         const userDTO: GetUserDTO = new GetUserDTO(query.uuid, query.email, query.username);
-        const result: Result<GetUserViewModel> = await this.getUserService.Execute(userDTO, reply);
+        const result: Result<GetUserViewModel | null> = await this.getUserService.GetUser(userDTO, reply);
         return this.handleResult(result, reply, this.notificationError);
     }
 
@@ -85,17 +85,16 @@ export class UserController extends BaseController {
     const query = request.query;
     const usernamesArray = request.query.usernames;
 
-    console.log("Received request to verify if users exist by usernames:", usernamesArray);
     const usersDTO = new VerifyIfUsersExistsByUsernamesDTO(usernamesArray);
-    const result: Result<boolean> = await this.userService.VerifyIfUsersExistsByUsernamesService(usersDTO, reply);
+    const result: Result<boolean> = await this.userService.VerifyIfUsersExistsByUsernamesService(usersDTO, this.notificationError, reply);
 
     return this.handleResult(result, reply, this.notificationError);
 }
 
   //Verifica se uma pessoa existe
-  public async VerifyIfUserExistsByUsername(request: FastifyRequest<{ Querystring: { username: string } }>, reply: FastifyReply): Promise<Result> {
-    const query = request.query;
-    const userDTO: VerifyIfUserExistsByUsernameDTO = new VerifyIfUserExistsByUsernameDTO(query.username);
+  public async VerifyIfUserExistsByUsername(request: FastifyRequest<{ Params: { username: string } }>, reply: FastifyReply): Promise<Result> {
+      const { username } = request.params;
+      const userDTO: VerifyIfUserExistsByUsernameDTO = new VerifyIfUserExistsByUsernameDTO(query.username);
     const result: Result<boolean> = await this.userService.VerifyIfUserExistsByUsernameService(userDTO, reply);
     return this.handleResult(result, reply, this.notificationError);
   }
@@ -125,7 +124,7 @@ export class UserController extends BaseController {
 
       user.ChangeStatusOnline(isOnline);
       await this.userRepository.Update(uuid, user);
-      return this.handleResult(Result.Sucess("Status do usuário atualizado."), reply, this.notificationError);
+      return this.handleResult(Result.Success("Status do usuário atualizado."), reply, this.notificationError);
     } catch (error) {
       return this.handleResult(Result.Failure("Erro ao atualizar o status do usuário."), reply, this.notificationError);
     }
@@ -134,14 +133,15 @@ export class UserController extends BaseController {
   public async UpdateStats(request: FastifyRequest<{ Body: UpdateStatsDTO }>, reply: FastifyReply): Promise<Result> {
     const query = request.body;
     const statsDTO: UpdateStatsDTO = new UpdateStatsDTO(
-      query.player1Username,
-      query.player1Points,
-      query.player2Username,
-      query.player2Points,
-      query.player3Username,
-      query.player3Points,
-      query.player4Username,
-      query.player4Points,
+        query.gameType,
+        query.player1Username,
+        query.player2Username,
+        query.player3Username,
+        query.player4Username,
+        query.player1Points,
+        query.player2Points,
+        query.player3Points,
+        query.player4Points,
     );
     const result: Result<void> = await this.userService.UpdateStatsService(statsDTO, reply);
     return this.handleResult(result, reply, this.notificationError);

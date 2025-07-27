@@ -10,6 +10,7 @@ import {GetTournamentQueryHandler} from "../../../Domain/Queries/Handlers/GetTou
 import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog";
 import {ValidationException} from "../../../Shared/Errors/ValidationException";
 import {NotificationError} from "../../../Shared/Errors/NotificationError";
+import {ErrorTypeEnum} from "../../Enum/ErrorTypeEnum";
 
 export class GetTournamentService implements BaseService<GetTournamentDTO, GetTournamentViewModel>
 
@@ -23,32 +24,38 @@ export class GetTournamentService implements BaseService<GetTournamentDTO, GetTo
         this.getTournamentQueryHandler = new GetTournamentQueryHandler(this.tournamentRepository, notificationError);
     }
 
-    public async Execute(dto: GetTournamentDTO, reply: FastifyReply): Promise<Result<GetTournamentViewModel>>
+    public async Get(dto: GetTournamentDTO, reply: FastifyReply): Promise<Result<GetTournamentViewModel | null>>
     {
         try
         {
+            let getTournamentViewModel: GetTournamentViewModel | null = null;
             const query: GetTournamentQuery = GetTournamentQuery.fromDTO(dto);
             const getUserQueryDTO = await this.getTournamentQueryHandler.Handle(query);
 
             if (!getUserQueryDTO) {
-                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError());
+                return Result.SuccessWithData<GetTournamentViewModel | null>("Tournament not found", getTournamentViewModel);
             }
 
-            const getTournamentViewModel = GetTournamentViewModel.fromQueryDTO(getUserQueryDTO);
-            return Result.SucessWithData<GetTournamentViewModel>("Tournament found", getTournamentViewModel);
+            getTournamentViewModel = GetTournamentViewModel.fromQueryDTO(getUserQueryDTO);
+            return Result.SuccessWithData<GetTournamentViewModel>("Tournament found", getTournamentViewModel);
         }
         catch (error)
         {
             if (error instanceof ValidationException)
             {
                 const message: string = error.SetErrors();
-                return Result.Failure<GetTournamentViewModel>(message);
+                return Result.Failure<GetTournamentViewModel>(message, ErrorTypeEnum.VALIDATION);
             }
             else if (error instanceof Prisma.PrismaClientKnownRequestError)
             {
-                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError());
+                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError(), ErrorTypeEnum.CONFLICT);
             }
-            return Result.Failure(ErrorCatalog.InternalServerError.SetError());
+            return Result.Failure(ErrorCatalog.InternalServerError.SetError(), ErrorTypeEnum.INTERNAL);
         }
+    }
+
+    Execute(dto: GetTournamentDTO, reply: FastifyReply): Promise<Result<GetTournamentViewModel>>
+    {
+        throw new Error("Method not implemented.");
     }
 }

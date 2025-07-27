@@ -59,6 +59,7 @@ const updateStatsOpts = {
         body: {
             type: 'object',
             properties: {
+                gameType: { type: 'string', enum: [ 'SINGLEPLAYER', 'MULTIPLAYER_LOCAL', 'MULTIPLAYER_REMOTO', 'TOURNAMENT', 'RPS' ] },
                 player1Username: { type: 'string' },
                 player1Points: { type: 'number' },
                 player2Username: { type: 'string' },
@@ -68,7 +69,7 @@ const updateStatsOpts = {
                 player4Username: { type: ['string', 'null'] },
                 player4Points: { type: ['number', 'null'] },
             },
-            required: ['player1Username', 'player1Points', 'player2Username', 'player2Points'],
+            required: ['gameType', 'player1Username', 'player1Points', 'player2Username', 'player2Points'],
             additionalProperties: false,
         }
     }
@@ -77,31 +78,31 @@ const updateStatsOpts = {
 export const UserRoutes = async (server: any, userController: UserController) => {
     
     server.post('/user', opts, async (request: FastifyRequest<{ Body: CreateUserDTO }>, reply: FastifyReply) => {
-        await userController.CreateUser(request, reply);
+        return await userController.CreateUser(request, reply);
     });
 
     server.put('/user', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Body: EditUserDTO }>, reply: FastifyReply) => {
-        await userController.EditUser(request, reply);
+        return await userController.EditUser(request, reply);
     });
 
     server.delete('/user', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Body: DeleteUserDTO }>, reply: FastifyReply) => {
-        await userController.DeleteUser(request, reply);
+        return await userController.DeleteUser(request, reply);
     });
 
     server.get('/user', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Querystring: GetUserDTO }>, reply: FastifyReply) => {
-        await userController.GetUser(request, reply);
+        return await userController.GetUser(request, reply);
     });
 
     server.get('/users/exists/uuids', optsChecker, async (request: FastifyRequest<{ Querystring: { uuids: (string | null)[] }}>, reply: FastifyReply) => {
-        await userController.VerifyIfUsersExistsByUuids(request, reply);
+        return await userController.VerifyIfUsersExistsByUuids(request, reply);
     })
 
     server.get('/users/exists/usernames', optsUsernamesChecker, async (request: FastifyRequest<{ Querystring: { usernames: (string | null)[] }}>, reply: FastifyReply) => {
-        await userController.VerifyIfUsersExistsByUsernames(request, reply);
+        return await userController.VerifyIfUsersExistsByUsernames(request, reply);
     })
 
-    server.get('/users/exists/:username', { preHandler: authenticateJWT }, async (request: FastifyRequest <{ Querystring: { username: string }}>, reply: FastifyReply) => {
-        await userController.VerifyIfUserExistsByUsername(request, reply);
+    server.get('/users/exists/:username', { preHandler: authenticateJWT }, async (request: FastifyRequest <{ Params: { username: string }}>, reply: FastifyReply) => {
+        return await userController.VerifyIfUserExistsByUsername(request, reply);
     })
 
     server.get('/users/:uuid', userController.findOne.bind(userController));
@@ -120,7 +121,7 @@ export const UserRoutes = async (server: any, userController: UserController) =>
             query: getUserDTO
         } as FastifyRequest<{ Querystring: GetUserDTO }>;
 
-        await userController.GetUser(modifiedRequest, reply);
+        return await userController.GetUser(modifiedRequest, reply);
     });
 
     server.put('/users/me/status', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Body: { isOnline: boolean } }>, reply: FastifyReply) => {
@@ -131,14 +132,14 @@ export const UserRoutes = async (server: any, userController: UserController) =>
             return reply.status(400).send({ message: "UUID do usuário inválido." });
         }
 
-        await userController.UpdateUserStatus(userPayload.uuid, isOnline, reply);
+        return await userController.UpdateUserStatus(userPayload.uuid, isOnline, reply);
     });
 
     server.get('/users', { preHandler: authenticateJWT }, async (request: FastifyRequest, reply: FastifyReply) => {
-        await userController.GetAllUsers(request, reply);
+        return await userController.GetAllUsers(request, reply);
     });
 
     server.put('/updateStats', updateStatsOpts, async (request: FastifyRequest <{ Body: UpdateStatsDTO }>,  reply: FastifyReply) => {
-        await userController.UpdateStats(request, reply);
+        return await userController.UpdateStats(request, reply);
     });
 }

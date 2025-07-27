@@ -3,7 +3,7 @@ import {ChangeRequestFriendStatusCommand} from "../CommandObject/ChangeRequestFr
 import {FriendshipRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/FriendshipRepository.js";
 import {UserRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/UserRepository.js";
 import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog.js";
-import {StatusRequest} from "../../../Application/Enums/StatusRequest.js";
+import {StatusRequestEnum} from "../../../Application/Enums/StatusRequestEnum.js";
 import {CustomError} from "../../../Shared/Errors/CustomError.js";
 import {ValidationException} from "../../../Shared/Errors/ValidationException.js";
 import { NotificationError } from "src/Shared/Errors/NotificationError.js";
@@ -21,7 +21,7 @@ export class ChangeRequestFriendStatusCommandValidator implements BaseValidator<
 
     public async Validator(command: ChangeRequestFriendStatusCommand): Promise<void>
     {
-        if (command.status === StatusRequest.PENDING)
+        if (command.status === StatusRequestEnum.PENDING)
             this.NotificationError.AddError(ErrorCatalog.InvalidStatusFriendRequest);
 
         if (await this.FriendshipRepository.VerifyIfFriendshipExistsByFriendshipUuid(command.friendshipUuid))

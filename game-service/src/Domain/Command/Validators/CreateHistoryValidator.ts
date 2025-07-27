@@ -1,7 +1,7 @@
 import {BaseValidator} from "./BaseValidator";
 import {CreateHistoryCommand} from "../CommandObject/CreateHistoryCommand";
 import {NotificationError} from "../../../Shared/Errors/NotificationError";
-import {BackendApiClient} from "../../../Infrastructure/Http/Concrete/BackendApiClient";
+import {UserServiceClient} from "../../../Infrastructure/Http/Concrete/UserServiceClient";
 import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog";
 import {CustomError} from "../../../Shared/Errors/CustomError";
 import {ValidationException} from "../../../Shared/Errors/ValidationException";
@@ -10,12 +10,12 @@ import {TournamentRepository} from "../../../Infrastructure/Persistence/Reposito
 export class CreateHistoryValidator implements BaseValidator<CreateHistoryCommand>
 {
     private NotificationError: NotificationError;
-    private backendApiClient: BackendApiClient;
+    private backendApiClient: UserServiceClient;
 
     constructor(notificationError: NotificationError)
     {
         this.NotificationError = notificationError;
-        this.backendApiClient = new BackendApiClient();
+        this.backendApiClient = new UserServiceClient();
     }
 
     public async Validator(command: CreateHistoryCommand): Promise<void>
@@ -65,14 +65,14 @@ export class CreateHistoryValidator implements BaseValidator<CreateHistoryComman
             if (userList.length < 2)
                 this.NotificationError.AddError(ErrorCatalog.InvalidNumberOfParticipantsHistory);
 
-            const exists: boolean = await this.backendApiClient.VerifyIfUsersExistsByUsername(userList);
+            const exists = await this.backendApiClient.VerifyIfUsersExistsByUsername(userList);
 
-            if (!exists)
+            if (!exists.Data)
                 this.NotificationError.AddError(ErrorCatalog.UserNotFound);
         }
         catch (error)
         {
-            this.NotificationError.AddError(ErrorCatalog.InternalBackendApiErrorVerifyIfUserExists);
+            this.NotificationError.AddError(ErrorCatalog.InternalBackendApiErrorVerifyIfUsersExistsByUsername);
         }
     }
 }

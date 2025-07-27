@@ -27,25 +27,22 @@ const opts = {
 export const TournamentRoutes = async (server: any, tournamentController: TournamentController) =>
 {
     server.post('/tournament', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Body: CreateTournamentDTO }>, reply: FastifyReply) => {
-        console.log("Received request to create tournament with body: ", request.body);
-        const response = await tournamentController.CreateTournament(request, reply);
-        console.log("Tournament created response: ", response);
-        return response;
+        return await tournamentController.CreateTournament(request, reply);
     });
 
     server.put('/tournament', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Body: EditTournamentDTO }>, reply: FastifyReply) => {
-        await tournamentController.EditTournament(request, reply);
+        return await tournamentController.EditTournament(request, reply);
     });
 
     server.delete('/tournament', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Body: DeleteTournamentDTO }>, reply: FastifyReply) => {
-        await tournamentController.DeleteTournament(request, reply);
+        return await tournamentController.DeleteTournament(request, reply);
     });
 
     server.get('/tournament/:uuid', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Querystring: GetTournamentDTO }>, reply: FastifyReply) => {
-        await tournamentController.GetTournament(request, reply);
+        return await tournamentController.GetTournament(request, reply);
     });
 
     server.get('/tournament/', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Querystring: GetAllTournamentsDTO }>, reply: FastifyReply) => {
-        await tournamentController.GetAllTournaments(request, reply);
+        return await tournamentController.GetAllTournaments(request, reply);
     });
 }

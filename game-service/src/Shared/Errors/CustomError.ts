@@ -21,6 +21,6 @@ export class CustomError
 
     public SetError(): string
     {
-        return 'Code:' + this.Code + ' Message:' + this.Message;
+        return 'Code: ' + this.Code + ' Message:' + this.Message;
     }
 }

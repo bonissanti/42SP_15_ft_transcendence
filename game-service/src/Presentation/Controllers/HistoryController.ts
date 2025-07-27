@@ -21,6 +21,7 @@ export class HistoryController extends BaseController
     {
         const body = request.body;
         const createHistoryDTO: CreateHistoryDTO = new CreateHistoryDTO(
+            body.gameType,
             body.tournamentName ?? '',
             body.player1Username,
             body.player1Points,

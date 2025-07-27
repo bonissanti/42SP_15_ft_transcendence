@@ -5,16 +5,16 @@ import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog";
 import {CustomError} from "../../../Shared/Errors/CustomError";
 import {ValidationException} from "../../../Shared/Errors/ValidationException";
 import {EditTournamentCommand} from "../CommandObject/EditTournamentCommand";
-import {BackendApiClient} from "../../../Infrastructure/Http/Concrete/BackendApiClient";
+import {UserServiceClient} from "../../../Infrastructure/Http/Concrete/UserServiceClient";
 
 export class EditTournamentCommandValidator implements BaseValidator<EditTournamentCommand>
 {
 
-    private backendApiClient: BackendApiClient;
+    private backendApiClient: UserServiceClient;
 
     constructor(private tournamentRepository: TournamentRepository, private NotificationError: NotificationError)
     {
-        this.backendApiClient = new BackendApiClient();
+        this.backendApiClient = new UserServiceClient();
     }
 
     public async Validator(command: EditTournamentCommand): Promise<void>

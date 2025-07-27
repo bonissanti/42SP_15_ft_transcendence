@@ -2,11 +2,11 @@ import {BaseHandlerQuery} from "./BaseHandlerQuery";
 import {GenerateMatchmakingQuery} from "../QueryObject/GenerateMatchmakingQuery";
 import {GetUserMatchmakingQueryDTO} from "../../QueryDTO/GetUserMatchmakingQueryDTO";
 import {NotificationError} from "../../../Shared/Errors/NotificationError";
-import {BackendApiClient} from "../../../Infrastructure/Http/Concrete/BackendApiClient";
+import {UserServiceClient} from "../../../Infrastructure/Http/Concrete/UserServiceClient";
 
 export class GenerateMatchmakingQueryHandler implements BaseHandlerQuery<GenerateMatchmakingQuery, GetUserMatchmakingQueryDTO | null>
 {
-    constructor(private backendApiClient: BackendApiClient, NotificationError: NotificationError)
+    constructor(private backendApiClient: UserServiceClient, NotificationError: NotificationError)
     {
     }
 

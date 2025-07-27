@@ -1,18 +1,18 @@
 import {BaseValidator} from "../../Command/Validators/BaseValidator";
 import {GenerateMatchmakingQuery} from "../QueryObject/GenerateMatchmakingQuery";
 import {NotificationError} from "../../../Shared/Errors/NotificationError";
-import {BackendApiClient} from "../../../Infrastructure/Http/Concrete/BackendApiClient";
+import {UserServiceClient} from "../../../Infrastructure/Http/Concrete/UserServiceClient";
 import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog";
 import {CustomError} from "../../../Shared/Errors/CustomError";
 import {ValidationException} from "../../../Shared/Errors/ValidationException";
 
 export class GenerateMatchmakingQueryValidator implements BaseValidator<GenerateMatchmakingQuery>
 {
-    private backendApiClient: BackendApiClient;
+    private backendApiClient: UserServiceClient;
 
     constructor(private notificationError: NotificationError)
     {
-        this.backendApiClient = new BackendApiClient();
+        this.backendApiClient = new UserServiceClient();
     }
 
     public async Validator(query: GenerateMatchmakingQuery): Promise<void>
@@ -40,7 +40,7 @@ export class GenerateMatchmakingQueryValidator implements BaseValidator<Generate
         }
         catch (error)
         {
-            this.notificationError.AddError(ErrorCatalog.InternalBackendApiErrorVerifyIfUserExists);
+            this.notificationError.AddError(ErrorCatalog.InternalBackendApiErrorVerifyIfUsersExistsByUsername);
         }
     }
 }
