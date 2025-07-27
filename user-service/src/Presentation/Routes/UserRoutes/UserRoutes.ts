@@ -101,7 +101,7 @@ export const UserRoutes = async (server: any, userController: UserController) =>
         return await userController.VerifyIfUsersExistsByUsernames(request, reply);
     })
 
-    server.get('/users/exists/:username', { preHandler: authenticateJWT }, async (request: FastifyRequest <{ Querystring: { username: string }}>, reply: FastifyReply) => {
+    server.get('/users/exists/:username', { preHandler: authenticateJWT }, async (request: FastifyRequest <{ Params: { username: string }}>, reply: FastifyReply) => {
         return await userController.VerifyIfUserExistsByUsername(request, reply);
     })
 

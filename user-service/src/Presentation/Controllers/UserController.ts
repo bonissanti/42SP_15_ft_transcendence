@@ -92,9 +92,9 @@ export class UserController extends BaseController {
 }
 
   //Verifica se uma pessoa existe
-  public async VerifyIfUserExistsByUsername(request: FastifyRequest<{ Querystring: { username: string } }>, reply: FastifyReply): Promise<Result> {
-    const query = request.query;
-    const userDTO: VerifyIfUserExistsByUsernameDTO = new VerifyIfUserExistsByUsernameDTO(query.username);
+  public async VerifyIfUserExistsByUsername(request: FastifyRequest<{ Params: { username: string } }>, reply: FastifyReply): Promise<Result> {
+      const { username } = request.params;
+      const userDTO: VerifyIfUserExistsByUsernameDTO = new VerifyIfUserExistsByUsernameDTO(query.username);
     const result: Result<boolean> = await this.userService.VerifyIfUserExistsByUsernameService(userDTO, reply);
     return this.handleResult(result, reply, this.notificationError);
   }
