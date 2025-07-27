@@ -153,7 +153,7 @@ async function main() {
   });
 
   try {
-    const address = await server.listen({ port: 8080 });
+    const address = await server.listen({ port: 8080, host: '0.0.0.0' });
     console.log(`🚀 Server listening at ${address}`);
     console.log(`📁 Arquivos estáticos disponíveis em: ${address}/img/`);
   } catch (err) {

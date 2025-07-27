@@ -59,6 +59,7 @@ const updateStatsOpts = {
         body: {
             type: 'object',
             properties: {
+                gameType: { type: 'string', enum: [ 'SINGLEPLAYER', 'MULTIPLAYER_LOCAL', 'MULTIPLAYER_REMOTO', 'TOURNAMENT', 'RPS' ] },
                 player1Username: { type: 'string' },
                 player1Points: { type: 'number' },
                 player2Username: { type: 'string' },
@@ -68,7 +69,7 @@ const updateStatsOpts = {
                 player4Username: { type: ['string', 'null'] },
                 player4Points: { type: ['number', 'null'] },
             },
-            required: ['player1Username', 'player1Points', 'player2Username', 'player2Points'],
+            required: ['gameType', 'player1Username', 'player1Points', 'player2Username', 'player2Points'],
             additionalProperties: false,
         }
     }
