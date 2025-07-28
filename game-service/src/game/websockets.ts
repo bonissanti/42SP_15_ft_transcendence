@@ -295,34 +295,48 @@ export function setupWebSocket(server: any) {
 						break;
 
 					case 'final_ready_click':
-						const game = Array.from(games.values()).find(g =>
-							g.tournamentId && g.isFinal && g.playerIds.includes(userId)
-						);
-						if (game && game.tournamentId) {
-							const tournament = tournaments.get(game.tournamentId);
-							if (tournament) {
-								tournament.finalistsReady++;
+                    let tournamentId: string | undefined;
+                    let tournamentData: any;
 
-								const otherPlayerId = game.playerIds.find(id => id !== userId);
-								const otherClient = clients.get(otherPlayerId!);
+                    for (const [id, data] of tournaments.entries()) {
+                        if (data.winners.some(winner => winner.id === userId)) {
+                            tournamentId = id;
+                            tournamentData = data;
+                            break;
+                        }
+                    }
 
-								if (otherClient && otherClient.ws.readyState === WebSocket.OPEN) {
-									otherClient.ws.send(JSON.stringify({ type: 'opponent_ready' }));
-								}
+                    if (tournamentData && tournamentId) {
+                        const finalist = tournamentData.winners.find((w: any) => w.id === userId);
+                        if (finalist && !finalist.isReady) {
+                            finalist.isReady = true;
+                            tournamentData.finalistsReady++;
+                        }
 
-								if (tournament.finalistsReady === 2) {
-									const finalGameId = startOneVsOneGame(
-										tournament.winners.map(w => w.id),
-										game.tournamentId,
-										true
-									);
-									if (finalGameId) {
-										tournament.gameIds.push(finalGameId);
-									}
-								}
-							}
-						}
-						break;
+                        const otherFinalist = tournamentData.winners.find((w: any) => w.id !== userId);
+                        if (otherFinalist) {
+                            const otherClient = clients.get(otherFinalist.id);
+                            if (otherClient && otherClient.ws.readyState === WebSocket.OPEN) {
+                                otherClient.ws.send(JSON.stringify({ type: 'opponent_ready' }));
+                            }
+                        }
+
+                        if (tournamentData.finalistsReady === 2) {
+                            const finalGameId = startOneVsOneGame(
+                                tournamentData.winners.map((w: any) => w.id),
+                                tournamentId,
+                                true
+                            );
+                            if (finalGameId) {
+                                const tourney = tournaments.get(tournamentId);
+                                if (tourney) {
+                                    tourney.gameIds.push(finalGameId);
+                                }
+                            }
+                        }
+                    }
+                    break;
+
 				}
 			} catch (error) {
 				console.error('Erro ao processar mensagem:', error);

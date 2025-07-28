@@ -67,7 +67,7 @@ export class CreateHistoryValidator implements BaseValidator<CreateHistoryComman
 
             const exists = await this.backendApiClient.VerifyIfUsersExistsByUsername(userList);
 
-            if (!exists.Data)
+            if (!exists)
                 this.NotificationError.AddError(ErrorCatalog.UserNotFound);
         }
         catch (error)

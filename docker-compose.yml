@@ -47,6 +47,7 @@ services:
     environment:
       DATABASE_URL: "file:/usr/src/app/prisma/game.db"
       JWT_SECRET: "transcendence"
+      BACKEND_API_URL: "http://user-service:8080"
     ports:
       - "3001:3001"
       - "5556:5556"
