@@ -23,6 +23,6 @@ export class CreateUserCommand
     {
         const lastLogin: Date | null = dto.lastLogin ? new Date(dto.lastLogin) : null;
 
-        return new CreateUserCommand(dto.email, dto.password, dto.username, dto.annonymous, dto.profilePic, lastLogin);
+        return new CreateUserCommand(dto.email, dto.password, dto.username, dto.anonymous, dto.profilePic, lastLogin);
     }
 }

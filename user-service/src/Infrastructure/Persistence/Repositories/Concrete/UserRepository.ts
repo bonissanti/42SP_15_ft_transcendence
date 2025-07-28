@@ -100,6 +100,7 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
         if (!userData) return null;
 
         const entity = User.fromDatabase(
+            userData.uuid,
             EmailVO.AddEmail(userData.email),
             new PasswordHashVO(userData.password),
             userData.username,
@@ -120,6 +121,7 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
             return null;
 
         return User.fromDatabase(
+            userData.uuid,
             EmailVO.AddEmail(userData.email),
             new PasswordHashVO(userData.password),
             userData.username,
@@ -139,6 +141,7 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
             return null;
 
         return User.fromDatabase(
+            userData.uuid,
             EmailVO.AddEmail(userData.email),
             new PasswordHashVO(userData.password),
             userData.username,
@@ -159,6 +162,7 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
             return [];
 
         return usersData.map((user: any) => User.fromDatabase(
+            user.uuid,
             EmailVO.AddEmail(user.email),
             new PasswordHashVO(user.password),
             user.username,
