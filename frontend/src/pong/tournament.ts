@@ -1,4 +1,4 @@
-import { fetchWithAuth, fetchWithGame } from '../api/api';
+import { fetchWithAuth } from '../api/api';
 import {
   initSharedState, stopSharedState, draw, keys,
   setBall, setPaddles, setAnimationFrameId, setIsWaiting,
@@ -75,36 +75,6 @@ function renderWaitingRoom(players: any[]) {
 }
 
 
-async function createTournament(players: any[]) {
-    try {
-        const playerUsernames = players.map(p => p.username);
-        const body = {
-            tournamentName: tournamentName,
-            player1Username: playerUsernames[0],
-            player2Username: playerUsernames[1],
-            player3Username: playerUsernames[2],
-            player4Username: playerUsernames[3],
-        };
-
-        console.log("Criando torneio com os seguintes dados:", body);
-        const response = await fetchWithGame('/tournament', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body)
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(`Erro ao criar torneio: ${errorData.message || response.statusText}`);
-        }
-        console.log("Torneio criado com sucesso!");
-
-    } catch (error: any) {
-        console.error("Falha ao criar torneio:", error);
-        alert(error.message);
-    }
-}
-
 
 function updateRemoteTournament() {
   if (ws && ws.readyState === WebSocket.OPEN) {
@@ -156,9 +126,6 @@ export async function initTournamentGame() {
         switch (message.type) {
             case 'lobby_update':
                 renderWaitingRoom(message.players);
-                if (message.players.length === 4) {
-                    createTournament(message.players);
-                }
                 break;
 
             case 'game_start':
