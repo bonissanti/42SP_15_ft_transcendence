@@ -113,7 +113,7 @@ export async function initTournamentGame() {
     const payload = JSON.parse(atob(token.split('.')[1]));
     const userId = payload.uuid;
 
-    ws = new WebSocket(`ws://localhost:3001?userId=${userId}&username=${encodeURIComponent(username)}&profilePic=${encodeURIComponent(profilePic)}&mode=tournament&token=${encodeURIComponent(token)}&tournamentName=${encodeURIComponent(tournamentName)}`);
+    ws = new WebSocket(`wss://localhost:3001?userId=${userId}&username=${encodeURIComponent(username)}&profilePic=${encodeURIComponent(profilePic)}&mode=tournament&token=${encodeURIComponent(token)}&tournamentName=${encodeURIComponent(tournamentName)}`);
 
     ws.onopen = () => {
         console.log(`WebSocket conectado como ${username}. Aguardando jogadores...`);

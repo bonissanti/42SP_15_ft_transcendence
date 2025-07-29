@@ -1,3 +1,6 @@
+import https from 'https';
+import fs from 'fs';
+import path from 'path';
 import helmet from "@fastify/helmet";
 import fastify from "fastify";
 import fastifyJwt from "@fastify/jwt";
@@ -13,7 +16,16 @@ import { MatchmakingRoutes } from "./Presentation/Routes/MatchmakingRoutes/Match
 import { setupWebSocket } from './game/websockets';
 
 async function main() {
-    const server = fastify();
+
+    const httpsOptions = {
+        key: fs.readFileSync(path.join(__dirname, '..', 'ssl', 'localhost.key')),
+        cert: fs.readFileSync(path.join(__dirname, '..', 'ssl', 'localhost.pem')),
+    };
+
+    const server = fastify({
+        https: httpsOptions
+    });
+
 
     server.register(fastifyJwt, {
         secret: process.env.JWT_SECRET || 'transcendence'
@@ -25,7 +37,7 @@ async function main() {
                 defaultSrc: ["'self'"],
                 scriptSrc: ["'self'", "https://accounts.google.com"],
                 frameSrc: ["'self'", "https://accounts.google.com"],
-                connectSrc: ["'self'", "https://accounts.google.com"]
+                connectSrc: ["'self'", "https://accounts.google.com", "wss://localhost:3001"]
             }
         }
     });
@@ -53,7 +65,7 @@ async function main() {
 
     try {
         const address = await server.listen({ port: 3001, host: '0.0.0.0' });
-        console.log(`HTTP and WebSocket Server listening on ${address}`);
+        console.log(`HTTPS and WSS Server listening on ${address}`);
     } catch (err) {
         console.log("Failed to start server: ", err, "");
         await prisma.$disconnect();

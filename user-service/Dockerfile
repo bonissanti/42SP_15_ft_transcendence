@@ -1,6 +1,6 @@
 FROM node:18-alpine
 
-RUN apk add --no-cache curl
+RUN apk add --no-cache curl python3 make g++
 
 WORKDIR /app
 
