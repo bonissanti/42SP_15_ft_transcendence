@@ -6,13 +6,17 @@ services:
       context: .
       dockerfile: frontend/Dockerfile
     ports:
-      - "8080:80"
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./devops/nginx/ssl:/etc/nginx/ssl:ro
     depends_on:
       - user-service
       - auth-service
       - game-service
     networks:
       - app-network
+
 
   user-service:
     build: user-service
@@ -53,6 +57,7 @@ services:
       - "5556:5556"
     volumes:
       - game-service-prisma-data:/usr/src/app/prisma
+      - ./devops/nginx/ssl:/usr/src/app/ssl:ro
     networks:
       - app-network
 
