@@ -10,6 +10,7 @@ type GooglePayload = {
     email: string;
     name?: string;
     picture?: string;
+    anonymous?: boolean;
 };
 
 export async function verifyGoogleCredential(credential: string, server: FastifyInstance): Promise<GooglePayload> {
@@ -55,7 +56,7 @@ export async function findOrCreateUser(payload: GooglePayload, userRepository: U
 }
 
 async function createNewUserFromGoogle(payload: GooglePayload, userRepository: UserRepository) {
-    const emailVO = EmailVO.AddEmail(payload.email);
+    let emailVO;
 
     let username = (payload.name || payload.email.split('@')[0]);
     if (await userRepository.VerifyIfUserExistsByUsername(username)) {
@@ -64,6 +65,12 @@ async function createNewUserFromGoogle(payload: GooglePayload, userRepository: U
 
     const randomPassword = crypto.randomBytes(16).toString('hex');
     const passwordHash = await PasswordHashVO.Create(randomPassword);
+
+    if (payload.anonymous) {
+        emailVO = await EmailVO.AddEmailWithHash(payload.email);
+    } else {
+        emailVO = EmailVO.AddEmail(payload.email);
+    }
 
     const userEntity = new User(emailVO, passwordHash, username, payload.picture || null, new Date(), true, 0, 0, 0);
     userEntity.ChangeAuth0Id(payload.sub);

@@ -81,6 +81,7 @@ export class User implements BaseEntity
     }
 
     public static fromDatabase(
+        uuid: string,
         email: EmailVO,
         password: PasswordHashVO,
         userName: string,
@@ -93,6 +94,7 @@ export class User implements BaseEntity
     ): User
     {
         const user = Object.create(User.prototype);
+        user.Uuid = uuid;
         user.Email = email;
         user.PasswordHash = password;
         user.Username = userName;
