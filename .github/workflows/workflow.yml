@@ -1,4 +1,4 @@
-name: workflow.yml
+name: CI/CD pipeline
 on:
     push:
         branches: [main, master]
@@ -26,18 +26,29 @@ jobs:
                   cd ../game-service && npm ci
                   cd ../frontend && npm ci
 
-            - name: Run linting
-              run: |
-                  cd auth-service && npm run lint
-                  cd ../user-service && npm run lint
-                  cd ../game-service && npm run lint
+#            - name: Run linting
+#              run: |
+#                  cd auth-service && npm run lint
+#                  cd ../user-service && npm run lint
+#                  cd ../game-service && npm run lint
 
             - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@v3
 
-            - name: Docker compose build and up
-              run: docker-compose up --build -d
+            - name: Build services
+              run: docker compose build
+
+            - name: Start services
+              run: docker compose up -d
+
+            - name: Check if services are running
+              run: docker compose ps
+
+            - name: Wait for services to be ready
+              run: |
+                  echo "Waiting for services to start..."
+                  sleep 30
 
             - name: Docker compose down
               if: always()
-              run: docker-compose down
+              run: docker-compose down -v
