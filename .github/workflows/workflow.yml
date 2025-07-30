@@ -44,11 +44,6 @@ jobs:
             - name: Check if services are running
               run: docker compose ps
 
-            - name: Wait for services to be ready
-              run: |
-                  echo "Waiting for services to start..."
-                  sleep 30
-
             - name: Docker compose down
               if: always()
               run: docker compose down -v

@@ -11,6 +11,8 @@ import { NotificationError } from "../../../Shared/Errors/NotificationError.js";
 import { ValidationException } from "../../../Shared/Errors/ValidationException.js";
 import { Prisma } from "@prisma/client";
 import {ErrorTypeEnum} from "../../Enums/ErrorTypeEnum.js";
+import {UserSessionDTO} from "../../DTO/ToCommand/UserSessionDTO.js";
+import {LoginUserViewModel} from "../../ViewModels/LoginUserViewModel.js";
 
 export class CreateUserService implements BaseService<CreateUserDTO> {
     private readonly UserRepository: UserRepository;
@@ -23,15 +25,16 @@ export class CreateUserService implements BaseService<CreateUserDTO> {
         this.CreateUserHandler = new CreateUserCommandHandler(this.UserRepository, notificationError);
     }
 
-    public async Execute(dto: CreateUserDTO, reply: FastifyReply): Promise<Result>
+    public async Create(dto: CreateUserDTO, request: FastifyRequest <{ Body: CreateUserDTO }>, reply: FastifyReply): Promise<Result<LoginUserViewModel>>
     {
         try
         {
             const command: CreateUserCommand = CreateUserCommand.FromDTO(dto);
             await this.CreateUserValidator.Validator(command);
             await this.CreateUserHandler.Handle(command);
+            const loginUserViewModel = this.GenerateToken(reply, request);
 
-            return Result.Success("User created successfully");
+            return Result.SuccessWithData<LoginUserViewModel>("User created and logged successfully", loginUserViewModel);
         } catch (error)
         {
             if (error instanceof ValidationException)
@@ -58,5 +61,28 @@ export class CreateUserService implements BaseService<CreateUserDTO> {
 
             return Result.Failure(ErrorCatalog.InternalServerError.SetError(), ErrorTypeEnum.CONFLICT);
         }
+    }
+
+    private GenerateToken(reply: FastifyReply, request: FastifyRequest<{ Body: CreateUserDTO }>)
+    {
+        const body = request.body;
+
+        const token = request.server.jwt.sign({
+            uuid: body.uuid,
+            isAuthenticated: true,
+        }, { expiresIn: '1h' });
+
+        reply.setCookie('token', token, {
+            httpOnly: true,
+            secure: false, // Deixei como false porque a aplicação ainda está em HTTP, mas deve ser true em HTTPS
+            sameSite: 'lax',
+            path: '/',
+        });
+
+        return new LoginUserViewModel(token, body.uuid, body.username, body.profilePic);
+    }
+
+    public Execute(): Promise<Result<void>> {
+        throw new Error("Method not implemented.");
     }
 }
