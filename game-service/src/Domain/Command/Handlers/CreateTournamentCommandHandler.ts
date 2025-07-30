@@ -19,7 +19,11 @@ export class CreateTournamentCommandHandler implements BaseHandlerCommand<Create
             command.player1Username,
             command.player2Username,
             command.player3Username,
-            command.player4Username
+            command.player4Username,
+            command.aliasPlayer1,
+            command.aliasPlayer2,
+            command.aliasPlayer3,
+            command.aliasPlayer4,
         );
 
         await this.tournamentRepository.Create(tournamentEntity);
