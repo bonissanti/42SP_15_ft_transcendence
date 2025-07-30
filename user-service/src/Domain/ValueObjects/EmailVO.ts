@@ -1,4 +1,4 @@
-import * as bcrypt from "bcrypt";
+import * as crypto from 'crypto';
 
 export class EmailVO
 {
@@ -20,18 +20,15 @@ export class EmailVO
 
     public static NormalizeEmail(rawEmail: string) : string
     {
-        rawEmail.toLowerCase();
-        rawEmail.trim();
-        return rawEmail;
+        return rawEmail.toLowerCase().trim();
     }
 
-    public static async AddEmailWithHash(rawEmail: string): Promise<EmailVO>
+    public static AddEmailWithHash(rawEmail: string): EmailVO
     {
         rawEmail = this.NormalizeEmail(rawEmail);
 
-        const salt: string = await bcrypt.genSalt(this.Salt);
-
-        const hashedEmail = await bcrypt.hash(rawEmail, salt);
+        const hashedEmail = crypto.createHash('sha256')
+            .update(rawEmail).digest('hex');
 
         return new EmailVO(hashedEmail);
     }
