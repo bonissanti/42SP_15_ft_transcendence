@@ -19,6 +19,10 @@ start:
 restart:
 	@docker compose -f $(COMPOSE_FILE) restart
 
+clean:
+	@docker-compose down
+	@sudo bash clean-docker.sh
+
 rm:
 	@docker compose -f $(COMPOSE_FILE) rm -f
 

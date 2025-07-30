@@ -38,7 +38,8 @@ export class TournamentController extends BaseController
     public async CreateTournament(request: FastifyRequest<{ Body: CreateTournamentDTO }>, reply: FastifyReply)
     {
         const body = request.body;
-        const createTournamentDTO: CreateTournamentDTO = new CreateTournamentDTO(body.tournamentName, body.player1Username, body.player2Username, body.player3Username, body.player4Username);
+        const createTournamentDTO: CreateTournamentDTO = new CreateTournamentDTO(body.tournamentName, body.player1Username, body.player2Username, body.player3Username, body.player4Username,
+            body.aliasPlayer1, body.aliasPlayer2, body.aliasPlayer3, body.aliasPlayer4);
         const result = await this.createTournament.Execute(createTournamentDTO, reply);
         return this.handleResult(result, reply, this.notificationError);
     }

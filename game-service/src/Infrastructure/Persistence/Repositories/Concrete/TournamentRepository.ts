@@ -16,6 +16,10 @@ export class TournamentRepository implements IBaseRepository<GetTournamentQueryD
                 player2Username: tournamentEntity.player2Username,
                 player3Username: tournamentEntity.player3Username,
                 player4Username: tournamentEntity.player4Username,
+                aliasPlayer1: tournamentEntity.aliasPlayer1,
+                aliasPlayer2: tournamentEntity.aliasPlayer2,
+                aliasPlayer3: tournamentEntity.aliasPlayer3,
+                aliasPlayer4: tournamentEntity.aliasPlayer4,
             },
         });
     }
@@ -46,7 +50,18 @@ export class TournamentRepository implements IBaseRepository<GetTournamentQueryD
         if (!tournamentsData.length) {
             throw new Error(ErrorCatalog.TournamentNotFound.SetError());
         }
-        return tournamentsData.map((tournament) => this.RecoverEntity(tournament));
+        return tournamentsData.map((tournament) => Tournament.fromDatabase(
+            tournament.tournamentUuid,
+            tournament.tournamentName,
+            tournament.player1Username,
+            tournament.player2Username,
+            tournament.player3Username,
+            tournament.player4Username,
+            tournament.aliasPlayer1,
+            tournament.aliasPlayer2,
+            tournament.aliasPlayer3,
+            tournament.aliasPlayer4,
+        ));
     }
 
     public async GetTournamentQueryDTOByUuid(uuid: string): Promise<GetTournamentQueryDTO | null> {
@@ -55,18 +70,40 @@ export class TournamentRepository implements IBaseRepository<GetTournamentQueryD
         if (!tournamentData)
             return null;
 
-        const entity = this.RecoverEntity(tournamentData);
+        const entity = Tournament.fromDatabase(
+            tournamentData.tournamentUuid,
+            tournamentData.tournamentName,
+            tournamentData.player1Username,
+            tournamentData.player2Username,
+            tournamentData.player3Username,
+            tournamentData.player4Username,
+            tournamentData.aliasPlayer1,
+            tournamentData.aliasPlayer2,
+            tournamentData.aliasPlayer3,
+            tournamentData.aliasPlayer4,
+        );
         return this.mapToQueryDTO(entity);
     }
 
     public async GetTournamentEntityByUuid(uuid: string): Promise<Tournament | null>
     {
-        const userData = await prisma.tournament.findUnique({where: {tournamentUuid: uuid}});
+        const tournamentData = await prisma.tournament.findUnique({where: {tournamentUuid: uuid}});
 
-        if (!userData)
+        if (!tournamentData)
             return null;
 
-        return this.RecoverEntity(userData);
+        return Tournament.fromDatabase(
+            tournamentData.tournamentUuid,
+            tournamentData.tournamentName,
+            tournamentData.player1Username,
+            tournamentData.player2Username,
+            tournamentData.player3Username,
+            tournamentData.player4Username,
+            tournamentData.aliasPlayer1,
+            tournamentData.aliasPlayer2,
+            tournamentData.aliasPlayer3,
+            tournamentData.aliasPlayer4,
+        );
     }
 
     public async GetAllTournaments(username?: string): Promise<GetTournamentQueryDTO[]>
@@ -83,7 +120,18 @@ export class TournamentRepository implements IBaseRepository<GetTournamentQueryD
        });
 
        return tournaments.map((tournament) =>
-           this.mapToQueryDTO(this.RecoverEntity(tournament)));
+           this.mapToQueryDTO(Tournament.fromDatabase(
+               tournament.tournamentUuid,
+               tournament.tournamentName,
+               tournament.player1Username,
+               tournament.player2Username,
+               tournament.player3Username,
+               tournament.player4Username,
+               tournament.aliasPlayer1,
+               tournament.aliasPlayer2,
+               tournament.aliasPlayer3,
+               tournament.aliasPlayer4,
+           )));
     }
 
     public async VerifyIfTournamentExistsByUUID(uuid: string): Promise<boolean> {
@@ -98,17 +146,11 @@ export class TournamentRepository implements IBaseRepository<GetTournamentQueryD
             tournamentEntity.player1Username,
             tournamentEntity.player2Username,
             tournamentEntity.player3Username,
-            tournamentEntity.player4Username
-        );
-    }
-
-    private RecoverEntity(tournament: Tournament): Tournament {
-        return new Tournament(
-            tournament.tournamentName,
-            tournament.player1Username,
-            tournament.player2Username,
-            tournament.player3Username,
-            tournament.player4Username
+            tournamentEntity.player4Username,
+            tournamentEntity.aliasPlayer1,
+            tournamentEntity.aliasPlayer2,
+            tournamentEntity.aliasPlayer3,
+            tournamentEntity.aliasPlayer4,
         );
     }
 }
