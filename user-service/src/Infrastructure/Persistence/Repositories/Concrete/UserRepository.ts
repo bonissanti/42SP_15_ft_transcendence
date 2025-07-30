@@ -134,6 +134,36 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
         );
     }
 
+    public async GetUserEntityByEmail(email: string): Promise<User | null>
+    {
+        const hashedEmail = EmailVO.AddEmailWithHash(email);
+
+        const userData = await this.prisma.user.findFirst({
+            where: {
+                OR: [
+                    {email: hashedEmail},
+                    {email: email}
+                ]
+            }
+        })
+
+        if (!userData)
+            return null;
+
+        return User.fromDatabase(
+            userData.uuid,
+            EmailVO.AddEmail(userData.email),
+            new PasswordHashVO(userData.password),
+            userData.username,
+            userData.profilePic,
+            userData.lastLogin,
+            userData.isOnline,
+            userData.matchesPlayed,
+            userData.wins,
+            userData.loses
+        );
+    }
+
     public async GetUserEntityByUsername(username: string): Promise<User | null> {
         const userData = await this.prisma.user.findUnique({where: {username}});
 
@@ -185,6 +215,22 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
         const user = await this.prisma.user.findUnique({where: {uuid}});
 
         return user !== null;
+    }
+
+    public async VerifyIfUserExistsByEmail(email: string): Promise<boolean>
+    {
+        const hashedEmail = EmailVO.AddEmailWithHash(email);
+
+        const exists = await this.prisma.User.findFirst({
+            where: {
+                OR: [
+                    {email: hashedEmail},
+                    {email: email}
+                ]
+            }
+        });
+
+        return exists !== null;
     }
 
     public async VerifyIfUsersExistsByUUIDs(uuids: (string | null)[]): Promise<boolean> {

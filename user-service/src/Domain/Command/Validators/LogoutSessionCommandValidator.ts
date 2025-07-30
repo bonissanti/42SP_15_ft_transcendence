@@ -16,27 +16,20 @@ export class LogoutSessionCommandValidator implements BaseValidator<UserSessionC
 
     public async Validator(command: UserSessionCommand): Promise<void>
     {
-        if (!await this.UserRepository.VerifyIfUserExistsByUUID(command.Uuid))
-            this.NotificationError.AddError(ErrorCatalog.UserNotFound)
-
         if (!EmailVO.ValidEmail(command.Email))
             this.NotificationError.AddError(ErrorCatalog.InvalidEmail);
 
         if (!PasswordHashVO.ValidPassword(command.Password))
             this.NotificationError.AddError(ErrorCatalog.InvalidPassword);
 
-        const user = await this.UserRepository.GetUserEntityByUuid(command.Uuid);
+        const user = await this.UserRepository.GetUserEntityByEmail(command.Email);
         if (!user)
             this.NotificationError.AddError(ErrorCatalog.UserNotFound);
 
         const passwordHashLogin: PasswordHashVO = await PasswordHashVO.Create(command.Password);
-        const emailLogin: EmailVO = EmailVO.AddEmail(command.Email);
 
         if (passwordHashLogin != user?.PasswordHash)
             this.NotificationError.AddError(ErrorCatalog.WrongPassword);
-
-        if (emailLogin != user?.Email)
-            this.NotificationError.AddError(ErrorCatalog.WrongEmail);
 
         if (this.NotificationError.NumberOfErrors() > 0) {
             const allErrors: CustomError[] = this.NotificationError.GetAllErrors();
