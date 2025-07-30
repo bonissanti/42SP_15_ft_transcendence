@@ -15,5 +15,5 @@ export class LogoutSessionCommandHandler implements BaseHandlerCommand<UserSessi
         user?.ChangeStatusOnline(command.isOnline);
 
         await this.UserRepository.Update(user!.Uuid, user);
-    }}
+    }
 }

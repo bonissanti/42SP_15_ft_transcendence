@@ -83,7 +83,6 @@ export class UserController extends BaseController {
 
   //Verifica se a lista de pessoas existem
   public async VerifyIfUsersExistsByUsernames(request: FastifyRequest<{ Querystring: { usernames: (string | null)[] } }>, reply: FastifyReply) {
-    const query = request.query;
     const usernamesArray = request.query.usernames;
 
     const usersDTO = new VerifyIfUsersExistsByUsernamesDTO(usernamesArray);
