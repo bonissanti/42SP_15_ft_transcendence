@@ -6,7 +6,7 @@ on:
         branches: [main, master]
 
 jobs:
-    build-and-test:
+    build-check:
         runs-on: ubuntu-latest
 
         steps:
@@ -51,4 +51,4 @@ jobs:
 
             - name: Docker compose down
               if: always()
-              run: docker-compose down -v
+              run: docker compose down -v
