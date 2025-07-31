@@ -43,7 +43,7 @@ async function main() {
     });
 
     server.register(fastifyCors, {
-        origin: "*",
+        origin: "https://localhost",
         methods: ["GET", "POST", "PUT", "DELETE"],
         credentials: true,
         allowedHeaders: ['Content-Type', 'Authorization']

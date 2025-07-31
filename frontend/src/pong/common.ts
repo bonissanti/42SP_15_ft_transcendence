@@ -110,7 +110,6 @@ export function resetBall() {
 
 
 export function draw() {
-    console.log('Paddles:', paddles.length);
     if (!canvas || !ctx) return;
     
     ctx.fillStyle = 'black';
@@ -132,7 +131,6 @@ export function draw() {
     ctx.fill();
     
     paddles.forEach((p, index) => {
-        console.log('Index: ', index);
         ctx.fillStyle = p.lost ? 'red' : 'white';
         ctx.fillRect(p.x, p.y, p.width, p.height);
 
@@ -166,6 +164,7 @@ export function draw() {
 export async function sendMatchHistory(tournamentName: string, player1Username: string | null, player1Points: number | null, player2Username: string | null, player2Points: number | null, player3Username: string | null = null, player3Points: number | null = null, player4Username: string | null = null, player4Points: number | null = null) {
   try {
     const historyData = {
+      gameType: tournamentName.toUpperCase(),
       tournamentName: tournamentName,
       player1Username: player1Username,
       player1Points: player1Points,
