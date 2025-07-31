@@ -222,7 +222,7 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
     {
         const hashedEmail = EmailVO.AddEmailWithHash(email);
 
-        const exists = await this.prisma.user.findFirst({
+        const count = await this.prisma.user.count({
             where: {
                 OR: [
                     {email: hashedEmail.getEmail()},
@@ -231,7 +231,7 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
             }
         });
 
-        return exists !== null;
+        return count > 0;
     }
 
     public async VerifyIfUsersExistsByUUIDs(uuids: (string | null)[]): Promise<boolean> {
