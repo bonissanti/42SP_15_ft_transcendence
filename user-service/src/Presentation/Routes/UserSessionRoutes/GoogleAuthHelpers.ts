@@ -67,7 +67,7 @@ async function createNewUserFromGoogle(payload: GooglePayload, userRepository: U
     const passwordHash = await PasswordHashVO.Create(randomPassword);
 
     if (payload.anonymous) {
-        emailVO = await EmailVO.AddEmailWithHash(payload.email);
+        emailVO = EmailVO.AddEmailWithHash(payload.email);
     } else {
         emailVO = EmailVO.AddEmail(payload.email);
     }

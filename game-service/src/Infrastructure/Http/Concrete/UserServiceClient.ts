@@ -78,7 +78,7 @@ export class UserServiceClient implements IUserServiceClient
     {
         try
         {
-            const response = await axios.put(`${this.baseUrl}/user/updateStats`, updateStatsExternalDTO);
+            const response = await axios.put(`${this.baseUrl}/updateStats`, updateStatsExternalDTO);
             return response.data;
         }
         catch (error)

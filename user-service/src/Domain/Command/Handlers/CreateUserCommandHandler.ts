@@ -21,7 +21,7 @@ export class CreateUserCommandHandler implements BaseHandlerCommand<CreateUserCo
         const passwordHashVO = await PasswordHashVO.Create(command.Password);
 
         if (command.Annonymous) {
-            emailVO = await EmailVO.AddEmailWithHash(command.Email);
+            emailVO = EmailVO.AddEmailWithHash(command.Email);
         } else {
             emailVO = EmailVO.AddEmail(command.Email);
         }

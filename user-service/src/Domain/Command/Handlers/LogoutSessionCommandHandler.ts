@@ -10,10 +10,10 @@ export class LogoutSessionCommandHandler implements BaseHandlerCommand<UserSessi
 
     async Handle(command: UserSessionCommand): Promise<void>
     {
-        const user = await this.UserRepository.GetUserEntityByUuid(command.Uuid);
+        const user = await this.UserRepository.GetUserEntityByEmail(command.Email);
 
         user?.ChangeStatusOnline(command.isOnline);
 
-        await this.UserRepository.Update(command.Uuid, user);
+        await this.UserRepository.Update(user!.Uuid, user);
     }
 }

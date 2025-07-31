@@ -33,6 +33,10 @@ export class CreateUserCommandValidator implements BaseValidator<CreateUserComma
             this.NotificationError.AddError(ErrorCatalog.UsernameAlreadyExists);
         }
 
+        if (await this.UserRepository.VerifyIfUserExistsByEmail(command.Email)) {
+            this.NotificationError.AddError(ErrorCatalog.EmailAlreadyExists);
+        }
+
         if (!this.CheckExtension(command.ProfilePic) && command.ProfilePic != null)
             this.NotificationError.AddError(ErrorCatalog.InvalidExtension);
 

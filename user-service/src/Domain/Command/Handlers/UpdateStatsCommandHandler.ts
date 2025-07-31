@@ -89,12 +89,8 @@ export class UpdateStatsCommandHandler implements BaseHandlerCommand<UpdateStats
         for (let i: number = 0; i < usersList.length; i++)
         {
             const player: User | undefined = usersEntities.find(user => user.Username === usersList[i][0]);
-            if (!player)
-            {
-                notificationError.AddError(ErrorCatalog.UserNotFound);
-                return;
-            }
-            players.push(player);
+            if (player)
+                players.push(player);
         }
 
         if (command.gameType === GameTypeEnum.TOURNAMENT && players.length === 4)

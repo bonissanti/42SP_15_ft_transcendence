@@ -42,7 +42,6 @@ export class CreateHistoryCommandHandler implements BaseHandlerCommand<CreateHis
             command.player4Username,
             command.player4Points
         );
-
         await this.backendApiClient.UpdateStatsForUsers(addStatsAfterMatch);
         await this.historyRepository.Create(historyEntity);
     }

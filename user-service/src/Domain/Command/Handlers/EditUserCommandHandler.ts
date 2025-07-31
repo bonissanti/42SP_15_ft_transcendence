@@ -26,7 +26,7 @@ export class EditUserCommandHandler implements BaseHandlerCommand<EditUserComman
         let emailVO: EmailVO;
 
         if (command.Anonymous)
-            emailVO = await EmailVO.AddEmailWithHash(command.Email);
+            emailVO = EmailVO.AddEmailWithHash(command.Email);
         else
             emailVO = EmailVO.AddEmail(command.Email);
 

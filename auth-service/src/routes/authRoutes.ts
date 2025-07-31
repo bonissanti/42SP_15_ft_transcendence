@@ -32,7 +32,7 @@ async function authRoutesPlugin(server: FastifyInstance, options: IAuthOptions &
       }
       const { exp, ...payloadWithoutExp } = payload;
 
-      const jwtToken = jwt.sign(payloadWithoutExp, options.JWT_SECRET, { expiresIn: '1h' });
+      const jwtToken = jwt.sign(payloadWithoutExp, options.JWT_SECRET, { expiresIn: '1d' });
 
       return reply.send({
         token: jwtToken,

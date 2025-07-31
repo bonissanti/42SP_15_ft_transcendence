@@ -83,6 +83,7 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
         }
 
         return usersData.map((user: any) => User.fromDatabase(
+            user.uuid,
             EmailVO.AddEmail(user.email),
             new PasswordHashVO(user.password),
             user.username,
@@ -116,6 +117,36 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
 
     public async GetUserEntityByUuid(uuid: string): Promise<User | null> {
         const userData = await this.prisma.user.findUnique({where: {uuid}});
+
+        if (!userData)
+            return null;
+
+        return User.fromDatabase(
+            userData.uuid,
+            EmailVO.AddEmail(userData.email),
+            new PasswordHashVO(userData.password),
+            userData.username,
+            userData.profilePic,
+            userData.lastLogin,
+            userData.isOnline,
+            userData.matchesPlayed,
+            userData.wins,
+            userData.loses
+        );
+    }
+
+    public async GetUserEntityByEmail(email: string): Promise<User | null>
+    {
+        const hashedEmail = EmailVO.AddEmailWithHash(email);
+
+        const userData = await this.prisma.user.findFirst({
+            where: {
+                OR: [
+                    {email: hashedEmail.getEmail()},
+                    {email: email}
+                ]
+            }
+        })
 
         if (!userData)
             return null;
@@ -185,6 +216,22 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
         const user = await this.prisma.user.findUnique({where: {uuid}});
 
         return user !== null;
+    }
+
+    public async VerifyIfUserExistsByEmail(email: string): Promise<boolean>
+    {
+        const hashedEmail = EmailVO.AddEmailWithHash(email);
+
+        const count = await this.prisma.user.count({
+            where: {
+                OR: [
+                    {email: hashedEmail.getEmail()},
+                    {email: email}
+                ]
+            }
+        });
+
+        return count > 0;
     }
 
     public async VerifyIfUsersExistsByUUIDs(uuids: (string | null)[]): Promise<boolean> {

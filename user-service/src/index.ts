@@ -1,4 +1,4 @@
-import fastify, { FastifyInstance } from 'fastify';
+import fastify, {FastifyInstance, FastifyRequest} from 'fastify';
 import helmet from "@fastify/helmet";
 import fastifyJwt from "@fastify/jwt";
 import fastifyStatic from '@fastify/static';

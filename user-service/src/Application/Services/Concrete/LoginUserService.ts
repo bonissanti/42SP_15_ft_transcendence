@@ -67,9 +67,9 @@ export class LoginUserService  implements BaseService<UserSessionDTO, LoginUserV
         const body = request.body;
 
         const token = request.server.jwt.sign({
-            uuid: body.uuid,
+            email: body.email,
             isAuthenticated: true,
-        }, { expiresIn: '1h' });
+        }, { expiresIn: '1d' });
 
         reply.setCookie('token', token, {
             httpOnly: true,

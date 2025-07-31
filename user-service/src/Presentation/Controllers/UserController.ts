@@ -17,6 +17,7 @@ import {UserRepository} from "../../Infrastructure/Persistence/Repositories/Conc
 import {UserService} from "../../Application/Services/Concrete/UserService.js";
 import {GetUserDTO} from "../../Application/DTO/ToQuery/GetUserDTO.js";
 import {VerifyIfUsersExistsByUuidsDTO} from "../../Application/DTO/ToQuery/VerifyIfUsersExistsByUuidsDTO.js";
+import {LoginUserViewModel} from "../../Application/ViewModels/LoginUserViewModel.js";
 
 export class UserController extends BaseController {
   private readonly notificationError: NotificationError;
@@ -47,8 +48,8 @@ export class UserController extends BaseController {
 
     public async CreateUser(request: FastifyRequest<{ Body: CreateUserDTO }>, reply: FastifyReply): Promise<Result> {
         const body = request.body;
-        const userDTO: CreateUserDTO = new CreateUserDTO(body.email, body.password, body.username, body.annonymous, body.profilePic, body.lastLogin);
-        const result: Result = await this.createUserService.Execute(userDTO, reply);
+        const userDTO: CreateUserDTO = new CreateUserDTO(body.email, body.password, body.username, body.anonymous, body.profilePic, body.lastLogin);
+        const result: Result<LoginUserViewModel> = await this.createUserService.Create(userDTO, request, reply);
         return this.handleResult(result, reply, this.notificationError);
     }
 
@@ -82,7 +83,6 @@ export class UserController extends BaseController {
 
   //Verifica se a lista de pessoas existem
   public async VerifyIfUsersExistsByUsernames(request: FastifyRequest<{ Querystring: { usernames: (string | null)[] } }>, reply: FastifyReply) {
-    const query = request.query;
     const usernamesArray = request.query.usernames;
 
     const usersDTO = new VerifyIfUsersExistsByUsernamesDTO(usernamesArray);
@@ -143,7 +143,7 @@ export class UserController extends BaseController {
         query.player3Points,
         query.player4Points,
     );
-    const result: Result<void> = await this.userService.UpdateStatsService(statsDTO, reply);
+    const result: Result = await this.userService.UpdateStatsService(statsDTO, reply);
     return this.handleResult(result, reply, this.notificationError);
   }
 }
