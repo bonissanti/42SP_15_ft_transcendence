@@ -48,7 +48,7 @@ export class UserController extends BaseController {
 
     public async CreateUser(request: FastifyRequest<{ Body: CreateUserDTO }>, reply: FastifyReply): Promise<Result> {
         const body = request.body;
-        const userDTO: CreateUserDTO = new CreateUserDTO(body.email, body.password, body.username, body.annonymous, body.profilePic, body.lastLogin);
+        const userDTO: CreateUserDTO = new CreateUserDTO(body.email, body.password, body.username, body.anonymous, body.profilePic, body.lastLogin);
         const result: Result<LoginUserViewModel> = await this.createUserService.Create(userDTO, request, reply);
         return this.handleResult(result, reply, this.notificationError);
     }
@@ -143,7 +143,7 @@ export class UserController extends BaseController {
         query.player3Points,
         query.player4Points,
     );
-    const result: Result<void> = await this.userService.UpdateStatsService(statsDTO, reply);
+    const result: Result = await this.userService.UpdateStatsService(statsDTO, reply);
     return this.handleResult(result, reply, this.notificationError);
   }
 }

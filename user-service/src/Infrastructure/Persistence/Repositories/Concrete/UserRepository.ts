@@ -83,6 +83,7 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
         }
 
         return usersData.map((user: any) => User.fromDatabase(
+            user.uuid,
             EmailVO.AddEmail(user.email),
             new PasswordHashVO(user.password),
             user.username,
@@ -141,7 +142,7 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
         const userData = await this.prisma.user.findFirst({
             where: {
                 OR: [
-                    {email: hashedEmail},
+                    {email: hashedEmail.getEmail()},
                     {email: email}
                 ]
             }
@@ -221,10 +222,10 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
     {
         const hashedEmail = EmailVO.AddEmailWithHash(email);
 
-        const exists = await this.prisma.User.findFirst({
+        const exists = await this.prisma.user.findFirst({
             where: {
                 OR: [
-                    {email: hashedEmail},
+                    {email: hashedEmail.getEmail()},
                     {email: email}
                 ]
             }

@@ -110,7 +110,7 @@ export class UserService implements BaseService<any,  boolean>
         try
         {
             const command: UpdateStatsCommand = UpdateStatsCommand.fromDTO(dto);
-            // await this.UpdateStatsValidator.Validator(command);
+            await this.UpdateStatsValidator.Validator(command);
             await this.UpdateStatsHandler.Handle(command);
 
             return Result.Success(`Stats from ${command.player1Username} and ${command.player2Username} updated successfully`);
