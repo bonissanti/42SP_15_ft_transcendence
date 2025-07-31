@@ -27,9 +27,6 @@ export class UpdateStatsCommandValidator implements BaseValidator<UpdateStatsCom
         if ((command.player3Points && command.player3Points < 0) || (command.player4Points && command.player4Points < 0))
             this.notificationError.AddError(ErrorCatalog.NegativePoints);
 
-        if (!await this.userRepository.VerifyIfUsersExistsByUsername(usersList))
-            this.notificationError.AddError(ErrorCatalog.UserNotFound);
-
         if (this.notificationError.NumberOfErrors() > 0)
         {
             const allErrors: CustomError[] = this.notificationError.GetAllErrors();
