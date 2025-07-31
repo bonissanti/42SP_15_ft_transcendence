@@ -1,6 +1,6 @@
 import { CreateUserDTO } from "../../DTO/ToCommand/CreateUserDTO.js";
 import { BaseService } from "../Interfaces/BaseService.js";
-import { FastifyReply } from "fastify";
+import {FastifyReply, FastifyRequest} from "fastify";
 import { Result } from "../../../Shared/Utils/Result.js";
 import { ErrorCatalog } from "../../../Shared/Errors/ErrorCatalog.js";
 import { CreateUserCommand } from "../../../Domain/Command/CommandObject/CreateUserCommand.js";
@@ -11,7 +11,6 @@ import { NotificationError } from "../../../Shared/Errors/NotificationError.js";
 import { ValidationException } from "../../../Shared/Errors/ValidationException.js";
 import { Prisma } from "@prisma/client";
 import {ErrorTypeEnum} from "../../Enums/ErrorTypeEnum.js";
-import {UserSessionDTO} from "../../DTO/ToCommand/UserSessionDTO.js";
 import {LoginUserViewModel} from "../../ViewModels/LoginUserViewModel.js";
 
 export class CreateUserService implements BaseService<CreateUserDTO> {
@@ -68,7 +67,7 @@ export class CreateUserService implements BaseService<CreateUserDTO> {
         const body = request.body;
 
         const token = request.server.jwt.sign({
-            uuid: body.uuid,
+            username: body.username,
             isAuthenticated: true,
         }, { expiresIn: '1h' });
 
@@ -79,10 +78,43 @@ export class CreateUserService implements BaseService<CreateUserDTO> {
             path: '/',
         });
 
-        return new LoginUserViewModel(token, body.uuid, body.username, body.profilePic);
+        return new LoginUserViewModel(token, null, body.username, body.profilePic);
     }
 
-    public Execute(): Promise<Result<void>> {
-        throw new Error("Method not implemented.");
+    public async Execute(dto: CreateUserDTO, reply: FastifyReply): Promise<Result>
+    {
+        try
+        {
+            const command: CreateUserCommand = CreateUserCommand.FromDTO(dto);
+            await this.CreateUserValidator.Validator(command);
+            await this.CreateUserHandler.Handle(command);
+
+            return Result.Success("User created successfully");
+        } catch (error)
+        {
+            if (error instanceof ValidationException)
+            {
+                const message: string = error.SetErrors();
+                return Result.Failure(message, ErrorTypeEnum.VALIDATION);
+            }
+            else if (error instanceof Prisma.PrismaClientKnownRequestError)
+            {
+                if (error.code === 'P2002') {
+                    const target = error.meta?.target as string[];
+
+                    if (target?.includes('username')) {
+                        return Result.Failure(ErrorCatalog.UsernameAlreadyExists.SetError(), ErrorTypeEnum.VALIDATION);
+                    }
+
+                    if (target?.includes('email')) {
+                        return Result.Failure("Code:409 Message:Este email já está em uso.");
+                    }
+                }
+
+                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError(), ErrorTypeEnum.CONFLICT);
+            }
+
+            return Result.Failure(ErrorCatalog.InternalServerError.SetError(), ErrorTypeEnum.CONFLICT);
+        }
     }
 }
