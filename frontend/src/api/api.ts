@@ -50,13 +50,9 @@ export async function fetchWithGame(url: string, options: RequestInit = {}): Pro
 }
 
 export function isUserAuthenticated(): boolean {
-  console.log('Todos os cookies:', document.cookie);
   
   const hasCookie = document.cookie.split('; ').some((row) => row.startsWith('token='));
   const hasLocalStorage = !!localStorage.getItem('jwtToken');
-  
-  console.log('Token no cookie?', hasCookie);
-  console.log('Token no localStorage?', hasLocalStorage);
   
   return hasCookie || hasLocalStorage;
 }
