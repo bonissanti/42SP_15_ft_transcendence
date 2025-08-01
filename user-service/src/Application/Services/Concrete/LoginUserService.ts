@@ -40,8 +40,7 @@ export class LoginUserService  implements BaseService<UserSessionDTO, LoginUserV
             const command: UserSessionCommand = UserSessionCommand.FromDTO(dto);
             await this.LoginUserValidator.Validator(command);
             await this.LoginUserHandler.Handle(command);
-            const user = await this.UserRepository.GetUserEntityByEmail(command.Email);
-            const loginUserViewModel = this.GenerateToken(reply, user);
+            const loginUserViewModel = this.GenerateToken(reply, request);
 
             return Result.SuccessWithData<LoginUserViewModel>("User logged in successfully", loginUserViewModel);
         }
@@ -63,21 +62,22 @@ export class LoginUserService  implements BaseService<UserSessionDTO, LoginUserV
         }
     }
 
-    private GenerateToken(reply: FastifyReply, user: User)
+    private GenerateToken(reply: FastifyReply, request: FastifyRequest<{ Body: UserSessionDTO }>)
     {
-        const token = reply.server.jwt.sign({
-            uuid: user.Uuid,
-            username: user.Username,
+        const body = request.body;
+
+        const token = request.server.jwt.sign({
+            email: body.email,
             isAuthenticated: true,
         }, { expiresIn: '1d' });
 
         reply.setCookie('token', token, {
             httpOnly: true,
-            secure: true,
+            secure: false, // Deixei como false porque a aplicação ainda está em HTTP, mas deve ser true em HTTPS
             sameSite: 'lax',
             path: '/',
         });
 
-        return new LoginUserViewModel(token, user.Uuid, user.Username, user.ProfilePic);
+        return new LoginUserViewModel(token);
     }
 }
