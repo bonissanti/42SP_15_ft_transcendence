@@ -1,7 +1,7 @@
 import { routes } from '../config/routes';
 import { renderView } from './view';
 import { stopPongGame } from '../pong/game';
-import { logout, initializeAuth } from '../auth/auth';
+import { initializeGoogleButton, logout } from '../auth/auth';
 import { fetchWithAuth, isUserAuthenticated } from '../api/api';
 
 const appContainer = document.getElementById('app') as HTMLDivElement;
@@ -95,7 +95,7 @@ export async function router() {
     } 
 
     if (route.view === 'login') {
-      initializeAuth();
+      initializeGoogleButton();
     }
   } else {
     appContainer.innerHTML = await renderView('404');
