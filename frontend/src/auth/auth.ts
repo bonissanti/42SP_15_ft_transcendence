@@ -214,7 +214,7 @@ export function initializeAuth() {
       attempts++;
       if (attempts > maxAttempts) {
         clearInterval(checkGoogleReady);
-        console.error("A API do Google não carregou a tempo ou o elemento 'g_id_signin' não foi encontrado.");
+        console.error("A API do Google não carregou a tempo ou o elemento 'g_id_signin' não foi encontrado");
       }
     }
   }, 100);
