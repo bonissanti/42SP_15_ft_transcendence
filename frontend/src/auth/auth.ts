@@ -2,6 +2,7 @@ import { API_BASE_URL, GOOGLE_CLIENT_ID } from '../utils/constants';
 import { updateProfileLink } from '../components/profileLink';
 import { stopStatusListeners } from '../core/router';
 import { isUserAuthenticated } from '../api/api';
+import { t, ErrorKeys } from '../i18n';
 
 declare global {
   interface Window {
@@ -56,17 +57,25 @@ async function handleAuthSuccess(data: any) {
   }, 100);
 }
 
-function displayAuthError(message: string) {
-    const errorElement = document.getElementById('auth-error');
-    if (errorElement) {
-        const friendlyMessage = message.split('Message:')[1] || message;
-        errorElement.textContent = friendlyMessage.trim();
+function displayAuthError(backendMessage?: string) {
+  const errorElement = document.getElementById('auth-error');
+  if (errorElement) {
+    if (backendMessage) {
+      const cleanMessage = backendMessage.split('Message:')[1]?.trim() || backendMessage;
+      const errorTranslations = t().errors;
+      const displayMessage = errorTranslations[cleanMessage as ErrorKeys] || errorTranslations["Default Error"];
+      errorElement.textContent = displayMessage;
+      errorElement.style.display = 'block';
+    } else {
+      errorElement.textContent = '';
+      errorElement.style.display = 'none';
     }
+  }
 }
 
 async function handleEmailLogin(event: Event) {
     event.preventDefault();
-    displayAuthError('');
+    displayAuthError();
     const email = (document.getElementById('login-email') as HTMLInputElement).value;
     const password = (document.getElementById('login-password') as HTMLInputElement).value;
 
@@ -96,21 +105,11 @@ async function handleEmailLogin(event: Event) {
 
 async function handleRegister(event: Event) {
     event.preventDefault();
-    displayAuthError('');
+    displayAuthError();
     const username = (document.getElementById('register-username') as HTMLInputElement).value;
     const email = (document.getElementById('register-email') as HTMLInputElement).value;
     const password = (document.getElementById('register-password') as HTMLInputElement).value;
 
-    const body = JSON.stringify({
-        username,
-        email,
-        password,
-        anonymous: false,
-        profilePic: null,
-        lastLogin: null
-    });
-
-    console.log("Enviando body: ", body);
     try {
         const res = await fetch(`${API_BASE_URL}/user`, {
             method: 'POST',
@@ -124,7 +123,7 @@ async function handleRegister(event: Event) {
                 lastLogin: null
             }),
         });
-
+        console.log("Resposta do servidor:", res);
         const data = await res.json();
         if (res.ok) {
             await handleAuthSuccess(data);
@@ -175,7 +174,7 @@ function setupViews() {
         loginView?.classList.add('hidden');
         registerView?.classList.add('hidden');
         viewToShow?.classList.remove('hidden');
-        displayAuthError(''); 
+        displayAuthError();
     };
 
     showLoginBtn?.addEventListener('click', () => showView(loginView));
