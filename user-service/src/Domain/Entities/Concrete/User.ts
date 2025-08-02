@@ -17,6 +17,8 @@ export class User implements BaseEntity
     public matchesPlayed: number;
     public wins: number;
     public loses: number;
+    public twoFactorEnabled: boolean = false;
+    public twoFactorSecret: string | null = null;
 
     constructor(
         email: EmailVO,
@@ -80,6 +82,23 @@ export class User implements BaseEntity
         this.LastLogin = new Date();
     }
 
+    public get TwoFactorEnabled(): boolean
+    {
+        return this.twoFactorEnabled;
+    }
+
+    public EnableTwoFA(secret: string): void
+    {
+        this.twoFactorSecret = secret;
+        this.twoFactorEnabled = true;
+    }
+
+    public DisableTwoFA(): void
+    {
+        this.twoFactorEnabled = false;
+        this.twoFactorSecret = null;
+    }
+
     public static fromDatabase(
         uuid: string,
         email: EmailVO,
@@ -90,7 +109,9 @@ export class User implements BaseEntity
         isOnline: boolean,
         matchesPlayed: number,
         wins: number,
-        loses: number
+        loses: number,
+        twoFactorEnabled: boolean,
+        twoFactorSecret: string | null
     ): User
     {
         const user = Object.create(User.prototype);
@@ -104,6 +125,8 @@ export class User implements BaseEntity
         user.matchesPlayed = matchesPlayed;
         user.wins = wins;
         user.loses = loses;
+        user.twoFactorEnabled = twoFactorEnabled;
+        user.twoFactorSecret = twoFactorSecret;
         return user;
 
     }
