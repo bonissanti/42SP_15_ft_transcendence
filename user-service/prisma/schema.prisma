@@ -14,7 +14,7 @@ datasource db {
 
 enum StatusRequest {
     PENDING
-    ACCEPT
+    ACCEPTED
     REJECTED
 
     @@map("StatusRequest")

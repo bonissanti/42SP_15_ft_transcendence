@@ -16,7 +16,7 @@ export const FriendshipRoutes = async (server: any, friendshipController: Friend
         return await friendshipController.ChangeStatusRequestFriend(request, reply);
     })
 
-    server.get('/friendsList', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Body: GetFriendshipListDTO }>, reply: FastifyReply) => {
+    server.get('/friendsList', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Querystring: GetFriendshipListDTO }>, reply: FastifyReply) => {
         return await friendshipController.FriendshipStatusList(request, reply);
     })
 

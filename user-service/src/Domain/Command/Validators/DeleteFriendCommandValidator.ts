@@ -15,8 +15,8 @@ export class DeleteFriendCommandValidator implements BaseValidator<DeleteFriendC
 
     public async Validator(command: DeleteFriendCommand): Promise<void>
     {
-        if (!await this.userRepository.VerifyIfUserExistsByUUID(command.friendshipUuid))
-            this.notificationError.AddError(ErrorCatalog.UserNotFound);
+        //if (!await this.userRepository.VerifyIfUserExistsByUUID(command.friendshipUuid))
+          //  this.notificationError.AddError(ErrorCatalog.UserNotFound);
 
         if (!await this.friendshipRepository.VerifyIfFriendshipExistsByFriendshipUuid(command.friendshipUuid))
             this.notificationError.AddError(ErrorCatalog.FriendshipAlreadyExists);

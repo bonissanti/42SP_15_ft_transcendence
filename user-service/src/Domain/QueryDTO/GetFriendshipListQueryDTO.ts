@@ -10,6 +10,8 @@ export class GetFriendshipListQueryDTO
     public readonly wins: number;
     public readonly loses: number;
     public readonly matchesPlayed: number;
+    public readonly senderUuid: string;
+    public readonly receiverUuid: string;
 
     constructor(
         uuid: string,
@@ -19,7 +21,9 @@ export class GetFriendshipListQueryDTO
         friendProfilePic: string | null,
         wins: number,
         loses: number,
-        matchesPlayed: number
+        matchesPlayed: number,
+        senderUuid: string,
+        receiverUuid: string
     )
     {
         this.uuid = uuid;
@@ -30,5 +34,7 @@ export class GetFriendshipListQueryDTO
         this.wins = wins;
         this.loses = loses;
         this.matchesPlayed = matchesPlayed;
+        this.senderUuid = senderUuid;
+        this.receiverUuid = receiverUuid;
     }
 }

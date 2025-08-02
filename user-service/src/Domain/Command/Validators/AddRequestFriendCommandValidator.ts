@@ -24,6 +24,7 @@ export class AddRequestFriendCommandValidator implements BaseValidator<AddReques
     //TODO: RequestFriend or FriendRequest?
     public async Validator(command: AddRequestFriendCommand): Promise<void>
     {
+        this.NotificationError.CleanErrors();
         if (command.senderUuid === command.receiverUuid)
             this.NotificationError.AddError(ErrorCatalog.RequestToSamePerson);
 

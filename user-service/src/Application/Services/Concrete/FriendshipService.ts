@@ -120,7 +120,6 @@ export class FriendshipService implements BaseService<any, boolean>
             const query = GetFriendshipListQuery.fromQuery(dto);
             await this.GetFriendshipValidator.Validator(query);
             const getFriendshipQueryDTO = await this.GetFriendshipHandler.Handle(query);
-
             if (!getFriendshipQueryDTO)
                 return Result.SuccessWithData<GetFriendshipListViewModel[]>("Friend's list from user not found", getFriendshipViewModel);
 

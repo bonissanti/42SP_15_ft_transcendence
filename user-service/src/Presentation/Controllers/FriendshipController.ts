@@ -34,15 +34,19 @@ export class FriendshipController extends BaseController
     public async ChangeStatusRequestFriend(request: FastifyRequest<{ Body: ChangeRequestFriendStatusDTO}>, reply: FastifyReply): Promise<Result>
     {
         const body = request.body;
+        console.log("Passou do body");
         const friendDTO: ChangeRequestFriendStatusDTO = new ChangeRequestFriendStatusDTO(body.friendshipUuid, body.status);
+        console.log("Passou do friend DTO");
         const result: Result = await this.friendshipService.ChangeStatusService(friendDTO, reply);
+        console.log("Passou do Result");
         return this.handleResult(result, reply, this.notificationError);
+        
     }
 
-    public async FriendshipStatusList(request: FastifyRequest<{ Body: GetFriendshipListDTO }>, reply: FastifyReply): Promise<Result<GetFriendshipListViewModel[]>>
+    public async FriendshipStatusList(request: FastifyRequest<{ Querystring: GetFriendshipListDTO }>, reply: FastifyReply): Promise<Result<GetFriendshipListViewModel[]>>
     {
-        const body = request.body;
-        const friendDTO: GetFriendshipListDTO = new GetFriendshipListDTO(body.userUuid, body.status);
+        const query = request.query;
+        const friendDTO: GetFriendshipListDTO = new GetFriendshipListDTO(query.userUuid, query.status);
         const result: Result<GetFriendshipListViewModel[]> = await this.friendshipService.ListFriendService(friendDTO, reply);
         return this.handleResult(result, reply, this.notificationError);
     }

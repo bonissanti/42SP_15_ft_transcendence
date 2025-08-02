@@ -55,10 +55,8 @@ export class FriendshipRepository implements IBaseRepository<GetFriendshipListQu
                 receiver: true
             }
         });
-
         if (!friendships || friendships.length === 0)
             return [];
-
         return friendships.map((friendship: any) => {
             const isSender = friendship.senderUuid === userUuid;
             const friendUser = isSender ? friendship.receiver : friendship.sender;
@@ -95,7 +93,7 @@ export class FriendshipRepository implements IBaseRepository<GetFriendshipListQu
                 ]
             }
         })
-
+    
         return friendship !== null;
     }
 
@@ -123,7 +121,7 @@ export class FriendshipRepository implements IBaseRepository<GetFriendshipListQu
         return friendship !== null;
     }
 
-    private mapToQueryDTO(friendship: Friendship, friendUser: any): GetFriendshipListQueryDTO
+    private mapToQueryDTO(friendship: any, friendUser: any): GetFriendshipListQueryDTO
     {
         return new GetFriendshipListQueryDTO(
             friendship.uuid,
@@ -133,7 +131,9 @@ export class FriendshipRepository implements IBaseRepository<GetFriendshipListQu
             friendUser.profilePic,
             friendUser.wins,
             friendUser.loses,
-            friendUser.matchesPlayed
+            friendUser.matchesPlayed,
+            friendship.senderUuid,
+            friendship.receiverUuid
         );
     }
 
