@@ -6,6 +6,7 @@ import {DeleteUserDTO} from "../../../Application/DTO/ToCommand/DeleteUserDTO.js
 import {UserController} from "../../Controllers/UserController.js";
 import {UpdateStatsDTO} from "../../../Application/DTO/ToCommand/UpdateStatsDTO.js";
 import {GetUserDTO} from "../../../Application/DTO/ToQuery/GetUserDTO.js";
+import {UploadPhotoDTO} from "../../../Application/DTO/ToCommand/UploadPhotoDTO.js";
 
 const opts = {
     schema: {
@@ -142,5 +143,9 @@ export const UserRoutes = async (server: any, userController: UserController) =>
 
     server.put('/updateStats', updateStatsOpts, async (request: FastifyRequest <{ Body: UpdateStatsDTO }>,  reply: FastifyReply) => {
         return await userController.UpdateStats(request, reply);
+    });
+
+    server.put('/uploadPhoto', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Body: UploadPhotoDTO }>, reply: FastifyReply) => {
+        return await userController.UploadPhoto(request, reply);
     });
 }

@@ -43,6 +43,8 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
                 matchesPlayed: userEntity?.matchesPlayed,
                 wins: userEntity?.wins,
                 loses: userEntity?.loses,
+                twoFactorEnabled: userEntity?.twoFactorEnabled,
+                twoFactorSecret: userEntity?.twoFactorSecret,
             },
         });
     }
@@ -63,6 +65,8 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
                     matchesPlayed: user?.matchesPlayed,
                     wins: user?.wins,
                     loses: user?.loses,
+                    twoFactorEnabled: user?.twoFactorEnabled,
+                    twoFactorSecret: user?.twoFactorSecret,
                 }
             })
         );
@@ -92,7 +96,9 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
             user.isOnline,
             user.matchesPlayed,
             user.wins,
-            user.loses
+            user.loses,
+            user.twoFactorEnabled,
+            user.twoFactorSecret,
         ));
     }
 
@@ -110,13 +116,17 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
             userData.isOnline,
             userData.matchesPlayed,
             userData.wins,
-            userData.loses
+            userData.loses,
+            userData.twoFactorEnabled,
+            userData.twoFactorSecret,
         );
         return this.mapToQueryDTO(entity);
     }
 
     public async GetUserEntityByUuid(uuid: string): Promise<User | null> {
-        const userData = await this.prisma.user.findUnique({where: {uuid}});
+        const userData = await this.prisma.user.findUnique({
+            where: { uuid: uuid },
+        });
 
         if (!userData)
             return null;
@@ -131,7 +141,9 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
             userData.isOnline,
             userData.matchesPlayed,
             userData.wins,
-            userData.loses
+            userData.loses,
+            userData.twoFactorEnabled,
+            userData.twoFactorSecret,
         );
     }
 
@@ -161,7 +173,9 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
             userData.isOnline,
             userData.matchesPlayed,
             userData.wins,
-            userData.loses
+            userData.loses,
+            userData.twoFactorEnabled,
+            userData.twoFactorSecret,
         );
     }
 
@@ -181,7 +195,9 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
             userData.isOnline,
             userData.matchesPlayed,
             userData.wins,
-            userData.loses
+            userData.loses,
+            userData.twoFactorEnabled,
+            userData.twoFactorSecret,
         );
     }
 
@@ -202,7 +218,9 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
             user.isOnline,
             user.matchesPlayed,
             user.wins,
-            user.loses
+            user.loses,
+            user.twoFactorEnabled,
+            user.twoFactorSecret,
         ));
     }
 
@@ -321,7 +339,9 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
             userEntity.wins,
             userEntity.loses,
             userEntity.isOnline,
-            userEntity.LastLogin
+            userEntity.LastLogin,
+            userEntity.twoFactorEnabled,
+            userEntity.twoFactorSecret,
         );
     }
 }

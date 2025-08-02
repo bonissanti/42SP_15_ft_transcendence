@@ -33,15 +33,16 @@ export class LoginUserService  implements BaseService<UserSessionDTO, LoginUserV
         throw new Error("Method not implemented.");
     }
 
-    public async Login(dto: UserSessionDTO, request: FastifyRequest <{ Body: UserSessionDTO}>, reply: FastifyReply) : Promise<Result<LoginUserViewModel>>
+    public async Login(dto: UserSessionDTO, request: FastifyRequest<{ Body: UserSessionDTO}>, reply: FastifyReply): Promise<Result<LoginUserViewModel>>
     {
         try
         {
             const command: UserSessionCommand = UserSessionCommand.FromDTO(dto);
             await this.LoginUserValidator.Validator(command);
-            await this.LoginUserHandler.Handle(command);
-            const user = await this.UserRepository.GetUserEntityByEmail(command.Email);
-            const loginUserViewModel = this.GenerateToken(reply, user);
+            const loginUserViewModel = await this.LoginUserHandler.Handle(command, request, reply);
+
+            if (loginUserViewModel.token == null)
+                return Result.SuccessWithData<LoginUserViewModel>("2FA verification required", loginUserViewModel);
 
             return Result.SuccessWithData<LoginUserViewModel>("User logged in successfully", loginUserViewModel);
         }
@@ -61,23 +62,5 @@ export class LoginUserService  implements BaseService<UserSessionDTO, LoginUserV
             }
             return Result.Failure(ErrorCatalog.InternalServerError.SetError(), ErrorTypeEnum.INTERNAL);
         }
-    }
-
-    private GenerateToken(reply: FastifyReply, user: User)
-    {
-        const token = reply.server.jwt.sign({
-            uuid: user.Uuid,
-            username: user.Username,
-            isAuthenticated: true,
-        }, { expiresIn: '1d' });
-
-        reply.setCookie('token', token, {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'lax',
-            path: '/',
-        });
-
-        return new LoginUserViewModel(token, user.Uuid, user.Username, user.ProfilePic);
     }
 }

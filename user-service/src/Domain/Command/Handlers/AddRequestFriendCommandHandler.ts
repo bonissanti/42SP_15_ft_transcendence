@@ -6,7 +6,7 @@ import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
 import {UserRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/UserRepository.js";
 import {StatusRequestEnum} from "../../../Application/Enums/StatusRequestEnum.js";
 
-export class AddRequestFriendCommandHandler implements BaseHandlerCommand<AddRequestFriendCommand>
+export class AddRequestFriendCommandHandler implements BaseHandlerCommand<AddRequestFriendCommand, void>
 {
     private FriendshipRepository: FriendshipRepository;
     private UserRepository: UserRepository;
