@@ -124,7 +124,7 @@ async function handleRegister(event: Event) {
                 email, 
                 password,
                 anonymous: anonymous,
-                profilePic: null,
+                profilePic: '/img/cachorrao_user.png',
                 lastLogin: null
             }),
         });

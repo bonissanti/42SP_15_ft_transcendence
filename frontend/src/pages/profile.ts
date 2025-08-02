@@ -1,4 +1,4 @@
-import { fetchWithAuth } from '../api/api';
+import { fetchWithAuth, fetchWithGame } from '../api/api';
 import { logout } from '../auth/auth';
 import { renderView } from '../core/view';
 import { getCurrentLanguage, t, ErrorKeys } from '../i18n';
@@ -10,6 +10,49 @@ function displayProfileError(errorKey: ErrorKeys) {
   if (errorElement) {
     errorElement.textContent = t().errors[errorKey] || t().errors['Default Error'];
   }
+}
+
+function renderMatchHistory(history: any[]): string {
+  if (!history || history.length === 0) {
+    return `<p class="text-center text-xl mt-4">🕹️ Você ainda não tem partidas jogadas.</p>`;
+  }
+
+  return history.reverse().map(match => {
+    const isTournament = match.tournamentName === 'remote' || match.tournamentName === 'tournament';
+    let playersHtml = '';
+
+    if (isTournament) {
+      const players = [
+        { name: match.player1Username, points: match.player1Points },
+        { name: match.player2Username, points: match.player2Points },
+        { name: match.player3Username, points: match.player3Points },
+        { name: match.player4Username, points: match.player4Points },
+      ].filter(p => p.name).sort((a, b) => a.points - b.points);
+
+      playersHtml = players.map((p, index) => `<div class="text-lg">${index + 1}º lugar - ${p.name}</div>`).join('');
+
+      return `
+        <div class="bg-slate-800 p-4 rounded-lg mb-4 shadow-retro">
+          <h3 class="text-2xl text-indigo-400 font-bold mb-2">🏆 Torneio: ${match.tournamentName}</h3>
+          ${playersHtml}
+        </div>
+      `;
+    } else {
+      const players = [
+        { name: match.player1Username, points: match.player1Points },
+        { name: match.player2Username, points: match.player2Points },
+      ].filter(p => p.name);
+
+      playersHtml = players.map(p => `<div class="text-lg">${p.name}: ${p.points} pts</div>`).join('');
+
+      return `
+        <div class="bg-slate-800 p-4 rounded-lg mb-4 shadow-retro">
+          <h3 class="text-xl text-indigo-400 font-bold mb-2">🎮 Modo: ${match.tournamentName}</h3>
+          ${playersHtml}
+        </div>
+      `;
+    }
+  }).join('');
 }
 
 export async function showProfile(): Promise<string> {
@@ -39,7 +82,7 @@ export async function showProfile(): Promise<string> {
 
     const viewHtml = await renderView('profile', { user });
 
-    setTimeout(() => {
+    setTimeout(async () => {
       document.getElementById('logout-button')?.addEventListener('click', logout);
 
       const editProfileButton = document.getElementById('edit-profile-button');
@@ -48,7 +91,7 @@ export async function showProfile(): Promise<string> {
       const cancelEditButton = document.getElementById('cancel-edit-button');
       const usernameInput = document.getElementById('edit-username') as HTMLInputElement;
       const errorElement = document.getElementById('profile-error-message');
-
+      
       editProfileButton?.addEventListener('click', () => {
         if (usernameInput) {
             usernameInput.value = user.Username;
@@ -156,6 +199,22 @@ export async function showProfile(): Promise<string> {
           deleteAccountModal?.classList.add('hidden');
         }
       });
+
+      try {
+        const historyResponse = await fetchWithGame(`/history?username=${user.Username}`);
+        const history = await historyResponse.json();
+        const historyContainer = document.getElementById('match-history-container');
+        if (historyContainer) {
+          historyContainer.innerHTML = renderMatchHistory(history);
+        }
+      } catch (error) {
+        console.error('Failed to load match history:', error);
+        const historyContainer = document.getElementById('match-history-container');
+        if (historyContainer) {
+          historyContainer.innerHTML = `<p class="text-center text-red-500">Erro ao carregar o histórico de partidas.</p>`;
+        }
+      }
+
     }, 0);
 
     return viewHtml;

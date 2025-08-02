@@ -161,10 +161,10 @@ export function draw() {
     });
 }
 
-export async function sendMatchHistory(tournamentName: string, player1Username: string | null, player1Points: number | null, player2Username: string | null, player2Points: number | null, player3Username: string | null = null, player3Points: number | null = null, player4Username: string | null = null, player4Points: number | null = null) {
+export async function sendMatchHistory(gameType: string, tournamentName: string, player1Username: string | null, player1Points: number | null, player2Username: string | null, player2Points: number | null, player3Username: string | null = null, player3Points: number | null = null, player4Username: string | null = null, player4Points: number | null = null) {
   try {
     const historyData = {
-      gameType: tournamentName.toUpperCase(),
+      gameType: gameType.toUpperCase(),
       tournamentName: tournamentName,
       player1Username: player1Username,
       player1Points: player1Points,

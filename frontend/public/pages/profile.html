@@ -1,7 +1,7 @@
 <div>
   <h1 class="text-4xl text-glow mb-8">{{user.Username}}</h1>
   <img src="{{user.ProfilePic}}" alt="Foto de Perfil" class="w-32 h-32 rounded-full mx-auto border-4 border-white shadow-retro mb-4">
- <div class="text-left max-w-sm mx-auto bg-slate-800 p-4 rounded-lg break-words">
+  <div class="text-left max-w-sm mx-auto bg-slate-800 p-4 rounded-lg break-words">
     <p class="mb-2"><strong class="text-indigo-400">Email:</strong> {{user.Email}}</p>
     <p class="mb-2"><strong class="text-indigo-400">Status:</strong> <span class="{{user.statusColor}}">{{user.statusText}}</span></p>
     <p class="mb-2"><strong class="text-indigo-400">{{matchesPlayed}}:</strong> {{user.matchesPlayed}}</p>
@@ -22,16 +22,12 @@
 <div id="edit-profile-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
   <div class="bg-slate-800 p-8 rounded-xl shadow-retro text-center w-full max-w-md">
     <h2 class="text-3xl mb-6 text-glow">Editar Perfil</h2>
-
     <form id="edit-profile-form">
       <input type="text" id="edit-username" name="username" placeholder="Novo nome de usuário" class="input-field mb-4">
       <input type="password" id="edit-password" name="password" placeholder="Nova senha" class="input-field mb-6">
-
       <p id="profile-error-message" class="text-red-500 mb-4"></p>
-
       <button type="submit" class="menu-button w-full">Salvar Alterações</button>
     </form>
-
     <button id="cancel-edit-button" class="back-button">Cancelar</button>
   </div>
 </div>
@@ -46,3 +42,5 @@
     </div>
   </div>
 </div>
+
+<div id="match-history-container" class="mt-8 text-left max-w-2xl mx-auto"></div>

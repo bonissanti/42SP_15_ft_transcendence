@@ -39,8 +39,8 @@ export class HistoryRepository implements IBaseRepository<GetAllHistoriesQueryDT
             } : {}
         });
 
-        if (!historyData.length)
-            throw new Error(ErrorCatalog.HistoryNotFound.SetError());
+        // if (!historyData.length)
+        //     throw new Error(ErrorCatalog.HistoryNotFound.SetError());
 
         return historyData.map((historyData) => this.RecoverEntity(historyData));
     }
