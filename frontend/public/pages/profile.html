@@ -9,7 +9,24 @@
     <p class="mb-2"><strong class="text-indigo-400">{{loses}}:</strong> {{user.loses}}</p>
     <p class="mb-2"><strong class="text-indigo-400">{{lastLogin}}:</strong> {{user.formattedLastLogin}}</p>
   </div>
+  <button id="edit-profile-button" class="menu-button mt-4">Editar Perfil</button>
   <button id="logout-button" class="menu-button mt-4 bg-red-700 hover:bg-red-600">Sair</button>
   <button class="menu-button mt-8" data-navigate="/">{{backToMenu}}</button>
+</div>
+
+<div id="edit-profile-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+  <div class="bg-slate-800 p-8 rounded-xl shadow-retro text-center w-full max-w-md">
+    <h2 class="text-3xl mb-6 text-glow">Editar Perfil</h2>
+
+    <form id="edit-profile-form">
+      <input type="text" id="edit-username" name="username" placeholder="Novo nome de usuário" class="input-field mb-4">
+      <input type="password" id="edit-password" name="password" placeholder="Nova senha" class="input-field mb-6">
+
+      <p id="profile-error-message" class="text-red-500 mb-4"></p>
+
+      <button type="submit" class="menu-button w-full">Salvar Alterações</button>
+    </form>
+
+    <button id="cancel-edit-button" class="back-button">Cancelar</button>
   </div>
 </div>
