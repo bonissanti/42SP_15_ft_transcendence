@@ -123,6 +123,39 @@ export async function showProfile(): Promise<string> {
           displayProfileError('Network Error');
         }
       });
+      
+      const deleteAccountButton = document.getElementById('delete-account-button');
+      const deleteAccountModal = document.getElementById('delete-account-modal');
+      const cancelDeleteButton = document.getElementById('cancel-delete-button');
+      const confirmDeleteButton = document.getElementById('confirm-delete-button');
+
+      deleteAccountButton?.addEventListener('click', () => {
+        deleteAccountModal?.classList.remove('hidden');
+      });
+
+      cancelDeleteButton?.addEventListener('click', () => {
+        deleteAccountModal?.classList.add('hidden');
+      });
+
+      confirmDeleteButton?.addEventListener('click', async () => {
+        try {
+          const response = await fetchWithAuth('/user', {
+            method: 'DELETE',
+            body: JSON.stringify({ Uuid: user.Uuid }),
+          });
+
+          if (response.ok) {
+            logout();
+          } else {
+            alert('Erro ao deletar a conta.');
+          }
+        } catch (error) {
+          console.error('Falha ao deletar a conta:', error);
+          alert('Erro ao deletar a conta.');
+        } finally {
+          deleteAccountModal?.classList.add('hidden');
+        }
+      });
     }, 0);
 
     return viewHtml;
