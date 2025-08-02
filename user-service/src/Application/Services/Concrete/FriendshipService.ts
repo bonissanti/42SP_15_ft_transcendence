@@ -49,7 +49,7 @@ export class FriendshipService implements BaseService<any, boolean>
     {
         this.FriendshipRepository = friendshipRepository;
         this.UserRepository = userRepository;
-        this.AddRequestFriendHandler = new AddRequestFriendCommandHandler(friendshipRepository, notificationError);
+        this.AddRequestFriendHandler = new AddRequestFriendCommandHandler(friendshipRepository, userRepository, notificationError);
         this.AddRequestFriendValidator = new AddRequestFriendCommandValidator(friendshipRepository, userRepository, notificationError);
         this.ChangeRequestFriendStatusHandler = new ChangeRequestFriendStatusCommandHandler(friendshipRepository, notificationError);
         this.ChangeRequestFriendStatusValidator = new ChangeRequestFriendStatusCommandValidator(friendshipRepository, notificationError);

@@ -133,7 +133,8 @@ export class FriendshipRepository implements IBaseRepository<GetFriendshipListQu
             friendUser.loses,
             friendUser.matchesPlayed,
             friendship.senderUuid,
-            friendship.receiverUuid
+            friendship.receiverUuid,
+            friendUser.isOnline
         );
     }
 

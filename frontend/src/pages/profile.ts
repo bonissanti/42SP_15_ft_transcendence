@@ -69,7 +69,7 @@ async function showFriends(friendsContent: HTMLElement, currentUserUuid: string)
 
         friendsContent.innerHTML = friends.map((friend: any) => `
             <div class="flex justify-between items-center bg-slate-700 p-2 rounded mb-2">
-                <span>${friend.friendUsername}</span>
+                <span>${friend.friendUsername} - <span class="${friend.isOnline ? 'text-green-500' : 'text-red-500'}">${friend.isOnline ? 'Online' : 'Offline'}</span></span>
                 <button class="delete-friend-button bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-2 rounded" data-friendship-uuid="${friend.uuid}">Deletar</button>
             </div>
         `).join('');
@@ -139,7 +139,7 @@ async function showAllUsers(friendsContent: HTMLElement, currentUserUuid: string
         if (availableUsers.length > 0) {
             content += availableUsers.map((user: any) => `
                 <div class="flex justify-between items-center bg-slate-700 p-2 rounded mb-2">
-                    <span>${user.Username}</span>
+                    <span>${user.Username} - <span class="${user.isOnline ? 'text-green-500' : 'text-red-500'}">${user.isOnline ? 'Online' : 'Offline'}</span></span>
                     <button class="add-friend-button bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-2 rounded" data-receiver-uuid="${user.Uuid}">Adicionar</button>
                 </div>
             `).join('');
@@ -185,7 +185,7 @@ async function showPendingRequests(friendsContent: HTMLElement, currentUserUuid:
 
         friendsContent.innerHTML = requests.map((req: any) => `
             <div class="flex justify-between items-center bg-slate-700 p-2 rounded mb-2">
-                <span>${req.friendUsername}</span> 
+                <span>${req.friendUsername} - <span class="${req.isOnline ? 'text-green-500' : 'text-red-500'}">${req.isOnline ? 'Online' : 'Offline'}</span></span> 
                 <div>
                     <button class="accept-request-button bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-2 rounded mr-2" data-friendship-uuid="${req.uuid}">Aceitar</button>
                     <button class="reject-request-button bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-2 rounded" data-friendship-uuid="${req.uuid}">Rejeitar</button>

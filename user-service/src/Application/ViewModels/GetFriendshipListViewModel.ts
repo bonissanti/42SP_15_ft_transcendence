@@ -12,6 +12,7 @@ export class GetFriendshipListViewModel {
     public readonly matchesPlayed: number;
     public readonly senderUuid: string;
     public readonly receiverUuid: string;
+    public readonly isOnline: boolean;
 
     constructor(
         uuid: string,
@@ -23,7 +24,8 @@ export class GetFriendshipListViewModel {
         loses: number,
         matchesPlayed: number,
         senderUuid: string,
-        receiverUuid: string
+        receiverUuid: string,
+        isOnline: boolean
     ) {
         this.uuid = uuid;
         this.status = status;
@@ -35,6 +37,7 @@ export class GetFriendshipListViewModel {
         this.matchesPlayed = matchesPlayed;
         this.senderUuid = senderUuid;
         this.receiverUuid = receiverUuid;
+        this.isOnline = isOnline;
     }
 
     public static fromQueryDTO(queryDTO: GetFriendshipListQueryDTO[]): GetFriendshipListViewModel[]
@@ -49,7 +52,8 @@ export class GetFriendshipListViewModel {
             friends.loses,
             friends.matchesPlayed,
             friends.senderUuid,
-            friends.receiverUuid
+            friends.receiverUuid,
+            friends.isOnline
         ));
     }
 }
