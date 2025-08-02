@@ -70,7 +70,7 @@ export class CreateUserService implements BaseService<CreateUserDTO> {
             uuid: user.Uuid,
             username: user.Username,
             isAuthenticated: true,
-        }, { expiresIn: '1h' });
+        }, { expiresIn: '1d' });
 
         reply.setCookie('token', token, {
             httpOnly: true,

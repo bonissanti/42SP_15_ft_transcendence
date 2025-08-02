@@ -1,4 +1,5 @@
 import {StatusRequestEnum} from "../../../Application/Enums/StatusRequestEnum.js";
+import * as crypto from "crypto";
 
 export class Friendship
 {

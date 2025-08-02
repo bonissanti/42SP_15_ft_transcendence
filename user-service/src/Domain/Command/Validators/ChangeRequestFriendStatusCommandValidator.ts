@@ -21,12 +21,12 @@ export class ChangeRequestFriendStatusCommandValidator implements BaseValidator<
 
     public async Validator(command: ChangeRequestFriendStatusCommand): Promise<void>
     {
+        this.NotificationError.CleanErrors();
         if (command.status === StatusRequestEnum.PENDING)
             this.NotificationError.AddError(ErrorCatalog.InvalidStatusFriendRequest);
 
-        if (await this.FriendshipRepository.VerifyIfFriendshipExistsByFriendshipUuid(command.friendshipUuid))
+        if (!await this.FriendshipRepository.VerifyIfFriendshipExistsByFriendshipUuid(command.friendshipUuid))
             this.NotificationError.AddError(ErrorCatalog.FriendshipAlreadyExists);
-
         if (this.NotificationError.NumberOfErrors() > 0){
             const allErrors : CustomError[] = this.NotificationError.GetAllErrors();
             throw new ValidationException(allErrors);

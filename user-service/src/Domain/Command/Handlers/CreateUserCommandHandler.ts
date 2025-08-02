@@ -32,7 +32,7 @@ export class CreateUserCommandHandler implements BaseHandlerCommand<CreateUserCo
             command.Username, 
             command.ProfilePic, 
             command.LastLogin,
-            false,
+            true,
             0,
             0,
             0

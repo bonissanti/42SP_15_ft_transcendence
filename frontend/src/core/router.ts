@@ -18,9 +18,6 @@ export async function updateUserStatus(isOnline: boolean) {
   }
 }
 
-const handleFocus = () => updateUserStatus(true);
-const handleBlur = () => updateUserStatus(false);
-
 const handleUnload = () => {
   if (isUserAuthenticated()) {
     navigator.sendBeacon('/api/users/me/status', JSON.stringify({ isOnline: false }));
@@ -28,16 +25,12 @@ const handleUnload = () => {
 };
 function startStatusListeners() {
     if (statusListenersActive) return;
-    window.addEventListener('focus', handleFocus);
-    window.addEventListener('blur', handleBlur);
     window.addEventListener('unload', handleUnload);
     statusListenersActive = true;
 }
 
 export function stopStatusListeners() {
     if (!statusListenersActive) return;
-    window.removeEventListener('focus', handleFocus);
-    window.removeEventListener('blur', handleBlur);
     window.removeEventListener('unload', handleUnload);
     statusListenersActive = false;
 }

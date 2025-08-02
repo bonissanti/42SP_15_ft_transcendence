@@ -2,11 +2,15 @@ import { WebSocketServer, WebSocket } from 'ws';
 import { URL } from 'url';
 import { ClientData, Game } from './types';
 import { startGame, startOneVsOneGame } from './game';
+import * as https from 'https';
 
 export const clients = new Map<string, ClientData>();
 export const games = new Map<string, Game>();
 export const gameTokens = new Map<string, string>();
 
+export const agent = new https.Agent({
+  rejectUnauthorized: false,
+});
 
 const remoteLobby: ClientData[] = [];
 const tournamentLobby: ClientData[] = [];
@@ -147,6 +151,7 @@ export function stopGame(gameId: string) {
 async function createTournamentInService(players: ClientData[], tournamentName: string, jwtToken: string) {
     try {
         const body = {
+            gameType: 'TOURNAMENT',
             tournamentName: tournamentName,
             player1Username: players[0]?.username || '',
             player2Username: players[1]?.username || '',
@@ -156,14 +161,15 @@ async function createTournamentInService(players: ClientData[], tournamentName: 
 
         console.log("Creating tournament with data:", body);
         
-        const response = await fetch('http://game-service:3001/tournament', {
+        const response = await fetch('https://game-service:3001/tournament', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${jwtToken}`
             },
+            agent: agent,
             body: JSON.stringify(body)
-        });
+        } as any);
 
         if (!response.ok) {
             const errorText = await response.text();
@@ -214,14 +220,15 @@ async function sendTournamentHistory(tournamentId: string, finalWinnerId: string
     }
 
     try {
-        const response = await fetch('http://game-service:3001/history', {
+        const response = await fetch('https://game-service:3001/history', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${jwtToken}`
             },
-            body: JSON.stringify(historyData)
-        });
+            body: JSON.stringify(historyData),
+            agent: agent,
+        } as any);
 
         if (!response.ok) {
             const errorText = await response.text();

@@ -28,7 +28,7 @@ export const UserSessionRoutes = async (server: any, userSessionController: User
                 return reply.status(500).send({ message: "Failed to process user in game-service-bkp." });
             }
 
-            const token = server.jwt.sign({ uuid: user.uuid, isAuthenticated: true }, { expiresIn: '1h' });
+            const token = server.jwt.sign({ uuid: user.uuid, isAuthenticated: true }, { expiresIn: '1d' });
             
             reply.setCookie('token', token, {
                 httpOnly: true,

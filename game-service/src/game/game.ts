@@ -9,7 +9,7 @@ import {
   LOSE_SCORE,
   INITIAL_BALL_SPEED,
 } from './constants';
-import { games, clients, stopGame } from './websockets';
+import { games, clients, stopGame, agent } from './websockets';
 import { WebSocket } from 'ws';
 
 interface GameWithElimination extends Game {
@@ -236,7 +236,7 @@ async function sendRemoteMatchHistory(gameId: string, playerIds: string[], elimi
         }
 
         const historyData = {
-            gameType: 'REMOTE',
+            gameType: 'MULTIPLAYER_REMOTO',
             tournamentName: 'remote',
             player1Username: positions['player1']?.username || null,
             player1Points: positions['player1']?.points || null,
@@ -270,14 +270,15 @@ async function sendRemoteMatchHistory(gameId: string, playerIds: string[], elimi
 
         console.log('Enviando histórico do jogo remoto:', historyData);
 
-        const response = await fetch('http://game-service:3001/history', {
+        const response = await fetch('https://game-service:3001/history', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${jwtToken}`
             },
-            body: JSON.stringify(historyData)
-        });
+            body: JSON.stringify(historyData),
+            agent: agent
+        } as any);
 
         if (!response.ok) {
             const errorText = await response.text();

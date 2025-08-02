@@ -65,7 +65,6 @@ export class HistoryService implements BaseService<any>
             let getAllHistoriesViewModel: GetAllHistoriesViewModel[] = [];
             const query: GetAllHistoriesQuery = GetAllHistoriesQuery.fromDTO(dto);
             const GetAllHistoriesQueryDTO: GetAllHistoriesQueryDTO[] | null = await this.getAllHistoriesQueryHandler.Handle(query);
-
             if (!GetAllHistoriesQueryDTO) {
                 return Result.SuccessWithData<GetAllHistoriesViewModel[]>("Histories not found", getAllHistoriesViewModel);
             }

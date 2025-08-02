@@ -67,10 +67,10 @@ async function checkWinCondition() {
 
     if (p1.score >= WIN_SCORE) {
       winnerProfile = playerProfile;
-      await sendMatchHistory("multiplayer", playerProfile.username, p1.score, cachoraoProfile.username, p2.score);
+      await sendMatchHistory("MULTIPLAYER_LOCAL", "Multiplayer", playerProfile.username, p1.score, cachoraoProfile.username, p2.score);
     } else {
       winnerProfile = cachoraoProfile;
-      await sendMatchHistory("multiplayer", cachoraoProfile.username, p2.score, playerProfile.username, p1.score);
+      await sendMatchHistory("MULTIPLAYER_LOCAL", "Multiplayer", cachoraoProfile.username, p2.score, playerProfile.username, p1.score);
     }
 
     const path = `/winner?username=${encodeURIComponent(winnerProfile.username)}&profilePic=${encodeURIComponent(winnerProfile.profilePic)}`;
