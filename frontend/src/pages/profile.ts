@@ -18,18 +18,24 @@ function renderMatchHistory(history: any[]): string {
   }
 
   return history.reverse().map(match => {
-    const isTournament = match.tournamentName === 'remote' || match.tournamentName === 'tournament';
+    const isTournament = match.gameType === 'TOURNAMENT';
     let playersHtml = '';
 
     if (isTournament) {
       const players = [
-        { name: match.player1Username, points: match.player1Points },
-        { name: match.player2Username, points: match.player2Points },
-        { name: match.player3Username, points: match.player3Points },
-        { name: match.player4Username, points: match.player4Points },
+        { name: match.player1Username, alias: match.player1Alias, points: match.player1Points },
+        { name: match.player2Username, alias: match.player2Alias, points: match.player2Points },
+        { name: match.player3Username, alias: match.player3Alias, points: match.player3Points },
+        { name: match.player4Username, alias: match.player4Alias, points: match.player4Points },
       ].filter(p => p.name).sort((a, b) => a.points - b.points);
 
-      playersHtml = players.map((p, index) => `<div class="text-lg">${index + 1}º lugar - ${p.name}</div>`).join('');
+      const medals = ['🏆', '🥈', '🥉'];
+
+      playersHtml = players.map((p, index) => {
+          const medal = index < 3 ? `${medals[index]} ` : '';
+          const position = index + 1;
+          return `<div class="text-lg">${medal}${position}º lugar: ${p.name} (${p.alias})</div>`;
+      }).join('');
 
       return `
         <div class="bg-slate-800 p-4 rounded-lg mb-4 shadow-retro">

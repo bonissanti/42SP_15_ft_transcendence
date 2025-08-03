@@ -207,14 +207,19 @@ async function sendTournamentHistory(tournamentId: string, finalWinnerId: string
 
     const historyData = {
         gameType: 'TOURNAMENT',
+        tournamentId: tournamentId,
         tournamentName: "tournament",
         player1Username: winner?.realUsername || winner?.username || '',
+        player1Alias: winner?.username || '',
         player1Points: 1,
         player2Username: runnerUp?.realUsername || runnerUp?.username || '',
+        player2Alias: runnerUp?.username || '',
         player2Points: 2,
         player3Username: thirdPlace?.realUsername || '',
+        player3Alias: thirdPlace?.username || '',
         player3Points: 3,
         player4Username: fourthPlace?.realUsername || '',
+        player4Alias: fourthPlace?.username || '',
         player4Points: 4
     };
 

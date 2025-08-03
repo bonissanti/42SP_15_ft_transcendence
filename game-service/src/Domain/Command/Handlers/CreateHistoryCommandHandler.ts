@@ -20,14 +20,20 @@ export class CreateHistoryCommandHandler implements BaseHandlerCommand<CreateHis
     async Handle(command: CreateHistoryCommand) : Promise<void>
     {
         const historyEntity: History = new History(
+            command.tournamentId,
             command.tournamentName,
+            command.gameType.toString(),
             command.player1Username,
+            command.player1Alias,
             command.player1Points,
             command.player2Username,
+            command.player2Alias,
             command.player2Points,
             command.player3Username,
+            command.player3Alias,
             command.player3Points,
             command.player4Username,
+            command.player4Alias,
             command.player4Points
         );
 

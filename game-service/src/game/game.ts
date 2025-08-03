@@ -237,6 +237,7 @@ async function sendRemoteMatchHistory(gameId: string, playerIds: string[], elimi
 
         const historyData = {
             gameType: 'MULTIPLAYER_REMOTO',
+            tournamentId: gameId,
             tournamentName: 'remote',
             player1Username: positions['player1']?.username || null,
             player1Points: positions['player1']?.points || null,

@@ -22,14 +22,19 @@ export class HistoryController extends BaseController
         const body = request.body;
         const createHistoryDTO: CreateHistoryDTO = new CreateHistoryDTO(
             body.gameType,
+            body.tournamentId ?? undefined,
             body.tournamentName ?? '',
             body.player1Username,
+            body.player1Alias,
             body.player1Points,
             body.player2Username,
+            body.player2Alias,
             body.player2Points,
             body.player3Username,
+            body.player3Alias,
             body.player3Points,
             body.player4Username,
+            body.player4Alias,
             body.player4Points)
 
         const result = await this.historyService.Create(createHistoryDTO, reply);
