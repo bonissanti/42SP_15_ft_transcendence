@@ -20,10 +20,13 @@ export class EnableTwoFaCommandValidator implements BaseValidator<EnableTwoFaCom
 
     public async Validator(command: EnableTwoFaCommand): Promise<void>
     {
+        this.NotificationError.CleanErrors();
         const user = await this.UserRepository.GetUserEntityByUuid(command.uuid);
+        
+        console.log("Validating EnableTwoFaCommand for user:", user?.twoFactorSecret);
 
-        if (!user || !user.TwoFactorEnabled || !user.twoFactorSecret) {
-            this.NotificationError.AddError(ErrorCatalog.UserNotFound);
+        if (!user || !user.twoFactorSecret) {
+            this.NotificationError.AddError(ErrorCatalog.TwofaNotEnabled);
         }
         else
         {

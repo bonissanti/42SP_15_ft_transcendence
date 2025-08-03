@@ -25,7 +25,7 @@ export class TwoFAController extends BaseController
     public async EnableTwoFA(request: FastifyRequest<{ Body: EnableTwoFaDTO }>, reply: FastifyReply)
     {
         const body = request.body;
-        const twoFaDTO: EnableTwoFaDTO = new EnableTwoFaDTO(body.uuid, body.secret, body.code);
+        const twoFaDTO: EnableTwoFaDTO = new EnableTwoFaDTO(body.uuid, body.code);
         const result: Result<boolean> = await this.twoFaService.EnableTwoFa(twoFaDTO);
         return this.handleResult(result, reply, this.notificationError);
     }

@@ -22,6 +22,9 @@ export class Generate2FaQueryHandler implements BaseHandlerQuery<Generate2FaQuer
             return null;
 
         const secret = authenticator.generateSecret();
+        user.twoFactorSecret = secret;
+        await this.UserRepository.Update(user.Uuid, user);
+
         const url = authenticator.keyuri(user.Email.getEmail(), '42_transcendence', secret);
         const qrcodeCreated = await qrcode.toDataURL(url);
 

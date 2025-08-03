@@ -6,6 +6,7 @@ import { initFriendsManagement } from './profile/friends';
 import { loadMatchHistory } from './profile/matchHistory';
 import { initEditProfile } from './profile/editProfile';
 import { initDeleteAccount } from './profile/deleteAccount';
+import { init2FA } from './profile/twoFactorAuth';
 
 export async function showProfile(): Promise<string> {
     try {
@@ -23,6 +24,8 @@ export async function showProfile(): Promise<string> {
         user.statusText = user.isOnline ? 'Online' : 'Offline';
         user.statusColor = user.isOnline ? 'text-green-500' : 'text-red-500';
 
+        user.twoFactorEnabledStatus = user.twoFactorEnabled ? 'Ativado' : 'Desativado';
+
         if (user.lastLogin) {
             const lang = getCurrentLanguage();
             const date = new Date(user.lastLogin);
@@ -39,10 +42,10 @@ export async function showProfile(): Promise<string> {
         setTimeout(async () => {
             document.getElementById('logout-button')?.addEventListener('click', logout);
 
-            // Inicializa os módulos refatorados
             initEditProfile(user, tempEmail);
             initDeleteAccount(user.Uuid);
             initFriendsManagement(user.Uuid);
+            init2FA(user);
             await loadMatchHistory(user.Username);
         }, 0);
 

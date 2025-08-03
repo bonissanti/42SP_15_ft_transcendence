@@ -4,7 +4,6 @@ import { API_BASE_URL } from '../../utils/constants';
 
 function displayProfileError(errorKey: ErrorKeys) {
   const errorElement = document.getElementById('profile-error-message');
-  console.log("Displaying profile error:", errorKey);
   if (errorElement) {
     errorElement.textContent = t().errors[errorKey] || t().errors['Default Error'];
   }
