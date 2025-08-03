@@ -1,8 +1,13 @@
-<div id="tournament-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-    <div class="bg-slate-800 p-8 rounded-xl shadow-retro text-center">
-        <h2 class="text-2xl mb-4">Nome do Torneio</h2>
-        <input type="text" id="tournament-name-input" class="w-full bg-slate-700 text-white p-2 rounded mb-4" placeholder="Digite o nome do torneio">
-        <button id="start-tournament-button" class="menu-button">Criar e Entrar na Sala</button>
+<div id="nickname-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+    <div class="bg-slate-800 p-8 rounded-xl shadow-retro text-center max-w-md w-full mx-4">
+        <h2 class="text-2xl mb-6">Escolha um apelido para o seu usuário</h2>
+        <input type="text" id="nickname-input" class="w-full bg-slate-700 text-white p-3 rounded mb-4 text-center" placeholder="Digite seu apelido" maxlength="20">
+        <div id="nickname-error" class="text-red-400 text-sm mb-4 hidden">O apelido não pode estar vazio</div>
+        <div id="nickname-duplicate-error" class="text-red-400 text-sm mb-4 hidden">Este apelido já está sendo usado na sala. Escolha outro apelido.</div>
+        <div class="flex gap-4">
+            <button id="cancel-nickname-button" class="flex-1 bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded transition-colors" data-navigate="/">Cancelar</button>
+            <button id="confirm-nickname-button" class="flex-1 menu-button">Confirmar</button>
+        </div>
     </div>
 </div>
 

@@ -7,7 +7,8 @@ import {
 
 let ws: WebSocket | null = null;
 let animationFrameId: number | null = null;
-const tournamentName = Date.now().toString();
+let userNickname: string = '';
+let currentTournamentName: string = `Tournament-${Date.now()}`;
 
 async function getUserProfile(): Promise<{ username: string, profilePic: string }> {
   try {
@@ -55,7 +56,6 @@ function renderWaitingRoom(players: any[]) {
 
     waitingRoomDiv.classList.remove('hidden');
     gameContainerDiv.classList.add('hidden');
-    document.getElementById('tournament-modal')?.classList.add('hidden');
 
     slotsDiv.innerHTML = `
         <div class="flex justify-around items-center w-full">
@@ -76,6 +76,53 @@ function renderWaitingRoom(players: any[]) {
 
 
 
+function setupTournamentEventListeners() {
+    const nicknameModal = document.getElementById('nickname-modal');
+    const nicknameInput = document.getElementById('nickname-input') as HTMLInputElement;
+    const confirmNicknameButton = document.getElementById('confirm-nickname-button');
+    const cancelNicknameButton = document.getElementById('cancel-nickname-button');
+    const nicknameError = document.getElementById('nickname-error');
+    const nicknameDuplicateError = document.getElementById('nickname-duplicate-error');
+
+    confirmNicknameButton?.addEventListener('click', () => {
+        const nickname = nicknameInput?.value.trim();
+        if (!nickname) {
+            nicknameError?.classList.remove('hidden');
+            nicknameDuplicateError?.classList.add('hidden');
+            return;
+        }
+        
+        nicknameError?.classList.add('hidden');
+        nicknameDuplicateError?.classList.add('hidden');
+        userNickname = nickname;
+        
+        nicknameModal?.classList.add('hidden');
+        
+        startTournamentGameWithNickname();
+    });
+
+    cancelNicknameButton?.addEventListener('click', () => {
+        nicknameModal?.classList.add('hidden');
+        nicknameInput.value = '';
+        nicknameError?.classList.add('hidden');
+        nicknameDuplicateError?.classList.add('hidden');
+        window.location.hash = '/';
+    });
+
+    nicknameInput?.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            confirmNicknameButton?.click();
+        }
+    });
+
+    nicknameInput?.addEventListener('input', () => {
+        if (nicknameInput.value.trim()) {
+            nicknameError?.classList.add('hidden');
+            nicknameDuplicateError?.classList.add('hidden');
+        }
+    });
+}
+
 function updateRemoteTournament() {
   if (ws && ws.readyState === WebSocket.OPEN) {
     ws.send(JSON.stringify({
@@ -95,15 +142,14 @@ function gameLoopTournament() {
   setAnimationFrameId(animationFrameId);
 }
 
-
-export async function initTournamentGame() {
+async function startTournamentGameWithNickname() {
     stopTournamentGame();
     if (!initSharedState()) return;
 
-    document.getElementById('tournament-modal')?.classList.add('hidden');
+    document.getElementById('nickname-modal')?.classList.add('hidden');
     document.getElementById('waiting-room')?.classList.remove('hidden');
 
-    const { username, profilePic } = await getUserProfile();
+    const { username: realUsername, profilePic } = await getUserProfile();
     const token = localStorage.getItem('jwtToken');
     if (!token) {
         window.location.hash = '/login';
@@ -113,12 +159,11 @@ export async function initTournamentGame() {
     const payload = JSON.parse(atob(token.split('.')[1]));
     const userId = payload.uuid;
 
-    ws = new WebSocket(`wss://localhost:3001?userId=${userId}&username=${encodeURIComponent(username)}&profilePic=${encodeURIComponent(profilePic)}&mode=tournament&token=${encodeURIComponent(token)}&tournamentName=${encodeURIComponent(tournamentName)}`);
+    ws = new WebSocket(`wss://localhost:3001?userId=${userId}&username=${encodeURIComponent(userNickname)}&realUsername=${encodeURIComponent(realUsername)}&profilePic=${encodeURIComponent(profilePic)}&mode=tournament&token=${encodeURIComponent(token)}&tournamentName=${encodeURIComponent(currentTournamentName)}`);
 
     ws.onopen = () => {
-        console.log(`WebSocket conectado como ${username}. Aguardando jogadores...`);
+        console.log(`WebSocket conectado como ${userNickname}. Aguardando jogadores...`);
     };
-
 
     ws.onmessage = (event) => {
         const message = JSON.parse(event.data);
@@ -131,7 +176,7 @@ export async function initTournamentGame() {
             case 'game_start':
             document.getElementById('waiting-room')?.classList.add('hidden');
             document.getElementById('final-waiting-room')?.classList.add('hidden');
-            document.getElementById('tournament-modal')?.classList.add('hidden');
+            document.getElementById('nickname-modal')?.classList.add('hidden');
             
             document.getElementById('game-container')?.classList.remove('hidden');
             
@@ -189,9 +234,20 @@ export async function initTournamentGame() {
                 break;
 
             case 'error':
-                alert(`Erro do servidor: ${message.message}`);
-                stopTournamentGame();
-                window.location.hash = '/';
+                if (message.message && message.message.includes('já está sendo usado')) {
+                    document.getElementById('nickname-modal')?.classList.remove('hidden');
+                    document.getElementById('waiting-room')?.classList.add('hidden');
+                    document.getElementById('nickname-duplicate-error')?.classList.remove('hidden');
+                    document.getElementById('nickname-error')?.classList.add('hidden');
+                    
+                    const nicknameInput = document.getElementById('nickname-input') as HTMLInputElement;
+                    nicknameInput?.focus();
+                    nicknameInput?.select();
+                } else {
+                    alert(`Erro do servidor: ${message.message}`);
+                    stopTournamentGame();
+                    window.location.hash = '/';
+                }
                 break;
         }
     };
@@ -223,6 +279,28 @@ export async function initTournamentGame() {
             readyStatus.textContent = "";
         }
     });
+}
+
+
+export async function initTournamentGame() {
+    setupTournamentEventListeners();
+    
+    userNickname = '';
+    currentTournamentName = `Tournament-${Date.now()}`;
+    
+    document.getElementById('nickname-modal')?.classList.remove('hidden');
+    document.getElementById('waiting-room')?.classList.add('hidden');
+    document.getElementById('game-container')?.classList.add('hidden');
+    document.getElementById('final-waiting-room')?.classList.add('hidden');
+    
+    document.getElementById('nickname-error')?.classList.add('hidden');
+    document.getElementById('nickname-duplicate-error')?.classList.add('hidden');
+    
+    const nicknameInput = document.getElementById('nickname-input') as HTMLInputElement;
+    if (nicknameInput) {
+        nicknameInput.value = '';
+        nicknameInput.focus();
+    }
 }
 
 

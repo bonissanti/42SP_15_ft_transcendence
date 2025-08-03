@@ -1,16 +1,20 @@
 -- CreateTable
-CREATE TABLE "game-service" (
+CREATE TABLE "Tournament" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "tournamentUuid" TEXT NOT NULL,
     "tournamentName" TEXT NOT NULL,
     "player1Username" TEXT NOT NULL,
     "player2Username" TEXT NOT NULL,
     "player3Username" TEXT NOT NULL,
-    "player4Username" TEXT NOT NULL
+    "player4Username" TEXT NOT NULL,
+    "aliasPlayer1" TEXT,
+    "aliasPlayer2" TEXT,
+    "aliasPlayer3" TEXT,
+    "aliasPlayer4" TEXT
 );
 
 -- CreateTable
-CREATE TABLE "history" (
+CREATE TABLE "History" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "historyUuid" TEXT NOT NULL,
     "tournamentName" TEXT,
@@ -26,7 +30,7 @@ CREATE TABLE "history" (
 );
 
 -- CreateTable
-CREATE TABLE "matchmaking" (
+CREATE TABLE "MatchMaking" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "matchUuid" TEXT NOT NULL,
     "player1Username" TEXT NOT NULL,
@@ -35,16 +39,16 @@ CREATE TABLE "matchmaking" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "game-service_tournamentUuid_key" ON "game-service"("tournamentUuid");
+CREATE UNIQUE INDEX "Tournament_tournamentUuid_key" ON "Tournament"("tournamentUuid");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "history_historyUuid_key" ON "history"("historyUuid");
+CREATE UNIQUE INDEX "History_historyUuid_key" ON "History"("historyUuid");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "matchmaking_matchUuid_key" ON "matchmaking"("matchUuid");
+CREATE UNIQUE INDEX "MatchMaking_matchUuid_key" ON "MatchMaking"("matchUuid");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "matchmaking_player1Username_key" ON "matchmaking"("player1Username");
+CREATE UNIQUE INDEX "MatchMaking_player1Username_key" ON "MatchMaking"("player1Username");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "matchmaking_player2Username_key" ON "matchmaking"("player2Username");
+CREATE UNIQUE INDEX "MatchMaking_player2Username_key" ON "MatchMaking"("player2Username");

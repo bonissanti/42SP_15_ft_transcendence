@@ -20,7 +20,7 @@ const tournaments = new Map<string, {
     winners: ClientData[];
     finalistsReady: number;
     tournamentName: string;
-    eliminationOrder: string[];
+    eliminatedPlayers: { id: string; realUsername: string; username: string }[];
 }>();
 
 function broadcastLobbyUpdate(mode: 'remote' | 'tournament') {
@@ -111,7 +111,14 @@ export function stopGame(gameId: string) {
             tournaments.delete(tournamentId);
         } else {
             if (loserClient) {
-                tournament.eliminationOrder.push(loserClient.username);
+                const loser = clients.get(loserId);
+                if (loser) {
+                    tournament.eliminatedPlayers.push({
+                        id: loserId,
+                        realUsername: loser.realUsername || loser.username,
+                        username: loser.username
+                    });
+                }
             }
 
             if (loserClient && loserClient.ws.readyState === WebSocket.OPEN) {
@@ -153,11 +160,16 @@ async function createTournamentInService(players: ClientData[], tournamentName: 
         const body = {
             gameType: 'TOURNAMENT',
             tournamentName: tournamentName,
-            player1Username: players[0]?.username || '',
-            player2Username: players[1]?.username || '',
-            player3Username: players[2]?.username || '',
-            player4Username: players[3]?.username || '',
+            player1Username: players[0]?.realUsername || players[0]?.username || '',
+            player2Username: players[1]?.realUsername || players[1]?.username || '',
+            player3Username: players[2]?.realUsername || players[2]?.username || '',
+            player4Username: players[3]?.realUsername || players[3]?.username || '',
+            aliasPlayer1: players[0]?.username || '',
+            aliasPlayer2: players[1]?.username || '',
+            aliasPlayer3: players[2]?.username || '',
+            aliasPlayer4: players[3]?.username || '',
         };
+
 
         console.log("Creating tournament with data:", body);
         
@@ -188,20 +200,21 @@ async function sendTournamentHistory(tournamentId: string, finalWinnerId: string
 
     const winner = clients.get(finalWinnerId);
     const runnerUp = clients.get(finalLoserId);
-    const thirdPlaceUsername = tournament.eliminationOrder[1] || '';
-    const fourthPlaceUsername = tournament.eliminationOrder[0] || '';
-
+    
+    const eliminatedPlayers = tournament.eliminatedPlayers;
+    const thirdPlace = eliminatedPlayers.length >= 2 ? eliminatedPlayers[1] : null;
+    const fourthPlace = eliminatedPlayers.length >= 1 ? eliminatedPlayers[0] : null;
 
     const historyData = {
         gameType: 'TOURNAMENT',
         tournamentName: "tournament",
-        player1Username: winner?.username || '',
+        player1Username: winner?.realUsername || winner?.username || '',
         player1Points: 1,
-        player2Username: runnerUp?.username || '',
+        player2Username: runnerUp?.realUsername || runnerUp?.username || '',
         player2Points: 2,
-        player3Username: thirdPlaceUsername,
+        player3Username: thirdPlace?.realUsername || '',
         player3Points: 3,
-        player4Username: fourthPlaceUsername,
+        player4Username: fourthPlace?.realUsername || '',
         player4Points: 4
     };
 
@@ -246,7 +259,7 @@ export function setupWebSocket(server: any) {
 	const wss = new WebSocketServer({ noServer: true });
 
 	server.server.on('upgrade', (request: any, socket: any, head: any) => {
-		wss.handleUpgrade(request, socket, head, (ws) => {
+		wss.handleUpgrade(request, socket, head, (ws: any) => {
 			wss.emit('connection', ws, request);
 		});
 	});
@@ -256,6 +269,7 @@ export function setupWebSocket(server: any) {
 
 		const userId = url.searchParams.get('userId');
 		const username = url.searchParams.get('username') || 'Anônimo';
+		const realUsername = url.searchParams.get('realUsername') || username;
 		const profilePic = url.searchParams.get('profilePic') || 'https://placehold.co/128x128/000000/FFFFFF?text=User';
 		const gameModeParam = url.searchParams.get('mode') || 'remote';
 		const gameMode: 'remote' | 'tournament' = (gameModeParam === 'tournament') ? 'tournament' : 'remote';
@@ -265,6 +279,17 @@ export function setupWebSocket(server: any) {
 		if (!userId) {
 			ws.send(JSON.stringify({ type: 'error', message: 'ID de usuário inválido.' }));
 			ws.close();
+			return;
+		}
+
+		const targetLobby = gameMode === 'tournament' ? tournamentLobby : remoteLobby;
+		const duplicateNickname = targetLobby.find(client => client.username === username && client.id !== userId);
+		
+		if (duplicateNickname) {
+			ws.send(JSON.stringify({ 
+				type: 'error', 
+				message: `O apelido "${username}" já está sendo usado na sala ${gameMode}. Escolha outro apelido.` 
+			}));
 			return;
 		}
 
@@ -281,6 +306,7 @@ export function setupWebSocket(server: any) {
 		const clientData: ClientData = {
 			ws,
 			username,
+			realUsername,
 			inputs: {},
 			id: userId,
 			profilePic,
@@ -291,7 +317,7 @@ export function setupWebSocket(server: any) {
 
 		clients.set(userId, clientData);
 
-		ws.on('message', (message) => {
+		ws.on('message', (message: any) => {
 			try {
 				const data = JSON.parse(message.toString());
 				const client = clients.get(userId);
@@ -364,7 +390,7 @@ export function setupWebSocket(server: any) {
 					winners: [],
 					finalistsReady: 0,
 					tournamentName: tournamentName,
-					eliminationOrder: []
+					eliminatedPlayers: []
 				});
 
 				createTournamentInService(gamePlayers, tournamentName, jwtToken);
@@ -426,7 +452,7 @@ export function setupWebSocket(server: any) {
 			cleanupClient(userId);
 		});
 
-		ws.on('error', (error) => {
+		ws.on('error', (error: any) => {
 			console.error(`Erro no WebSocket do jogador ${userId}:`, error);
 			cleanupClient(userId);
 		});
