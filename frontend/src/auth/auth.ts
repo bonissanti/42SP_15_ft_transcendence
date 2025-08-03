@@ -49,12 +49,143 @@ async function handleAuthSuccess(data: any) {
   if (data.token) {
     document.cookie = `token=${data.token}; path=/; max-age=3600; samesite=lax`;
     localStorage.setItem('jwtToken', data.token);
+    
+    setTimeout(() => {
+      updateProfileLink();
+      navigateTo('/');
+    }, 100);
+  } else if (data.uuid && !data.token) {
+    show2FAVerification(data.uuid);
   }
+}
 
-  setTimeout(() => {
-    updateProfileLink();
-    navigateTo('/');
-  }, 100);
+function show2FAVerification(uuid: string) {
+  const loginView = document.getElementById('login-view');
+  const registerView = document.getElementById('register-view');
+  const initialView = document.getElementById('initial-view');
+  
+  loginView?.classList.add('hidden');
+  registerView?.classList.add('hidden');
+  initialView?.classList.add('hidden');
+  
+  let twoFAView = document.getElementById('two-fa-view');
+  if (!twoFAView) {
+    twoFAView = document.createElement('div');
+    twoFAView.id = 'two-fa-view';
+    twoFAView.className = 'hidden';
+    twoFAView.innerHTML = `
+      <h2 class="text-3xl mb-6 text-glow">Verificação de Dois Fatores</h2>
+      <p class="text-lg mb-6">Digite o código do seu aplicativo de autenticação:</p>
+      <form id="two-fa-form">
+        <input 
+          type="text" 
+          id="two-fa-code" 
+          placeholder="000000" 
+          maxlength="6" 
+          pattern="[0-9]{6}"
+          class="input-field mb-6"
+          required
+        />
+        <button type="submit" class="menu-button w-full">Verificar</button>
+      </form>
+      <button id="back-to-login" class="back-button">Voltar ao Login</button>
+      <p id="two-fa-error" class="text-red-500 mt-4 h-6 text-center" style="display: none;"></p>
+    `;
+    
+    const authContainer = document.querySelector('.text-center.p-10');
+    if (authContainer) {
+      authContainer.appendChild(twoFAView);
+    }
+  }
+  
+  twoFAView.classList.remove('hidden');
+  
+  const twoFAForm = document.getElementById('two-fa-form');
+  const backToLoginBtn = document.getElementById('back-to-login');
+  
+  twoFAForm?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    await handle2FAVerification(uuid);
+  });
+  
+  backToLoginBtn?.addEventListener('click', () => {
+    twoFAView?.classList.add('hidden');
+    loginView?.classList.remove('hidden');
+    clearAuthError();
+  });
+}
+
+function display2FAAuthError(backendMessage?: string) {
+  const errorElement = document.getElementById('two-fa-error');
+  if (errorElement) {
+    if (backendMessage) {
+      const firstError = backendMessage.split('\n')[0];
+
+      const cleanMessage = firstError.split('Message:')[1]?.trim() || firstError;
+      
+      const errorTranslations = t().errors;
+      const displayMessage = errorTranslations[cleanMessage as ErrorKeys] || errorTranslations["Default Error"];
+      
+      errorElement.textContent = displayMessage;
+      errorElement.style.display = 'block';
+    } else {
+      errorElement.textContent = '';
+      errorElement.style.display = 'none';
+    }
+  }
+}
+
+async function handle2FAVerification(uuid: string) {
+    clearAuthError();
+    const codeInput = document.getElementById('two-fa-code') as HTMLInputElement;
+    const code = codeInput.value;
+
+    if (!code || code.length !== 6) {
+        display2FAAuthError('Invalid token for 2FA');
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API_BASE_URL}/verify2fa?uuid=${uuid}&code=${code}`, {
+            method: 'GET',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+        });
+
+        const data = await res.json();
+
+        const token = data?.data?.token || data?.token;
+
+        if (res.ok && token) {
+            document.cookie = `token=${token}; path=/; max-age=3600; samesite=lax`;
+            localStorage.setItem('jwtToken', token);
+
+            setTimeout(() => {
+                updateProfileLink();
+                navigateTo('/');
+            }, 100);
+        } else {
+            display2FAAuthError(data.message || 'Invalid token for 2FA');
+        }
+    } catch (err) {
+        console.error("Erro na verificação 2FA:", err);
+        display2FAAuthError("Network Error");
+    }
+}
+
+function clearAuthError() {
+  const errorElement = document.getElementById('auth-error');
+  const twoFAErrorElement = document.getElementById('two-fa-error');
+  
+  if (errorElement) {
+    errorElement.textContent = '';
+    errorElement.style.display = 'none';
+  }
+  
+  if (twoFAErrorElement) {
+    twoFAErrorElement.textContent = '';
+    twoFAErrorElement.style.display = 'none';
+  }
 }
 
 function displayAuthError(backendMessage?: string) {
@@ -79,7 +210,7 @@ function displayAuthError(backendMessage?: string) {
 
 async function handleEmailLogin(event: Event) {
     event.preventDefault();
-    displayAuthError();
+    clearAuthError();
     const email = (document.getElementById('login-email') as HTMLInputElement).value;
     const password = (document.getElementById('login-password') as HTMLInputElement).value;
 
@@ -97,7 +228,7 @@ async function handleEmailLogin(event: Event) {
 
         const data = await res.json();
         if (res.ok) {
-            await handleAuthSuccess(data);
+            await handleAuthSuccess(data.data || data);
         } else {
             displayAuthError(data.message || 'Falha no login.');
         }
@@ -109,7 +240,7 @@ async function handleEmailLogin(event: Event) {
 
 async function handleRegister(event: Event) {
     event.preventDefault();
-    displayAuthError();
+    clearAuthError();
     const username = (document.getElementById('register-username') as HTMLInputElement).value;
     const email = (document.getElementById('register-email') as HTMLInputElement).value;
     const password = (document.getElementById('register-password') as HTMLInputElement).value;
@@ -180,8 +311,11 @@ function setupViews() {
         initialView?.classList.add('hidden');
         loginView?.classList.add('hidden');
         registerView?.classList.add('hidden');
+        const twoFAView = document.getElementById('two-fa-view');
+        twoFAView?.classList.add('hidden');
+        
         viewToShow?.classList.remove('hidden');
-        displayAuthError();
+        clearAuthError();
     };
 
     showLoginBtn?.addEventListener('click', () => showView(loginView));

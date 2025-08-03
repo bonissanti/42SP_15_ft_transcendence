@@ -1,20 +1,20 @@
-import {BaseHandlerQuery} from "./BaseHandlerQuery.js";
-import {Verify2faQuery} from "../QueryObject/Verify2faQuery.js";
-import {LoginUserViewModel} from "../../../Application/ViewModels/LoginUserViewModel.js";
 import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
 import {UserRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/UserRepository.js";
+import {VerifyTwoFaCommand} from "../CommandObject/VerifyTwoFaCommand.js";
+import {BaseHandlerCommand} from "./BaseHandlerCommand.js";
+import {LoginUserViewModel} from "../../../Application/ViewModels/LoginUserViewModel.js";
 import {FastifyReply, FastifyRequest} from "fastify";
-import {Verify2faDTO} from "../../../Application/DTO/ToQuery/Verify2faDTO.js";
+import {VerifyTwoFaDTO} from "../../../Application/DTO/ToCommand/VerifyTwoFaDTO.js";
 
-export class Verify2FaQueryHandler implements BaseHandlerQuery<Verify2faQuery, LoginUserViewModel>
+export class VerifyTwoFaCommandHandler implements BaseHandlerCommand<VerifyTwoFaCommand, LoginUserViewModel>
 {
     constructor(private UserRepository: UserRepository, notificationError: NotificationError)
     {
     }
 
-    async Handle(query: Verify2faQuery, request: FastifyRequest<{ Querystring: Verify2faDTO }>, reply: FastifyReply): Promise<LoginUserViewModel>
+    async Handle(command: VerifyTwoFaCommand, request: FastifyRequest<{ Querystring: VerifyTwoFaDTO }>, reply: FastifyReply): Promise<LoginUserViewModel>
     {
-        const user = await this.UserRepository.GetUserEntityByUuid(query.uuid);
+        const user = await this.UserRepository.GetUserEntityByUuid(command.uuid);
 
         if (!user) {
             throw new Error("User not found");

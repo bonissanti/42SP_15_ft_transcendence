@@ -21,7 +21,8 @@ export const TwoFARoutes = async (server: any, twoFAController: TwoFAController)
         return await twoFAController.Generate2FaQrcode(request, reply);
     });
 
-    server.get('/verify2fa', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Querystring: Verify2faDTO }>, reply: FastifyReply) => {
+    // Rota para verificação de 2FA durante o login - não requer autenticação JWT
+    server.get('/verify2fa', async (request: FastifyRequest<{ Querystring: Verify2faDTO }>, reply: FastifyReply) => {
         console.log("Recebido em /verify2fa: ", request.query);
         return await twoFAController.Verify2FA(request, reply);
     })
