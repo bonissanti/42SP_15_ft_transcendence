@@ -20,7 +20,6 @@ export class Verify2FaQueryHandler implements BaseHandlerQuery<Verify2faQuery, L
             throw new Error("User not found");
         }
 
-        // Atualiza o status online do usuário
         user.ChangeStatusOnline(true);
         await this.UserRepository.Update(user.Uuid, user);
 
