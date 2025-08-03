@@ -14,6 +14,7 @@ export class UploadPhotoCommandValidator implements BaseValidator<UploadPhotoCom
 
     public async Validator(command: UploadPhotoCommand): Promise<void>
     {
+        this.NotificationError.CleanErrors();
         const allowedTypes = ['image/png', 'image/jpeg'];
 
         if (!allowedTypes.includes(command.file.mimetype))

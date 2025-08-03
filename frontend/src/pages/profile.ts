@@ -228,7 +228,9 @@ export async function showProfile(): Promise<string> {
     if (!tempEmail.includes('@')) {
       user.Email = '00110100 00110010';
     }
-
+    if(user.ProfilePic && user.ProfilePic.startsWith('/app')) {
+      user.ProfilePic = user.ProfilePic.replace('/app', '');
+    }
     user.ProfilePic = user.ProfilePic || '/img/cachorrao_user.png';
     user.statusText = user.isOnline ? 'Online' : 'Offline';
     user.statusColor = user.isOnline ? 'text-green-500' : 'text-red-500';
@@ -255,7 +257,48 @@ export async function showProfile(): Promise<string> {
       const cancelEditButton = document.getElementById('cancel-edit-button');
       const usernameInput = document.getElementById('edit-username') as HTMLInputElement;
       const errorElement = document.getElementById('profile-error-message');
+      const profilePicOverlay = document.getElementById('profile-pic-overlay');
+      const profilePicInput = document.getElementById('profile-pic-input') as HTMLInputElement;
       
+      profilePicOverlay?.addEventListener('click', () => {
+        profilePicInput?.click();
+      });
+
+      profilePicInput?.addEventListener('change', async (e) => {
+        const target = e.target as HTMLInputElement;
+        const file = target.files?.[0];
+
+        if (!file) {
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append('uuid', user.Uuid);
+        formData.append('file', file);
+
+        try {
+          const response = await fetchWithAuth('/uploadPhoto', {
+            method: 'PUT',
+            body: formData,
+          });
+
+          if (response.ok) {
+            const result = await response.json();
+            const profileImg = document.querySelector('img[alt="Foto de Perfil"]') as HTMLImageElement;
+            if (profileImg) {
+              profileImg.src = `${API_BASE_URL}/img/${result.profilePic}`; 
+              window.location.reload();
+            }
+          } else {
+            const errorData = await response.json();
+            displayProfileError(errorData.message);
+          }
+        } catch (error) {
+          displayProfileError('Network Error');
+        }
+      });
+
+
       editProfileButton?.addEventListener('click', () => {
         if (usernameInput) {
             usernameInput.value = user.Username;
