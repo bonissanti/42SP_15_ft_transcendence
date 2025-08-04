@@ -12,8 +12,15 @@ import {
 import { games, clients, stopGame, agent } from './websockets';
 import { WebSocket } from 'ws';
 
+interface PlayerInfo {
+    id: string;
+    username: string;
+    realUsername: string;
+}
+
 interface GameWithElimination extends Game {
   eliminationOrder: string[];
+  players: PlayerInfo[];
 }
 
 export function startOneVsOneGame(playerIds: string[], tournamentId?: string, isFinal = false): string | null {
@@ -197,42 +204,38 @@ function collides(b: Ball, p: Paddle): boolean {
 }
 
 async function sendRemoteMatchHistory(gameId: string, playerIds: string[], eliminationOrder: string[]) {
+    const game = games.get(gameId) as GameWithElimination;
+    if (!game) return;
+
     try {
-        const playerClients = playerIds.map(id => clients.get(id));
-        
+        const playerNames: { [key: string]: string } = {};
+        game.players.forEach(player => {
+            playerNames[player.id] = player.realUsername || player.username;
+        });
         
         const winnerIndex = playerIds.findIndex(id => !eliminationOrder.includes(id));
-        const winnerId = winnerIndex !== -1 ? playerIds[winnerIndex] : eliminationOrder[eliminationOrder.length - 1];
+        const winnerId = winnerIndex !== -1 ? playerIds[winnerIndex] : (eliminationOrder.length > 0 ? eliminationOrder[eliminationOrder.length - 1] : playerIds[0]);
         
         const positions: { [key: string]: { username: string, points: number } } = {};
         
-        const winnerClient = clients.get(winnerId);
-        if (winnerClient) {
-            positions['player1'] = { username: winnerClient.username, points: 1 };
+        if (winnerId) {
+            positions['player1'] = { username: playerNames[winnerId], points: 1 };
         }
         
-        if (eliminationOrder.length >= 1) {
-            const secondPlaceId = eliminationOrder[eliminationOrder.length - 1];
-            const secondPlaceClient = clients.get(secondPlaceId);
-            if (secondPlaceClient) {
-                positions['player2'] = { username: secondPlaceClient.username, points: 2 };
-            }
+        const secondPlaceCandidates = eliminationOrder.filter(id => id !== winnerId);
+        if (secondPlaceCandidates.length >= 1) {
+            const secondPlaceId = secondPlaceCandidates[secondPlaceCandidates.length - 1];
+            positions['player2'] = { username: playerNames[secondPlaceId], points: 2 };
         }
         
-        if (eliminationOrder.length >= 2) {
-            const thirdPlaceId = eliminationOrder[eliminationOrder.length - 2];
-            const thirdPlaceClient = clients.get(thirdPlaceId);
-            if (thirdPlaceClient) {
-                positions['player3'] = { username: thirdPlaceClient.username, points: 3 };
-            }
+        if (secondPlaceCandidates.length >= 2) {
+            const thirdPlaceId = secondPlaceCandidates[secondPlaceCandidates.length - 2];
+            positions['player3'] = { username: playerNames[thirdPlaceId], points: 3 };
         }
         
-        if (eliminationOrder.length >= 3) {
-            const fourthPlaceId = eliminationOrder[0];
-            const fourthPlaceClient = clients.get(fourthPlaceId);
-            if (fourthPlaceClient) {
-                positions['player4'] = { username: fourthPlaceClient.username, points: 4 };
-            }
+        if (secondPlaceCandidates.length >= 3) {
+            const fourthPlaceId = secondPlaceCandidates[0];
+            positions['player4'] = { username: playerNames[fourthPlaceId], points: 4 };
         }
 
         const historyData = {
@@ -250,19 +253,23 @@ async function sendRemoteMatchHistory(gameId: string, playerIds: string[], elimi
         };
 
         let jwtToken: string | null = null;
-        for (const playerId of playerIds) {
-            const client = clients.get(playerId);
+        for (const player of game.players) {
+            const client = clients.get(player.id);
             if (client && client.jwtToken) {
                 jwtToken = client.jwtToken;
                 break;
             }
         }
 
-        console.log('Tokens disponíveis:', playerIds.map(id => ({
-            id,
-            hasToken: !!clients.get(id)?.jwtToken,
-            tokenPreview: clients.get(id)?.jwtToken?.substring(0, 20) + '...'
-        })));
+        if (!jwtToken) {
+             for (const playerId of playerIds) {
+                const client = clients.get(playerId);
+                if (client && client.jwtToken) {
+                    jwtToken = client.jwtToken;
+                    break;
+                }
+            }
+        }
 
         if (!jwtToken) {
             console.error('Nenhum token JWT disponível para salvar o histórico do jogo remoto');
@@ -293,12 +300,22 @@ async function sendRemoteMatchHistory(gameId: string, playerIds: string[], elimi
 }
 
 export function startGame(playerIds: string[]) {
-    const gameId = playerIds.join('-');
+    const gameId = `${playerIds.join('-')}-${Date.now()}`;
     const gameState = createInitialGameState();
     resetBall(gameState);
 
+    const playerInfos: PlayerInfo[] = playerIds.map(id => {
+        const client = clients.get(id)!;
+        return {
+            id: id,
+            username: client.username,
+            realUsername: client.realUsername || client.username,
+        };
+    });
+
     const newGame: GameWithElimination = {
         playerIds,
+        players: playerInfos,
         gameState,
         gameLoopInterval: null,
         speedUpInterval: null,
@@ -316,17 +333,17 @@ export function startGame(playerIds: string[]) {
 
     newGame.gameLoopInterval = setInterval(() => updateGame(gameId), 1000 / 60);
 
-    const playerInfos = playerIds.map(id => clients.get(id)!);
-    const usernames = playerInfos.map(p => p.username);
+    const playerUsernames = playerInfos.map(p => p.username);
 
     playerIds.forEach((playerId, index) => {
         const client = clients.get(playerId);
         if (client) {
-            client.ws.send(JSON.stringify({ type: 'game_start', gameId, opponents: usernames, playerNumber: index + 1 }));
+            client.ws.send(JSON.stringify({ type: 'game_start', gameId, opponents: playerUsernames, playerNumber: index + 1 }));
         }
     });
     console.log(`Jogo iniciado entre 4 jogadores. GameId: ${gameId}`);
 }
+
 
 export function updateGame(gameId: string) {
     const game = games.get(gameId) as GameWithElimination;
@@ -336,12 +353,33 @@ export function updateGame(gameId: string) {
     const { ball, paddles } = gameState;
 
     const playerClients = playerIds.map(id => clients.get(id));
-    if (playerClients.some(c => !c)) {
+    
+    playerClients.forEach((client, index) => {
+        if (!client) {
+            paddles[index].lost = true;
+            const disconnectedPlayerId = playerIds[index];
+            if (!eliminationOrder.includes(disconnectedPlayerId)) {
+                eliminationOrder.push(disconnectedPlayerId);
+                console.log(`Jogador ${disconnectedPlayerId} marcado como perdido por desconexão (posição ${eliminationOrder.length + 1})`);
+            }
+            
+            if(index < 2) { 
+                paddles[index].x = 0; 
+                paddles[index].width = CANVAS_WIDTH; 
+            } else { 
+                paddles[index].y = 0; 
+                paddles[index].height = CANVAS_HEIGHT; 
+            }
+        }
+    });
+
+    const remainingActivePlayers = paddles.filter(p => !p.lost);
+    if (remainingActivePlayers.length === 0) {
         stopGame(gameId);
         return;
     }
 
-    const [p1, p2, p3, p4] = playerClients.map(c => c!.inputs);
+    const [p1, p2, p3, p4] = playerClients.map(c => c?.inputs || {});
     if (!paddles[0].lost && p1['a'] && paddles[0].x > 0) paddles[0].x -= PADDLE_SPEED;
     if (!paddles[0].lost && p1['d'] && paddles[0].x < CANVAS_WIDTH - paddles[0].width) paddles[0].x += PADDLE_SPEED;
     if (!paddles[1].lost && p2['ArrowLeft'] && paddles[1].x > 0) paddles[1].x -= PADDLE_SPEED;

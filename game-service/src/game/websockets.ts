@@ -440,6 +440,18 @@ export function setupWebSocket(server: any) {
 							game.gameState.paddles[playerIndex].lost = true;
 						}
 						console.log(`Jogador ${userId} marcado como perdedor no jogo ${gameId}, jogo continua.`);
+						
+						const remainingPlayers = game.playerIds.filter(id => id !== userId && clients.has(id));
+						remainingPlayers.forEach(id => {
+							const remainingClient = clients.get(id);
+							if (remainingClient && remainingClient.ws.readyState === WebSocket.OPEN) {
+								remainingClient.ws.send(JSON.stringify({ 
+									type: 'player_disconnected', 
+									disconnectedPlayer: client?.username || 'Jogador desconhecido',
+									playerIndex: playerIndex
+								}));
+							}
+						});
 					} else {
 						stopGame(gameId);
 						const remainingPlayers = game.playerIds.filter(id => id !== userId && clients.has(id));
