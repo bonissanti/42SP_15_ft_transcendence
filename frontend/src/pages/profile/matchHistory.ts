@@ -6,10 +6,11 @@ function renderMatchHistory(history: any[]): string {
     }
 
     return history.reverse().map(match => {
-        const isTournament = match.gameType === 'TOURNAMENT';
+        const gameType = match.gameType;
         let playersHtml = '';
+        let title = '';
 
-        if (isTournament) {
+        if (gameType === 'TOURNAMENT') {
             const players = [
                 { name: match.player1Username, alias: match.player1Alias, points: match.player1Points },
                 { name: match.player2Username, alias: match.player2Alias, points: match.player2Points },
@@ -17,35 +18,48 @@ function renderMatchHistory(history: any[]): string {
                 { name: match.player4Username, alias: match.player4Alias, points: match.player4Points },
             ].filter(p => p.name).sort((a, b) => a.points - b.points);
 
-            const medals = ['🏆', '🥈', '🥉'];
+            const medals = ['🏆', '🥈', '🥉', ''];
 
             playersHtml = players.map((p, index) => {
-                const medal = index < 3 ? `${medals[index]} ` : '';
+                const medal = medals[index] || '';
                 const position = index + 1;
                 return `<div class="text-lg">${medal}${position}º lugar: ${p.name} (${p.alias})</div>`;
             }).join('');
+            
+            title = `🏆 Torneio: ${match.tournamentName}`;
 
-            return `
-                <div class="bg-slate-800 p-4 rounded-lg mb-4 shadow-retro">
-                    <h3 class="text-2xl text-indigo-400 font-bold mb-2">🏆 Torneio: ${match.tournamentName}</h3>
-                    ${playersHtml}
-                </div>
-            `;
-        } else {
+        } else if (gameType === 'MULTIPLAYER_REMOTO') {
+            const players = [
+                { name: match.player1Username, points: match.player1Points },
+                { name: match.player2Username, points: match.player2Points },
+                { name: match.player3Username, points: match.player3Points },
+                { name: match.player4Username, points: match.player4Points },
+            ].filter(p => p.name).sort((a, b) => a.points - b.points);
+
+            playersHtml = players.map((p, index) => {
+                const position = index + 1;
+                return `<div class="text-lg">${position}º: ${p.name}</div>`;
+            }).join('');
+
+            title = `🎮 Modo: ${match.tournamentName}`;
+
+        } else if (gameType === 'SINGLEPLAYER' || gameType === 'MULTIPLAYER_LOCAL' || gameType === 'RPS') {
             const players = [
                 { name: match.player1Username, points: match.player1Points },
                 { name: match.player2Username, points: match.player2Points },
             ].filter(p => p.name);
 
             playersHtml = players.map(p => `<div class="text-lg">${p.name}: ${p.points} pts</div>`).join('');
-
-            return `
-                <div class="bg-slate-800 p-4 rounded-lg mb-4 shadow-retro">
-                    <h3 class="text-xl text-indigo-400 font-bold mb-2">🎮 Modo: ${match.tournamentName}</h3>
-                    ${playersHtml}
-                </div>
-            `;
+            
+            title = `🎮 Modo: ${match.tournamentName}`;
         }
+        
+        return `
+            <div class="bg-slate-800 p-4 rounded-lg mb-4 shadow-retro">
+                <h3 class="text-xl text-indigo-400 font-bold mb-2">${title}</h3>
+                ${playersHtml}
+            </div>
+        `;
     }).join('');
 }
 
