@@ -83,6 +83,8 @@ export function stopSharedState(): void {
   }
   document.removeEventListener('keydown', keyDownHandler);
   document.removeEventListener('keyup', keyUpHandler);
+  paddles = [];
+  ball = null;
 }
 
 
