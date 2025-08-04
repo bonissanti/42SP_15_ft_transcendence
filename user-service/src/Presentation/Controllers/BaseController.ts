@@ -15,10 +15,13 @@ export abstract class BaseController
             if (responseData !== undefined && responseData !== null) {
                 return reply.status(200).send(responseData);
             }
+            console.log("Retornando: ", result.getMessage());
             return reply.status(200).send(result.getMessage());
         }
-        else
+        else{
+            console.error("Erro ao processar a requisição:", result.getMessage());
             return reply.status(this.getStatusCodeFromErrorType(result.Error)).send({ message: result.getMessage() })
+        }
     }
 
     private getStatusCodeFromErrorType(ErrorType?: ErrorTypeEnum): number

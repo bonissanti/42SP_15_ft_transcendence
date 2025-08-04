@@ -13,20 +13,26 @@ export class HistoryRepository implements IBaseRepository<GetAllHistoriesQueryDT
         await prisma.history.create({
             data: {
                 historyUuid: entity.historyUuid,
+                tournamentId: entity.tournamentId,
                 tournamentName: entity.tournamentName,
+                gameType: entity.gameType,
                 player1Username: entity.player1Username,
+                player1Alias: entity.player1Alias,
                 player1Points: entity.player1Points,
                 player2Username: entity.player2Username,
+                player2Alias: entity.player2Alias,
                 player2Points: entity.player2Points,
                 player3Username: entity.player3Username,
+                player3Alias: entity.player3Alias,
                 player3Points: entity.player3Points,
                 player4Username: entity.player4Username,
+                player4Alias: entity.player4Alias,
                 player4Points: entity.player4Points,
             }
         });
     }
 
-    public async GetAllHistoriesByUsername(username: string): Promise<History[]>
+    public async GetAllHistoriesByUsername(username: string): Promise<any[]>
     {
         const historyData = await prisma.history.findMany({
             where: username? {
@@ -39,24 +45,7 @@ export class HistoryRepository implements IBaseRepository<GetAllHistoriesQueryDT
             } : {}
         });
 
-        // if (!historyData.length)
-        //     throw new Error(ErrorCatalog.HistoryNotFound.SetError());
-
-        return historyData.map((historyData) => this.RecoverEntity(historyData));
-    }
-
-    private RecoverEntity(history: any): History {
-        return new History(
-            history.tournamentName ?? undefined,
-            history.player1Username,
-            history.player1Points,
-            history.player2Username,
-            history.player2Points,
-            history.player3Username,
-            history.player3Points,
-            history.player4Username,
-            history.player4Points
-        );
+        return historyData;
     }
 
     Update(_uuid: string, entity: History, notification: NotificationError): Promise<void> {

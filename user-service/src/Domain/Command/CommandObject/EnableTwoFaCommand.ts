@@ -2,10 +2,10 @@ import {EnableTwoFaDTO} from "../../../Application/DTO/ToCommand/EnableTwoFaDTO.
 
 export class EnableTwoFaCommand
 {
-    constructor(public readonly uuid: string, public readonly code: string, public readonly secret: string){}
+    constructor(public readonly uuid: string, public readonly code: string){}
 
     public static fromDTO(dto: EnableTwoFaDTO): EnableTwoFaCommand
     {
-        return new EnableTwoFaCommand(dto.uuid, dto.code, dto.secret);
+        return new EnableTwoFaCommand(dto.uuid, dto.code);
     }
 }

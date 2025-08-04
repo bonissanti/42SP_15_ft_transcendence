@@ -19,7 +19,9 @@ export class Generate2FaQueryValidator implements BaseValidator<Generate2FaQuery
 
     public async Validator(query: Generate2FaQuery): Promise<void>
     {
-        if (await this.UserRepository.VerifyIfUserExistsByUUID(query.uuid))
+        this.NotificationError.CleanErrors();
+        console.log("Uuid: ", query.uuid);
+        if (!await this.UserRepository.VerifyIfUserExistsByUUID(query.uuid))
             this.NotificationError.AddError(ErrorCatalog.UserNotFound);
 
         if (this.NotificationError.NumberOfErrors() > 0){

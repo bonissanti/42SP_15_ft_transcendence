@@ -29,6 +29,7 @@ export interface PlayerInputs {
 export interface ClientData {
   ws: WebSocket;
   username: string;
+  realUsername?: string;
   inputs: PlayerInputs;
   id: string;
   profilePic: string;

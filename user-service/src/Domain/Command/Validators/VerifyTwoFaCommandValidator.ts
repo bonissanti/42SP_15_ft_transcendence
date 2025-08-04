@@ -1,13 +1,13 @@
-import {BaseValidator} from "../../Command/Validators/BaseValidator.js";
-import {Verify2faQuery} from "../QueryObject/Verify2faQuery.js";
+import {BaseValidator} from "./BaseValidator.js";
+import {VerifyTwoFaCommand} from "../CommandObject/VerifyTwoFaCommand.js";
 import {UserRepository} from "../../../Infrastructure/Persistence/Repositories/Concrete/UserRepository.js";
-import { NotificationError } from "src/Shared/Errors/NotificationError.js";
+import {NotificationError} from "../../../Shared/Errors/NotificationError.js";
 import {CustomError} from "../../../Shared/Errors/CustomError.js";
 import {ValidationException} from "../../../Shared/Errors/ValidationException.js";
 import {ErrorCatalog} from "../../../Shared/Errors/ErrorCatalog.js";
 import {authenticator} from "otplib";
 
-export class Verify2FaQueryValidator implements BaseValidator<Verify2faQuery>
+export class VerifyTwoFaCommandValidator implements BaseValidator<VerifyTwoFaCommand>
 {
     private UserRepository: UserRepository;
     private NotificationError: NotificationError;
@@ -18,17 +18,15 @@ export class Verify2FaQueryValidator implements BaseValidator<Verify2faQuery>
         this.NotificationError = notificationError;
     }
 
-    public async Validator(query: Verify2faQuery): Promise<void>
+    public async Validator(command: VerifyTwoFaCommand): Promise<void>
     {
-        this.NotificationError.CleanErrors();
-        const user = await this.UserRepository.GetUserEntityByUuid(query.uuid);
+        const user = await this.UserRepository.GetUserEntityByUuid(command.uuid);
 
         if (!user || !user.TwoFactorEnabled || !user.twoFactorSecret)
             this.NotificationError.AddError(ErrorCatalog.InvalidToken2Fa);
         else
         {
-            const isValid = authenticator.verify({ token: query.code, secret: user?.twoFactorSecret });
-            console.log("Validating 2FA for user:", user?.Uuid, "with code:", query.code, "and secret:", user?.twoFactorSecret);
+            const isValid = authenticator.verify({ token: command.code, secret: user.twoFactorSecret });
             if (!isValid)
                 this.NotificationError.AddError(ErrorCatalog.InvalidToken2Fa);
         }

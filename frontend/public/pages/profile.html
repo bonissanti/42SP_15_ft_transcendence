@@ -1,6 +1,12 @@
 <div>
   <h1 class="text-4xl text-glow mb-8">{{user.Username}}</h1>
-  <img src="{{user.ProfilePic}}" alt="Foto de Perfil" class="w-32 h-32 rounded-full mx-auto border-4 border-white shadow-retro mb-4">
+  <div class="relative w-32 h-32 mx-auto mb-4 group">
+    <img src="{{user.ProfilePic}}" alt="Foto de Perfil" class="w-full h-full rounded-full border-4 border-white shadow-retro object-cover">
+    <div id="profile-pic-overlay" class="absolute inset-0 rounded-full bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+      <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+    </div>
+  </div>
+  <input type="file" id="profile-pic-input" class="hidden" accept="image/png, image/jpeg">
   <div class="text-left max-w-sm mx-auto bg-slate-800 p-4 rounded-lg break-words">
     <p class="mb-2"><strong class="text-indigo-400">Email:</strong> {{user.Email}}</p>
     <p class="mb-2"><strong class="text-indigo-400">Status:</strong> <span class="{{user.statusColor}}">{{user.statusText}}</span></p>
@@ -8,10 +14,12 @@
     <p class="mb-2"><strong class="text-indigo-400">{{wins}}:</strong> {{user.wins}}</p>
     <p class="mb-2"><strong class="text-indigo-400">{{loses}}:</strong> {{user.loses}}</p>
     <p class="mb-2"><strong class="text-indigo-400">{{lastLogin}}:</strong> {{user.formattedLastLogin}}</p>
+    <p class="mb-2"><strong class="text-indigo-400">2FA:</strong> <span id="2fa-status">{{user.twoFactorEnabledStatus}}</span></p>
   </div>
   <div class="flex justify-center mt-4">
     <button id="edit-profile-button" class="menu-button">Editar Perfil</button>
     <button id="manage-friends-button" class="menu-button">Gerenciar Amizades</button>
+    <button id="2fa-button" class="menu-button">Gerenciar 2FA</button>
     <button class="menu-button" data-navigate="/">{{backToMenu}}</button>
   </div>
   <div class="flex justify-center mt-2">
@@ -19,6 +27,27 @@
     <button id="delete-account-button" class="menu-button bg-red-900 hover:bg-red-800">Deletar a Conta</button>
   </div>
 </div>
+
+<div id="2fa-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+  <div class="bg-slate-800 p-8 rounded-xl shadow-retro text-center w-full max-w-md">
+    <h2 id="2fa-modal-title" class="text-3xl mb-6 text-glow">Gerenciar 2FA</h2>
+    <div id="2fa-setup-content">
+        <p class="mb-4">Escaneie o QR Code com seu app de autenticação (ex: Google Authenticator).</p>
+        <img id="qr-code" src="" alt="QR Code" class="mx-auto mb-4">
+        <p class="mb-4">Depois, insira o código de 6 dígitos gerado pelo app.</p>
+        <input type="text" id="2fa-code-input" placeholder="Código de 6 dígitos" class="input-field mb-4" maxlength="6">
+        <button id="enable-2fa-button" class="menu-button">Habilitar</button>
+    </div>
+    <div id="2fa-disable-content" class="hidden">
+        <p class="mb-4">Para desabilitar o 2FA, insira um código de verificação atual.</p>
+        <input type="text" id="2fa-disable-code-input" placeholder="Código de 6 dígitos" class="input-field mb-4" maxlength="6">
+        <button id="disable-2fa-button" class="menu-button bg-red-700 hover:bg-red-600">Desabilitar 2FA</button>
+    </div>
+    <p id="2fa-error-message" class="text-red-500 mt-4"></p>
+    <button id="cancel-2fa-button" class="back-button mt-6">Cancelar</button>
+  </div>
+</div>
+
 
 <div id="friends-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
   <div class="bg-slate-800 p-8 rounded-xl shadow-retro text-center w-full max-w-2xl h-3/4 flex flex-col">

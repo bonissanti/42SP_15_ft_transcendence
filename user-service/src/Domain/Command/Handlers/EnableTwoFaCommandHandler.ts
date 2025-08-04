@@ -13,8 +13,9 @@ export class EnableTwoFaCommandHandler implements BaseHandlerCommand<EnableTwoFa
     {
         const user = await this.UserRepository.GetUserEntityByUuid(command.uuid);
 
-        user!.EnableTwoFA(command.secret);
-
-        await this.UserRepository.Update(user!.Uuid, user);
+        if (user && user.twoFactorSecret) {
+            user.twoFactorEnabled = true;
+            await this.UserRepository.Update(user.Uuid, user);
+        }
     }
 }
