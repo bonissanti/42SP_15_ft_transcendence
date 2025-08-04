@@ -19,7 +19,7 @@ export interface Ball {
 
 export const PADDLE_WIDTH = 15, PADDLE_HEIGHT = 100, BALL_RADIUS = 10;
 export const PADDLE_SPEED = 8;
-export const AI_SPEED = 6;
+export const AI_SPEED = PADDLE_SPEED;
 export const WIN_SCORE = 3;
 export const LOSE_SCORE = 5;
 
