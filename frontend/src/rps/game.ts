@@ -66,14 +66,14 @@ function updateScore(outcome: Outcome) {
   if (outcome === 'win') {
     playerScore++;
     resultTextEl.textContent = texts.win;
-    resultTextEl.className = 'text-2xl font-semibold h-8 mt-2 text-green-400';
+    resultTextEl.className = 'text-2xl font-semibold mt-2 text-green-400';
   } else if (outcome === 'lose') {
     computerScore++;
     resultTextEl.textContent = texts.lose;
-    resultTextEl.className = 'text-2xl font-semibold h-8 mt-2 text-red-400';
+    resultTextEl.className = 'text-2xl font-semibold mt-2 text-red-400';
   } else {
     resultTextEl.textContent = texts.draw;
-    resultTextEl.className = 'text-2xl font-semibold h-8 mt-2 text-gray-400';
+    resultTextEl.className = 'text-2xl font-semibold mt-2 text-gray-400';
   }
   playerScoreEl.textContent = playerScore.toString();
   computerScoreEl.textContent = computerScore.toString();
@@ -104,7 +104,6 @@ export function initRpsGame() {
 
   playerScoreEl.textContent = '0';
   computerScoreEl.textContent = '0';
-  resultTextEl.textContent = 'Escolha uma opção para começar!';
   choicesDisplayEl.textContent = '';
 
   document.querySelectorAll('.choice-btn').forEach(button => {
