@@ -18,7 +18,13 @@ function updateSinglePlayer() {
   ball.x += ball.speedX;
   ball.y += ball.speedY;
 
-  if (ball.y - ball.radius < 0 || ball.y + ball.radius > canvas.height) ball.speedY *= -1;
+  if (ball.y - ball.radius < 0) {
+    ball.y = ball.radius;
+    ball.speedY *= -1;
+  } else if (ball.y + ball.radius > canvas.height) {
+    ball.y = canvas.height - ball.radius;
+    ball.speedY *= -1;
+  }
 
   if (ball.x - ball.radius < 0) {
     p2.score++; checkWinCondition(); resetBall();
@@ -40,14 +46,23 @@ function updateSinglePlayer() {
   if (keys['s'] && p1.y < canvas.height - p1.height) p1.y += PADDLE_SPEED;
 
   
-  const aiPaddleCenter = p2.y + p2.height / 2;
-  
-  const deadZone = AI_SPEED; 
+  if (ball.speedX > 0 && ball.x > canvas.width / 2) {
+    let predictedY = ball.y;
+    let timeToReachPaddle = (p2.x - ball.x) / ball.speedX;
+    let futureBallY = ball.y + ball.speedY * timeToReachPaddle;
 
-  if (Math.abs(aiPaddleCenter - ball.y) > deadZone) {
-    if (aiPaddleCenter < ball.y && p2.y < canvas.height - p2.height) {
+    if (futureBallY < 0) {
+        predictedY = -futureBallY;
+    } else if (futureBallY > canvas.height) {
+        predictedY = 2 * canvas.height - futureBallY;
+    } else {
+        predictedY = futureBallY;
+    }
+
+    const aiPaddleCenter = p2.y + p2.height / 2;
+    if (aiPaddleCenter < predictedY && p2.y < canvas.height - p2.height) {
       p2.y += AI_SPEED;
-    } else if (aiPaddleCenter > ball.y && p2.y > 0) {
+    } else if (aiPaddleCenter > predictedY && p2.y > 0) {
       p2.y -= AI_SPEED;
     }
   }
