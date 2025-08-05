@@ -142,18 +142,24 @@ export function draw() {
 
         const name = playerNames[index] || `P${index + 1}`;
         if (paddles.length === 4) {
-             if (index === 0) ctx.fillText(`${name}: ${p.score}`, canvas.width / 4, 30);
-             if (index === 1) ctx.fillText(`${name}: ${p.score}`, (canvas.width / 4) * 3, 30);
+             if (index === 0) {
+                ctx.fillText(`${name}: ${p.score}`, canvas.width / 2, 30);
+             }
+             if (index === 1) {
+                ctx.fillText(`${name}: ${p.score}`, canvas.width / 2, canvas.height - 20);
+             }
              if (index === 2) {
                 ctx.save();
+                ctx.translate(30, canvas.height / 2);
                 ctx.rotate(-Math.PI / 2);
-                ctx.fillText(`${name}: ${p.score}`, -canvas.height / 2, 30);
+                ctx.fillText(`${name}: ${p.score}`, 0, 0);
                 ctx.restore();
              }
              if (index === 3) {
                 ctx.save();
+                ctx.translate(canvas.width - 30, canvas.height / 2);
                 ctx.rotate(Math.PI / 2);
-                ctx.fillText(`${name}: ${p.score}`, canvas.height / 2, -canvas.width + 30);
+                ctx.fillText(`${name}: ${p.score}`, 0, 0);
                 ctx.restore();
              }
         } else {
