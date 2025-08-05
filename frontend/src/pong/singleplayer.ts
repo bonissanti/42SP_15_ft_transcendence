@@ -8,32 +8,6 @@ import { sendMatchHistory, getUserProfile, getCachoraoProfile } from './common';
 
 let speedIntervalId: number | null = null;
 
-function predictBallImpact(ball: any, canvas: any): number {
-  let ballX = ball.x;
-  let ballY = ball.y;
-  let speedX = ball.speedX;
-  let speedY = ball.speedY;
-  
-  if (speedX <= 0) {
-    return ballY;
-  }
-  
-  const aiX = canvas.width - 20 - 15;
-  
-  while (ballX < aiX) {
-    ballX += speedX;
-    ballY += speedY;
-    
-    if (ballY - ball.radius <= 0 || ballY + ball.radius >= canvas.height) {
-      speedY *= -1;
-    }
-    
-    if (ballX >= canvas.width) break;
-  }
-  
-  return ballY;
-}
-
 function updateSinglePlayer() {
   const ball = getBall();
   const p1 = getPlayer1();
@@ -65,21 +39,20 @@ function updateSinglePlayer() {
   if (keys['w'] && p1.y > 0) p1.y -= PADDLE_SPEED;
   if (keys['s'] && p1.y < canvas.height - p1.height) p1.y += PADDLE_SPEED;
 
-  const predictedY = predictBallImpact(ball, canvas);
-  const targetY = predictedY - p2.height / 2;
+  
+  const aiPaddleCenter = p2.y + p2.height / 2;
+  
+  const deadZone = AI_SPEED; 
 
-  const errorMargin = (Math.random() - 0.5) * 20;
-  const finalTargetY = targetY + errorMargin;
-  
-  const distance = Math.abs(p2.y + p2.height / 2 - finalTargetY);
-  const aiSpeed = AI_SPEED * Math.min(1.5, distance / 50);
-  
-  if (p2.y + p2.height / 2 < finalTargetY && p2.y < canvas.height - p2.height) {
-    p2.y += aiSpeed;
-  } else if (p2.y + p2.height / 2 > finalTargetY && p2.y > 0) {
-    p2.y -= aiSpeed;
+  if (Math.abs(aiPaddleCenter - ball.y) > deadZone) {
+    if (aiPaddleCenter < ball.y && p2.y < canvas.height - p2.height) {
+      p2.y += AI_SPEED;
+    } else if (aiPaddleCenter > ball.y && p2.y > 0) {
+      p2.y -= AI_SPEED;
+    }
   }
 }
+
 
 function increaseBallSpeed() {
   const ball = getBall();
