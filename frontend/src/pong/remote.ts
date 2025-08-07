@@ -1,4 +1,5 @@
 import { fetchWithAuth } from '../api/api';
+import { t } from '../i18n';
 import {
   initSharedState, stopSharedState, draw, keys,
   setBall, setPaddles, setAnimationFrameId, setIsWaiting,
@@ -131,7 +132,7 @@ export async function initRemoteGame() {
         }
         break;
       case 'opponent_disconnected':
-        alert("Um oponente desconectou. O jogo terminou.");
+        alert(t().opponentDisconnected);
         stopRemoteGame();
         window.location.hash = '/';
         break;

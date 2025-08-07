@@ -1,21 +1,22 @@
 import { fetchWithAuth } from '../../api/api';
+import { t } from '../../i18n';
 
 async function showFriends(friendsContent: HTMLElement, currentUserUuid: string) {
-    friendsContent.innerHTML = '<p>Carregando amigos...</p>';
+    friendsContent.innerHTML = `<p>${t().loadingFriends}</p>`;
     try {
         const response = await fetchWithAuth(`/friendsList?userUuid=${currentUserUuid}&status=ACCEPTED`);
         if (!response.ok) throw new Error('Failed to fetch friends');
         const friends = await response.json();
 
         if (friends.length === 0) {
-            friendsContent.innerHTML = '<p>Você ainda não tem amigos.</p>';
+            friendsContent.innerHTML = `<p>${t().noFriends}</p>`;
             return;
         }
 
         friendsContent.innerHTML = friends.map((friend: any) => `
             <div class="flex justify-between items-center bg-slate-700 p-2 rounded mb-2">
-                <span>${friend.friendUsername} - <span class="${friend.isOnline ? 'text-green-500' : 'text-red-500'}">${friend.isOnline ? 'Online' : 'Offline'}</span></span>
-                <button class="delete-friend-button bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-2 rounded" data-friendship-uuid="${friend.uuid}">Deletar</button>
+                <span>${friend.friendUsername} - <span class="${friend.isOnline ? 'text-green-500' : 'text-red-500'}">${friend.isOnline ? t().online : t().offline}</span></span>
+                <button class="delete-friend-button bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-2 rounded" data-friendship-uuid="${friend.uuid}">${t().delete}</button>
             </div>
         `).join('');
 
@@ -44,12 +45,12 @@ async function showFriends(friendsContent: HTMLElement, currentUserUuid: string)
 
     } catch (error) {
         console.error("Erro em showFriends:", error);
-        friendsContent.innerHTML = '<p>Erro ao carregar amigos.</p>';
+        friendsContent.innerHTML = `<p>${t().errorLoadingFriends}</p>`;
     }
 }
 
 async function showAllUsers(friendsContent: HTMLElement, currentUserUuid: string) {
-    friendsContent.innerHTML = '<p>Carregando usuários...</p>';
+    friendsContent.innerHTML = `<p>${t().loadingUsers}</p>`;
     try {
         const [allUsersResponse, friendshipsResponse] = await Promise.all([
             fetchWithAuth('/users'),
@@ -69,27 +70,27 @@ async function showAllUsers(friendsContent: HTMLElement, currentUserUuid: string
         
         const pendingRequests = friendships.filter((f: any) => f.status === 'PENDING' && f.senderUuid === currentUserUuid);
 
-        let content = '<h3>Solicitações Enviadas</h3>';
+        let content = `<h3>${t().sentRequests}</h3>`;
         if (pendingRequests.length > 0) {
             content += pendingRequests.map((req: any) => `
                 <div class="flex justify-between items-center bg-slate-700 p-2 rounded mb-2">
-                    <span>${req.friendUsername} (Pendente)</span>
+                    <span>${req.friendUsername} (${t().pending})</span>
                 </div>
             `).join('');
         } else {
-            content += '<p>Nenhuma solicitação enviada.</p>';
+            content += `<p>${t().noSentRequests}</p>`;
         }
 
-        content += '<h3 class="mt-4">Outros Usuários</h3>';
+        content += `<h3 class="mt-4">${t().otherUsers}</h3>`;
         if (availableUsers.length > 0) {
             content += availableUsers.map((user: any) => `
                 <div class="flex justify-between items-center bg-slate-700 p-2 rounded mb-2">
-                    <span>${user.Username} - <span class="${user.isOnline ? 'text-green-500' : 'text-red-500'}">${user.isOnline ? 'Online' : 'Offline'}</span></span>
-                    <button class="add-friend-button bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-2 rounded" data-receiver-uuid="${user.Uuid}">Adicionar</button>
+                    <span>${user.Username} - <span class="${user.isOnline ? 'text-green-500' : 'text-red-500'}">${user.isOnline ? t().online : t().offline}</span></span>
+                    <button class="add-friend-button bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-2 rounded" data-receiver-uuid="${user.Uuid}">${t().add}</button>
                 </div>
             `).join('');
         } else {
-            content += '<p>Nenhum usuário novo para adicionar.</p>';
+            content += `<p>${t().noNewUsers}</p>`;
         }
 
 
@@ -103,19 +104,19 @@ async function showAllUsers(friendsContent: HTMLElement, currentUserUuid: string
                     method: 'POST',
                     body: JSON.stringify({ senderUuid: currentUserUuid, receiverUuid }),
                 });
-                target.textContent = 'Enviado';
+                target.textContent = t().sent;
                 target.disabled = true;
             });
         });
 
     } catch (error) {
         console.error("Erro em showAllUsers:", error);
-        friendsContent.innerHTML = '<p>Erro ao carregar usuários.</p>';
+        friendsContent.innerHTML = `<p>${t().errorLoadingUsers}</p>`;
     }
 }
 
 async function showPendingRequests(friendsContent: HTMLElement, currentUserUuid: string) {
-    friendsContent.innerHTML = '<p>Carregando solicitações...</p>';
+    friendsContent.innerHTML = `<p>${t().loadingRequests}</p>`;
     try {
         const response = await fetchWithAuth(`/friendsList?userUuid=${currentUserUuid}&status=PENDING`);
         if (!response.ok) throw new Error('Failed to fetch requests');
@@ -123,16 +124,16 @@ async function showPendingRequests(friendsContent: HTMLElement, currentUserUuid:
         const requests = (await response.json()).filter((req: any) => req.receiverUuid === currentUserUuid);
 
         if (requests.length === 0) {
-            friendsContent.innerHTML = '<p>Nenhuma solicitação de amizade recebida.</p>';
+            friendsContent.innerHTML = `<p>${t().noRequests}</p>`;
             return;
         }
 
         friendsContent.innerHTML = requests.map((req: any) => `
             <div class="flex justify-between items-center bg-slate-700 p-2 rounded mb-2">
-                <span>${req.friendUsername} - <span class="${req.isOnline ? 'text-green-500' : 'text-red-500'}">${req.isOnline ? 'Online' : 'Offline'}</span></span> 
+                <span>${req.friendUsername} - <span class="${req.isOnline ? 'text-green-500' : 'text-red-500'}">${req.isOnline ? t().online : t().offline}</span></span> 
                 <div>
-                    <button class="accept-request-button bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-2 rounded mr-2" data-friendship-uuid="${req.uuid}">Aceitar</button>
-                    <button class="reject-request-button bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-2 rounded" data-friendship-uuid="${req.uuid}">Rejeitar</button>
+                    <button class="accept-request-button bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-2 rounded mr-2" data-friendship-uuid="${req.uuid}">${t().accept}</button>
+                    <button class="reject-request-button bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-2 rounded" data-friendship-uuid="${req.uuid}">${t().reject}</button>
                 </div>
             </div>
         `).join('');
@@ -153,7 +154,7 @@ async function showPendingRequests(friendsContent: HTMLElement, currentUserUuid:
 
     } catch (error) {
         console.error("Erro em showPendingRequests:", error);
-        friendsContent.innerHTML = '<p>Erro ao carregar solicitações.</p>';
+        friendsContent.innerHTML = `<p>${t().errorLoadingRequests}</p>`;
     }
 }
 

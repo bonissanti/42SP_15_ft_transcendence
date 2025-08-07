@@ -1,4 +1,5 @@
 import { fetchWithAuth } from '../api/api';
+import { t } from '../i18n';
 import {
   initSharedState, stopSharedState, draw, keys,
   setBall, setPaddles, setAnimationFrameId, setIsWaiting,
@@ -40,7 +41,7 @@ function getPlayerHTML(player: any | null) {
             <div class="w-24 h-24 rounded-full border-4 border-dashed border-gray-500 flex items-center justify-center">
                 <span class="text-gray-500 text-4xl">?</span>
             </div>
-            <span class="text-lg text-gray-500">Aguardando...</span>
+            <span class="text-lg text-gray-500">${t().waiting}</span>
         </div>
     `;
 }
@@ -71,7 +72,7 @@ function renderWaitingRoom(players: any[]) {
     `;
 
     const remaining = 4 - players.length;
-    waitingMessage.textContent = remaining > 0 ? `Aguardando mais ${remaining} jogador(es)...` : 'O torneio vai começar!';
+    waitingMessage.textContent = remaining > 0 ? t().waitingMorePlayers.replace('{{count}}', remaining.toString()) : t().tournamentStarting;
 }
 
 
@@ -224,11 +225,11 @@ async function startTournamentGameWithNickname() {
 
             case 'opponent_ready':
                 const readyStatus = document.getElementById('ready-status')!;
-                readyStatus.textContent = 'Oponente está pronto!';
+                readyStatus.textContent = t().opponentReady;
                 break;
 
             case 'opponent_disconnected':
-                alert("Um oponente desconectou. O jogo terminou.");
+                alert(t().opponentDisconnected);
                 stopTournamentGame();
                 window.location.hash = '/';
                 break;
@@ -325,7 +326,7 @@ export function stopTournamentGame() {
 
     const readyButton = document.getElementById('ready-button') as HTMLButtonElement;
     if (readyButton) {
-        readyButton.textContent = "Pronto";
+        readyButton.textContent = t().ready;
         readyButton.disabled = false;
         readyButton.classList.add('hidden');
     }

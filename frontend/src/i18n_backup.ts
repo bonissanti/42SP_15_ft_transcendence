@@ -80,9 +80,6 @@ const translations = {
     profilePicture: 'Foto de perfil',
     choose: 'Escolher',
     twoFACode: 'Código de Verificação (2FA)',
-    twoFactorVerification: 'Verificação de Dois Fatores',
-    verify: 'Verificar',
-    backToLogin: 'Voltar ao Login',
 
     // Perfil
     profileTitle: 'Perfil',
@@ -110,22 +107,6 @@ const translations = {
     removeFriend: 'Remover Amigo',
     confirmRemoval: 'Tem certeza de que deseja remover este amigo?',
     confirm: 'Confirmar',
-    loadingFriends: 'Carregando amigos...',
-    noFriends: 'Você não tem amigos ainda.',
-    online: 'Online',
-    offline: 'Offline',
-    delete: 'Excluir',
-    loadingUsers: 'Carregando usuários...',
-    pending: 'Pendente',
-    noSentRequests: 'Nenhuma solicitação enviada.',
-    otherUsers: 'Outros Usuários',
-    add: 'Adicionar',
-    noNewUsers: 'Nenhum novo usuário disponível.',
-    sent: 'Enviado',
-    loadingRequests: 'Carregando solicitações...',
-    noRequests: 'Nenhuma solicitação recebida.',
-    accept: 'Aceitar',
-    reject: 'Rejeitar',
 
     // Editar Perfil
     editProfileTitle: 'Editar Perfil',
@@ -268,9 +249,6 @@ const translations = {
     profilePicture: 'Profile picture',
     choose: 'Choose',
     twoFACode: 'Verification Code (2FA)',
-    twoFactorVerification: 'Two-Factor Verification',
-    verify: 'Verify',
-    backToLogin: 'Back to Login',
 
     // Profile
     profileTitle: 'Profile',
@@ -298,22 +276,6 @@ const translations = {
     removeFriend: 'Remove Friend',
     confirmRemoval: 'Are you sure you want to remove this friend?',
     confirm: 'Confirm',
-    loadingFriends: 'Loading friends...',
-    noFriends: 'You don\'t have any friends yet.',
-    online: 'Online',
-    offline: 'Offline',
-    delete: 'Delete',
-    loadingUsers: 'Loading users...',
-    pending: 'Pending',
-    noSentRequests: 'No sent requests.',
-    otherUsers: 'Other Users',
-    add: 'Add',
-    noNewUsers: 'No new users available.',
-    sent: 'Sent',
-    loadingRequests: 'Loading requests...',
-    noRequests: 'No received requests.',
-    accept: 'Accept',
-    reject: 'Reject',
 
     // Edit Profile
     editProfileTitle: 'Edit Profile',
@@ -456,9 +418,6 @@ const translations = {
     profilePicture: 'Foto de perfil',
     choose: 'Elegir',
     twoFACode: 'Código de Verificación (2FA)',
-    twoFactorVerification: 'Verificación de Dos Factores',
-    verify: 'Verificar',
-    backToLogin: 'Volver al Inicio de Sesión',
 
     // Perfil
     profileTitle: 'Perfil',
@@ -486,22 +445,6 @@ const translations = {
     removeFriend: 'Eliminar Amigo',
     confirmRemoval: '¿Estás seguro de que quieres eliminar este amigo?',
     confirm: 'Confirmar',
-    loadingFriends: 'Cargando amigos...',
-    noFriends: 'Aún no tienes amigos.',
-    online: 'En línea',
-    offline: 'Desconectado',
-    delete: 'Eliminar',
-    loadingUsers: 'Cargando usuarios...',
-    pending: 'Pendiente',
-    noSentRequests: 'No hay solicitudes enviadas.',
-    otherUsers: 'Otros Usuarios',
-    add: 'Agregar',
-    noNewUsers: 'No hay nuevos usuarios disponibles.',
-    sent: 'Enviado',
-    loadingRequests: 'Cargando solicitudes...',
-    noRequests: 'No hay solicitudes recibidas.',
-    accept: 'Aceptar',
-    reject: 'Rechazar',
 
     // Editar Perfil
     editProfileTitle: 'Editar Perfil',
@@ -644,9 +587,6 @@ const translations = {
     profilePicture: 'Photo de profil',
     choose: 'Choisir',
     twoFACode: 'Code de Vérification (2FA)',
-    twoFactorVerification: 'Vérification à Deux Facteurs',
-    verify: 'Vérifier',
-    backToLogin: 'Retour à la Connexion',
 
     // Profil
     profileTitle: 'Profil',
@@ -674,22 +614,6 @@ const translations = {
     removeFriend: 'Supprimer l\'Ami',
     confirmRemoval: 'Êtes-vous sûr de vouloir supprimer cet ami ?',
     confirm: 'Confirmer',
-    loadingFriends: 'Chargement des amis...',
-    noFriends: 'Vous n\'avez pas encore d\'amis.',
-    online: 'En ligne',
-    offline: 'Hors ligne',
-    delete: 'Supprimer',
-    loadingUsers: 'Chargement des utilisateurs...',
-    pending: 'En attente',
-    noSentRequests: 'Aucune demande envoyée.',
-    otherUsers: 'Autres Utilisateurs',
-    add: 'Ajouter',
-    noNewUsers: 'Aucun nouvel utilisateur disponible.',
-    sent: 'Envoyé',
-    loadingRequests: 'Chargement des demandes...',
-    noRequests: 'Aucune demande reçue.',
-    accept: 'Accepter',
-    reject: 'Rejeter',
 
     // Modifier le Profil
     editProfileTitle: 'Modifier le Profil',
@@ -791,11 +715,4 @@ export function t(): typeof translations['pt-BR'] {
 
 export function tError(key: ErrorKeys): string {
   return translations[currentLanguage].errors[key];
-}
-
-export function toggleLanguage(): void {
-  const languages: Language[] = ['pt-BR', 'en', 'es', 'fr'];
-  const currentIndex = languages.indexOf(currentLanguage);
-  const nextIndex = (currentIndex + 1) % languages.length;
-  currentLanguage = languages[nextIndex];
 }
