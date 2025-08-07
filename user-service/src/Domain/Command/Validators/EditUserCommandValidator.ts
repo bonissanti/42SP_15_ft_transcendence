@@ -15,31 +15,33 @@ export class EditUserCommandValidator implements BaseValidator<EditUserCommand>
     }
 
     public async Validator(command: EditUserCommand): Promise<void>
-    {
-        this.NotificationError.CleanErrors();
-        //if (!EmailVO.ValidEmail(command.Email)) {
-          //  this.NotificationError.AddError(ErrorCatalog.InvalidEmail);
-        //}
-        if (command.Password && !PasswordHashVO.ValidPassword(command.Password)) {
-            this.NotificationError.AddError(ErrorCatalog.InvalidPassword);
-        }
-        if (!await this.UserRepository.VerifyIfUserExistsByUUID(command.Uuid))
-            this.NotificationError.AddError(ErrorCatalog.UserNotFound);
+{
+    this.NotificationError.CleanErrors();
 
-        if( await this.UserRepository.VerifyIfUserExistsByUsername(command.Username)) {
+    const currentUser = await this.UserRepository.GetUserEntityByUuid(command.Uuid);
+    if (!currentUser) {
+        this.NotificationError.AddError(ErrorCatalog.UserNotFound);
+        throw new ValidationException(this.NotificationError.GetAllErrors());
+    }
+
+    if (command.Password && !PasswordHashVO.ValidPassword(command.Password)) {
+        this.NotificationError.AddError(ErrorCatalog.InvalidPassword);
+    }
+
+    if (command.Username && command.Username !== currentUser.Username) {
+        if (await this.UserRepository.VerifyIfUserExistsByUsername(command.Username)) {
             this.NotificationError.AddError(ErrorCatalog.UsernameAlreadyExists);
         }
-        // if (await this.UserRepository.VerifyIfUserExistsByEmail(command.Email)) {
-        //     this.NotificationError.AddError(ErrorCatalog.EmailAlreadyExists);
-        // }
-        if (command.ProfilePic != null && !this.CheckExtension(command.ProfilePic))
-            this.NotificationError.AddError(ErrorCatalog.InvalidExtension);
-
-        if (this.NotificationError.NumberOfErrors() > 0){
-            const allErrors : CustomError[] = this.NotificationError.GetAllErrors();
-            throw new ValidationException(allErrors);
-        }
     }
+
+    if (command.ProfilePic != null && !this.CheckExtension(command.ProfilePic))
+        this.NotificationError.AddError(ErrorCatalog.InvalidExtension);
+
+    if (this.NotificationError.NumberOfErrors() > 0){
+        const allErrors : CustomError[] = this.NotificationError.GetAllErrors();
+        throw new ValidationException(allErrors);
+    }
+}
 
     private CheckExtension(url: string | null): boolean | undefined {
         if (!url) return undefined;
