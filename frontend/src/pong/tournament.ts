@@ -61,12 +61,12 @@ function renderWaitingRoom(players: any[]) {
     slotsDiv.innerHTML = `
         <div class="flex justify-around items-center w-full">
             ${getPlayerHTML(players[0])}
-            <span class="text-4xl text-glow mx-4">VS</span>
+            <span class="text-4xl text-glow mx-4">${t().vs.toUpperCase()}</span>
             ${getPlayerHTML(players[1])}
         </div>
         <div class="flex justify-around items-center w-full mt-8">
             ${getPlayerHTML(players[2])}
-            <span class="text-4xl text-glow mx-4">VS</span>
+            <span class="text-4xl text-glow mx-4">${t().vs.toUpperCase()}</span>
             ${getPlayerHTML(players[3])}
         </div>
     `;
@@ -204,7 +204,7 @@ async function startTournamentGameWithNickname() {
                     history.pushState({}, '', path);
                     window.dispatchEvent(new PopStateEvent('popstate'));
                 } else {
-                    alert('O jogo terminou sem um vencedor claro.');
+                    alert(t().gameEndedNoWinner);
                     window.location.hash = '/';
                 }
                 break;
@@ -245,7 +245,7 @@ async function startTournamentGameWithNickname() {
                     nicknameInput?.focus();
                     nicknameInput?.select();
                 } else {
-                    alert(`Erro do servidor: ${message.message}`);
+                    alert(`${t().serverError}: ${message.message}`);
                     stopTournamentGame();
                     window.location.hash = '/';
                 }
@@ -257,7 +257,7 @@ async function startTournamentGameWithNickname() {
         if (document.getElementById('game-container')?.classList.contains('hidden')) {
             console.log("Conexão WebSocket fechada.");
         } else {
-            alert("A conexão com o servidor foi perdida.");
+            alert(t().connectionLost);
         }
         stopTournamentGame();
         window.location.hash = '/';
@@ -265,7 +265,7 @@ async function startTournamentGameWithNickname() {
 
     ws.onerror = (err) => {
         console.error("Erro no WebSocket: ", err);
-        alert("Ocorreu um erro na conexão com o servidor.");
+        alert(t().connectionError);
         stopTournamentGame();
         window.location.hash = '/';
     };
@@ -275,7 +275,7 @@ async function startTournamentGameWithNickname() {
             ws.send(JSON.stringify({ type: 'final_ready_click' }));
             const readyButton = document.getElementById('ready-button') as HTMLButtonElement;
             const readyStatus = document.getElementById('ready-status')!;
-            readyButton.textContent = "Aguardando oponente...";
+            readyButton.textContent = t().waitingOpponent;
             readyButton.disabled = true;
             readyStatus.textContent = "";
         }
@@ -374,7 +374,7 @@ function renderFinalsWaitingRoom(finalists: any[]) {
             <img src="${player1.profilePic}" alt="${player1.username}" class="w-32 h-32 rounded-full border-4 border-white mb-2">
             <span class="text-2xl truncate">${player1.username}</span>
         </div>
-        <span class="text-6xl text-glow mx-8">VS</span>
+        <span class="text-6xl text-glow mx-8">${t().vs.toUpperCase()}</span>
         ${player2HTML}
     `;
 }

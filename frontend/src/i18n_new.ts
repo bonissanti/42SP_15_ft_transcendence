@@ -9,7 +9,7 @@ export type ErrorKeys =
   | "Email already exists"
   | "Points can't be negative"
   | "Invalid file extension. Only .jpeg/.jpg and .png are allowed"
-  | "Invalid request freind. Sender and receiver uuid are the same"
+  | "Invalid request from client. Sender and receiver uuid are the same"
   | "Invalid friend request status for the operation"
   | "This friendship already exists"
   | "This friendship not exists"
@@ -26,21 +26,20 @@ const translations = {
     // Menu Principal
     mainMenuTitle: 'TRANSCENDENCE',
     playPongButton: 'Jogar Pong',
-    playRpsButton: 'Pedra, Papel, Tesoura',
+    playRpsButton: 'Jogar Pedra, Papel e Tesoura',
     profileLink: 'Perfil',
-    creatorsLink: 'Conheça nossos criadores!',
+    creatorsLink: 'Criadores',
 
-    // Seleção Pong
+    // Seleção de Modo Pong
     pongTitle: 'PONG',
     selectMode: 'Selecione o modo de jogo:',
-    singlePlayer: 'Single Player',
-    multiplayer: 'Multiplayer',
+    singlePlayer: 'Um Jogador',
+    multiplayer: 'Dois Jogadores',
     remoteMultiplayer: 'Multiplayer Remoto',
     tournament: 'Torneio',
     backToMenu: 'Voltar ao Menu',
 
     // Jogo Pong
-    pongInstructions: 'P1: W/S | P2: ↑/↓| P3: A/D | P4: ←/→',
     waitingRoom: 'SALA DE ESPERA',
     tournamentWaitingRoom: 'SALA DE ESPERA DO TORNEIO',
     exitQueue: 'Sair da Fila',
@@ -52,14 +51,17 @@ const translations = {
     ready: 'Pronto',
     waitingOpponent: 'Aguardando oponente...',
     opponentReady: 'Oponente está pronto!',
+    opponentDisconnected: 'Um oponente desconectou. O jogo terminou.',
+    waitingBothPlayers: 'Aguardando ambos os jogadores',
+    pongInstructions: 'P1: W/S | P2: ↑/↓| P3: A/D | P4: ←/→',
 
     // Jogo RPS
-    rpsTitle: 'Pedra, Papel & Tesoura',
+    rpsTitle: 'Pedra, Papel e Tesoura',
     player: 'Você',
     cpu: 'CPU',
-    yourTurn: 'Faça sua jogada:',
-    win: 'Você Ganhou!',
-    lose: 'Você Perdeu!',
+    yourTurn: 'Sua vez:',
+    win: 'Você venceu!',
+    lose: 'Você perdeu!',
     draw: 'Empate!',
     vs: 'vs',
 
@@ -67,152 +69,200 @@ const translations = {
     welcome: 'Bem-vindo!',
     chooseOption: 'Escolha uma opção para continuar.',
     login: 'Entrar',
-    register: 'Cadastrar',
+    register: 'Registrar',
     or: 'ou',
     loginTitle: 'Login',
-    email: 'Email',
+    email: 'E-mail',
     password: 'Senha',
     back: 'Voltar',
-    registerTitle: 'Cadastro',
+    registerTitle: 'Registro',
     username: 'Nome de usuário',
-    shareEmail: 'Gostaria de compartilhar seu e-mail?',
-    createAccount: 'Criar Conta',
+    confirmPassword: 'Confirmar senha',
+    profilePicture: 'Foto de perfil',
+    choose: 'Escolher',
+    twoFACode: 'Código de Verificação (2FA)',
     twoFactorVerification: 'Verificação de Dois Fatores',
-    enterCode: 'Digite o código do seu aplicativo de autenticação:',
     verify: 'Verificar',
     backToLogin: 'Voltar ao Login',
+    shareEmail: 'Gostaria de compartilhar seu e-mail?',
+    createAccount: 'Criar Conta',
 
-    // Página de Perfil
-    profileTitle: 'Nome',
-    profileText: 'Informações básicas do usuário.',
+    // Perfil
+    profileTitle: 'Perfil',
+    matchHistory: 'Histórico de Partidas',
     matchesPlayed: 'Partidas jogadas',
     wins: 'Vitórias',
     loses: 'Derrotas',
-    lastLogin: 'Último login',
+    noMatches: 'Nenhuma partida jogada ainda.',
+    winRate: 'Taxa de vitória',
+    editProfile: 'Editar Perfil',
+    friends: 'Amigos',
+    twoFATitle: 'Autenticação de Dois Fatores (2FA)',
+    logout: 'Sair',
+    deleteAccount: 'Deletar Conta',
     status: 'Status',
+    lastLogin: 'Último login',
     online: 'Online',
     offline: 'Offline',
-    editProfile: 'Editar Perfil',
-    manageFriends: 'Gerenciar Amizades',
-    manage2FA: 'Gerenciar 2FA',
-    logout: 'Sair',
-    deleteAccount: 'Deletar a Conta',
+    enabled: 'Ativado',
+    disabled: 'Desativado',
+    never: 'Nunca',
 
-    // Modal 2FA
-    manage2FATitle: 'Gerenciar 2FA',
-    scanQRCode: 'Escaneie o QR Code com seu app de autenticação (ex: Google Authenticator).',
-    enterAuthCode: 'Depois, insira o código de 6 dígitos gerado pelo app.',
-    authCode: 'Código de 6 dígitos',
-    enable: 'Habilitar',
-    toDisable2FA: 'Para desabilitar o 2FA, insira um código de verificação atual.',
-    disable2FA: 'Desabilitar 2FA',
-    cancel: 'Cancelar',
-
-    // Modal Amigos
-    manageFriendsTitle: 'Gerenciar Amizades',
-    friends: 'Amigos',
-    addFriends: 'Adicionar Amigos',
-    requests: 'Solicitações',
-    close: 'Fechar',
-    loadingFriends: 'Carregando amigos...',
-    noFriends: 'Você ainda não tem amigos.',
-    delete: 'Deletar',
-    loadingUsers: 'Carregando usuários...',
+    // Amigos
+    friendsList: 'Lista de Amigos',
+    addFriend: 'Adicionar Amigo',
+    searchUsers: 'Buscar usuários',
     sentRequests: 'Solicitações Enviadas',
+    receivedRequests: 'Solicitações Recebidas',
+    addFriendButton: 'Adicionar',
+    acceptRequest: 'Aceitar',
+    rejectRequest: 'Rejeitar',
+    cancel: 'Cancelar',
+    removeFriend: 'Remover Amigo',
+    confirmRemoval: 'Tem certeza de que deseja remover este amigo?',
+    confirm: 'Confirmar',
+    loadingFriends: 'Carregando amigos...',
+    noFriends: 'Você não tem amigos ainda.',
+    delete: 'Excluir',
+    loadingUsers: 'Carregando usuários...',
     pending: 'Pendente',
     noSentRequests: 'Nenhuma solicitação enviada.',
     otherUsers: 'Outros Usuários',
     add: 'Adicionar',
-    noNewUsers: 'Nenhum usuário novo para adicionar.',
+    noNewUsers: 'Nenhum novo usuário disponível.',
     sent: 'Enviado',
     loadingRequests: 'Carregando solicitações...',
-    noRequests: 'Nenhuma solicitação de amizade recebida.',
+    noRequests: 'Nenhuma solicitação recebida.',
     accept: 'Aceitar',
     reject: 'Rejeitar',
+    manageFriends: 'Gerenciar Amizades',
+    manageFriendsTitle: 'Gerenciar Amizades',
+    addFriends: 'Adicionar Amigos',
+    requests: 'Solicitações',
+    close: 'Fechar',
+    confirmDeletion: 'Confirmar Exclusão',
+    confirmDeleteFriend: 'Tem certeza de que deseja remover este amigo?',
+    confirmDeleteAccount: 'Tem certeza que deseja deletar sua conta? Essa ação é irreversível.',
+
+    // Editar Perfil
+    editProfileTitle: 'Editar Perfil',
+    changeProfilePic: 'Alterar Foto de Perfil',
+    chooseFile: 'Escolher arquivo',
+    changeUsername: 'Alterar Nome de Usuário',
+    newUsername: 'Novo nome de usuário',
+    changePassword: 'Alterar Senha',
+    currentPassword: 'Senha atual',
+    newPassword: 'Nova senha',
+    confirmNewPassword: 'Confirmar nova senha',
+    save: 'Salvar',
+    saveChanges: 'Salvar Alterações',
+
+    // 2FA
+    setupTwoFA: 'Configurar 2FA',
+    disableTwoFA: 'Desabilitar 2FA',
+    scanQRCode: 'Escaneie o código QR com seu aplicativo autenticador',
+    enterCode: 'Digite o código de 6 dígitos do seu aplicativo',
+    enable: 'Habilitar',
+    disable: 'Desabilitar',
+    manage2FA: 'Gerenciar 2FA',
+    manage2FATitle: 'Gerenciar 2FA',
+    enterAuthCode: 'Depois, insira o código de 6 dígitos gerado pelo app.',
+    toDisable2FA: 'Para desabilitar o 2FA, insira um código de verificação atual.',
+    authCode: 'Código de 6 dígitos',
+    disable2FA: 'Desabilitar 2FA',
+
+    // Mensagens
+    successProfileUpdate: 'Perfil atualizado com sucesso!',
+    successPasswordChange: 'Senha alterada com sucesso!',
+    success2FAEnabled: '2FA habilitado com sucesso!',
+    success2FADisabled: '2FA desabilitado com sucesso!',
+    successFriendAdded: 'Amigo adicionado com sucesso!',
+    successFriendRemoved: 'Amigo removido com sucesso!',
     errorLoadingFriends: 'Erro ao carregar amigos.',
     errorLoadingUsers: 'Erro ao carregar usuários.',
     errorLoadingRequests: 'Erro ao carregar solicitações.',
 
-    // Modal Confirmação
-    confirmDeletion: 'Confirmar Exclusão',
-    confirmDeleteFriend: 'Tem certeza que deseja remover esta amizade?',
-    confirm: 'Confirmar',
-    confirmDeleteAccount: 'Tem certeza que deseja deletar sua conta? Essa ação é irreversível.',
-
-    // Modal Editar Perfil
-    editProfileTitle: 'Editar Perfil',
-    newUsername: 'Novo nome de usuário',
-    newPassword: 'Nova senha',
-    saveChanges: 'Salvar Alterações',
-
-    // Modal Apelido Torneio
+    // Torneio
+    tournamentTitle: 'TORNEIO',
+    enterNickname: 'Digite seu apelido para o torneio:',
+    nickname: 'Apelido',
+    joinTournament: 'Entrar no Torneio',
+    players: 'jogadores',
     chooseNickname: 'Escolha um apelido para o seu usuário',
-    enterNickname: 'Digite seu apelido',
     nicknameEmpty: 'O apelido não pode estar vazio',
     nicknameTaken: 'Este apelido já está sendo usado na sala. Escolha outro apelido.',
 
-    // Página de Criadores
-    creatorsTitle: 'Criadores',
-    creatorsText: 'Este projeto foi criado por...',
+    // Modal Apelido Torneio
+    nicknameModalTitle: 'Apelido já em uso',
+    nicknameModalText: 'Este apelido já está sendo usado na sala. Escolha outro apelido.',
+    tryAgain: 'Tentar novamente',
 
     // Página de Vencedor
     congratulations: 'Parabéns!',
-    youWon: 'você ganhou!',
+    youWon: 'Você venceu!',
 
     // Página de Derrota
-    youLost: 'Você Perdeu',
+    youLost: 'Você perdeu!',
     dontGiveUp: 'Não desista! Tente novamente no próximo torneio.',
     backToMainMenu: 'Voltar ao Menu Principal',
 
     // Página 404
-    pageNotFound: 'Página não encontrada!',
+    pageNotFound: 'Página não encontrada',
+    pageNotFoundDesc: 'A página que você está procurando não existe.',
+    goHome: 'Ir para o início',
 
-    // Geral
-    loading: 'Carregando...',
+    // Criadores
+    creatorsTitle: 'Criadores',
+    creatorsText: 'Este projeto foi criado por...',
     errorLoadingPage: 'Erro ao carregar a página',
-    contentNotFound: 'Não foi possível encontrar o conteúdo solicitado.',
 
+    // Histórico de partidas
+    place: 'lugar',
+    mode: 'Modo',
+    points: 'pts',
+
+    // Erros
     errors: {
       "Invalid email address": "Endereço de e-mail inválido.",
       "Wrong email address": "Endereço de e-mail incorreto.",
       "Invalid password: must be between 8 and 30 characters long": "Senha inválida: deve ter entre 8 e 30 caracteres.",
       "Wrong password, try again": "Senha incorreta, tente novamente.",
-      "Username already exists": "Este nome de usuário já existe.",
-      "Email already exists": "Este e-mail já está em uso.",
+      "Username already exists": "Nome de usuário já existe.",
+      "Email already exists": "E-mail já existe.",
       "Points can't be negative": "Os pontos não podem ser negativos.",
       "Invalid file extension. Only .jpeg/.jpg and .png are allowed": "Extensão de arquivo inválida. Apenas .jpeg/.jpg e .png são permitidos.",
-      "Invalid request freind. Sender and receiver uuid are the same": "Solicitação de amizade inválida. Remetente e destinatário são a mesma pessoa.",
-      "Invalid friend request status for the operation": "Status da solicitação de amizade inválido para esta operação.",
+      "Invalid request from client. Sender and receiver uuid are the same": "Solicitação inválida do cliente. UUID do remetente e destinatário são iguais.",
+      "Invalid friend request status for the operation": "Status de solicitação de amizade inválido para a operação.",
       "This friendship already exists": "Esta amizade já existe.",
       "This friendship not exists": "Esta amizade não existe.",
-      "A database constraint, like unique, was violated": "Ocorreu um conflito de dados. Tente usar informações diferentes.",
-      "Invalid token for 2FA": "Token 2FA inválido.",
-      "2FA is not enabled for this user": "2FA não está ativado para este usuário.",
-      "User(s) not found": "Usuário não encontrado.",
+      "A database constraint, like unique, was violated": "Uma restrição do banco de dados, como exclusividade, foi violada.",
+      "Invalid token for 2FA": "Token inválido para 2FA.",
+      "2FA is not enabled for this user": "2FA não está habilitado para este usuário.",
+      "User(s) not found": "Usuário(s) não encontrado(s).",
       "Internal server error": "Erro interno do servidor. Tente novamente mais tarde.",
       "Network Error": "Erro de rede. Verifique sua conexão e tente novamente.",
       "Default Error": "Ocorreu um erro. Tente novamente."
-    } as Record<ErrorKeys, string>
+    }
   },
+
   'en': {
     // Main Menu
     mainMenuTitle: 'TRANSCENDENCE',
     playPongButton: 'Play Pong',
-    playRpsButton: 'Rock, Paper, Scissors',
+    playRpsButton: 'Play Rock, Paper, Scissors',
     profileLink: 'Profile',
-    creatorsLink: 'Meet our creators!',
+    creatorsLink: 'Creators',
 
-    // Pong Selection
+    // Pong Mode Selection
     pongTitle: 'PONG',
     selectMode: 'Select game mode:',
     singlePlayer: 'Single Player',
-    multiplayer: 'Multiplayer',
+    multiplayer: 'Two Players',
     remoteMultiplayer: 'Remote Multiplayer',
     tournament: 'Tournament',
     backToMenu: 'Back to Menu',
 
     // Pong Game
-    pongInstructions: 'P1: W/S | P2: ↑/↓ | P3: A/D | P4: ←/→',
     waitingRoom: 'WAITING ROOM',
     tournamentWaitingRoom: 'TOURNAMENT WAITING ROOM',
     exitQueue: 'Exit Queue',
@@ -224,14 +274,17 @@ const translations = {
     ready: 'Ready',
     waitingOpponent: 'Waiting for opponent...',
     opponentReady: 'Opponent is ready!',
+    opponentDisconnected: 'An opponent disconnected. The game has ended.',
+    waitingBothPlayers: 'Waiting for both players',
+    pongInstructions: 'P1: W/S | P2: ↑/↓ | P3: A/D | P4: ←/→',
 
     // RPS Game
-    rpsTitle: 'Rock, Paper & Scissors',
+    rpsTitle: 'Rock, Paper, Scissors',
     player: 'You',
     cpu: 'CPU',
-    yourTurn: 'Make your move:',
-    win: 'You Win!',
-    lose: 'You Lose!',
+    yourTurn: 'Your turn:',
+    win: 'You won!',
+    lose: 'You lost!',
     draw: 'Draw!',
     vs: 'vs',
 
@@ -247,144 +300,192 @@ const translations = {
     back: 'Back',
     registerTitle: 'Register',
     username: 'Username',
-    shareEmail: 'Would you like to share your email?',
-    createAccount: 'Create Account',
+    confirmPassword: 'Confirm password',
+    profilePicture: 'Profile picture',
+    choose: 'Choose',
+    twoFACode: 'Verification Code (2FA)',
     twoFactorVerification: 'Two-Factor Verification',
-    enterCode: 'Enter the code from your authentication app:',
     verify: 'Verify',
     backToLogin: 'Back to Login',
+    shareEmail: 'Would you like to share your email?',
+    createAccount: 'Create Account',
 
-    // Profile Page
+    // Profile
     profileTitle: 'Profile',
-    profileText: 'Basic user information.',
-    matchesPlayed: 'Matches Played',
+    matchHistory: 'Match History',
+    matchesPlayed: 'Matches played',
     wins: 'Wins',
-    loses: 'Defeats',
-    lastLogin: 'Last login',
-    status: 'Status',
-    online: 'Online',
-    offline: 'Offline',
+    loses: 'Losses',
+    noMatches: 'No matches played yet.',
+    winRate: 'Win rate',
     editProfile: 'Edit Profile',
-    manageFriends: 'Manage Friends',
-    manage2FA: 'Manage 2FA',
+    friends: 'Friends',
+    twoFATitle: 'Two-Factor Authentication (2FA)',
     logout: 'Logout',
     deleteAccount: 'Delete Account',
+    status: 'Status',
+    lastLogin: 'Last login',
+    online: 'Online',
+    offline: 'Offline',
+    enabled: 'Enabled',
+    disabled: 'Disabled',
+    never: 'Never',
 
-    // 2FA Modal
-    manage2FATitle: 'Manage 2FA',
-    scanQRCode: 'Scan the QR Code with your authentication app (e.g., Google Authenticator).',
-    enterAuthCode: 'Then, enter the 6-digit code generated by the app.',
-    authCode: '6-digit code',
-    enable: 'Enable',
-    toDisable2FA: 'To disable 2FA, enter a current verification code.',
-    disable2FA: 'Disable 2FA',
+    // Friends
+    friendsList: 'Friends List',
+    addFriend: 'Add Friend',
+    searchUsers: 'Search users',
+    sentRequests: 'Sent Requests',
+    receivedRequests: 'Received Requests',
+    addFriendButton: 'Add',
+    acceptRequest: 'Accept',
+    rejectRequest: 'Reject',
     cancel: 'Cancel',
-
-    // Friends Modal
-    manageFriendsTitle: 'Manage Friends',
-    friends: 'Friends',
-    addFriends: 'Add Friends',
-    requests: 'Requests',
-    close: 'Close',
+    removeFriend: 'Remove Friend',
+    confirmRemoval: 'Are you sure you want to remove this friend?',
+    confirm: 'Confirm',
     loadingFriends: 'Loading friends...',
     noFriends: 'You don\'t have any friends yet.',
     delete: 'Delete',
     loadingUsers: 'Loading users...',
-    sentRequests: 'Sent Requests',
     pending: 'Pending',
     noSentRequests: 'No sent requests.',
     otherUsers: 'Other Users',
     add: 'Add',
-    noNewUsers: 'No new users to add.',
+    noNewUsers: 'No new users available.',
     sent: 'Sent',
     loadingRequests: 'Loading requests...',
-    noRequests: 'No friend requests received.',
+    noRequests: 'No received requests.',
     accept: 'Accept',
     reject: 'Reject',
+    manageFriends: 'Manage Friends',
+    manageFriendsTitle: 'Manage Friends',
+    addFriends: 'Add Friends',
+    requests: 'Requests',
+    close: 'Close',
+    confirmDeletion: 'Confirm Deletion',
+    confirmDeleteFriend: 'Are you sure you want to remove this friend?',
+    confirmDeleteAccount: 'Are you sure you want to delete your account? This action is irreversible.',
+
+    // Edit Profile
+    editProfileTitle: 'Edit Profile',
+    changeProfilePic: 'Change Profile Picture',
+    chooseFile: 'Choose file',
+    changeUsername: 'Change Username',
+    newUsername: 'New username',
+    changePassword: 'Change Password',
+    currentPassword: 'Current password',
+    newPassword: 'New password',
+    confirmNewPassword: 'Confirm new password',
+    save: 'Save',
+    saveChanges: 'Save Changes',
+
+    // 2FA
+    setupTwoFA: 'Setup 2FA',
+    disableTwoFA: 'Disable 2FA',
+    scanQRCode: 'Scan the QR code with your authenticator app',
+    enterCode: 'Enter the 6-digit code from your app',
+    enable: 'Enable',
+    disable: 'Disable',
+    manage2FA: 'Manage 2FA',
+    manage2FATitle: 'Manage 2FA',
+    enterAuthCode: 'Enter the 6-digit code from your app',
+    toDisable2FA: 'To disable 2FA, enter a current verification code.',
+    authCode: '6-digit code',
+    disable2FA: 'Disable 2FA',
+
+    // Messages
+    successProfileUpdate: 'Profile updated successfully!',
+    successPasswordChange: 'Password changed successfully!',
+    success2FAEnabled: '2FA enabled successfully!',
+    success2FADisabled: '2FA disabled successfully!',
+    successFriendAdded: 'Friend added successfully!',
+    successFriendRemoved: 'Friend removed successfully!',
     errorLoadingFriends: 'Error loading friends.',
     errorLoadingUsers: 'Error loading users.',
     errorLoadingRequests: 'Error loading requests.',
 
-    // Confirmation Modal
-    confirmDeletion: 'Confirm Deletion',
-    confirmDeleteFriend: 'Are you sure you want to remove this friendship?',
-    confirm: 'Confirm',
-    confirmDeleteAccount: 'Are you sure you want to delete your account? This action is irreversible.',
-
-    // Edit Profile Modal
-    editProfileTitle: 'Edit Profile',
-    newUsername: 'New username',
-    newPassword: 'New password',
-    saveChanges: 'Save Changes',
-
-    // Tournament Nickname Modal
+    // Tournament
+    tournamentTitle: 'TOURNAMENT',
+    enterNickname: 'Enter your nickname for the tournament:',
+    nickname: 'Nickname',
+    joinTournament: 'Join Tournament',
+    players: 'players',
     chooseNickname: 'Choose a nickname for your user',
-    enterNickname: 'Enter your nickname',
-    nicknameEmpty: 'Nickname cannot be empty',
+    nicknameEmpty: 'The nickname cannot be empty',
     nicknameTaken: 'This nickname is already being used in the room. Choose another nickname.',
 
-    // Creators Page
-    creatorsTitle: 'Creators',
-    creatorsText: 'This project was created by...',
-    
+    // Nickname Modal Tournament
+    nicknameModalTitle: 'Nickname already in use',
+    nicknameModalText: 'This nickname is already being used in the room. Choose another nickname.',
+    tryAgain: 'Try again',
+
     // Winner Page
     congratulations: 'Congratulations!',
-    youWon: 'you won!',
+    youWon: 'You won!',
 
     // Defeat Page
-    youLost: 'You Lost',
+    youLost: 'You lost!',
     dontGiveUp: 'Don\'t give up! Try again in the next tournament.',
     backToMainMenu: 'Back to Main Menu',
 
     // 404 Page
-    pageNotFound: 'Page not found!',
+    pageNotFound: 'Page not found',
+    pageNotFoundDesc: 'The page you are looking for does not exist.',
+    goHome: 'Go to home',
 
-    // General
-    loading: 'Loading...',
+    // Creators
+    creatorsTitle: 'Creators',
+    creatorsText: 'This project was created by...',
     errorLoadingPage: 'Error loading page',
-    contentNotFound: 'Could not find the requested content.',
 
+    // Match history
+    place: 'place',
+    mode: 'Mode',
+    points: 'pts',
+
+    // Errors
     errors: {
       "Invalid email address": "Invalid email address.",
       "Wrong email address": "Wrong email address.",
       "Invalid password: must be between 8 and 30 characters long": "Invalid password: must be between 8 and 30 characters long.",
       "Wrong password, try again": "Wrong password, try again.",
-      "Username already exists": "This username already exists.",
-      "Email already exists": "This email is already in use.",
+      "Username already exists": "Username already exists.",
+      "Email already exists": "Email already exists.",
       "Points can't be negative": "Points can't be negative.",
       "Invalid file extension. Only .jpeg/.jpg and .png are allowed": "Invalid file extension. Only .jpeg/.jpg and .png are allowed.",
-      "Invalid request freind. Sender and receiver uuid are the same": "Invalid friend request. Sender and receiver are the same person.",
-      "Invalid friend request status for the operation": "Invalid friend request status for this operation.",
+      "Invalid request from client. Sender and receiver uuid are the same": "Invalid request from client. Sender and receiver uuid are the same.",
+      "Invalid friend request status for the operation": "Invalid friend request status for the operation.",
       "This friendship already exists": "This friendship already exists.",
       "This friendship not exists": "This friendship does not exist.",
-      "A database constraint, like unique, was violated": "A data conflict occurred. Try using different information.",
-      "Invalid token for 2FA": "Invalid 2FA token.",
+      "A database constraint, like unique, was violated": "A database constraint, like unique, was violated.",
+      "Invalid token for 2FA": "Invalid token for 2FA.",
       "2FA is not enabled for this user": "2FA is not enabled for this user.",
-      "User(s) not found": "User not found.",
+      "User(s) not found": "User(s) not found.",
       "Internal server error": "Internal server error. Please try again later.",
       "Network Error": "Network error. Check your connection and try again.",
       "Default Error": "An error occurred. Please try again."
-    } as Record<ErrorKeys, string>
+    }
   },
+
   'es': {
     // Menú Principal
     mainMenuTitle: 'TRANSCENDENCE',
     playPongButton: 'Jugar Pong',
-    playRpsButton: 'Piedra, Papel, Tijeras',
+    playRpsButton: 'Jugar Piedra, Papel y Tijeras',
     profileLink: 'Perfil',
-    creatorsLink: '¡Conoce a nuestros creadores!',
+    creatorsLink: 'Creadores',
 
-    // Selección Pong
+    // Selección de Modo Pong
     pongTitle: 'PONG',
     selectMode: 'Selecciona el modo de juego:',
-    singlePlayer: 'Un jugador',
-    multiplayer: 'Multijugador',
+    singlePlayer: 'Un Jugador',
+    multiplayer: 'Dos Jugadores',
     remoteMultiplayer: 'Multijugador Remoto',
     tournament: 'Torneo',
-    backToMenu: 'Volver al menú',
+    backToMenu: 'Volver al Menú',
 
     // Juego Pong
-    pongInstructions: 'P1: W/S | P2: ↑/↓ | P3: A/D | P4: ←/→',
     waitingRoom: 'SALA DE ESPERA',
     tournamentWaitingRoom: 'SALA DE ESPERA DEL TORNEO',
     exitQueue: 'Salir de la Cola',
@@ -394,14 +495,17 @@ const translations = {
     waiting: 'Esperando...',
     finalTournament: 'Final del Torneo',
     ready: 'Listo',
-    waitingOpponent: 'Esperando oponente...',
+    waitingOpponent: 'Esperando al oponente...',
     opponentReady: '¡El oponente está listo!',
+    opponentDisconnected: 'Un oponente se desconectó. El juego ha terminado.',
+    waitingBothPlayers: 'Esperando a ambos jugadores',
+    pongInstructions: 'P1: W/S | P2: ↑/↓ | P3: A/D | P4: ←/→',
 
     // Juego RPS
     rpsTitle: 'Piedra, Papel y Tijeras',
     player: 'Tú',
     cpu: 'CPU',
-    yourTurn: 'Haz tu jugada:',
+    yourTurn: 'Tu turno:',
     win: '¡Ganaste!',
     lose: '¡Perdiste!',
     draw: '¡Empate!',
@@ -419,144 +523,192 @@ const translations = {
     back: 'Volver',
     registerTitle: 'Registro',
     username: 'Nombre de usuario',
-    shareEmail: '¿Te gustaría compartir tu correo electrónico?',
-    createAccount: 'Crear Cuenta',
+    confirmPassword: 'Confirmar contraseña',
+    profilePicture: 'Foto de perfil',
+    choose: 'Elegir',
+    twoFACode: 'Código de Verificación (2FA)',
     twoFactorVerification: 'Verificación de Dos Factores',
-    enterCode: 'Ingresa el código de tu aplicación de autenticación:',
     verify: 'Verificar',
     backToLogin: 'Volver al Inicio de Sesión',
+    shareEmail: '¿Te gustaría compartir tu correo electrónico?',
+    createAccount: 'Crear Cuenta',
 
-    // Página de Perfil
+    // Perfil
     profileTitle: 'Perfil',
-    profileText: 'Información básica del usuario.',
+    matchHistory: 'Historial de Partidas',
     matchesPlayed: 'Partidas jugadas',
     wins: 'Victorias',
     loses: 'Derrotas',
-    lastLogin: 'Último inicio de sesión',
-    status: 'Estado',
-    online: 'En línea',
-    offline: 'Desconectado',
+    noMatches: 'Aún no has jugado ninguna partida.',
+    winRate: 'Tasa de victoria',
     editProfile: 'Editar Perfil',
-    manageFriends: 'Gestionar Amigos',
-    manage2FA: 'Gestionar 2FA',
+    friends: 'Amigos',
+    twoFATitle: 'Autenticación de Dos Factores (2FA)',
     logout: 'Cerrar Sesión',
     deleteAccount: 'Eliminar Cuenta',
+    status: 'Estado',
+    lastLogin: 'Último inicio de sesión',
+    online: 'En línea',
+    offline: 'Desconectado',
+    enabled: 'Habilitado',
+    disabled: 'Deshabilitado',
+    never: 'Nunca',
 
-    // Modal 2FA
-    manage2FATitle: 'Gestionar 2FA',
-    scanQRCode: 'Escanea el código QR con tu aplicación de autenticación (ej: Google Authenticator).',
-    enterAuthCode: 'Luego, ingresa el código de 6 dígitos generado por la aplicación.',
-    authCode: 'Código de 6 dígitos',
-    enable: 'Habilitar',
-    toDisable2FA: 'Para deshabilitar 2FA, ingresa un código de verificación actual.',
-    disable2FA: 'Deshabilitar 2FA',
+    // Amigos
+    friendsList: 'Lista de Amigos',
+    addFriend: 'Agregar Amigo',
+    searchUsers: 'Buscar usuarios',
+    sentRequests: 'Solicitudes Enviadas',
+    receivedRequests: 'Solicitudes Recibidas',
+    addFriendButton: 'Agregar',
+    acceptRequest: 'Aceptar',
+    rejectRequest: 'Rechazar',
     cancel: 'Cancelar',
-
-    // Modal Amigos
-    manageFriendsTitle: 'Gestionar Amigos',
-    friends: 'Amigos',
-    addFriends: 'Agregar Amigos',
-    requests: 'Solicitudes',
-    close: 'Cerrar',
+    removeFriend: 'Eliminar Amigo',
+    confirmRemoval: '¿Estás seguro de que quieres eliminar este amigo?',
+    confirm: 'Confirmar',
     loadingFriends: 'Cargando amigos...',
     noFriends: 'Aún no tienes amigos.',
     delete: 'Eliminar',
     loadingUsers: 'Cargando usuarios...',
-    sentRequests: 'Solicitudes Enviadas',
     pending: 'Pendiente',
-    noSentRequests: 'Ninguna solicitud enviada.',
+    noSentRequests: 'No hay solicitudes enviadas.',
     otherUsers: 'Otros Usuarios',
     add: 'Agregar',
-    noNewUsers: 'No hay usuarios nuevos para agregar.',
+    noNewUsers: 'No hay nuevos usuarios disponibles.',
     sent: 'Enviado',
     loadingRequests: 'Cargando solicitudes...',
-    noRequests: 'Ninguna solicitud de amistad recibida.',
+    noRequests: 'No hay solicitudes recibidas.',
     accept: 'Aceptar',
     reject: 'Rechazar',
+    manageFriends: 'Gestionar Amigos',
+    manageFriendsTitle: 'Gestionar Amigos',
+    addFriends: 'Agregar Amigos',
+    requests: 'Solicitudes',
+    close: 'Cerrar',
+    confirmDeletion: 'Confirmar Eliminación',
+    confirmDeleteFriend: '¿Estás seguro de que quieres eliminar este amigo?',
+    confirmDeleteAccount: '¿Estás seguro de que quieres eliminar tu cuenta? Esta acción es irreversible.',
+
+    // Editar Perfil
+    editProfileTitle: 'Editar Perfil',
+    changeProfilePic: 'Cambiar Foto de Perfil',
+    chooseFile: 'Elegir archivo',
+    changeUsername: 'Cambiar Nombre de Usuario',
+    newUsername: 'Nuevo nombre de usuario',
+    changePassword: 'Cambiar Contraseña',
+    currentPassword: 'Contraseña actual',
+    newPassword: 'Nueva contraseña',
+    confirmNewPassword: 'Confirmar nueva contraseña',
+    save: 'Guardar',
+    saveChanges: 'Guardar Cambios',
+
+    // 2FA
+    setupTwoFA: 'Configurar 2FA',
+    disableTwoFA: 'Deshabilitar 2FA',
+    scanQRCode: 'Escanea el código QR con tu aplicación autenticadora',
+    enterCode: 'Ingresa el código de 6 dígitos de tu aplicación',
+    enable: 'Habilitar',
+    disable: 'Deshabilitar',
+    manage2FA: 'Gestionar 2FA',
+    manage2FATitle: 'Gestionar 2FA',
+    enterAuthCode: 'Ingresa el código de 6 dígitos de tu aplicación',
+    toDisable2FA: 'Para deshabilitar 2FA, ingresa un código de verificación actual.',
+    authCode: 'Código de 6 dígitos',
+    disable2FA: 'Deshabilitar 2FA',
+
+    // Mensajes
+    successProfileUpdate: '¡Perfil actualizado con éxito!',
+    successPasswordChange: '¡Contraseña cambiada con éxito!',
+    success2FAEnabled: '¡2FA habilitado con éxito!',
+    success2FADisabled: '¡2FA deshabilitado con éxito!',
+    successFriendAdded: '¡Amigo agregado con éxito!',
+    successFriendRemoved: '¡Amigo eliminado con éxito!',
     errorLoadingFriends: 'Error al cargar amigos.',
     errorLoadingUsers: 'Error al cargar usuarios.',
     errorLoadingRequests: 'Error al cargar solicitudes.',
 
-    // Modal de Confirmación
-    confirmDeletion: 'Confirmar Eliminación',
-    confirmDeleteFriend: '¿Estás seguro de que deseas eliminar esta amistad?',
-    confirm: 'Confirmar',
-    confirmDeleteAccount: '¿Estás seguro de que deseas eliminar tu cuenta? Esta acción es irreversible.',
-
-    // Modal Editar Perfil
-    editProfileTitle: 'Editar Perfil',
-    newUsername: 'Nuevo nombre de usuario',
-    newPassword: 'Nueva contraseña',
-    saveChanges: 'Guardar Cambios',
-
-    // Modal Apodo Torneo
+    // Torneo
+    tournamentTitle: 'TORNEO',
+    enterNickname: 'Ingresa tu apodo para el torneo:',
+    nickname: 'Apodo',
+    joinTournament: 'Unirse al Torneo',
+    players: 'jugadores',
     chooseNickname: 'Elige un apodo para tu usuario',
-    enterNickname: 'Ingresa tu apodo',
     nicknameEmpty: 'El apodo no puede estar vacío',
     nicknameTaken: 'Este apodo ya está siendo usado en la sala. Elige otro apodo.',
 
-    // Página de Creadores
-    creatorsTitle: 'Creadores',
-    creatorsText: 'Este proyecto fue creado por...',
-  
+    // Modal Apodo Torneo
+    nicknameModalTitle: 'Apodo ya en uso',
+    nicknameModalText: 'Este apodo ya está siendo usado en la sala. Elige otro apodo.',
+    tryAgain: 'Intentar de nuevo',
+
     // Página de Ganador
-    congratulations: '¡Felicidades!',
-    youWon: '¡has ganado!',
+    congratulations: '¡Felicitaciones!',
+    youWon: '¡Ganaste!',
 
     // Página de Derrota
-    youLost: 'Perdiste',
+    youLost: '¡Perdiste!',
     dontGiveUp: '¡No te rindas! Inténtalo de nuevo en el próximo torneo.',
     backToMainMenu: 'Volver al Menú Principal',
 
     // Página 404
-    pageNotFound: '¡Página no encontrada!',
+    pageNotFound: 'Página no encontrada',
+    pageNotFoundDesc: 'La página que buscas no existe.',
+    goHome: 'Ir al inicio',
 
-    // General
-    loading: 'Cargando...',
+    // Creadores
+    creatorsTitle: 'Creadores',
+    creatorsText: 'Este proyecto fue creado por...',
     errorLoadingPage: 'Error al cargar la página',
-    contentNotFound: 'No se pudo encontrar el contenido solicitado.',
 
+    // Historial de partidas
+    place: 'lugar',
+    mode: 'Modo',
+    points: 'pts',
+
+    // Errores
     errors: {
       "Invalid email address": "Dirección de correo electrónico inválida.",
       "Wrong email address": "Dirección de correo electrónico incorrecta.",
-      "Invalid password: must be between 8 and 30 characters long": "Contraseña no válida: debe tener entre 8 y 30 caracteres.",
-      "Wrong password, try again": "Contraseña incorrecta, intente de nuevo.",
-      "Username already exists": "Este nombre de usuario ya existe.",
-      "Email already exists": "Este correo electrónico ya está en uso.",
+      "Invalid password: must be between 8 and 30 characters long": "Contraseña inválida: debe tener entre 8 y 30 caracteres.",
+      "Wrong password, try again": "Contraseña incorrecta, inténtalo de nuevo.",
+      "Username already exists": "El nombre de usuario ya existe.",
+      "Email already exists": "El correo electrónico ya existe.",
       "Points can't be negative": "Los puntos no pueden ser negativos.",
       "Invalid file extension. Only .jpeg/.jpg and .png are allowed": "Extensión de archivo inválida. Solo se permiten .jpeg/.jpg y .png.",
-      "Invalid request freind. Sender and receiver uuid are the same": "Solicitud de amistad inválida. El remitente y el receptor son la misma persona.",
-      "Invalid friend request status for the operation": "Estado de la solicitud de amistad no válido para esta operación.",
+      "Invalid request from client. Sender and receiver uuid are the same": "Solicitud inválida del cliente. UUID del remitente y receptor son iguales.",
+      "Invalid friend request status for the operation": "Estado de solicitud de amistad inválido para la operación.",
       "This friendship already exists": "Esta amistad ya existe.",
       "This friendship not exists": "Esta amistad no existe.",
-      "A database constraint, like unique, was violated": "Ocurrió un conflicto de datos. Intente usar información diferente.",
-      "Invalid token for 2FA": "Token 2FA no válido.",
-      "2FA is not enabled for this user": "El 2FA no está habilitado para este usuario.",
-      "User(s) not found": "Usuario no encontrado.",
-      "Internal server error": "Error interno del servidor. Por favor, inténtelo de nuevo más tarde.",
-      "Network Error": "Error de red. Verifique su conexión e intente nuevamente.",
-      "Default Error": "Ocurrió un error. Por favor, inténtelo de nuevo."
-    } as Record<ErrorKeys, string>
+      "A database constraint, like unique, was violated": "Se violó una restricción de la base de datos, como la unicidad.",
+      "Invalid token for 2FA": "Token inválido para 2FA.",
+      "2FA is not enabled for this user": "2FA no está habilitado para este usuario.",
+      "User(s) not found": "Usuario(s) no encontrado(s).",
+      "Internal server error": "Error interno del servidor. Inténtalo de nuevo más tarde.",
+      "Network Error": "Error de red. Verifica tu conexión e inténtalo de nuevo.",
+      "Default Error": "Ocurrió un error. Por favor, inténtalo de nuevo."
+    }
   },
+
   'fr': {
     // Menu Principal
     mainMenuTitle: 'TRANSCENDENCE',
-    playPongButton: 'Jouer au Pong',
-    playRpsButton: 'Pierre, Papier, Ciseaux',
+    playPongButton: 'Jouer à Pong',
+    playRpsButton: 'Jouer à Pierre, Papier, Ciseaux',
     profileLink: 'Profil',
-    creatorsLink: 'Rencontrez nos créateurs !',
+    creatorsLink: 'Créateurs',
 
-    // Sélection Pong
+    // Sélection de Mode Pong
     pongTitle: 'PONG',
     selectMode: 'Sélectionnez le mode de jeu :',
-    singlePlayer: 'Un joueur',
-    multiplayer: 'Multijoueur',
-    remoteMultiplayer: 'Multijoueur à Distance',
+    singlePlayer: 'Un Joueur',
+    multiplayer: 'Deux Joueurs',
+    remoteMultiplayer: 'Multijoueur Distant',
     tournament: 'Tournoi',
-    backToMenu: 'Retour au menu',
+    backToMenu: 'Retour au Menu',
 
     // Jeu Pong
-    pongInstructions: 'J1 : W/S | J2 : ↑/↓ | J3 : A/D | J4 : ←/→',
     waitingRoom: 'SALLE D\'ATTENTE',
     tournamentWaitingRoom: 'SALLE D\'ATTENTE DU TOURNOI',
     exitQueue: 'Quitter la File',
@@ -568,12 +720,15 @@ const translations = {
     ready: 'Prêt',
     waitingOpponent: 'En attente de l\'adversaire...',
     opponentReady: 'L\'adversaire est prêt !',
+    opponentDisconnected: 'Un adversaire s\'est déconnecté. Le jeu s\'est terminé.',
+    waitingBothPlayers: 'En attente des deux joueurs',
+    pongInstructions: 'J1 : W/S | J2 : ↑/↓ | J3 : A/D | J4 : ←/→',
 
     // Jeu RPS
-    rpsTitle: 'Pierre, Papier & Ciseaux',
+    rpsTitle: 'Pierre, Papier, Ciseaux',
     player: 'Vous',
     cpu: 'CPU',
-    yourTurn: 'Faites votre choix :',
+    yourTurn: 'Votre tour :',
     win: 'Vous avez gagné !',
     lose: 'Vous avez perdu !',
     draw: 'Égalité !',
@@ -591,139 +746,196 @@ const translations = {
     back: 'Retour',
     registerTitle: 'Inscription',
     username: 'Nom d\'utilisateur',
-    shareEmail: 'Souhaitez-vous partager votre e-mail ?',
-    createAccount: 'Créer un Compte',
+    confirmPassword: 'Confirmer le mot de passe',
+    profilePicture: 'Photo de profil',
+    choose: 'Choisir',
+    twoFACode: 'Code de Vérification (2FA)',
     twoFactorVerification: 'Vérification à Deux Facteurs',
-    enterCode: 'Entrez le code de votre application d\'authentification :',
     verify: 'Vérifier',
     backToLogin: 'Retour à la Connexion',
+    shareEmail: 'Souhaitez-vous partager votre e-mail ?',
+    createAccount: 'Créer un Compte',
 
-    // Page de Profil
+    // Profil
     profileTitle: 'Profil',
-    profileText: 'Informations de base sur l\'utilisateur.',
+    matchHistory: 'Historique des Parties',
     matchesPlayed: 'Parties jouées',
     wins: 'Victoires',
     loses: 'Défaites',
-    lastLogin: 'Dernière connexion',
+    noMatches: 'Aucune partie jouée pour le moment.',
+    winRate: 'Taux de victoire',
+    editProfile: 'Modifier le Profil',
+    friends: 'Amis',
+    twoFATitle: 'Authentification à Deux Facteurs (2FA)',
+    logout: 'Se déconnecter',
+    deleteAccount: 'Supprimer le Compte',
     status: 'Statut',
+    lastLogin: 'Dernière connexion',
     online: 'En ligne',
     offline: 'Hors ligne',
-    editProfile: 'Modifier le Profil',
-    manageFriends: 'Gérer les Amis',
-    manage2FA: 'Gérer l\'A2F',
-    logout: 'Se Déconnecter',
-    deleteAccount: 'Supprimer le Compte',
+    enabled: 'Activé',
+    disabled: 'Désactivé',
+    never: 'Jamais',
 
-    // Modal 2FA
-    manage2FATitle: 'Gérer l\'A2F',
-    scanQRCode: 'Scannez le code QR avec votre application d\'authentification (ex : Google Authenticator).',
-    enterAuthCode: 'Ensuite, saisissez le code à 6 chiffres généré par l\'application.',
-    authCode: 'Code à 6 chiffres',
-    enable: 'Activer',
-    toDisable2FA: 'Pour désactiver l\'A2F, saisissez un code de vérification actuel.',
-    disable2FA: 'Désactiver l\'A2F',
+    // Amis
+    friendsList: 'Liste d\'Amis',
+    addFriend: 'Ajouter un Ami',
+    searchUsers: 'Rechercher des utilisateurs',
+    sentRequests: 'Demandes Envoyées',
+    receivedRequests: 'Demandes Reçues',
+    addFriendButton: 'Ajouter',
+    acceptRequest: 'Accepter',
+    rejectRequest: 'Rejeter',
     cancel: 'Annuler',
-
-    // Modal Amis
-    manageFriendsTitle: 'Gérer les Amis',
-    friends: 'Amis',
-    addFriends: 'Ajouter des Amis',
-    requests: 'Demandes',
-    close: 'Fermer',
+    removeFriend: 'Supprimer l\'Ami',
+    confirmRemoval: 'Êtes-vous sûr de vouloir supprimer cet ami ?',
+    confirm: 'Confirmer',
     loadingFriends: 'Chargement des amis...',
     noFriends: 'Vous n\'avez pas encore d\'amis.',
     delete: 'Supprimer',
     loadingUsers: 'Chargement des utilisateurs...',
-    sentRequests: 'Demandes Envoyées',
     pending: 'En attente',
     noSentRequests: 'Aucune demande envoyée.',
     otherUsers: 'Autres Utilisateurs',
     add: 'Ajouter',
-    noNewUsers: 'Aucun nouvel utilisateur à ajouter.',
+    noNewUsers: 'Aucun nouvel utilisateur disponible.',
     sent: 'Envoyé',
     loadingRequests: 'Chargement des demandes...',
-    noRequests: 'Aucune demande d\'ami reçue.',
+    noRequests: 'Aucune demande reçue.',
     accept: 'Accepter',
     reject: 'Rejeter',
+    manageFriends: 'Gérer les Amis',
+    manageFriendsTitle: 'Gérer les Amis',
+    addFriends: 'Ajouter des Amis',
+    requests: 'Demandes',
+    close: 'Fermer',
+    confirmDeletion: 'Confirmer la Suppression',
+    confirmDeleteFriend: 'Êtes-vous sûr de vouloir supprimer cet ami ?',
+    confirmDeleteAccount: 'Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.',
+
+    // Modifier le Profil
+    editProfileTitle: 'Modifier le Profil',
+    changeProfilePic: 'Changer la Photo de Profil',
+    chooseFile: 'Choisir un fichier',
+    changeUsername: 'Changer le Nom d\'Utilisateur',
+    newUsername: 'Nouveau nom d\'utilisateur',
+    changePassword: 'Changer le Mot de Passe',
+    currentPassword: 'Mot de passe actuel',
+    newPassword: 'Nouveau mot de passe',
+    confirmNewPassword: 'Confirmer le nouveau mot de passe',
+    save: 'Enregistrer',
+    saveChanges: 'Enregistrer les Modifications',
+
+    // 2FA
+    setupTwoFA: 'Configurer 2FA',
+    disableTwoFA: 'Désactiver 2FA',
+    scanQRCode: 'Scannez le code QR avec votre application d\'authentification',
+    enterCode: 'Entrez le code à 6 chiffres de votre application',
+    enable: 'Activer',
+    disable: 'Désactiver',
+    manage2FA: 'Gérer 2FA',
+    manage2FATitle: 'Gérer 2FA',
+    enterAuthCode: 'Entrez le code à 6 chiffres de votre application',
+    toDisable2FA: 'Pour désactiver 2FA, entrez un code de vérification actuel.',
+    authCode: 'Code à 6 chiffres',
+    disable2FA: 'Désactiver 2FA',
+
+    // Messages
+    successProfileUpdate: 'Profil mis à jour avec succès !',
+    successPasswordChange: 'Mot de passe changé avec succès !',
+    success2FAEnabled: '2FA activé avec succès !',
+    success2FADisabled: '2FA désactivé avec succès !',
+    successFriendAdded: 'Ami ajouté avec succès !',
+    successFriendRemoved: 'Ami supprimé avec succès !',
     errorLoadingFriends: 'Erreur lors du chargement des amis.',
     errorLoadingUsers: 'Erreur lors du chargement des utilisateurs.',
     errorLoadingRequests: 'Erreur lors du chargement des demandes.',
 
-    // Modal de Confirmation
-    confirmDeletion: 'Confirmer la Suppression',
-    confirmDeleteFriend: 'Êtes-vous sûr de vouloir supprimer cette amitié ?',
-    confirm: 'Confirmer',
-    confirmDeleteAccount: 'Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.',
+    // Tournoi
+    tournamentTitle: 'TOURNOI',
+    enterNickname: 'Entrez votre surnom pour le tournoi :',
+    nickname: 'Surnom',
+    joinTournament: 'Rejoindre le Tournoi',
+    players: 'joueurs',
+    chooseNickname: 'Choisissez un surnom pour votre utilisateur',
+    nicknameEmpty: 'Le surnom ne peut pas être vide',
+    nicknameTaken: 'Ce surnom est déjà utilisé dans la salle. Choisissez un autre surnom.',
 
-    // Modal Modifier le Profil
-    editProfileTitle: 'Modifier le Profil',
-    newUsername: 'Nouveau nom d\'utilisateur',
-    newPassword: 'Nouveau mot de passe',
-    saveChanges: 'Enregistrer les Modifications',
+    // Modal Surnom Tournoi
+    nicknameModalTitle: 'Surnom déjà utilisé',
+    nicknameModalText: 'Ce surnom est déjà utilisé dans la salle. Choisissez un autre surnom.',
+    tryAgain: 'Réessayer',
 
-    // Modal Pseudo Tournoi
-    chooseNickname: 'Choisissez un pseudo pour votre utilisateur',
-    enterNickname: 'Entrez votre pseudo',
-    nicknameEmpty: 'Le pseudo ne peut pas être vide',
-    nicknameTaken: 'Ce pseudo est déjà utilisé dans la salle. Choisissez un autre pseudo.',
-
-    // Page des Créateurs
-    creatorsTitle: 'Créateurs',
-    creatorsText: 'Ce projet a été créé par...',
-
-    // Page du Gagnant
+    // Page de Victoire
     congratulations: 'Félicitations !',
-    youWon: 'vous avez gagné !',
+    youWon: 'Vous avez gagné !',
 
     // Page de Défaite
-    youLost: 'Vous avez Perdu',
-    dontGiveUp: 'N\'abandonnez pas ! Réessayez dans le prochain tournoi.',
+    youLost: 'Vous avez perdu !',
+    dontGiveUp: 'N\'abandonnez pas ! Essayez à nouveau au prochain tournoi.',
     backToMainMenu: 'Retour au Menu Principal',
 
     // Page 404
-    pageNotFound: 'Page non trouvée !',
+    pageNotFound: 'Page non trouvée',
+    pageNotFoundDesc: 'La page que vous recherchez n\'existe pas.',
+    goHome: 'Aller à l\'accueil',
 
-    // Général
-    loading: 'Chargement...',
+    // Créateurs
+    creatorsTitle: 'Créateurs',
+    creatorsText: 'Ce projet a été créé par...',
     errorLoadingPage: 'Erreur lors du chargement de la page',
-    contentNotFound: 'Impossible de trouver le contenu demandé.',
 
+    // Historique des parties
+    place: 'place',
+    mode: 'Mode',
+    points: 'pts',
+
+    // Erreurs
     errors: {
       "Invalid email address": "Adresse e-mail invalide.",
       "Wrong email address": "Adresse e-mail incorrecte.",
       "Invalid password: must be between 8 and 30 characters long": "Mot de passe invalide : doit contenir entre 8 et 30 caractères.",
-      "Wrong password, try again": "Mot de passe incorrect, réessayez.",
-      "Username already exists": "Ce nom d\'utilisateur existe déjà.",
-      "Email already exists": "Cet e-mail est déjà utilisé.",
+      "Wrong password, try again": "Mot de passe incorrect, essayez à nouveau.",
+      "Username already exists": "Le nom d'utilisateur existe déjà.",
+      "Email already exists": "L'e-mail existe déjà.",
       "Points can't be negative": "Les points ne peuvent pas être négatifs.",
       "Invalid file extension. Only .jpeg/.jpg and .png are allowed": "Extension de fichier non valide. Seuls .jpeg/.jpg et .png sont autorisés.",
-      "Invalid request freind. Sender and receiver uuid are the same": "Demande d\'ami invalide. L\'expéditeur et le destinataire sont la même personne.",
-      "Invalid friend request status for the operation": "Statut de demande d\'ami non valide pour cette opération.",
+      "Invalid request from client. Sender and receiver uuid are the same": "Demande invalide du client. UUID de l'expéditeur et du destinataire sont identiques.",
+      "Invalid friend request status for the operation": "Statut de demande d'ami invalide pour l'opération.",
       "This friendship already exists": "Cette amitié existe déjà.",
-      "This friendship not exists": "Cette amitié n\'existe pas.",
-      "A database constraint, like unique, was violated": "Un conflit de données est survenu. Essayez d\'utiliser des informations différentes.",
-      "Invalid token for 2FA": "Jeton 2FA invalide.",
-      "2FA is not enabled for this user": "L\'A2F n\'est pas activée pour cet utilisateur.",
-      "User(s) not found": "Utilisateur non trouvé.",
+      "This friendship not exists": "Cette amitié n'existe pas.",
+      "A database constraint, like unique, was violated": "Une contrainte de base de données, comme l'unicité, a été violée.",
+      "Invalid token for 2FA": "Token invalide pour 2FA.",
+      "2FA is not enabled for this user": "2FA n'est pas activé pour cet utilisateur.",
+      "User(s) not found": "Utilisateur(s) non trouvé(s).",
       "Internal server error": "Erreur interne du serveur. Veuillez réessayer plus tard.",
       "Network Error": "Erreur réseau. Vérifiez votre connexion et réessayez.",
-      "Default Error": "Une erreur est survenue. Veuillez réessayer."
-    } as Record<ErrorKeys, string>
+      "Default Error": "Une erreur s'est produite. Veuillez réessayer."
+    }
   }
 };
 
 let currentLanguage: Language = 'pt-BR';
 
-export function toggleLanguage(): void {
-  const langs: Language[] = ['pt-BR', 'en', 'es', 'fr'];
-  const nextIndex = (langs.indexOf(currentLanguage) + 1) % langs.length;
-  currentLanguage = langs[nextIndex];
+export function setLanguage(language: Language): void {
+  currentLanguage = language;
 }
 
 export function getCurrentLanguage(): Language {
   return currentLanguage;
 }
 
-export function t() {
+export function t(): typeof translations['pt-BR'] {
   return translations[currentLanguage];
+}
+
+export function tError(key: ErrorKeys): string {
+  return translations[currentLanguage].errors[key];
+}
+
+export function toggleLanguage(): void {
+  const languages: Language[] = ['pt-BR', 'en', 'es', 'fr'];
+  const currentIndex = languages.indexOf(currentLanguage);
+  const nextIndex = (currentIndex + 1) % languages.length;
+  currentLanguage = languages[nextIndex];
 }

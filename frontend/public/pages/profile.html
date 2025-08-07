@@ -1,7 +1,7 @@
 <div>
   <h1 class="text-4xl text-glow mb-8">{{user.Username}}</h1>
   <div class="relative w-32 h-32 mx-auto mb-4 group">
-    <img src="{{user.ProfilePic}}" alt="Foto de Perfil" class="w-full h-full rounded-full border-4 border-white shadow-retro object-cover">
+    <img src="{{user.ProfilePic}}" alt="{{profilePictureAlt}}" class="w-full h-full rounded-full border-4 border-white shadow-retro object-cover">
     <div id="profile-pic-overlay" class="absolute inset-0 rounded-full bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
       <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
     </div>
@@ -33,7 +33,7 @@
     <h2 id="2fa-modal-title" class="text-3xl mb-6 text-glow">{{manage2FATitle}}</h2>
     <div id="2fa-setup-content">
         <p class="mb-4">{{scanQRCode}}</p>
-        <img id="qr-code" src="" alt="QR Code" class="mx-auto mb-4">
+        <img id="qr-code" src="" alt="{{qrCodeAlt}}" class="mx-auto mb-4">
         <p class="mb-4">{{enterAuthCode}}</p>
         <input type="text" id="2fa-code-input" placeholder="{{authCode}}" class="input-field mb-4" maxlength="6">
         <button id="enable-2fa-button" class="menu-button">{{enable}}</button>

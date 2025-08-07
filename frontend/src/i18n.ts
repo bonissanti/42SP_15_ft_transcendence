@@ -53,6 +53,7 @@ const translations = {
     opponentReady: 'Oponente está pronto!',
     opponentDisconnected: 'Um oponente desconectou. O jogo terminou.',
     waitingBothPlayers: 'Aguardando ambos os jogadores',
+    pongInstructions: 'P1: W/S | P2: ↑/↓| P3: A/D | P4: ←/→',
 
     // Jogo RPS
     rpsTitle: 'Pedra, Papel e Tesoura',
@@ -83,6 +84,8 @@ const translations = {
     twoFactorVerification: 'Verificação de Dois Fatores',
     verify: 'Verificar',
     backToLogin: 'Voltar ao Login',
+    shareEmail: 'Gostaria de compartilhar seu e-mail?',
+    createAccount: 'Criar Conta',
 
     // Perfil
     profileTitle: 'Perfil',
@@ -96,6 +99,14 @@ const translations = {
     friends: 'Amigos',
     twoFATitle: 'Autenticação de Dois Fatores (2FA)',
     logout: 'Sair',
+    deleteAccount: 'Deletar Conta',
+    status: 'Status',
+    lastLogin: 'Último login',
+    online: 'Online',
+    offline: 'Offline',
+    enabled: 'Ativado',
+    disabled: 'Desativado',
+    never: 'Nunca',
 
     // Amigos
     friendsList: 'Lista de Amigos',
@@ -112,8 +123,6 @@ const translations = {
     confirm: 'Confirmar',
     loadingFriends: 'Carregando amigos...',
     noFriends: 'Você não tem amigos ainda.',
-    online: 'Online',
-    offline: 'Offline',
     delete: 'Excluir',
     loadingUsers: 'Carregando usuários...',
     pending: 'Pendente',
@@ -126,6 +135,14 @@ const translations = {
     noRequests: 'Nenhuma solicitação recebida.',
     accept: 'Aceitar',
     reject: 'Rejeitar',
+    manageFriends: 'Gerenciar Amizades',
+    manageFriendsTitle: 'Gerenciar Amizades',
+    addFriends: 'Adicionar Amigos',
+    requests: 'Solicitações',
+    close: 'Fechar',
+    confirmDeletion: 'Confirmar Exclusão',
+    confirmDeleteFriend: 'Tem certeza de que deseja remover este amigo?',
+    confirmDeleteAccount: 'Tem certeza que deseja deletar sua conta? Essa ação é irreversível.',
 
     // Editar Perfil
     editProfileTitle: 'Editar Perfil',
@@ -138,6 +155,7 @@ const translations = {
     newPassword: 'Nova senha',
     confirmNewPassword: 'Confirmar nova senha',
     save: 'Salvar',
+    saveChanges: 'Salvar Alterações',
 
     // 2FA
     setupTwoFA: 'Configurar 2FA',
@@ -146,6 +164,12 @@ const translations = {
     enterCode: 'Digite o código de 6 dígitos do seu aplicativo',
     enable: 'Habilitar',
     disable: 'Desabilitar',
+    manage2FA: 'Gerenciar 2FA',
+    manage2FATitle: 'Gerenciar 2FA',
+    enterAuthCode: 'Depois, insira o código de 6 dígitos gerado pelo app.',
+    toDisable2FA: 'Para desabilitar o 2FA, insira um código de verificação atual.',
+    authCode: 'Código de 6 dígitos',
+    disable2FA: 'Desabilitar 2FA',
 
     // Mensagens
     successProfileUpdate: 'Perfil atualizado com sucesso!',
@@ -158,12 +182,23 @@ const translations = {
     errorLoadingUsers: 'Erro ao carregar usuários.',
     errorLoadingRequests: 'Erro ao carregar solicitações.',
 
+    // Mensagens de alerta
+    gameEndedNoWinner: 'O jogo terminou sem um vencedor claro.',
+    serverError: 'Erro do servidor',
+    connectionLost: 'A conexão com o servidor foi perdida.',
+    connectionError: 'Ocorreu um erro na conexão com o servidor.',
+    connectionLostLobby: 'A conexão com o servidor foi perdida ou não foi possível entrar no lobby.',
+    errorDeletingAccount: 'Erro ao deletar a conta.',
+
     // Torneio
     tournamentTitle: 'TORNEIO',
     enterNickname: 'Digite seu apelido para o torneio:',
     nickname: 'Apelido',
     joinTournament: 'Entrar no Torneio',
     players: 'jogadores',
+    chooseNickname: 'Escolha um apelido para o seu usuário',
+    nicknameEmpty: 'O apelido não pode estar vazio',
+    nicknameTaken: 'Este apelido já está sendo usado na sala. Escolha outro apelido.',
 
     // Modal Apelido Torneio
     nicknameModalTitle: 'Apelido já em uso',
@@ -177,6 +212,7 @@ const translations = {
     // Página de Derrota
     youLost: 'Você perdeu!',
     dontGiveUp: 'Não desista! Tente novamente no próximo torneio.',
+    backToMainMenu: 'Voltar ao Menu Principal',
 
     // Página 404
     pageNotFound: 'Página não encontrada',
@@ -184,7 +220,27 @@ const translations = {
     goHome: 'Ir para o início',
 
     // Criadores
+    creatorsTitle: 'Criadores',
+    creatorsText: 'Este projeto foi criado por...',
     errorLoadingPage: 'Erro ao carregar a página',
+
+    // Histórico de partidas
+    place: 'lugar',
+    mode: 'Modo',
+    points: 'pts',
+
+    // Alt text para imagens
+    profilePictureAlt: 'Foto de Perfil',
+    qrCodeAlt: 'Código QR',
+    winnerProfilePictureAlt: 'Foto de Perfil do Vencedor',
+    congratulationsGifAlt: 'Parabéns!',
+
+    // Nomes padrão
+    defaultPlayer: 'Jogador',
+
+    // Mensagens gerais
+    loading: 'Carregando...',
+    errorLoadingMatchHistory: 'Erro ao carregar o histórico de partidas.',
 
     // Erros
     errors: {
@@ -241,6 +297,7 @@ const translations = {
     opponentReady: 'Opponent is ready!',
     opponentDisconnected: 'An opponent disconnected. The game has ended.',
     waitingBothPlayers: 'Waiting for both players',
+    pongInstructions: 'P1: W/S | P2: ↑/↓ | P3: A/D | P4: ←/→',
 
     // RPS Game
     rpsTitle: 'Rock, Paper, Scissors',
@@ -271,6 +328,8 @@ const translations = {
     twoFactorVerification: 'Two-Factor Verification',
     verify: 'Verify',
     backToLogin: 'Back to Login',
+    shareEmail: 'Would you like to share your email?',
+    createAccount: 'Create Account',
 
     // Profile
     profileTitle: 'Profile',
@@ -284,6 +343,14 @@ const translations = {
     friends: 'Friends',
     twoFATitle: 'Two-Factor Authentication (2FA)',
     logout: 'Logout',
+    deleteAccount: 'Delete Account',
+    status: 'Status',
+    lastLogin: 'Last login',
+    online: 'Online',
+    offline: 'Offline',
+    enabled: 'Enabled',
+    disabled: 'Disabled',
+    never: 'Never',
 
     // Friends
     friendsList: 'Friends List',
@@ -300,8 +367,6 @@ const translations = {
     confirm: 'Confirm',
     loadingFriends: 'Loading friends...',
     noFriends: 'You don\'t have any friends yet.',
-    online: 'Online',
-    offline: 'Offline',
     delete: 'Delete',
     loadingUsers: 'Loading users...',
     pending: 'Pending',
@@ -314,6 +379,14 @@ const translations = {
     noRequests: 'No received requests.',
     accept: 'Accept',
     reject: 'Reject',
+    manageFriends: 'Manage Friends',
+    manageFriendsTitle: 'Manage Friends',
+    addFriends: 'Add Friends',
+    requests: 'Requests',
+    close: 'Close',
+    confirmDeletion: 'Confirm Deletion',
+    confirmDeleteFriend: 'Are you sure you want to remove this friend?',
+    confirmDeleteAccount: 'Are you sure you want to delete your account? This action is irreversible.',
 
     // Edit Profile
     editProfileTitle: 'Edit Profile',
@@ -326,6 +399,7 @@ const translations = {
     newPassword: 'New password',
     confirmNewPassword: 'Confirm new password',
     save: 'Save',
+    saveChanges: 'Save Changes',
 
     // 2FA
     setupTwoFA: 'Setup 2FA',
@@ -334,6 +408,12 @@ const translations = {
     enterCode: 'Enter the 6-digit code from your app',
     enable: 'Enable',
     disable: 'Disable',
+    manage2FA: 'Manage 2FA',
+    manage2FATitle: 'Manage 2FA',
+    enterAuthCode: 'Enter the 6-digit code from your app',
+    toDisable2FA: 'To disable 2FA, enter a current verification code.',
+    authCode: '6-digit code',
+    disable2FA: 'Disable 2FA',
 
     // Messages
     successProfileUpdate: 'Profile updated successfully!',
@@ -346,12 +426,23 @@ const translations = {
     errorLoadingUsers: 'Error loading users.',
     errorLoadingRequests: 'Error loading requests.',
 
+    // Alert messages
+    gameEndedNoWinner: 'The game ended without a clear winner.',
+    serverError: 'Server error',
+    connectionLost: 'The connection to the server was lost.',
+    connectionError: 'An error occurred while connecting to the server.',
+    connectionLostLobby: 'The connection to the server was lost or it was not possible to enter the lobby.',
+    errorDeletingAccount: 'Error deleting account.',
+
     // Tournament
     tournamentTitle: 'TOURNAMENT',
     enterNickname: 'Enter your nickname for the tournament:',
     nickname: 'Nickname',
     joinTournament: 'Join Tournament',
     players: 'players',
+    chooseNickname: 'Choose a nickname for your user',
+    nicknameEmpty: 'The nickname cannot be empty',
+    nicknameTaken: 'This nickname is already being used in the room. Choose another nickname.',
 
     // Nickname Modal Tournament
     nicknameModalTitle: 'Nickname already in use',
@@ -365,6 +456,7 @@ const translations = {
     // Defeat Page
     youLost: 'You lost!',
     dontGiveUp: 'Don\'t give up! Try again in the next tournament.',
+    backToMainMenu: 'Back to Main Menu',
 
     // 404 Page
     pageNotFound: 'Page not found',
@@ -372,7 +464,27 @@ const translations = {
     goHome: 'Go to home',
 
     // Creators
+    creatorsTitle: 'Creators',
+    creatorsText: 'This project was created by...',
     errorLoadingPage: 'Error loading page',
+
+    // Match history
+    place: 'place',
+    mode: 'Mode',
+    points: 'pts',
+
+    // Alt text for images
+    profilePictureAlt: 'Profile Picture',
+    qrCodeAlt: 'QR Code',
+    winnerProfilePictureAlt: 'Winner Profile Picture',
+    congratulationsGifAlt: 'Congratulations!',
+
+    // Default names
+    defaultPlayer: 'Player',
+
+    // General messages
+    loading: 'Loading...',
+    errorLoadingMatchHistory: 'Error loading match history.',
 
     // Errors
     errors: {
@@ -429,12 +541,13 @@ const translations = {
     opponentReady: '¡El oponente está listo!',
     opponentDisconnected: 'Un oponente se desconectó. El juego ha terminado.',
     waitingBothPlayers: 'Esperando a ambos jugadores',
+    pongInstructions: 'P1: W/S | P2: ↑/↓ | P3: A/D | P4: ←/→',
 
     // Juego RPS
     rpsTitle: 'Piedra, Papel y Tijeras',
     player: 'Tú',
     cpu: 'CPU',
-    yourTurn: 'Haz tu jugada:',
+    yourTurn: 'Tu turno:',
     win: '¡Ganaste!',
     lose: '¡Perdiste!',
     draw: '¡Empate!',
@@ -459,6 +572,8 @@ const translations = {
     twoFactorVerification: 'Verificación de Dos Factores',
     verify: 'Verificar',
     backToLogin: 'Volver al Inicio de Sesión',
+    shareEmail: '¿Te gustaría compartir tu correo electrónico?',
+    createAccount: 'Crear Cuenta',
 
     // Perfil
     profileTitle: 'Perfil',
@@ -472,6 +587,14 @@ const translations = {
     friends: 'Amigos',
     twoFATitle: 'Autenticación de Dos Factores (2FA)',
     logout: 'Cerrar Sesión',
+    deleteAccount: 'Eliminar Cuenta',
+    status: 'Estado',
+    lastLogin: 'Último inicio de sesión',
+    online: 'En línea',
+    offline: 'Desconectado',
+    enabled: 'Habilitado',
+    disabled: 'Deshabilitado',
+    never: 'Nunca',
 
     // Amigos
     friendsList: 'Lista de Amigos',
@@ -488,8 +611,6 @@ const translations = {
     confirm: 'Confirmar',
     loadingFriends: 'Cargando amigos...',
     noFriends: 'Aún no tienes amigos.',
-    online: 'En línea',
-    offline: 'Desconectado',
     delete: 'Eliminar',
     loadingUsers: 'Cargando usuarios...',
     pending: 'Pendiente',
@@ -502,6 +623,14 @@ const translations = {
     noRequests: 'No hay solicitudes recibidas.',
     accept: 'Aceptar',
     reject: 'Rechazar',
+    manageFriends: 'Gestionar Amigos',
+    manageFriendsTitle: 'Gestionar Amigos',
+    addFriends: 'Agregar Amigos',
+    requests: 'Solicitudes',
+    close: 'Cerrar',
+    confirmDeletion: 'Confirmar Eliminación',
+    confirmDeleteFriend: '¿Estás seguro de que quieres eliminar este amigo?',
+    confirmDeleteAccount: '¿Estás seguro de que quieres eliminar tu cuenta? Esta acción es irreversible.',
 
     // Editar Perfil
     editProfileTitle: 'Editar Perfil',
@@ -514,6 +643,7 @@ const translations = {
     newPassword: 'Nueva contraseña',
     confirmNewPassword: 'Confirmar nueva contraseña',
     save: 'Guardar',
+    saveChanges: 'Guardar Cambios',
 
     // 2FA
     setupTwoFA: 'Configurar 2FA',
@@ -522,6 +652,12 @@ const translations = {
     enterCode: 'Ingresa el código de 6 dígitos de tu aplicación',
     enable: 'Habilitar',
     disable: 'Deshabilitar',
+    manage2FA: 'Gestionar 2FA',
+    manage2FATitle: 'Gestionar 2FA',
+    enterAuthCode: 'Ingresa el código de 6 dígitos de tu aplicación',
+    toDisable2FA: 'Para deshabilitar 2FA, ingresa un código de verificación actual.',
+    authCode: 'Código de 6 dígitos',
+    disable2FA: 'Deshabilitar 2FA',
 
     // Mensajes
     successProfileUpdate: '¡Perfil actualizado con éxito!',
@@ -534,12 +670,23 @@ const translations = {
     errorLoadingUsers: 'Error al cargar usuarios.',
     errorLoadingRequests: 'Error al cargar solicitudes.',
 
+    // Mensajes de alerta
+    gameEndedNoWinner: 'El juego terminó sin un ganador claro.',
+    serverError: 'Error del servidor',
+    connectionLost: 'Se perdió la conexión con el servidor.',
+    connectionError: 'Ocurrió un error al conectar con el servidor.',
+    connectionLostLobby: 'Se perdió la conexión con el servidor o no fue posible entrar al lobby.',
+    errorDeletingAccount: 'Error al eliminar la cuenta.',
+
     // Torneo
     tournamentTitle: 'TORNEO',
     enterNickname: 'Ingresa tu apodo para el torneo:',
     nickname: 'Apodo',
     joinTournament: 'Unirse al Torneo',
     players: 'jugadores',
+    chooseNickname: 'Elige un apodo para tu usuario',
+    nicknameEmpty: 'El apodo no puede estar vacío',
+    nicknameTaken: 'Este apodo ya está siendo usado en la sala. Elige otro apodo.',
 
     // Modal Apodo Torneo
     nicknameModalTitle: 'Apodo ya en uso',
@@ -553,6 +700,7 @@ const translations = {
     // Página de Derrota
     youLost: '¡Perdiste!',
     dontGiveUp: '¡No te rindas! Inténtalo de nuevo en el próximo torneo.',
+    backToMainMenu: 'Volver al Menú Principal',
 
     // Página 404
     pageNotFound: 'Página no encontrada',
@@ -560,7 +708,27 @@ const translations = {
     goHome: 'Ir al inicio',
 
     // Creadores
+    creatorsTitle: 'Creadores',
+    creatorsText: 'Este proyecto fue creado por...',
     errorLoadingPage: 'Error al cargar la página',
+
+    // Historial de partidas
+    place: 'lugar',
+    mode: 'Modo',
+    points: 'pts',
+
+    // Texto alternativo para imágenes
+    profilePictureAlt: 'Foto de Perfil',
+    qrCodeAlt: 'Código QR',
+    winnerProfilePictureAlt: 'Foto de Perfil del Ganador',
+    congratulationsGifAlt: '¡Felicitaciones!',
+
+    // Nombres por defecto
+    defaultPlayer: 'Jugador',
+
+    // Mensajes generales
+    loading: 'Cargando...',
+    errorLoadingMatchHistory: 'Error al cargar el historial de partidas.',
 
     // Errores
     errors: {
@@ -617,6 +785,7 @@ const translations = {
     opponentReady: 'L\'adversaire est prêt !',
     opponentDisconnected: 'Un adversaire s\'est déconnecté. Le jeu s\'est terminé.',
     waitingBothPlayers: 'En attente des deux joueurs',
+    pongInstructions: 'J1 : W/S | J2 : ↑/↓ | J3 : A/D | J4 : ←/→',
 
     // Jeu RPS
     rpsTitle: 'Pierre, Papier, Ciseaux',
@@ -647,6 +816,8 @@ const translations = {
     twoFactorVerification: 'Vérification à Deux Facteurs',
     verify: 'Vérifier',
     backToLogin: 'Retour à la Connexion',
+    shareEmail: 'Souhaitez-vous partager votre e-mail ?',
+    createAccount: 'Créer un Compte',
 
     // Profil
     profileTitle: 'Profil',
@@ -660,6 +831,14 @@ const translations = {
     friends: 'Amis',
     twoFATitle: 'Authentification à Deux Facteurs (2FA)',
     logout: 'Se déconnecter',
+    deleteAccount: 'Supprimer le Compte',
+    status: 'Statut',
+    lastLogin: 'Dernière connexion',
+    online: 'En ligne',
+    offline: 'Hors ligne',
+    enabled: 'Activé',
+    disabled: 'Désactivé',
+    never: 'Jamais',
 
     // Amis
     friendsList: 'Liste d\'Amis',
@@ -676,8 +855,6 @@ const translations = {
     confirm: 'Confirmer',
     loadingFriends: 'Chargement des amis...',
     noFriends: 'Vous n\'avez pas encore d\'amis.',
-    online: 'En ligne',
-    offline: 'Hors ligne',
     delete: 'Supprimer',
     loadingUsers: 'Chargement des utilisateurs...',
     pending: 'En attente',
@@ -690,6 +867,14 @@ const translations = {
     noRequests: 'Aucune demande reçue.',
     accept: 'Accepter',
     reject: 'Rejeter',
+    manageFriends: 'Gérer les Amis',
+    manageFriendsTitle: 'Gérer les Amis',
+    addFriends: 'Ajouter des Amis',
+    requests: 'Demandes',
+    close: 'Fermer',
+    confirmDeletion: 'Confirmer la Suppression',
+    confirmDeleteFriend: 'Êtes-vous sûr de vouloir supprimer cet ami ?',
+    confirmDeleteAccount: 'Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.',
 
     // Modifier le Profil
     editProfileTitle: 'Modifier le Profil',
@@ -702,6 +887,7 @@ const translations = {
     newPassword: 'Nouveau mot de passe',
     confirmNewPassword: 'Confirmer le nouveau mot de passe',
     save: 'Enregistrer',
+    saveChanges: 'Enregistrer les Modifications',
 
     // 2FA
     setupTwoFA: 'Configurer 2FA',
@@ -710,6 +896,12 @@ const translations = {
     enterCode: 'Entrez le code à 6 chiffres de votre application',
     enable: 'Activer',
     disable: 'Désactiver',
+    manage2FA: 'Gérer 2FA',
+    manage2FATitle: 'Gérer 2FA',
+    enterAuthCode: 'Entrez le code à 6 chiffres de votre application',
+    toDisable2FA: 'Pour désactiver 2FA, entrez un code de vérification actuel.',
+    authCode: 'Code à 6 chiffres',
+    disable2FA: 'Désactiver 2FA',
 
     // Messages
     successProfileUpdate: 'Profil mis à jour avec succès !',
@@ -722,12 +914,23 @@ const translations = {
     errorLoadingUsers: 'Erreur lors du chargement des utilisateurs.',
     errorLoadingRequests: 'Erreur lors du chargement des demandes.',
 
+    // Messages d'alerte
+    gameEndedNoWinner: 'Le jeu s\'est terminé sans vainqueur clair.',
+    serverError: 'Erreur du serveur',
+    connectionLost: 'La connexion au serveur a été perdue.',
+    connectionError: 'Une erreur s\'est produite lors de la connexion au serveur.',
+    connectionLostLobby: 'La connexion au serveur a été perdue ou il n\'a pas été possible d\'entrer dans le lobby.',
+    errorDeletingAccount: 'Erreur lors de la suppression du compte.',
+
     // Tournoi
     tournamentTitle: 'TOURNOI',
     enterNickname: 'Entrez votre surnom pour le tournoi :',
     nickname: 'Surnom',
     joinTournament: 'Rejoindre le Tournoi',
     players: 'joueurs',
+    chooseNickname: 'Choisissez un surnom pour votre utilisateur',
+    nicknameEmpty: 'Le surnom ne peut pas être vide',
+    nicknameTaken: 'Ce surnom est déjà utilisé dans la salle. Choisissez un autre surnom.',
 
     // Modal Surnom Tournoi
     nicknameModalTitle: 'Surnom déjà utilisé',
@@ -741,6 +944,7 @@ const translations = {
     // Page de Défaite
     youLost: 'Vous avez perdu !',
     dontGiveUp: 'N\'abandonnez pas ! Essayez à nouveau au prochain tournoi.',
+    backToMainMenu: 'Retour au Menu Principal',
 
     // Page 404
     pageNotFound: 'Page non trouvée',
@@ -748,7 +952,27 @@ const translations = {
     goHome: 'Aller à l\'accueil',
 
     // Créateurs
+    creatorsTitle: 'Créateurs',
+    creatorsText: 'Ce projet a été créé par...',
     errorLoadingPage: 'Erreur lors du chargement de la page',
+
+    // Historique des parties
+    place: 'place',
+    mode: 'Mode',
+    points: 'pts',
+
+    // Texte alternatif pour les images
+    profilePictureAlt: 'Photo de Profil',
+    qrCodeAlt: 'Code QR',
+    winnerProfilePictureAlt: 'Photo de Profil du Gagnant',
+    congratulationsGifAlt: 'Félicitations !',
+
+    // Noms par défaut
+    defaultPlayer: 'Joueur',
+
+    // Messages généraux
+    loading: 'Chargement...',
+    errorLoadingMatchHistory: 'Erreur lors du chargement de l\'historique des parties.',
 
     // Erreurs
     errors: {
