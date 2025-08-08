@@ -84,7 +84,7 @@ const translations = {
     twoFactorVerification: 'Verificação de Dois Fatores',
     verify: 'Verificar',
     backToLogin: 'Voltar ao Login',
-    shareEmail: 'Gostaria de compartilhar seu e-mail?',
+    shareEmail: 'Gostaria de deixar o seu e-mail oculto?',
     createAccount: 'Criar Conta',
 
     // Perfil
@@ -328,7 +328,7 @@ const translations = {
     twoFactorVerification: 'Two-Factor Verification',
     verify: 'Verify',
     backToLogin: 'Back to Login',
-    shareEmail: 'Would you like to share your email?',
+    shareEmail: 'Would you like to keep your email hidden?',
     createAccount: 'Create Account',
 
     // Profile
@@ -572,7 +572,7 @@ const translations = {
     twoFactorVerification: 'Verificación de Dos Factores',
     verify: 'Verificar',
     backToLogin: 'Volver al Inicio de Sesión',
-    shareEmail: '¿Te gustaría compartir tu correo electrónico?',
+    shareEmail: '¿Le gustaría mantener su correo electrónico oculto?',
     createAccount: 'Crear Cuenta',
 
     // Perfil
@@ -816,7 +816,7 @@ const translations = {
     twoFactorVerification: 'Vérification à Deux Facteurs',
     verify: 'Vérifier',
     backToLogin: 'Retour à la Connexion',
-    shareEmail: 'Souhaitez-vous partager votre e-mail ?',
+    shareEmail: 'Souhaitez-vous garder votre e-mail caché ?',
     createAccount: 'Créer un Compte',
 
     // Profil
