@@ -1,6 +1,6 @@
 COMPOSE_FILE := docker-compose.yml
 
-.PHONY: all build up stop start restart rm rmi rm-all ps test
+.PHONY: all build up stop start restart rm rmi rm-all ps test test-local test-docker build-test-image clean-test-docker
 
 all: build up
 
@@ -43,9 +43,31 @@ rm-all:
 ps:
 	@docker compose -f $(COMPOSE_FILE) ps
 
-test:
-	@echo "🚀 Executando TODOS os testes..."
-	@echo "================================="
+test: test-docker
+	@echo "\n✅ Testes completados via Docker!"
+
+# ============================================
+# Regras Docker para Testes
+# ============================================
+
+build-test-image:
+	@echo "🐳 Construindo imagem Docker para testes..."
+	@docker build -t 42-transcendence-tests ./tests
+
+test-docker: build-test-image
+	@echo "🐳 Executando testes no Docker..."
+	@docker run --rm --name 42-transcendence-tests-run 42-transcendence-tests
+
+clean-test-docker:
+	@echo "🧹 Limpando imagens Docker de teste..."
+	@docker rmi 42-transcendence-tests 2>/dev/null || true
+	@docker image prune -f
+
+test-docker-clean: test-docker clean-test-docker
+
+test-local:
+	@echo "🚀 Executando TODOS os testes localmente..."
+	@echo "========================================="
 	
 	@echo "\n🎮 Testando Game Service (Original)..."
 	@cd tests/game-service-tests && \
@@ -107,4 +129,4 @@ test:
 	node dist/index.js
 	@rm -rf tests/frontend-tests/node_modules tests/frontend-tests/dist
 	
-	@echo "\n🎉 Todos os testes concluídos! Pastas limpas."
+	@echo "\n🎉 Todos os testes locais concluídos! Pastas limpas."

@@ -1,5 +1,14 @@
 import { TestSuite, Assert, TestHelper } from '../test-helper.js';
 
+// Função helper para gerar UUID
+function generateUUID(): string {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        const r = Math.random() * 16 | 0;
+        const v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
+
 // Mock da entidade History copiada do game-service
 class History {
     public readonly historyUuid: string;
@@ -22,7 +31,7 @@ class History {
     constructor(tournamentId: string | undefined, tournamentName: string | undefined, gameType: string | undefined, player1Username: string, player1Alias: string | null, player1Points: number, player2Username: string, player2Alias: string | null, player2Points: number,
                 player3Username: string | null, player3Alias: string | null, player3Points: number | null, player4Username: string | null, player4Alias: string | null, player4Points: number | null)
     {
-        this.historyUuid = crypto.randomUUID();
+        this.historyUuid = generateUUID();
         this.tournamentId = tournamentId;
         this.tournamentName = tournamentName;
         this.gameType = gameType;
