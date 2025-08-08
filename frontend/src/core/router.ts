@@ -3,6 +3,7 @@ import { renderView } from './view';
 import { stopPongGame } from '../pong/game';
 import { logout, initializeAuth } from '../auth/auth';
 import { fetchWithAuth, isUserAuthenticated } from '../api/api';
+import { t } from '../i18n';
 
 const appContainer = document.getElementById('app') as HTMLDivElement;
 let statusListenersActive = false;
@@ -54,7 +55,7 @@ export async function router() {
   stopPongGame();
   stopStatusListeners();
 
-  appContainer.innerHTML = `<h1>Carregando...</h1>`;
+  appContainer.innerHTML = `<h1>${t().loading}</h1>`;
   const isAuthenticated = isUserAuthenticated();
   const isProtectedRoute = !['/login'].includes(path);
 

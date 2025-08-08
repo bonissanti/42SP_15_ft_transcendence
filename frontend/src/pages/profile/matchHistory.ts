@@ -1,4 +1,5 @@
 import { fetchWithGame } from '../../api/api';
+import { t } from '../../i18n';
 
 function renderMatchHistory(history: any[]): string {
     if (!history || history.length === 0) {
@@ -23,10 +24,10 @@ function renderMatchHistory(history: any[]): string {
             playersHtml = players.map((p, index) => {
                 const medal = medals[index] || '';
                 const position = index + 1;
-                return `<div class="text-lg">${medal}${position}º lugar: ${p.name} (${p.alias})</div>`;
+                return `<div class="text-lg">${medal}${position}º ${t().place}: ${p.name} (${p.alias})</div>`;
             }).join('');
             
-            title = `🏆 Torneio: ${match.tournamentName}`;
+            title = `🏆 ${t().tournament}: ${match.tournamentName}`;
 
         } else if (gameType === 'MULTIPLAYER_REMOTO') {
             const players = [
@@ -41,7 +42,7 @@ function renderMatchHistory(history: any[]): string {
                 return `<div class="text-lg">${position}º: ${p.name}</div>`;
             }).join('');
 
-            title = `🎮 Modo: ${match.tournamentName}`;
+            title = `🎮 ${t().mode}: ${match.tournamentName}`;
 
         } else if (gameType === 'SINGLEPLAYER' || gameType === 'MULTIPLAYER_LOCAL' || gameType === 'RPS') {
             const players = [
@@ -49,9 +50,9 @@ function renderMatchHistory(history: any[]): string {
                 { name: match.player2Username, points: match.player2Points },
             ].filter(p => p.name);
 
-            playersHtml = players.map(p => `<div class="text-lg">${p.name}: ${p.points} pts</div>`).join('');
+            playersHtml = players.map(p => `<div class="text-lg">${p.name}: ${p.points} ${t().points}</div>`).join('');
             
-            title = `🎮 Modo: ${match.tournamentName}`;
+            title = `🎮 ${t().mode}: ${match.tournamentName}`;
         }
         
         return `
@@ -76,7 +77,7 @@ export async function loadMatchHistory(username: string) {
         console.error('Failed to load match history:', error);
         const historyContainer = document.getElementById('match-history-container');
         if (historyContainer) {
-            historyContainer.innerHTML = `<p class="text-center text-red-500">Erro ao carregar o histórico de partidas.</p>`;
+            historyContainer.innerHTML = `<p class="text-center text-red-500">${t().errorLoadingMatchHistory}</p>`;
         }
     }
 }

@@ -74,8 +74,8 @@ function show2FAVerification(uuid: string) {
     twoFAView.id = 'two-fa-view';
     twoFAView.className = 'hidden';
     twoFAView.innerHTML = `
-      <h2 class="text-3xl mb-6 text-glow">Verificação de Dois Fatores</h2>
-      <p class="text-lg mb-6">Digite o código do seu aplicativo de autenticação:</p>
+      <h2 class="text-3xl mb-6 text-glow">${t().twoFactorVerification}</h2>
+      <p class="text-lg mb-6">${t().enterCode}</p>
       <form id="two-fa-form">
         <input 
           type="text" 
@@ -86,9 +86,9 @@ function show2FAVerification(uuid: string) {
           class="input-field mb-6"
           required
         />
-        <button type="submit" class="menu-button w-full">Verificar</button>
+        <button type="submit" class="menu-button w-full">${t().verify}</button>
       </form>
-      <button id="back-to-login" class="back-button">Voltar ao Login</button>
+      <button id="back-to-login" class="back-button">${t().backToLogin}</button>
       <p id="two-fa-error" class="text-red-500 mt-4 h-6 text-center" style="display: none;"></p>
     `;
     

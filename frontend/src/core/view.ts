@@ -18,9 +18,9 @@ export async function renderView(viewName: string, data: object = {}): Promise<s
   } catch (error) {
     console.error('Failed to render view:', error);
     return `
-      <h1>Erro ao carregar a página</h1>
-      <p>Não foi possível encontrar o conteúdo solicitado.</p>
-      <button class="menu-button" data-navigate="/">Voltar ao Menu</button>
+      <h1>${t().errorLoadingPage}</h1>
+      <p>${t().pageNotFoundDesc}</p>
+      <button class="menu-button" data-navigate="/">${t().backToMenu}</button>
     `;
   }
 }

@@ -1,4 +1,5 @@
 import { fetchWithAuth } from '../api/api';
+import { t } from '../i18n';
 import {
   initSharedState, stopSharedState, draw, keys,
   setBall, setPaddles, setAnimationFrameId, setIsWaiting,
@@ -40,7 +41,7 @@ function getPlayerHTML(player: any | null) {
             <div class="w-24 h-24 rounded-full border-4 border-dashed border-gray-500 flex items-center justify-center">
                 <span class="text-gray-500 text-4xl">?</span>
             </div>
-            <span class="text-lg text-gray-500">Aguardando...</span>
+            <span class="text-lg text-gray-500">${t().waiting}</span>
         </div>
     `;
 }
@@ -60,18 +61,18 @@ function renderWaitingRoom(players: any[]) {
     slotsDiv.innerHTML = `
         <div class="flex justify-around items-center w-full">
             ${getPlayerHTML(players[0])}
-            <span class="text-4xl text-glow mx-4">VS</span>
+            <span class="text-4xl text-glow mx-4">${t().vs.toUpperCase()}</span>
             ${getPlayerHTML(players[1])}
         </div>
         <div class="flex justify-around items-center w-full mt-8">
             ${getPlayerHTML(players[2])}
-            <span class="text-4xl text-glow mx-4">VS</span>
+            <span class="text-4xl text-glow mx-4">${t().vs.toUpperCase()}</span>
             ${getPlayerHTML(players[3])}
         </div>
     `;
 
     const remaining = 4 - players.length;
-    waitingMessage.textContent = remaining > 0 ? `Aguardando mais ${remaining} jogador(es)...` : 'O torneio vai começar!';
+    waitingMessage.textContent = remaining > 0 ? t().waitingMorePlayers.replace('{{count}}', remaining.toString()) : t().tournamentStarting;
 }
 
 
@@ -203,7 +204,7 @@ async function startTournamentGameWithNickname() {
                     history.pushState({}, '', path);
                     window.dispatchEvent(new PopStateEvent('popstate'));
                 } else {
-                    alert('O jogo terminou sem um vencedor claro.');
+                    alert(t().gameEndedNoWinner);
                     window.location.hash = '/';
                 }
                 break;
@@ -224,11 +225,11 @@ async function startTournamentGameWithNickname() {
 
             case 'opponent_ready':
                 const readyStatus = document.getElementById('ready-status')!;
-                readyStatus.textContent = 'Oponente está pronto!';
+                readyStatus.textContent = t().opponentReady;
                 break;
 
             case 'opponent_disconnected':
-                alert("Um oponente desconectou. O jogo terminou.");
+                alert(t().opponentDisconnected);
                 stopTournamentGame();
                 window.location.hash = '/';
                 break;
@@ -244,7 +245,7 @@ async function startTournamentGameWithNickname() {
                     nicknameInput?.focus();
                     nicknameInput?.select();
                 } else {
-                    alert(`Erro do servidor: ${message.message}`);
+                    alert(`${t().serverError}: ${message.message}`);
                     stopTournamentGame();
                     window.location.hash = '/';
                 }
@@ -256,7 +257,7 @@ async function startTournamentGameWithNickname() {
         if (document.getElementById('game-container')?.classList.contains('hidden')) {
             console.log("Conexão WebSocket fechada.");
         } else {
-            alert("A conexão com o servidor foi perdida.");
+            alert(t().connectionLost);
         }
         stopTournamentGame();
         window.location.hash = '/';
@@ -264,7 +265,7 @@ async function startTournamentGameWithNickname() {
 
     ws.onerror = (err) => {
         console.error("Erro no WebSocket: ", err);
-        alert("Ocorreu um erro na conexão com o servidor.");
+        alert(t().connectionError);
         stopTournamentGame();
         window.location.hash = '/';
     };
@@ -274,7 +275,7 @@ async function startTournamentGameWithNickname() {
             ws.send(JSON.stringify({ type: 'final_ready_click' }));
             const readyButton = document.getElementById('ready-button') as HTMLButtonElement;
             const readyStatus = document.getElementById('ready-status')!;
-            readyButton.textContent = "Aguardando oponente...";
+            readyButton.textContent = t().waitingOpponent;
             readyButton.disabled = true;
             readyStatus.textContent = "";
         }
@@ -325,7 +326,7 @@ export function stopTournamentGame() {
 
     const readyButton = document.getElementById('ready-button') as HTMLButtonElement;
     if (readyButton) {
-        readyButton.textContent = "Pronto";
+        readyButton.textContent = t().ready;
         readyButton.disabled = false;
         readyButton.classList.add('hidden');
     }
@@ -373,7 +374,7 @@ function renderFinalsWaitingRoom(finalists: any[]) {
             <img src="${player1.profilePic}" alt="${player1.username}" class="w-32 h-32 rounded-full border-4 border-white mb-2">
             <span class="text-2xl truncate">${player1.username}</span>
         </div>
-        <span class="text-6xl text-glow mx-8">VS</span>
+        <span class="text-6xl text-glow mx-8">${t().vs.toUpperCase()}</span>
         ${player2HTML}
     `;
 }

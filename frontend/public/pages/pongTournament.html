@@ -1,22 +1,22 @@
 <div id="nickname-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
     <div class="bg-slate-800 p-8 rounded-xl shadow-retro text-center max-w-md w-full mx-4">
-        <h2 class="text-2xl mb-6">Escolha um apelido para o seu usuário</h2>
-        <input type="text" id="nickname-input" class="w-full bg-slate-700 text-white p-3 rounded mb-4 text-center" placeholder="Digite seu apelido" maxlength="20">
-        <div id="nickname-error" class="text-red-400 text-sm mb-4 hidden">O apelido não pode estar vazio</div>
-        <div id="nickname-duplicate-error" class="text-red-400 text-sm mb-4 hidden">Este apelido já está sendo usado na sala. Escolha outro apelido.</div>
+        <h2 class="text-2xl mb-6">{{chooseNickname}}</h2>
+        <input type="text" id="nickname-input" class="w-full bg-slate-700 text-white p-3 rounded mb-4 text-center" placeholder="{{enterNickname}}" maxlength="20">
+        <div id="nickname-error" class="text-red-400 text-sm mb-4 hidden">{{nicknameEmpty}}</div>
+        <div id="nickname-duplicate-error" class="text-red-400 text-sm mb-4 hidden">{{nicknameTaken}}</div>
         <div class="flex gap-4">
-            <button id="cancel-nickname-button" class="flex-1 bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded transition-colors" data-navigate="/">Cancelar</button>
-            <button id="confirm-nickname-button" class="flex-1 menu-button">Confirmar</button>
+            <button id="cancel-nickname-button" class="flex-1 bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded transition-colors" data-navigate="/">{{cancel}}</button>
+            <button id="confirm-nickname-button" class="flex-1 menu-button">{{confirm}}</button>
         </div>
     </div>
 </div>
 
 <div id="waiting-room" class="hidden w-full max-w-4xl mx-auto">
-  <h1 class="text-4xl text-glow mb-8">SALA DE ESPERA DO TORNEIO</h1>
+  <h1 class="text-4xl text-glow mb-8">{{tournamentWaitingRoom}}</h1>
   <div id="player-slots" class="grid grid-cols-1 gap-6">
   </div>
   <p id="waiting-message" class="mt-8 text-xl"></p>
-  <button class="menu-button mt-8" data-navigate="/">Sair da Fila</button>
+  <button class="menu-button mt-8" data-navigate="/">{{exitQueue}}</button>
 </div>
 
 <div id="game-container" class="hidden">
@@ -27,9 +27,9 @@
 </div>
 
 <div id="final-waiting-room" class="hidden flex-col items-center justify-center h-full text-white">
-    <h2 class="text-5xl font-press-start text-glow mb-10">Final do Torneio</h2>
+    <h2 class="text-5xl font-press-start text-glow mb-10">{{finalTournament}}</h2>
     <div id="finalists-display" class="flex items-center justify-center w-full max-w-4xl mb-10">
         </div>
-    <button id="ready-button" class="menu-button hidden text-2xl">Pronto</button>
+    <button id="ready-button" class="menu-button hidden text-2xl">{{ready}}</button>
     <p id="ready-status" class="text-xl mt-4"></p>
 </div>

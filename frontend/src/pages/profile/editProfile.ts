@@ -1,4 +1,3 @@
-import { fetchWithAuth } from '../../api/api';
 import { t, ErrorKeys } from '../../i18n';
 import { API_BASE_URL } from '../../utils/constants';
 
@@ -14,7 +13,6 @@ export function initEditProfile(user: any, tempEmail: string) {
     const editProfileModal = document.getElementById('edit-profile-modal');
     const editProfileForm = document.getElementById('edit-profile-form');
     const cancelEditButton = document.getElementById('cancel-edit-button');
-    const usernameInput = document.getElementById('edit-username') as HTMLInputElement;
     const errorElement = document.getElementById('profile-error-message');
     const profilePicOverlay = document.getElementById('profile-pic-overlay');
     const profilePicInput = document.getElementById('profile-pic-input') as HTMLInputElement;
@@ -34,7 +32,7 @@ export function initEditProfile(user: any, tempEmail: string) {
         formData.append('file', file);
 
         try {
-            const response = await fetchWithAuth('/uploadPhoto', {
+            const response = await fetch(`${API_BASE_URL}/uploadPhoto`, {
                 method: 'PUT',
                 body: formData,
             });
@@ -56,9 +54,13 @@ export function initEditProfile(user: any, tempEmail: string) {
     });
 
     editProfileButton?.addEventListener('click', () => {
-        if (usernameInput) usernameInput.value = user.Username;
         if (errorElement) errorElement.textContent = '';
         editProfileModal?.classList.remove('hidden');
+        
+        const usernameInput = document.getElementById('edit-username') as HTMLInputElement;
+        const passwordInput = document.getElementById('edit-password') as HTMLInputElement;
+        if (usernameInput) usernameInput.value = '';
+        if (passwordInput) passwordInput.value = '';
     });
 
     cancelEditButton?.addEventListener('click', () => {
@@ -70,8 +72,13 @@ export function initEditProfile(user: any, tempEmail: string) {
         
         if (errorElement) errorElement.textContent = '';
 
-        const newUsername = (document.getElementById('edit-username') as HTMLInputElement).value;
+        const newUsername = (document.getElementById('edit-username') as HTMLInputElement).value.trim();
         const newPassword = (document.getElementById('edit-password') as HTMLInputElement).value;
+
+        if (!newUsername && !newPassword) {
+            displayProfileError('Default Error');
+            return;
+        }
 
         const body: { [key: string]: any } = {
             uuid: user.Uuid,
@@ -79,11 +86,15 @@ export function initEditProfile(user: any, tempEmail: string) {
             profilePic: user.ProfilePic,
         };
 
-        if (newUsername && newUsername !== user.Username) body.username = newUsername;
-        if (newPassword) body.password = newPassword;
+        if (newUsername && newUsername !== user.Username) {
+            body.username = newUsername;
+        }
+        if (newPassword) {
+            body.password = newPassword;
+        }
 
         if (Object.keys(body).length <= 3) {
-            displayProfileError('Default Error'); 
+            displayProfileError('Default Error');
             return;
         }
         
@@ -104,11 +115,14 @@ export function initEditProfile(user: any, tempEmail: string) {
                 const errorData = await updateResponse.json();
                 const rawMessage = errorData.message || '';
 
-                const firstError = rawMessage.split('\n')[0];
-                const messageParts = firstError.split('Message:');
-                const cleanMessage = (messageParts.length > 1 ? messageParts[1].trim() : firstError) as ErrorKeys;
-
-                displayProfileError(cleanMessage);
+                if (rawMessage.includes('Username already exists') || rawMessage.includes('nome de usuário já existe')) {
+                    displayProfileError('Username already exists');
+                } else {
+                    const firstError = rawMessage.split('\n')[0];
+                    const messageParts = firstError.split('Message:');
+                    const cleanMessage = (messageParts.length > 1 ? messageParts[1].trim() : firstError) as ErrorKeys;
+                    displayProfileError(cleanMessage);
+                }
             }
         } catch (error) {
             displayProfileError('Network Error');

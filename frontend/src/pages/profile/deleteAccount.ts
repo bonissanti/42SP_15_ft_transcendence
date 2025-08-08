@@ -1,5 +1,6 @@
 import { fetchWithAuth } from '../../api/api';
 import { logout } from '../../auth/auth';
+import { t } from '../../i18n';
 
 export function initDeleteAccount(userUuid: string) {
     const deleteAccountButton = document.getElementById('delete-account-button');
@@ -25,11 +26,11 @@ export function initDeleteAccount(userUuid: string) {
             if (response.ok) {
                 logout();
             } else {
-                alert('Erro ao deletar a conta.');
+                alert(t().errorDeletingAccount);
             }
         } catch (error) {
             console.error('Falha ao deletar a conta:', error);
-            alert('Erro ao deletar a conta.');
+            alert(t().errorDeletingAccount);
         } finally {
             deleteAccountModal?.classList.add('hidden');
         }

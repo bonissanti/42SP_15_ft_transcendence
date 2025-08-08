@@ -1,4 +1,5 @@
 import { fetchWithAuth } from '../api/api';
+import { t } from '../i18n';
 import {
   initSharedState, stopSharedState, draw, keys,
   setBall, setPaddles, setAnimationFrameId, setIsWaiting,
@@ -47,13 +48,13 @@ function renderWaitingRoom(players: any[]) {
         } else {
             slotHtml = `
                 <div class="bg-slate-900 p-4 rounded-lg flex flex-col items-center justify-center border-2 border-dashed border-gray-600 h-48">
-                    <p class="text-lg text-gray-500">Aguardando...</p>
+                    <p class="text-lg text-gray-500">${t().waiting}</p>
                 </div>
             `;
         }
         slotsDiv.innerHTML += slotHtml;
     }
-    waitingMessage.textContent = `Aguardando mais ${4 - players.length} jogador(es)...`
+    waitingMessage.textContent = t().waitingMorePlayers.replace('{{count}}', (4 - players.length).toString());
 }
 
 function updateRemote() {
@@ -126,17 +127,17 @@ export async function initRemoteGame() {
           history.pushState({}, '', path);
           window.dispatchEvent(new PopStateEvent('popstate'));
         } else {
-            alert('O jogo terminou sem um vencedor claro.');
+            alert(t().gameEndedNoWinner);
             window.location.hash = '/';
         }
         break;
       case 'opponent_disconnected':
-        alert("Um oponente desconectou. O jogo terminou.");
+        alert(t().opponentDisconnected);
         stopRemoteGame();
         window.location.hash = '/';
         break;
       case 'error':
-        alert(`Erro do servidor: ${message.message}`);
+        alert(`${t().serverError}: ${message.message}`);
         stopRemoteGame();
         window.location.hash = '/';
         break;
@@ -145,7 +146,7 @@ export async function initRemoteGame() {
 
   ws.onclose = () => {
     if (animationFrameId === null) {
-        alert("A conexão com o servidor foi perdida ou não foi possível entrar no lobby.");
+        alert(t().connectionLostLobby);
         stopRemoteGame();
         window.location.hash = '/';
     }

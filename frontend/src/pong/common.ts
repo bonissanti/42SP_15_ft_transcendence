@@ -1,4 +1,5 @@
 import { fetchWithGame, fetchWithAuth } from "../api/api";
+import { t } from '../i18n';
 
 export interface Paddle {
   x: number;
@@ -121,7 +122,7 @@ export function draw() {
       ctx.fillStyle = 'white';
       ctx.font = '30px Arial';
       ctx.textAlign = 'center';
-      ctx.fillText('Aguardando oponentes...', canvas.width / 2, canvas.height / 2);
+      ctx.fillText(t().waitingOpponents, canvas.width / 2, canvas.height / 2);
       return;
     }
     
@@ -200,11 +201,11 @@ export async function getUserProfile(): Promise<{ username: string, profilePic: 
     const user = await response.json();
 
     return {
-      username: user.Username || 'Jogador 1',
+      username: user.Username || t().defaultPlayer + ' 1',
       profilePic: user.ProfilePic || 'https://placehold.co/128x128/000000/FFFFFF?text=P1'
     };
   } catch {
-    return { username: 'Jogador 1', profilePic: 'https://placehold.co/128x128/000000/FFFFFF?text=P1' };
+    return { username: t().defaultPlayer + ' 1', profilePic: 'https://placehold.co/128x128/000000/FFFFFF?text=P1' };
   }
 }
 

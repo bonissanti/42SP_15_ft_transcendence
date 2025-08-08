@@ -109,4 +109,13 @@ export function initRpsGame() {
   document.querySelectorAll('.choice-btn').forEach(button => {
     button.addEventListener('click', handlePlayerChoice);
   });
+
+  const menuButton = document.querySelector('.menu-button') as HTMLButtonElement;
+  if (menuButton) {
+    menuButton.addEventListener('click', () => {
+      history.pushState({}, '', '/');
+      window.dispatchEvent(new PopStateEvent('popstate'));
+    });
+  }
 }
+
