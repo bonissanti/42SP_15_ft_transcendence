@@ -58,7 +58,7 @@ const translations = {
     // Jogo RPS
     rpsTitle: 'Pedra, Papel e Tesoura',
     player: 'Você',
-    cpu: 'CPU',
+    cpu: 'Cachorrao',
     yourTurn: 'Sua vez:',
     win: 'Você venceu!',
     lose: 'Você perdeu!',
@@ -302,7 +302,7 @@ const translations = {
     // RPS Game
     rpsTitle: 'Rock, Paper, Scissors',
     player: 'You',
-    cpu: 'CPU',
+    cpu: 'Cachorrao',
     yourTurn: 'Your turn:',
     win: 'You won!',
     lose: 'You lost!',
@@ -546,7 +546,7 @@ const translations = {
     // Juego RPS
     rpsTitle: 'Piedra, Papel y Tijeras',
     player: 'Tú',
-    cpu: 'CPU',
+    cpu: 'Cachorrao',
     yourTurn: 'Tu turno:',
     win: '¡Ganaste!',
     lose: '¡Perdiste!',
@@ -790,7 +790,7 @@ const translations = {
     // Jeu RPS
     rpsTitle: 'Pierre, Papier, Ciseaux',
     player: 'Vous',
-    cpu: 'CPU',
+    cpu: 'Cachorrao',
     yourTurn: 'Votre tour :',
     win: 'Vous avez gagné !',
     lose: 'Vous avez perdu !',
