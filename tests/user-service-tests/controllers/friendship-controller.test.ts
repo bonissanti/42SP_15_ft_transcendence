@@ -44,8 +44,8 @@ export async function runFriendshipControllerTests() {
     });
 
     suite.test('DELETE /users/:id/friends/:friendId - should remove friend', async () => {
-        const userId = 'user1';
-        const friendId = 'user2';
+        const userId = 'user1' as string;
+        const friendId = 'user2' as string;
         
         Assert.ok(userId);
         Assert.ok(friendId);
@@ -79,8 +79,8 @@ export async function runFriendshipControllerTests() {
     });
 
     suite.test('DELETE /users/:id/friends/:friendId/block - should unblock user', async () => {
-        const userId = 'user1';
-        const unblockedUserId = 'user2';
+        const userId = 'user1' as string;
+        const unblockedUserId = 'user2' as string;
         
         Assert.ok(userId);
         Assert.ok(unblockedUserId);

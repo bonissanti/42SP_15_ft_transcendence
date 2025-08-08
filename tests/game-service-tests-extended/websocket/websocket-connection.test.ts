@@ -13,7 +13,7 @@ export async function runWebSocketConnectionTests() {
         const ws = TestHelper.createMockWebSocket();
         let messageSent = false;
         
-        ws.send = () => { messageSent = true; };
+        ws.send = (data: string) => { messageSent = true; };
         ws.send('test message');
         
         Assert.ok(messageSent);
@@ -33,7 +33,7 @@ export async function runWebSocketConnectionTests() {
         const ws = TestHelper.createMockWebSocket();
         let eventAdded = false;
         
-        ws.addEventListener = () => { eventAdded = true; };
+        ws.addEventListener = (type: string, listener: () => void) => { eventAdded = true; };
         ws.addEventListener('message', () => {});
         
         Assert.ok(eventAdded);

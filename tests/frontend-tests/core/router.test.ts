@@ -89,11 +89,11 @@ export async function runRouterTests() {
         const mockWindow = TestHelper.createMockWindow();
         let historyUpdated = false;
         
-        mockWindow.history.pushState = () => {
+        (mockWindow.history.pushState as any) = () => {
             historyUpdated = true;
         };
         
-        mockWindow.history.pushState({}, '', '/new-path');
+        (mockWindow.history.pushState as any)({}, '', '/new-path');
         
         Assert.ok(historyUpdated);
     });

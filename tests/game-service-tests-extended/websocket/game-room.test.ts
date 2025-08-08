@@ -97,7 +97,7 @@ export async function runGameRoomTests() {
         };
         
         const now = Date.now();
-        const roomAge = now - (room.lastActivity || now);
+        const roomAge = now - room.lastActivity;
         
         if (roomAge > room.cleanupAfter) {
             room.shouldCleanup = true;

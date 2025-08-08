@@ -8,7 +8,7 @@ export async function runPongTournamentTests() {
         const tournament = {
             id: 'tournament-123',
             players: players,
-            bracket: [],
+            bracket: [] as Array<{player1: string, player2: string, winner: string | null, round: number}>,
             currentRound: 1,
             status: 'pending'
         };
@@ -32,7 +32,7 @@ export async function runPongTournamentTests() {
         const match = {
             player1: 'Player1',
             player2: 'Player2',
-            winner: null,
+            winner: null as string | null,
             score1: 3,
             score2: 1
         };

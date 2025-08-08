@@ -8,13 +8,13 @@ export async function runAuthTests() {
         const mockStorage = TestHelper.createMockWindow().localStorage;
         
         let storedToken = '';
-        mockStorage.setItem = (key: string, value: string) => {
+        (mockStorage.setItem as any) = (key: string, value: string) => {
             if (key === 'auth_token') {
                 storedToken = value;
             }
         };
         
-        mockStorage.setItem('auth_token', token);
+        (mockStorage.setItem as any)('auth_token', token);
         
         Assert.strictEqual(storedToken, token);
     });
@@ -23,11 +23,11 @@ export async function runAuthTests() {
         const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.test.signature';
         const mockStorage = TestHelper.createMockWindow().localStorage;
         
-        mockStorage.getItem = (key: string) => {
+        (mockStorage.getItem as any) = (key: string) => {
             return key === 'auth_token' ? token : null;
         };
         
-        const retrievedToken = mockStorage.getItem('auth_token');
+        const retrievedToken = (mockStorage.getItem as any)('auth_token');
         
         Assert.strictEqual(retrievedToken, token);
     });

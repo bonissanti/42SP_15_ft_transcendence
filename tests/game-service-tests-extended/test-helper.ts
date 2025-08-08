@@ -71,20 +71,26 @@ export class TestHelper {
     static createMockWebSocket() {
         return {
             readyState: 1, // OPEN
-            send: () => {},
+            send: (data: string) => { /* mock send */ },
             close: () => {},
-            addEventListener: () => {},
-            removeEventListener: () => {}
+            addEventListener: (type: string, listener: () => void) => { /* mock addEventListener */ },
+            removeEventListener: (type: string, listener: () => void) => { /* mock removeEventListener */ }
         };
     }
 
     static createMockGameRoom() {
         return {
             roomId: 'room-123',
-            players: [],
+            players: [] as Array<{
+                playerId: string;
+                username: string;
+                isReady: boolean;
+                score: number;
+            }>,
             gameState: 'waiting',
             maxPlayers: 2,
-            gameType: 'pong'
+            gameType: 'pong',
+            lastActivity: Date.now()
         };
     }
 

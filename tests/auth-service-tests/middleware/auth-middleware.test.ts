@@ -16,7 +16,7 @@ export async function runAuthMiddlewareTests() {
 
     suite.test('authMiddleware - should reject missing token', async () => {
         const mockRequest = {
-            headers: {}
+            headers: {} as { authorization?: string }
         };
         
         Assert.strictEqual(mockRequest.headers.authorization, undefined);

@@ -107,7 +107,7 @@ export async function runViewTests() {
         const view = {
             data: { firstName: 'John', lastName: 'Doe' },
             computed: {
-                fullName: function() {
+                fullName: function(this: any): string {
                     return `${this.data.firstName} ${this.data.lastName}`;
                 }
             }
