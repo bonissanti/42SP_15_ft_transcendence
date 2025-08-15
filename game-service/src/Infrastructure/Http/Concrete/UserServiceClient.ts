@@ -55,8 +55,6 @@ export class UserServiceClient implements IUserServiceClient
         }
     }
 
-<<<<<<< HEAD
-=======
     public async VerifyIfUsersExistsByUuids(uuids: (string | null)[]): Promise<any>
     {
         try
@@ -80,7 +78,6 @@ export class UserServiceClient implements IUserServiceClient
         }
     }
 
->>>>>>> 10d0ebc51602f57f3e6582ae381a63fed5b6b406
     public async VerifyIfUserExistsByUsername(username: string): Promise<any>
     {
         try

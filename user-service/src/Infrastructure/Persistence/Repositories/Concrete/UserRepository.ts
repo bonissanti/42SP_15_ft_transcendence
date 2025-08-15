@@ -210,15 +210,9 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
         );
     }
 
-<<<<<<< HEAD
-    public async GetUsersEntitiesByUsername(usernames: string[]): Promise<User[]>
-    {
-        const usersData = await this.prisma.user.findMany({where: {username: {in: usernames}}});
-=======
     public async GetUsersEntitiesByUuid(uuids: string[]): Promise<User[]>
     {
         const usersData = await this.prisma.user.findMany({where: {uuid: {in: uuids}}});
->>>>>>> 10d0ebc51602f57f3e6582ae381a63fed5b6b406
 
         if (!usersData.length)
             return [];

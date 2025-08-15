@@ -13,10 +13,10 @@ function renderMatchHistory(history: any[]): string {
 
         if (gameType === 'TOURNAMENT') {
             const players = [
-                { name: match.player1Username, alias: match.player1Alias, points: match.player1Points },
-                { name: match.player2Username, alias: match.player2Alias, points: match.player2Points },
-                { name: match.player3Username, alias: match.player3Alias, points: match.player3Points },
-                { name: match.player4Username, alias: match.player4Alias, points: match.player4Points },
+                { name: match.player1Uuid, alias: match.player1Alias, points: match.player1Points },
+                { name: match.player2Uuid, alias: match.player2Alias, points: match.player2Points },
+                { name: match.player3Uuid, alias: match.player3Alias, points: match.player3Points },
+                { name: match.player4Uuid, alias: match.player4Alias, points: match.player4Points },
             ].filter(p => p.name).sort((a, b) => a.points - b.points);
 
             const medals = ['🏆', '🥈', '🥉', ''];
@@ -31,10 +31,10 @@ function renderMatchHistory(history: any[]): string {
 
         } else if (gameType === 'MULTIPLAYER_REMOTO') {
             const players = [
-                { name: match.player1Username, points: match.player1Points },
-                { name: match.player2Username, points: match.player2Points },
-                { name: match.player3Username, points: match.player3Points },
-                { name: match.player4Username, points: match.player4Points },
+                { name: match.player1Uuid, points: match.player1Points },
+                { name: match.player2Uuid, points: match.player2Points },
+                { name: match.player3Uuid, points: match.player3Points },
+                { name: match.player4Uuid, points: match.player4Points },
             ].filter(p => p.name).sort((a, b) => a.points - b.points);
 
             playersHtml = players.map((p, index) => {
@@ -46,8 +46,8 @@ function renderMatchHistory(history: any[]): string {
 
         } else if (gameType === 'SINGLEPLAYER' || gameType === 'MULTIPLAYER_LOCAL' || gameType === 'RPS') {
             const players = [
-                { name: match.player1Username, points: match.player1Points },
-                { name: match.player2Username, points: match.player2Points },
+                { name: match.player1Uuid, points: match.player1Points },
+                { name: match.player2Uuid, points: match.player2Points },
             ].filter(p => p.name);
 
             playersHtml = players.map(p => `<div class="text-lg">${p.name}: ${p.points} ${t().points}</div>`).join('');
@@ -65,9 +65,9 @@ function renderMatchHistory(history: any[]): string {
 }
 
 
-export async function loadMatchHistory(username: string) {
+export async function loadMatchHistory(userUuid: string) {
     try {
-        const historyResponse = await fetchWithGame(`/history?username=${username}`);
+        const historyResponse = await fetchWithGame(`/history?userUuid=${userUuid}`);
         const history = await historyResponse.json();
         const historyContainer = document.getElementById('match-history-container');
         if (historyContainer) {

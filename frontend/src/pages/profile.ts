@@ -34,7 +34,7 @@ export async function showProfile(): Promise<string> {
                 hour: '2-digit', minute: '2-digit', second: '2-digit'
             });
         } else {
-                        user.formattedLastLogin = t().never;
+            user.formattedLastLogin = t().never;
         }
 
         const viewHtml = await renderView('profile', { 
@@ -83,7 +83,7 @@ export async function showProfile(): Promise<string> {
             initDeleteAccount(user.Uuid);
             initFriendsManagement(user.Uuid);
             init2FA(user);
-            await loadMatchHistory(user.Username);
+            await loadMatchHistory(user.Uuid);
         }, 0);
 
         return viewHtml;

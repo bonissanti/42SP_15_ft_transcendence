@@ -170,18 +170,18 @@ export function draw() {
     });
 }
 
-export async function sendMatchHistory(gameType: string, tournamentName: string, player1Username: string | null, player1Points: number | null, player2Username: string | null, player2Points: number | null, player3Username: string | null = null, player3Points: number | null = null, player4Username: string | null = null, player4Points: number | null = null) {
+export async function sendMatchHistory(gameType: string, tournamentName: string, player1Uuid: string | null, player1Points: number | null, player2Uuid: string | null, player2Points: number | null, player3Uuid: string | null = null, player3Points: number | null = null, player4Uuid: string | null = null, player4Points: number | null = null) {
   try {
     const historyData = {
       gameType: gameType.toUpperCase(),
       tournamentName: tournamentName,
-      player1Username: player1Username,
+      player1Uuid: player1Uuid,
       player1Points: player1Points,
-      player2Username: player2Username,
+      player2Uuid: player2Uuid,
       player2Points: player2Points,
-      player3Username: player3Username,
+      player3Uuid: player3Uuid,
       player3Points: player3Points,
-      player4Username: player4Username,
+      player4Uuid: player4Uuid,
       player4Points: player4Points,
     };
 
@@ -195,43 +195,49 @@ export async function sendMatchHistory(gameType: string, tournamentName: string,
   }
 }
 
-export async function getUserProfile(): Promise<{ username: string, profilePic: string }> {
+export async function getUserProfile(): Promise<{ username: string, uuid: string, profilePic: string }> {
   try {
     const response = await fetchWithAuth('/users/me');
     const user = await response.json();
 
     return {
       username: user.Username || t().defaultPlayer + ' 1',
+      uuid: user.Uuid || '',
       profilePic: user.ProfilePic || 'https://placehold.co/128x128/000000/FFFFFF?text=P1'
     };
   } catch {
-    return { username: t().defaultPlayer + ' 1', profilePic: 'https://placehold.co/128x128/000000/FFFFFF?text=P1' };
+    return { 
+      username: t().defaultPlayer + ' 1', 
+      uuid: '',
+      profilePic: 'https://placehold.co/128x128/000000/FFFFFF?text=P1' 
+    };
   }
 }
 
-export async function getCachoraoProfile(): Promise<{ username: string, profilePic: string }> {
+export async function getCachoraoProfile(): Promise<{ username: string, uuid: string, profilePic: string }> {
   try {
     // talvez const response = await fetchWithAuth('/users/exists/cachorrao'); ?
     const response = await fetch('/api/users/exists/cachorrao');
 
 
     if (!response.ok) {
-      return { username: 'Cachorrao', profilePic: '/img/cachorrao.jpg' };
+      return { username: 'Cachorrao', uuid: 'cachorrao-uuid', profilePic: '/img/cachorrao.jpg' };
     }
     
     const userResponse = await fetch('/api/users?username=cachorrao');
     
     if (!userResponse.ok) {
-      return { username: 'Cachorrao', profilePic: '/img/cachorrao.jpg' };
+      return { username: 'Cachorrao', uuid: 'cachorrao-uuid', profilePic: '/img/cachorrao.jpg' };
     }
     
     const user = await userResponse.json();
     return { 
       username: user.Username || 'Cachorrao',
+      uuid: user.Uuid || 'cachorrao-uuid',
       profilePic: user.ProfilePic || '/img/cachorrao.jpg'
     };
   } catch (error) {
     console.error('Erro ao buscar perfil do Cachorrao:', error);
-    return { username: 'Cachorrao', profilePic: '/img/cachorrao.jpg' };
+    return { username: 'Cachorrao', uuid: 'cachorrao-uuid', profilePic: '/img/cachorrao.jpg' };
   }
 }

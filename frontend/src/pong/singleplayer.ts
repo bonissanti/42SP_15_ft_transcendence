@@ -90,19 +90,19 @@ async function checkWinCondition() {
     ]);
     
     let winnerProfile;
-    let winnerUsername: string;
-    let loserUsername: string;
+    let winnerUuid: string;
+    let loserUuid: string;
     
     if (p1.score >= WIN_SCORE) {
       winnerProfile = playerProfile;
-      winnerUsername = playerProfile.username;
-      loserUsername = cachoraoProfile.username;
-      await sendMatchHistory("SINGLEPLAYER", "Singleplayer", winnerUsername, p1.score, loserUsername, p2.score);
+      winnerUuid = playerProfile.uuid;
+      loserUuid = cachoraoProfile.uuid;
+      await sendMatchHistory("SINGLEPLAYER", "Singleplayer", winnerUuid, p1.score, loserUuid, p2.score);
     } else {
       winnerProfile = cachoraoProfile;
-      winnerUsername = cachoraoProfile.username;
-      loserUsername = playerProfile.username;
-      await sendMatchHistory("SINGLEPLAYER", "Singleplayer", winnerUsername, p2.score, loserUsername, p1.score);
+      winnerUuid = cachoraoProfile.uuid;
+      loserUuid = playerProfile.uuid;
+      await sendMatchHistory("SINGLEPLAYER", "Singleplayer", winnerUuid, p2.score, loserUuid, p1.score);
     }
     
     const path = `/winner?username=${encodeURIComponent(winnerProfile.username)}&profilePic=${encodeURIComponent(winnerProfile.profilePic)}`;
