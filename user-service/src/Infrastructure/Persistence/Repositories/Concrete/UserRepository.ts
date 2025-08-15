@@ -74,6 +74,15 @@ export class UserRepository implements IBaseRepository<GetUserQueryDTO, User> {
     }
 
     public async Delete(_uuid: string): Promise<void> {
+        await this.prisma.friendship.deleteMany({
+            where: {
+                OR: [
+                    { senderUuid: _uuid },
+                    { receiverUuid: _uuid }
+                ]
+            }
+        });
+
         await this.prisma.user.delete({
             where: {uuid: _uuid},
         });
