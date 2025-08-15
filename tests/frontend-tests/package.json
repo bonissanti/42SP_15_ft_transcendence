@@ -1,0 +1,17 @@
+{
+  "name": "frontend-tests",
+  "version": "1.0.0",
+  "description": "Unit tests for frontend",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "npm run build && node --test dist/**/*.test.js",
+    "test:verbose": "npm run build && node --test --test-reporter=verbose dist/**/*.test.js",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.9",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {}
+}
