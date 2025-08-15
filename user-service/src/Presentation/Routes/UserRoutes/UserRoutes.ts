@@ -56,22 +56,34 @@ const optsUsernamesChecker = {
   }
 };
 
+const optsUuidsChecker = {
+    schema: {
+        querystring: {
+            type: 'object',
+            required: ['uuids'],
+            properties: {
+                usernames: { type: 'array', items: { type: 'string' } }
+            }
+        }
+    }
+};
+
 const updateStatsOpts = {
     schema: {
         body: {
             type: 'object',
             properties: {
                 gameType: { type: 'string', enum: [ 'SINGLEPLAYER', 'MULTIPLAYER_LOCAL', 'MULTIPLAYER_REMOTO', 'TOURNAMENT', 'RPS' ] },
-                player1Username: { type: 'string' },
+                player1Uuid: { type: 'string' },
                 player1Points: { type: 'number' },
-                player2Username: { type: 'string' },
+                player2Uuid: { type: 'string' },
                 player2Points: { type: 'number' },
-                player3Username: { type: ['string', 'null'] },
+                player3Uuid: { type: ['string', 'null'] },
                 player3Points: { type: ['number', 'null'] },
-                player4Username: { type: ['string', 'null'] },
+                player4Uuid: { type: ['string', 'null'] },
                 player4Points: { type: ['number', 'null'] },
             },
-            required: ['gameType', 'player1Username', 'player1Points', 'player2Username', 'player2Points'],
+            required: ['gameType', 'player1Uuid', 'player1Points', 'player2Uuid', 'player2Points'],
             additionalProperties: false,
         }
     }
@@ -95,7 +107,7 @@ export const UserRoutes = async (server: any, userController: UserController) =>
         return await userController.GetUser(request, reply);
     });
 
-    server.get('/users/exists/uuids', optsChecker, async (request: FastifyRequest<{ Querystring: { uuids: (string | null)[] }}>, reply: FastifyReply) => {
+    server.get('/users/exists/uuids', optsUuidsChecker, async (request: FastifyRequest<{ Querystring: { uuids: (string | null)[] }}>, reply: FastifyReply) => {
         return await userController.VerifyIfUsersExistsByUuids(request, reply);
     })
 

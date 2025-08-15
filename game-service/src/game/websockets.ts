@@ -310,7 +310,7 @@ export function setupWebSocket(server: any) {
 
 		const clientData: ClientData = {
 			ws,
-			username,
+            username: username,
 			realUsername,
 			inputs: {},
 			id: userId,
