@@ -20,6 +20,7 @@ export class CreateHistoryValidator implements BaseValidator<CreateHistoryComman
 
     public async Validator(command: CreateHistoryCommand): Promise<void>
     {
+        this.NotificationError.CleanErrors();
         await this.ValidateUserExists(command);
 
         if (this.VerifyIfPlayerIsPlayingAgainstSelf(command))
@@ -31,7 +32,8 @@ export class CreateHistoryValidator implements BaseValidator<CreateHistoryComman
         if ((command.player3Points && command.player3Points < 0) || (command.player4Points && command.player4Points < 0))
             this.NotificationError.AddError(ErrorCatalog.NegativePoints);
 
-
+        console.log("Erros de validação: ", this.NotificationError.GetAllErrors());
+        console.log("Quantidade de erros: ", this.NotificationError.NumberOfErrors())
         if (this.NotificationError.NumberOfErrors() > 0){
             const allErrors : CustomError[] = this.NotificationError.GetAllErrors();
             throw new ValidationException(allErrors);

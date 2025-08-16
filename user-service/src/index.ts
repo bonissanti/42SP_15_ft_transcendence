@@ -91,10 +91,11 @@ async function createDefaultUser(prisma: PrismaClient, userRepository: UserRepos
       const createUserDTO = new CreateUserDTO(
         'cachorraofoda@gmail.com',
         'blablabla',
-        'Cachorrao',
+        'cachorrao',
         false,
         '/img/cachorrao.jpg',
-        null
+        null,
+        'cachorrao-uuid'
       );
 
       const mockReply = {

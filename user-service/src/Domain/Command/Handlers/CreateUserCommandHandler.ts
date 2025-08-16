@@ -35,7 +35,8 @@ export class CreateUserCommandHandler implements BaseHandlerCommand<CreateUserCo
             true,
             0,
             0,
-            0
+            0,
+            command.Uuid
         );
         
         await this.UserRepository.Create(userEntity);

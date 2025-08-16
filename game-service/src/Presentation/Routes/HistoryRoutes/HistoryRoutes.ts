@@ -7,11 +7,14 @@ import {GetAllHistoriesDTO} from "../../../Application/DTO/ToQuery/GetAllHistori
 export const HistoryRoutes = async (server: any, historyController: HistoryController) =>
 {
     server.post('/history', async (request: FastifyRequest<{ Body: CreateHistoryDTO }>, reply: FastifyReply) =>{
+        console.log("Recebido: ", request.body)
         return await historyController.CreateHistory(request, reply);
     });
 
     server.get('/history', { preHandler: authenticateJWT }, async (request: FastifyRequest<{ Querystring: GetAllHistoriesDTO }>, reply: FastifyReply) =>{
-        return await historyController.GetAllHistories(request, reply);
+        const result = await historyController.GetAllHistories(request, reply);
+        console.log("Histórico recebido: ", result);
+        return result;
     });
 
     server.get('/test', { preHandler: authenticateJWT }, async (request: FastifyRequest, reply: FastifyReply) => {

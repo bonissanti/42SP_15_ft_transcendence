@@ -36,7 +36,7 @@ export class HistoryController extends BaseController
             body.player4Uuid,
             body.player4Alias,
             body.player4Points)
-
+        console.log("DTO: ", createHistoryDTO)
         const result = await this.historyService.Create(createHistoryDTO, reply);
         return this.handleResult(result, reply, this.notificationError);
     }
@@ -45,7 +45,9 @@ export class HistoryController extends BaseController
     {
         const query = request.query;
         const getAllHistoriesDTO: GetAllHistoriesDTO = new GetAllHistoriesDTO(query.userUuid);
+        console.log("GetAllHistoriesDTO: ", getAllHistoriesDTO);
         const result = await this.historyService.GetAll(getAllHistoriesDTO, reply);
+        console.log("Result: ", result);
         return this.handleResult(result, reply, this.notificationError);
     }
 }

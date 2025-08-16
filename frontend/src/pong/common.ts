@@ -223,9 +223,9 @@ export async function getCachoraoProfile(): Promise<{ username: string, uuid: st
     if (!response.ok) {
       return { username: 'Cachorrao', uuid: 'cachorrao-uuid', profilePic: '/img/cachorrao.jpg' };
     }
-    
-    const userResponse = await fetch('/api/users?username=cachorrao');
-    
+
+    const userResponse = await fetch('/api/users?uuid=cachorrao-uuid');
+
     if (!userResponse.ok) {
       return { username: 'Cachorrao', uuid: 'cachorrao-uuid', profilePic: '/img/cachorrao.jpg' };
     }

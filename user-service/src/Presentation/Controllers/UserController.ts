@@ -79,6 +79,7 @@ export class UserController extends BaseController {
     public async VerifyIfUsersExistsByUuids(request: FastifyRequest<{ Querystring: { uuids: (string | null)[] } }>, reply: FastifyReply): Promise<Result> {
         const query = request.query;
         const usersDTO: VerifyIfUsersExistsByUuidsDTO = new VerifyIfUsersExistsByUuidsDTO(query.uuids);
+        console.log("Verificando se usuários existem: ", usersDTO);
         const result: Result<boolean> = await this.userService.VerifyIfUserExistsByUuidsService(usersDTO, reply);
         return this.handleResult(result, reply, this.notificationError);
     }
@@ -117,6 +118,20 @@ export class UserController extends BaseController {
     return this.handleResult(result, reply, this.notificationError);
   }
 
+  public async GetUsersByUuids(request: FastifyRequest<{ Querystring: { uuids: string[] }}>, reply: FastifyReply): Promise<Result> {
+    try {
+      const { uuids } = request.query;
+      if (!uuids || !Array.isArray(uuids)) {
+        return this.handleResult(Result.Failure("UUIDs array is required"), reply, this.notificationError);
+      }
+      
+      const result: Result<GetUserViewModel[]> = await this.getUserService.GetUsersByUuids(uuids);
+      return this.handleResult(result, reply, this.notificationError);
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
   public async UpdateUserStatus(uuid: string, isOnline: boolean, reply: FastifyReply): Promise<Result> {
     try {
       const user = await this.userRepository.GetUserEntityByUuid(uuid);
@@ -145,6 +160,7 @@ export class UserController extends BaseController {
         query.player3Points,
         query.player4Points,
     );
+    console.log("DTO: ", statsDTO);
     const result: Result = await this.userService.UpdateStatsService(statsDTO, reply);
     return this.handleResult(result, reply, this.notificationError);
   }

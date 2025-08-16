@@ -56,13 +56,13 @@ const optsUsernamesChecker = {
   }
 };
 
-const optsUuidsChecker = {
+const optsBatchUuids = {
     schema: {
         querystring: {
             type: 'object',
             required: ['uuids'],
             properties: {
-                usernames: { type: 'array', items: { type: 'string' } }
+                uuids: { type: 'array', items: { type: 'string' } }
             }
         }
     }
@@ -107,7 +107,8 @@ export const UserRoutes = async (server: any, userController: UserController) =>
         return await userController.GetUser(request, reply);
     });
 
-    server.get('/users/exists/uuids', optsUuidsChecker, async (request: FastifyRequest<{ Querystring: { uuids: (string | null)[] }}>, reply: FastifyReply) => {
+    server.get('/users/exists/uuids', optsChecker, async (request: FastifyRequest<{ Querystring: { uuids: (string | null)[] }}>, reply: FastifyReply) => {
+        console.log("Body: ", request.body);
         return await userController.VerifyIfUsersExistsByUuids(request, reply);
     })
 
@@ -120,6 +121,10 @@ export const UserRoutes = async (server: any, userController: UserController) =>
     })
 
     server.get('/users/:uuid', userController.findOne.bind(userController));
+
+    server.get('/users/batch/uuids', optsBatchUuids, async (request: FastifyRequest<{ Querystring: { uuids: string[] }}>, reply: FastifyReply) => {
+        return await userController.GetUsersByUuids(request, reply);
+    });
 
     server.get('/users/me', { preHandler: authenticateJWT }, async (request: FastifyRequest, reply: FastifyReply) => {
         const userPayload = request.user as { uuid: string };
@@ -154,6 +159,7 @@ export const UserRoutes = async (server: any, userController: UserController) =>
     });
 
     server.put('/updateStats', updateStatsOpts, async (request: FastifyRequest <{ Body: UpdateStatsDTO }>,  reply: FastifyReply) => {
+        console.log("Recebido: ", request.body);
         return await userController.UpdateStats(request, reply);
     });
 

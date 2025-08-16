@@ -15,6 +15,7 @@ export abstract class BaseController
             if (responseData !== undefined && responseData !== null) {
                 return reply.status(200).send(responseData);
             }
+            console.log("Resultado processado com sucesso:", result.getMessage());
             return reply.status(200).send(result.getMessage());
         }
         else{

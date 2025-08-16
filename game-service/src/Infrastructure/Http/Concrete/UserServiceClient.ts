@@ -133,4 +133,28 @@ export class UserServiceClient implements IUserServiceClient
             throw error;
         }
     }
+
+    public async GetUsersByUuids(uuids: string[]): Promise<any>
+    {
+        try
+        {
+            if (uuids.length === 0) {
+                return [];
+            }
+
+            const response = await axios.get(`${this.baseUrl}/users/batch/uuids`, {
+                params: { uuids: uuids },
+                paramsSerializer: (params: any) => stringify(params, { arrayFormat: 'repeat' }),
+            });
+
+            return response.data;
+        }
+        catch (error: any)
+        {
+            if (axios.isAxiosError(error) && error.response?.status === 404)
+                return [];
+
+            throw error;
+        }
+    }
 }
