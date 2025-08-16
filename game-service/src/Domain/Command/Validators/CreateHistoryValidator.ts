@@ -20,6 +20,7 @@ export class CreateHistoryValidator implements BaseValidator<CreateHistoryComman
 
     public async Validator(command: CreateHistoryCommand): Promise<void>
     {
+        this.NotificationError.CleanErrors();
         await this.ValidateUserExists(command);
 
         if (this.VerifyIfPlayerIsPlayingAgainstSelf(command))
@@ -31,7 +32,8 @@ export class CreateHistoryValidator implements BaseValidator<CreateHistoryComman
         if ((command.player3Points && command.player3Points < 0) || (command.player4Points && command.player4Points < 0))
             this.NotificationError.AddError(ErrorCatalog.NegativePoints);
 
-
+        console.log("Erros de validação: ", this.NotificationError.GetAllErrors());
+        console.log("Quantidade de erros: ", this.NotificationError.NumberOfErrors())
         if (this.NotificationError.NumberOfErrors() > 0){
             const allErrors : CustomError[] = this.NotificationError.GetAllErrors();
             throw new ValidationException(allErrors);
@@ -41,10 +43,10 @@ export class CreateHistoryValidator implements BaseValidator<CreateHistoryComman
     private VerifyIfPlayerIsPlayingAgainstSelf(command: CreateHistoryCommand): boolean
     {
         const players: (string | null)[] = [
-            command.player1Username,
-            command.player2Username,
-            command.player3Username,
-            command.player4Username
+            command.player1Uuid,
+            command.player2Uuid,
+            command.player3Uuid,
+            command.player4Uuid
         ].filter(username => username != null && username !== '');
 
         const set = new Set(players);
@@ -56,23 +58,23 @@ export class CreateHistoryValidator implements BaseValidator<CreateHistoryComman
         try
         {
             const userList: (string | null)[] = [
-                command.player1Username,
-                command.player2Username,
-                command.player3Username,
-                command.player4Username
+                command.player1Uuid,
+                command.player2Uuid,
+                command.player3Uuid,
+                command.player4Uuid
             ].filter(username => username != null && username !== '');
 
             if (userList.length < 2)
                 this.NotificationError.AddError(ErrorCatalog.InvalidNumberOfParticipantsHistory);
 
-            const exists = await this.backendApiClient.VerifyIfUsersExistsByUsername(userList);
+            const exists = await this.backendApiClient.VerifyIfUsersExistsByUuids(userList);
 
             if (!exists)
                 this.NotificationError.AddError(ErrorCatalog.UserNotFound);
         }
         catch (error)
         {
-            this.NotificationError.AddError(ErrorCatalog.InternalBackendApiErrorVerifyIfUsersExistsByUsername);
+            this.NotificationError.AddError(ErrorCatalog.InternalBackendApiErrorVerifyIfUsersExistsByUuids);
         }
     }
 }

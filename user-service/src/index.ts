@@ -94,7 +94,8 @@ async function createDefaultUser(prisma: PrismaClient, userRepository: UserRepos
         'Cachorrao',
         false,
         '/img/cachorrao.jpg',
-        null
+        null,
+        'cachorrao-uuid'
       );
 
       const mockReply = {

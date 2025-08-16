@@ -76,6 +76,44 @@ export class GetUserService implements BaseService<GetUserDTO, GetUserViewModel>
         }
     }
 
+    public async GetUsersByUuids(uuids: string[]): Promise<Result<GetUserViewModel[]>>
+    {
+        try {
+            const users = await this.UserRepository.GetUsersEntitiesByUuid(uuids);
+            const getUserViewModels: GetUserViewModel[] = users.map(user => {
+                const queryDTO = new GetUserQueryDTO(
+                    user.Uuid,
+                    user.Email.getEmail(),
+                    user.Username,
+                    user.ProfilePic,
+                    user.matchesPlayed,
+                    user.wins,
+                    user.loses,
+                    user.isOnline,
+                    user.LastLogin,
+                    user.twoFactorEnabled,
+                    user.twoFactorSecret
+                );
+                return GetUserViewModel.FromQueryDTO(queryDTO);
+            });
+
+            return Result.SuccessWithData<GetUserViewModel[]>("Users found", getUserViewModels);
+        }
+        catch (error)
+        {
+            if (error instanceof ValidationException)
+            {
+                const message: string = error.SetErrors();
+                return Result.Failure<GetUserViewModel[]>(message, ErrorTypeEnum.VALIDATION);
+            }
+            else if (error instanceof Prisma.PrismaClientKnownRequestError)
+            {
+                return Result.Failure(ErrorCatalog.DatabaseViolated.SetError(), ErrorTypeEnum.CONFLICT);
+            }
+            return Result.Failure(ErrorCatalog.InternalServerError.SetError(), ErrorTypeEnum.INTERNAL);
+        }
+    }
+
     Execute(dto: GetUserDTO, reply: FastifyReply): Promise<Result<GetUserViewModel>> {
         throw new Error("Method not implemented.");
     }

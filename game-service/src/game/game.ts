@@ -208,47 +208,51 @@ async function sendRemoteMatchHistory(gameId: string, playerIds: string[], elimi
     if (!game) return;
 
     try {
-        const playerNames: { [key: string]: string } = {};
+        const playerIds_map: { [key: string]: string } = {};
         game.players.forEach(player => {
-            playerNames[player.id] = player.realUsername || player.username;
+            playerIds_map[player.id] = player.id;
         });
         
         const winnerIndex = playerIds.findIndex(id => !eliminationOrder.includes(id));
         const winnerId = winnerIndex !== -1 ? playerIds[winnerIndex] : (eliminationOrder.length > 0 ? eliminationOrder[eliminationOrder.length - 1] : playerIds[0]);
         
-        const positions: { [key: string]: { username: string, points: number } } = {};
+        const positions: { [key: string]: { playerId: string, points: number } } = {};
         
         if (winnerId) {
-            positions['player1'] = { username: playerNames[winnerId], points: 1 };
+            positions['player1'] = { playerId: playerIds_map[winnerId], points: 1 };
         }
         
         const secondPlaceCandidates = eliminationOrder.filter(id => id !== winnerId);
         if (secondPlaceCandidates.length >= 1) {
             const secondPlaceId = secondPlaceCandidates[secondPlaceCandidates.length - 1];
-            positions['player2'] = { username: playerNames[secondPlaceId], points: 2 };
+            positions['player2'] = { playerId: playerIds_map[secondPlaceId], points: 2 };
         }
         
         if (secondPlaceCandidates.length >= 2) {
             const thirdPlaceId = secondPlaceCandidates[secondPlaceCandidates.length - 2];
-            positions['player3'] = { username: playerNames[thirdPlaceId], points: 3 };
+            positions['player3'] = { playerId: playerIds_map[thirdPlaceId], points: 3 };
         }
         
         if (secondPlaceCandidates.length >= 3) {
             const fourthPlaceId = secondPlaceCandidates[0];
-            positions['player4'] = { username: playerNames[fourthPlaceId], points: 4 };
+            positions['player4'] = { playerId: playerIds_map[fourthPlaceId], points: 4 };
         }
 
         const historyData = {
             gameType: 'MULTIPLAYER_REMOTO',
             tournamentId: gameId,
             tournamentName: 'remote',
-            player1Username: positions['player1']?.username || null,
+            player1Uuid: positions['player1']?.playerId || null,
+            player1Alias: game.players.find(p => p.id === (positions['player1']?.playerId))?.username || null,
             player1Points: positions['player1']?.points || null,
-            player2Username: positions['player2']?.username || null,
+            player2Uuid: positions['player2']?.playerId || null,
+            player2Alias: game.players.find(p => p.id === (positions['player2']?.playerId))?.username || null,
             player2Points: positions['player2']?.points || null,
-            player3Username: positions['player3']?.username || null,
+            player3Uuid: positions['player3']?.playerId || null,
+            player3Alias: game.players.find(p => p.id === (positions['player3']?.playerId))?.username || null,
             player3Points: positions['player3']?.points || null,
-            player4Username: positions['player4']?.username || null,
+            player4Uuid: positions['player4']?.playerId || null,
+            player4Alias: game.players.find(p => p.id === (positions['player4']?.playerId))?.username || null,
             player4Points: positions['player4']?.points || null,
         };
 

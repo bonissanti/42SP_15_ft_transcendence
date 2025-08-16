@@ -1,7 +1,7 @@
 import {BaseEntity} from "../Interface/BaseEntity.js";
 import {PasswordHashVO} from "../../ValueObjects/PasswordHashVO.js";
 import {EmailVO} from "../../ValueObjects/EmailVO.js";
-import * as crypto from "crypto";
+import crypto from "crypto";
 
 export class User implements BaseEntity
 {
@@ -28,9 +28,10 @@ export class User implements BaseEntity
         isOnline: boolean,
         matchesPlayed: number,
         wins: number,
-        loses: number
+        loses: number,
+        uuid?: string
     ) {
-        this.Uuid = crypto.randomUUID();
+        this.Uuid = uuid || crypto.randomUUID();
         this.Email = email;
         this.PasswordHash = passwordHash;
         this.Username = username;

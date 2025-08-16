@@ -32,9 +32,24 @@ function navigateTo(path: string) {
   window.dispatchEvent(new PopStateEvent('popstate'));
 }
 
-export function logout() {
+export async function logout() {
   if (isUserAuthenticated()) {
-    navigator.sendBeacon(`${API_BASE_URL}/users/me/status`, JSON.stringify({ isOnline: false }));
+    try {
+      const token = localStorage.getItem('jwtToken');
+      if (token) {
+        await fetch(`${API_BASE_URL}/users/me/status`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ isOnline: false }),
+          credentials: 'include'
+        });
+      }
+    } catch (error) {
+      console.warn('Falha ao atualizar status do usuário durante logout:', error);
+    }
   }
 
   document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";

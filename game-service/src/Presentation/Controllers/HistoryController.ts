@@ -24,19 +24,19 @@ export class HistoryController extends BaseController
             body.gameType,
             body.tournamentId ?? undefined,
             body.tournamentName ?? '',
-            body.player1Username,
+            body.player1Uuid,
             body.player1Alias,
             body.player1Points,
-            body.player2Username,
+            body.player2Uuid,
             body.player2Alias,
             body.player2Points,
-            body.player3Username,
+            body.player3Uuid,
             body.player3Alias,
             body.player3Points,
-            body.player4Username,
+            body.player4Uuid,
             body.player4Alias,
             body.player4Points)
-
+        console.log("DTO: ", createHistoryDTO)
         const result = await this.historyService.Create(createHistoryDTO, reply);
         return this.handleResult(result, reply, this.notificationError);
     }
@@ -44,8 +44,10 @@ export class HistoryController extends BaseController
     public async GetAllHistories(request: FastifyRequest<{ Querystring: GetAllHistoriesDTO }>, reply: FastifyReply)
     {
         const query = request.query;
-        const getAllHistoriesDTO: GetAllHistoriesDTO = new GetAllHistoriesDTO(query.username);
+        const getAllHistoriesDTO: GetAllHistoriesDTO = new GetAllHistoriesDTO(query.userUuid);
+        console.log("GetAllHistoriesDTO: ", getAllHistoriesDTO);
         const result = await this.historyService.GetAll(getAllHistoriesDTO, reply);
+        console.log("Result: ", result);
         return this.handleResult(result, reply, this.notificationError);
     }
 }

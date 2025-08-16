@@ -6,8 +6,9 @@ export class CreateUserDTO
     public readonly anonymous: boolean = false;
     public readonly profilePic: string | null;
     public readonly lastLogin: string | null = null;
+    public readonly uuid?: string;
 
-    constructor(_email: string, _password: string, _username: string, _anonymous: boolean, _profilepic: string | null = null, _lastlogin: string | null)
+    constructor(_email: string, _password: string, _username: string, _anonymous: boolean, _profilepic: string | null = null, _lastlogin: string | null, _uuid?: string)
     {
         this.email = _email;
         this.password = _password;
@@ -15,5 +16,6 @@ export class CreateUserDTO
         this.anonymous = _anonymous;
         this.profilePic = _profilepic;
         this.lastLogin = _lastlogin;
+        this.uuid = _uuid;
     }
 }
