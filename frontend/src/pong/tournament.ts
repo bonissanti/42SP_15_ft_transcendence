@@ -29,6 +29,9 @@ async function getUserProfile(): Promise<{ username: string, profilePic: string 
 
 function getPlayerHTML(player: any | null) {
     if (player) {
+		if (player.profilePic && player.profilePic.startsWith('/app')) {
+                player.profilePic = player.profilePic.replace('/app', '');
+        }
         return `
             <div class="flex flex-col items-center">
                 <img src="${player.profilePic}" alt="${player.username}" class="w-24 h-24 rounded-full border-4 border-white mb-2">
