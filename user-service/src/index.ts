@@ -91,7 +91,7 @@ async function createDefaultUser(prisma: PrismaClient, userRepository: UserRepos
       const createUserDTO = new CreateUserDTO(
         'cachorraofoda@gmail.com',
         'blablabla',
-        'cachorrao',
+        'Cachorrao',
         false,
         '/img/cachorrao.jpg',
         null,

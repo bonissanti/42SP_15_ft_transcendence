@@ -39,6 +39,9 @@ function renderWaitingRoom(players: any[]) {
         const player = players[i];
         let slotHtml: string;
         if (player) {
+            if (player.profilePic && player.profilePic.startsWith('/app')) {
+                player.profilePic = player.profilePic.replace('/app', '');
+            }
             slotHtml = `
                 <div class="bg-slate-800 p-4 rounded-lg flex flex-col items-center justify-center border-2 border-white shadow-retro h-48 transition-all duration-300 transform hover:scale-105">
                     <img src="${player.profilePic}" alt="Foto de ${player.username}" class="w-24 h-24 rounded-full mb-4 border-2 border-indigo-400">
