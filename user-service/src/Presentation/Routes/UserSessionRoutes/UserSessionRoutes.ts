@@ -28,6 +28,21 @@ export const UserSessionRoutes = async (server: any, userSessionController: User
                 return reply.status(500).send({ message: "Failed to process user in game-service-bkp." });
             }
 
+            await userRepository.prisma.user.update({
+                where: { uuid: user.uuid },
+                data: { 
+                    isOnline: true,
+                    lastLogin: new Date()
+                }
+            });
+
+            if (user.twoFactorEnabled) {
+                return reply.send({
+                    message: '2FA verification required',
+                    uuid: user.uuid
+                });
+            }
+
             const token = server.jwt.sign({ uuid: user.uuid, isAuthenticated: true }, { expiresIn: '1d' });
             
             reply.setCookie('token', token, {

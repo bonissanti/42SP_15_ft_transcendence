@@ -35,7 +35,7 @@ const translations = {
     selectMode: 'Selecione o modo de jogo:',
     singlePlayer: 'Um Jogador',
     multiplayer: 'Dois Jogadores',
-    remoteMultiplayer: 'Multiplayer Remoto',
+    remoteMultiplayer: 'Pong²',
     tournament: 'Torneio',
     backToMenu: 'Voltar ao Menu',
 
@@ -279,7 +279,7 @@ const translations = {
     selectMode: 'Select game mode:',
     singlePlayer: 'Single Player',
     multiplayer: 'Two Players',
-    remoteMultiplayer: 'Remote Multiplayer',
+    remoteMultiplayer: 'Pong²',
     tournament: 'Tournament',
     backToMenu: 'Back to Menu',
 
@@ -523,7 +523,7 @@ const translations = {
     selectMode: 'Selecciona el modo de juego:',
     singlePlayer: 'Un Jugador',
     multiplayer: 'Dos Jugadores',
-    remoteMultiplayer: 'Multijugador Remoto',
+    remoteMultiplayer: 'Pong²',
     tournament: 'Torneo',
     backToMenu: 'Volver al Menú',
 
@@ -767,7 +767,7 @@ const translations = {
     selectMode: 'Sélectionnez le mode de jeu :',
     singlePlayer: 'Un Joueur',
     multiplayer: 'Deux Joueurs',
-    remoteMultiplayer: 'Multijoueur Distant',
+    remoteMultiplayer: 'Pong²',
     tournament: 'Tournoi',
     backToMenu: 'Retour au Menu',
 
