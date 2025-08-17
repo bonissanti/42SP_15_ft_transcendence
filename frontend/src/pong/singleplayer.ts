@@ -6,7 +6,7 @@ import {
 
 import { sendMatchHistory, getUserProfile, getCachoraoProfile } from './common';
 
-let speedIntervalId: number | null = null;
+let speedIntervalId: ReturnType<typeof setInterval> | null = null;
 
 function updateSinglePlayer() {
   const ball = getBall();

@@ -4,6 +4,9 @@ WORKDIR /app
 COPY frontend/package.json frontend/yarn.lock* frontend/package-lock.json* ./
 RUN npm install
 
+ARG VITE_GOOGLE_CLIENT_ID
+ENV VITE_GOOGLE_CLIENT_ID=${VITE_GOOGLE_CLIENT_ID}
+
 COPY frontend/. .
 RUN npm run build
 
