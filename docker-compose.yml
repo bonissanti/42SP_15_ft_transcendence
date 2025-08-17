@@ -1,6 +1,19 @@
-version: '3.8'
-
 services:
+  ssl-generator:
+    build:
+      context: ./devops/nginx/ssl
+      dockerfile: Dockerfile
+    volumes:
+      - ssl-certs:/ssl
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "sh", "-c", "test -f /ssl/localhost.key && test -f /ssl/localhost.pem"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
   frontend:
     build:
       context: .
@@ -11,11 +24,16 @@ services:
       - "8080:80"
       - "8443:443"
     volumes:
-      - ./devops/nginx/ssl:/etc/nginx/ssl:ro
+      - ssl-certs:/etc/nginx/ssl:ro
     depends_on:
-      - user-service
-      - auth-service
-      - game-service
+      ssl-generator:
+        condition: service_healthy
+      user-service:
+        condition: service_started
+      auth-service:
+        condition: service_started
+      game-service:
+        condition: service_started
     networks:
       - app-network
 
@@ -30,7 +48,10 @@ services:
       - "9229:9229"
       - "5555:5555"
     depends_on:
-      - auth-service
+      ssl-generator:
+        condition: service_healthy
+      auth-service:
+        condition: service_started
     networks:
       - app-network
 
@@ -46,6 +67,9 @@ services:
       - "3000:3000"
     volumes:
       - auth-prisma-data:/usr/src/app/prisma
+    depends_on:
+      ssl-generator:
+        condition: service_healthy
     networks:
       - app-network
 
@@ -61,7 +85,10 @@ services:
       - "5556:5556"
     volumes:
       - game-service-prisma-data:/usr/src/app/prisma
-      - ./devops/nginx/ssl:/usr/src/app/ssl:ro
+      - ssl-certs:/usr/src/app/ssl:ro
+    depends_on:
+      ssl-generator:
+        condition: service_healthy
     networks:
       - app-network
 
@@ -72,6 +99,9 @@ services:
       NGROK_PORT: ${NGROK_PORT}
     ports:
       - "4040:4040"
+    depends_on:
+      ssl-generator:
+        condition: service_healthy
     networks:
       - app-network
 
@@ -80,6 +110,7 @@ networks:
     driver: bridge
 
 volumes:
+  ssl-certs:
   user-service-prisma-data:
   auth-prisma-data:
   game-service-prisma-data:
