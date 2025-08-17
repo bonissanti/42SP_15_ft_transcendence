@@ -9,7 +9,7 @@ generator client {
 
 datasource db {
     provider = "sqlite"
-    url      = env("DATABASE_URL")
+    url      = env("DATABASE_USER_URL")
 }
 
 enum StatusRequest {
