@@ -13,11 +13,11 @@ function renderMatchHistory(history: any[]): string {
 
         if (gameType === 'TOURNAMENT') {
             const players = [
-                { name: match.player4Username, alias: match.player4Alias, points: match.player4Points },
-                { name: match.player3Username, alias: match.player3Alias, points: match.player3Points },
-                { name: match.player2Username, alias: match.player2Alias, points: match.player2Points },
                 { name: match.player1Username, alias: match.player1Alias, points: match.player1Points },
-            ].filter(p => p.name).sort((a, b) => b.points - a.points);
+                { name: match.player2Username, alias: match.player2Alias, points: match.player2Points },
+                { name: match.player3Username, alias: match.player3Alias, points: match.player3Points },
+                { name: match.player4Username, alias: match.player4Alias, points: match.player4Points },
+            ].filter(p => p.name).sort((a, b) => a.points - b.points);
 
             const medals = ['🏆', '🥈', '🥉', ''];
 
@@ -31,11 +31,11 @@ function renderMatchHistory(history: any[]): string {
 
         } else if (gameType === 'MULTIPLAYER_REMOTO') {
             const players = [
-                { name: match.player4Username, points: match.player4Points },
-                { name: match.player3Username, points: match.player3Points },
-                { name: match.player2Username, points: match.player2Points },
                 { name: match.player1Username, points: match.player1Points },
-            ].filter(p => p.name).sort((a, b) => b.points - a.points);
+                { name: match.player2Username, points: match.player2Points },
+                { name: match.player3Username, points: match.player3Points },
+                { name: match.player4Username, points: match.player4Points },
+            ].filter(p => p.name).sort((a, b) => a.points - b.points);
 
             playersHtml = players.map((p, index) => {
                 const position = index + 1;
@@ -68,7 +68,7 @@ function renderMatchHistory(history: any[]): string {
 export async function loadMatchHistory(userUuid: string) {
     try {
         const historyResponse = await fetchWithGame(`/history?userUuid=${userUuid}`);
-        console.log("Recebido: ", historyResponse);
+        console.log("Recebido: ", historyResponse.body);
         const history = await historyResponse.json();
         const historyContainer = document.getElementById('match-history-container');
         if (historyContainer) {
