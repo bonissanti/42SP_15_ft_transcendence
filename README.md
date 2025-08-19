@@ -103,9 +103,9 @@ The backend is intentionally simple while keeping clear boundaries:
 4. **Access the application**
     - Frontend: `http://localhost:3000`
     - API Documentation: `http://localhost:8080/docs`
-
+<br>
 > [!WARNING]
-> Google authentication will not work in the local environment. Please log in in the normal way.
+> Google authentication will not work in the local environment. Please log in the normal way.
 
 ---
 
