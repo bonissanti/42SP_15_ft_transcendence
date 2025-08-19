@@ -21,19 +21,19 @@ jobs:
             # Setup ms
             - name: Install auth-service dependencies
               working-directory: ./auth-service
-              run: npm install
+              run: npm ci
 
             - name: Install user-service dependencies
               working-directory: ./user-service
-              run: npm install
+              run: npm ci
 
             - name: Install game-service dependencies
               working-directory: ./game-service
-              run: npm install
+              run: npm ci
 
             - name: Install frontend dependencies
               working-directory: ./frontend
-              run: npm install
+              run: npm ci
 
             #Setup docker
             - name: Set up Docker Buildx

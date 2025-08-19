@@ -2,7 +2,7 @@
 
 A real-time multiplayer Pong game platform built as the final project of 42's Common Core curriculum. This implementation features single-player (vs bot), multiplayer with 2 and 4 players, tournament mode, and an additional Rock Paper Scissors (RPS) game.
 
-[![Watch!](https://imgur.com/a/ukaHgde)](https://drive.google.com/file/d/13-LrXIbCxl5CwCafj5Glb7it4JLWT2Y7/view?usp=sharing)
+[![Watch the Demo](.github/thumb.png)](https://drive.google.com/file/d/13-LrXIbCxl5CwCafj5Glb7it4JLWT2Y7/view?usp=sharing)
 
 ---
 
