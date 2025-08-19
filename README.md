@@ -139,11 +139,11 @@ The application uses SQLite with Prisma ORM for:
 
 Built by the 42 students working on this Common Core project. Follow us on Github:
 
-**[bonissanti](https://github.com/iuricode/readme-template/tree/main/perfil)**<br>
-**[bonissanti](https://github.com/iuricode/readme-template/tree/main/perfil)**<br>
-**[bonissanti](https://github.com/iuricode/readme-template/tree/main/perfil)**<br>
-**[bonissanti](https://github.com/iuricode/readme-template/tree/main/perfil)**<br>
-**[bonissanti](https://github.com/iuricode/readme-template/tree/main/perfil)**
+**[bonissanti](https://github.com/bonissanti)**<br>
+**[Edu2metros](https://github.com/Edu2metros)**<br>
+**[phm-aguiar](https://github.com/phm-aguiar)**<br>
+**[ArthurSobreira](https://github.com/ArthurSobreira)**<br>
+**[MarcalAmaral](https://github.com/MarcalAmaral)**
 
 ---
 
